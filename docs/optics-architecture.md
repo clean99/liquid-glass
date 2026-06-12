@@ -16,6 +16,7 @@ flowchart TD
   B --> G["foreground content layer"]
   D --> H["background displacement layer"]
   E --> H
+  D --> I["edge mask sampling"]
 ```
 
 `LiquidSurface` is the only high-level boundary that selects an engine. Buttons,
@@ -36,8 +37,11 @@ not import `@hashintel/refractive` directly.
   the background being refracted.
 - Focus state changes material depth and scale. Hard white or black outline rings
   are treated as a regression.
+- Edge masks are monotonic: edge refraction fades inward while clean-center
+  opacity rises. The center is restored; it is not a second distorted layer.
 
-These invariants are covered by `tests/refraction-physics.test.ts`.
+These invariants are covered by `tests/refraction-physics.test.ts` and
+`tests/edge-mask.test.ts`.
 
 ## Engine Strategy
 
@@ -50,6 +54,18 @@ The default enhanced path is `@hashintel/refractive`. The experimental reference
 lens path exists for comparison and fixture work only. It helps us reason about
 rounded lens geometry, two-pass displacement, and pointer-driven interaction
 without leaking article-specific code into the component API.
+
+## Edge Mask Model
+
+`sampleLiquidEdgeMask()` is the package-level contract for edge-only refraction.
+It models the material as two blended zones:
+
+- the bevel owns refraction and optional chromatic aberration,
+- the center returns to clean material so icons and labels stay readable.
+
+This model was added after inspecting `rdev/liquid-glass-react`, which uses a
+filter composition with edge aberration and a clean center. We keep the physical
+idea, but not its baked map assets or single-component architecture.
 
 ## Why The Center Must Stay Calm
 

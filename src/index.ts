@@ -112,6 +112,7 @@ export {
   resolveLensDropletResponse
 } from "./utils/draggable-lens";
 export { distanceFromRectEdge, resolveLiquidElasticResponse } from "./utils/elasticity";
+export { sampleLiquidEdgeMask, sampleLiquidEdgeMaskRamp } from "./utils/edge-mask";
 export {
   referenceLensDisplacementRefraction,
   referenceLensGeometry,
@@ -180,6 +181,7 @@ export type {
 export type { LiquidButtonProps } from "./components/LiquidButton";
 export type { LiquidButtonGroupProps } from "./components/LiquidButtonGroup";
 export type { LiquidCardProps } from "./components/LiquidCard";
+export type { LiquidEdgeMaskOptions, LiquidEdgeMaskSample } from "./utils/edge-mask";
 export type { LiquidCheckboxProps, LiquidCheckboxSurfaceProps } from "./components/LiquidCheckbox";
 export type {
   LiquidCollapsibleContentProps,

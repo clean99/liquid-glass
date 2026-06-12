@@ -31,3 +31,13 @@ The Storybook behavior test opens the built Storybook in Chromium and performs r
 
 `pnpm test:docs` verifies the open-source repository contract: required GitHub
 templates, registry files, docs, attributions, testing notes, and package scripts.
+
+The physical unit tests intentionally exercise pure functions before UI:
+
+- `tests/edge-mask.test.ts` verifies edge-only refraction and clean-center
+  recovery.
+- `tests/elasticity.test.ts` verifies bounded pointer-driven scaling and
+  translation.
+- `tests/refraction-physics.test.ts` verifies optical ranges, filter geometry,
+  foreground layering, focus material behavior, and Kube reference pipeline
+  assumptions.

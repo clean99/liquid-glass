@@ -46,6 +46,7 @@ const requiredFiles = [
   "docs/open-source-release.md",
   "docs/optics-architecture.md",
   "docs/reference-research.md",
+  "docs/rdev-liquid-glass-react.md",
   "docs/shadcn-parity.json",
   "docs/testing.md",
   "examples/README.md",
@@ -104,10 +105,20 @@ mustInclude("docs/reference-research.md", [
   "shadcn/ui Registry Pattern"
 ]);
 
+mustInclude("docs/rdev-liquid-glass-react.md", [
+  "MIT licensed",
+  "sampleLiquidEdgeMask",
+  "resolveLiquidElasticResponse",
+  "Baked base64 displacement maps",
+  "edge/center blend",
+  "real pointer and drag actions"
+]);
+
 mustInclude("docs/testing.md", [
   "real pointer actions",
   "requestAnimationFrame",
-  "test:kube-reference"
+  "test:kube-reference",
+  "tests/edge-mask.test.ts"
 ]);
 
 mustInclude("CONTRIBUTING.md", ["pnpm test:docs", "pnpm test:inventory"]);

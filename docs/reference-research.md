@@ -35,6 +35,10 @@ Useful implementation patterns:
 - Elasticity should be a small interaction parameter, not a global animation that
   runs for every surface.
 
+This research is expanded in `docs/rdev-liquid-glass-react.md`. The concrete
+takeaway is now represented by `sampleLiquidEdgeMask()` and
+`resolveLiquidElasticResponse()` instead of copied implementation code.
+
 Rejected patterns:
 
 - Opaque baked displacement-map data URLs are not source-readable enough for this
