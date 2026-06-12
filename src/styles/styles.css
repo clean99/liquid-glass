@@ -1071,6 +1071,205 @@
   background: color-mix(in srgb, var(--lg-glass-border), transparent 18%);
 }
 
+.lg-command {
+  min-width: min(24rem, calc(100vw - 1rem));
+  overflow: hidden;
+}
+
+.lg-command > .lg-surface__content {
+  display: grid;
+  width: 100%;
+  gap: 0;
+  padding: 0;
+}
+
+.lg-command__search {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 0.82rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--lg-glass-border), transparent 30%);
+}
+
+.lg-command__search-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  color: color-mix(in srgb, var(--lg-text), transparent 42%);
+}
+
+.lg-command__magnifier {
+  width: 1.15rem;
+  height: 1.15rem;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.9;
+}
+
+.lg-command__input {
+  min-width: 0;
+  flex: 1 1 auto;
+  padding: 0;
+  color: var(--lg-text);
+  background: transparent;
+  border: 0;
+  font: inherit;
+  font-size: 0.92rem;
+  line-height: 1.2;
+  outline: 0;
+}
+
+.lg-command__input::placeholder {
+  color: color-mix(in srgb, var(--lg-text-muted), transparent 16%);
+}
+
+.lg-command__list {
+  display: grid;
+  max-height: min(22rem, calc(100vh - 12rem));
+  gap: 0.18rem;
+  overflow: auto;
+  padding: 0.42rem;
+}
+
+.lg-command__group {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.lg-command__group-heading {
+  padding: 0.5rem 0.58rem 0.28rem;
+  color: var(--lg-text-muted);
+  font-size: 0.72rem;
+  font-weight: 740;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.lg-command__item {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.64rem 0.68rem;
+  color: color-mix(in srgb, var(--lg-text), transparent 6%);
+  border-radius: calc(var(--lg-radius-md) - 2px);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 640;
+  line-height: 1.2;
+  text-shadow: var(--lg-control-text-shadow);
+  transition:
+    background 160ms var(--lg-ease-apple),
+    color 160ms var(--lg-ease-apple),
+    opacity 160ms var(--lg-ease-apple),
+    transform 180ms var(--lg-ease-apple);
+}
+
+.lg-command__item[data-selected] {
+  color: rgba(255, 255, 255, 0.94);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.22), transparent 54%),
+    rgba(24, 26, 30, 0.38);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.72),
+    0 0 10px rgba(0, 0, 0, 0.26);
+  transform: scale(1.01);
+}
+
+.lg-command__item[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.lg-command__empty {
+  padding: 1.4rem 0.8rem;
+  color: var(--lg-text-muted);
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+.lg-command__separator {
+  height: 1px;
+  margin: 0.24rem 0.38rem;
+  background: color-mix(in srgb, var(--lg-glass-border), transparent 18%);
+}
+
+.lg-combobox__trigger > .lg-surface__content {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.62rem;
+}
+
+.lg-combobox__trigger[data-placeholder] .lg-combobox__value {
+  color: var(--lg-text-muted);
+}
+
+.lg-combobox__value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lg-combobox__chevron {
+  display: inline-flex;
+  flex: 0 0 auto;
+  color: color-mix(in srgb, var(--lg-text), transparent 26%);
+  font-size: 0.84em;
+  line-height: 1;
+}
+
+.lg-combobox__content {
+  min-width: 18rem;
+  padding: 0;
+}
+
+.lg-combobox__content > .lg-surface__content {
+  display: block;
+  width: 100%;
+  padding: 0;
+}
+
+.lg-combobox__command {
+  min-width: 100%;
+  background: transparent;
+  box-shadow: none;
+}
+
+.lg-combobox__option-copy {
+  display: grid;
+  min-width: 0;
+  gap: 0.18rem;
+}
+
+.lg-combobox__option-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lg-combobox__option-description {
+  color: var(--lg-text-muted);
+  font-size: 0.78rem;
+  font-weight: 520;
+  line-height: 1.25;
+}
+
+.lg-combobox__check {
+  width: 1rem;
+  flex: 0 0 auto;
+  color: rgba(255, 255, 255, 0.88);
+  text-align: center;
+}
+
 .lg-context-menu__trigger {
   outline: 0;
 }

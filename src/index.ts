@@ -34,6 +34,16 @@ export {
   LiquidCollapsibleContent,
   LiquidCollapsibleTrigger
 } from "./components/LiquidCollapsible";
+export { LiquidCombobox } from "./components/LiquidCombobox";
+export {
+  LiquidCommand,
+  LiquidCommandEmpty,
+  LiquidCommandGroup,
+  LiquidCommandInput,
+  LiquidCommandItem,
+  LiquidCommandList,
+  LiquidCommandSeparator
+} from "./components/LiquidCommand";
 export {
   LiquidContextMenu,
   LiquidContextMenuContent,
@@ -223,6 +233,13 @@ export {
   supportsSvgBackdropFilter
 } from "./utils/support";
 export { surfaceClassNames } from "./utils/variants";
+export {
+  filterLiquidCommandItems,
+  getCommandSearchText,
+  getSelectableCommandItems,
+  normalizeCommandText,
+  resolveCommandNavigationValue
+} from "./utils/command";
 
 export const liquidPackageName = "@clean99/liquid-glass";
 
@@ -281,6 +298,16 @@ export type {
   LiquidCollapsibleProps,
   LiquidCollapsibleTriggerProps
 } from "./components/LiquidCollapsible";
+export type { LiquidComboboxOption, LiquidComboboxProps } from "./components/LiquidCombobox";
+export type {
+  LiquidCommandEmptyProps,
+  LiquidCommandGroupProps,
+  LiquidCommandInputProps,
+  LiquidCommandItemProps,
+  LiquidCommandListProps,
+  LiquidCommandProps,
+  LiquidCommandSeparatorProps
+} from "./components/LiquidCommand";
 export type {
   LiquidContextMenuContentProps,
   LiquidContextMenuItemProps,
@@ -435,6 +462,11 @@ export type {
 } from "./components/LiquidTooltip";
 export type { LiquidTypographyProps, LiquidTypographyVariant } from "./components/LiquidTypography";
 export type { BrowserCapabilities, BrowserCapabilityEnvironment } from "./utils/support";
+export type {
+  LiquidCommandFilter,
+  LiquidCommandItemRecord,
+  LiquidCommandNavigationDirection
+} from "./utils/command";
 export type {
   LiquidLensBounds,
   LiquidLensDragState,

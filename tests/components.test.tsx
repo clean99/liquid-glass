@@ -32,6 +32,13 @@ import {
   LiquidCollapsible,
   LiquidCollapsibleContent,
   LiquidCollapsibleTrigger,
+  LiquidCombobox,
+  LiquidCommand,
+  LiquidCommandEmpty,
+  LiquidCommandGroup,
+  LiquidCommandInput,
+  LiquidCommandItem,
+  LiquidCommandList,
   LiquidContextMenu,
   LiquidContextMenuContent,
   LiquidContextMenuItem,
@@ -227,6 +234,82 @@ describe("Liquid components", () => {
     expect(screen.getByRole("heading", { name: "Build passed" })).toHaveClass("lg-alert__title");
     expect(screen.getByText("No critical accessibility violations.")).toHaveClass(
       "lg-alert__description"
+    );
+  });
+
+  it("filters command items and selects the active item with keyboard", async () => {
+    const onSelect = vi.fn();
+    render(
+      <LiquidCommand onValueSelect={onSelect}>
+        <LiquidCommandInput aria-label="Search commands" />
+        <LiquidCommandList>
+          <LiquidCommandEmpty>No command found.</LiquidCommandEmpty>
+          <LiquidCommandGroup heading="Navigation">
+            <LiquidCommandItem value="writing">Open Writing</LiquidCommandItem>
+            <LiquidCommandItem value="projects">View Projects</LiquidCommandItem>
+            <LiquidCommandItem disabled value="archive">
+              Archive locked
+            </LiquidCommandItem>
+          </LiquidCommandGroup>
+        </LiquidCommandList>
+      </LiquidCommand>
+    );
+
+    const input = screen.getByRole("searchbox", { name: "Search commands" });
+    fireEvent.change(input, { target: { value: "projects" } });
+
+    await waitFor(() => expect(screen.queryByText("Open Writing")).not.toBeInTheDocument());
+    expect(screen.getByRole("option", { name: "View Projects" })).toHaveAttribute(
+      "aria-selected",
+      "true"
+    );
+
+    fireEvent.keyDown(input, { key: "Enter" });
+
+    expect(onSelect).toHaveBeenCalledWith("projects");
+  });
+
+  it("shows command empty state when filtering has no selectable result", async () => {
+    render(
+      <LiquidCommand>
+        <LiquidCommandInput aria-label="Search commands" />
+        <LiquidCommandList>
+          <LiquidCommandEmpty>No command found.</LiquidCommandEmpty>
+          <LiquidCommandItem value="writing">Open Writing</LiquidCommandItem>
+        </LiquidCommandList>
+      </LiquidCommand>
+    );
+
+    fireEvent.change(screen.getByRole("searchbox", { name: "Search commands" }), {
+      target: { value: "missing" }
+    });
+
+    expect(await screen.findByRole("status")).toHaveTextContent("No command found.");
+  });
+
+  it("opens combobox, filters options, and selects a value", async () => {
+    const onValueChange = vi.fn();
+    render(
+      <LiquidCombobox
+        aria-label="Choose section"
+        onValueChange={onValueChange}
+        options={[
+          { label: "Writing", value: "writing" },
+          { label: "Projects", value: "projects", keywords: ["work"] },
+          { disabled: true, label: "Private archive", value: "archive" }
+        ]}
+        placeholder="Choose section"
+      />
+    );
+
+    fireEvent.click(screen.getByRole("combobox", { name: "Choose section" }));
+    const searchbox = await screen.findByRole("searchbox");
+    fireEvent.change(searchbox, { target: { value: "work" } });
+    fireEvent.keyDown(searchbox, { key: "Enter" });
+
+    expect(onValueChange).toHaveBeenCalledWith("projects");
+    await waitFor(() =>
+      expect(screen.queryByRole("searchbox", { name: /search/i })).not.toBeInTheDocument()
     );
   });
 

@@ -140,6 +140,14 @@ Implemented components:
 - `LiquidCollapsible`
 - `LiquidCollapsibleTrigger`
 - `LiquidCollapsibleContent`
+- `LiquidCombobox`
+- `LiquidCommand`
+- `LiquidCommandInput`
+- `LiquidCommandList`
+- `LiquidCommandItem`
+- `LiquidCommandEmpty`
+- `LiquidCommandGroup`
+- `LiquidCommandSeparator`
 - `LiquidContextMenu`
 - `LiquidContextMenuTrigger`
 - `LiquidContextMenuContent`
@@ -279,7 +287,8 @@ The package supports system color scheme and explicit theme scopes:
 - AlertDialog reuses dialog plumbing but exposes `role="alertdialog"` and disables backdrop dismissal by default.
 - Drawer reuses sheet semantics and defaults to a bottom-mounted surface for mobile ergonomics.
 - Field controls use native `input`, `textarea`, `label`, and alert semantics.
-- Select is a styled native `<select>` entry point; complex combobox behavior remains a separate planned primitive.
+- Select is a styled native `<select>` entry point; Combobox composes Popover and Command for searchable listbox selection.
+- Command uses a registry-backed item model, `searchbox` / `listbox` / `option` semantics, Arrow/Home/End navigation, Enter selection, disabled item skipping, and empty-state announcements.
 - InputOtp uses real text inputs with paste distribution, arrow-key navigation, hidden form value support, and forwarded group refs.
 - `LiquidToggle` uses `aria-pressed`.
 - `LiquidNav` and `LiquidToolbar` require accessible labels.

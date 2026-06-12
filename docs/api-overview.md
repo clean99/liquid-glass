@@ -44,6 +44,8 @@ DOM access. Examples:
 - `LiquidNav`
 - `LiquidNativeSelect`
 - `LiquidSelect`
+- `LiquidCombobox`
+- `LiquidCommand`
 - `LiquidPagination`
 - `LiquidPopover`
 - `LiquidRadioGroup`

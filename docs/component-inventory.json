@@ -119,13 +119,17 @@
     {
       "name": "combobox",
       "export": "LiquidCombobox",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidCombobox.tsx",
+      "story": "stories/LiquidCommand.stories.tsx",
       "category": "control"
     },
     {
       "name": "command",
       "export": "LiquidCommand",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidCommand.tsx",
+      "story": "stories/LiquidCommand.stories.tsx",
       "category": "command"
     },
     {

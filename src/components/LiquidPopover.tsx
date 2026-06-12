@@ -125,6 +125,7 @@ export function LiquidPopover({
 export const LiquidPopoverTrigger = forwardRef<HTMLElement, LiquidPopoverTriggerProps>(
   function LiquidPopoverTrigger({ children, onClick, ...props }, ref) {
     const context = usePopoverContext("LiquidPopoverTrigger");
+    const ariaHasPopup = props["aria-haspopup"] ?? "dialog";
 
     const setRef = useCallback(
       (node: HTMLElement | null) => {
@@ -146,7 +147,7 @@ export const LiquidPopoverTrigger = forwardRef<HTMLElement, LiquidPopoverTrigger
         {...props}
         aria-controls={context.contentId}
         aria-expanded={context.open}
-        aria-haspopup="dialog"
+        aria-haspopup={ariaHasPopup}
         id={context.triggerId}
         onClick={handleClick}
         ref={setRef}
