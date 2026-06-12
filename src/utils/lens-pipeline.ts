@@ -26,6 +26,8 @@ export const referenceLensGeometry = {
   visibleWidth: 210
 } as const;
 
+export const referenceLensDisplacementFalloff = 25;
+
 export const referenceLensDisplacementRefraction = {
   blur: 0,
   glassThickness: 88,
@@ -55,7 +57,7 @@ export function resolveLensReferencePipeline(
   const displacementStage = createStage({
     bezelWidth: displacementRefraction.bezelWidth ?? 0,
     glassThickness: displacementRefraction.glassThickness ?? 0,
-    mapFalloffWidth: referenceLensGeometry.radius,
+    mapFalloffWidth: referenceLensDisplacementFalloff,
     name: "displacement"
   });
 

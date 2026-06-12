@@ -4,6 +4,7 @@ import {
   createLensFilterPixelMaps,
   createLensMagnificationPixelMap,
   createLensSpecularPixelMap,
+  referenceLensDisplacementFalloff,
   referenceLensGeometry,
   resolveLensReferencePipeline,
   sampleCapsuleField,
@@ -58,26 +59,29 @@ describe("lens displacement pixel maps", () => {
 
   it("keeps the displacement center neutral while bending each bevel along its normal", () => {
     const [, displacementStage] = resolveLensReferencePipeline().stages;
-    const map = createLensDisplacementPixelMap(displacementStage, { pixelRatio: 1 });
+    const map = createLensDisplacementPixelMap(displacementStage, { pixelRatio: 2 });
 
-    expect(rgbaAt(map, 105, 75)).toEqual([128, 128, 0, 255]);
+    expect(rgbaAt(map, 210, 150)).toEqual([128, 128, 0, 255]);
 
-    const top = rgbaAt(map, 105, 1);
-    const bottom = rgbaAt(map, 105, 149);
-    const left = rgbaAt(map, 1, 75);
-    const right = rgbaAt(map, 209, 75);
+    const top = rgbaAt(map, 210, 1);
+    const bottom = rgbaAt(map, 210, 299);
+    const left = rgbaAt(map, 1, 150);
+    const right = rgbaAt(map, 419, 150);
 
     expect(top[1]).toBeGreaterThan(128);
     expect(bottom[1]).toBeLessThan(128);
     expect(left[0]).toBeGreaterThan(128);
     expect(right[0]).toBeLessThan(128);
+    expect(rgbaAt(map, 52, 150)).toEqual([128, 128, 0, 255]);
+    expect(rgbaAt(map, 210, 52)).toEqual([128, 128, 0, 255]);
   });
 
   it("keeps spatial falloff separate from physical bevel scale", () => {
     const [magnificationStage, displacementStage] = resolveLensReferencePipeline().stages;
 
     expect(magnificationStage.mapFalloffWidth).toBe(referenceLensGeometry.radius);
-    expect(displacementStage.mapFalloffWidth).toBe(referenceLensGeometry.radius);
+    expect(displacementStage.mapFalloffWidth).toBe(referenceLensDisplacementFalloff);
+    expect(displacementStage.mapFalloffWidth).toBeLessThan(referenceLensGeometry.radius);
     expect(displacementStage.bezelWidth).toBe(18);
   });
 

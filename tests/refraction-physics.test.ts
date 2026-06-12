@@ -154,8 +154,10 @@ describe("Liquid Glass physics contract", () => {
     expect(lensReferenceEngineSource).toContain("createLensFilterPixelMaps");
     expect(lensReferenceEngineSource).not.toContain("calculateDisplacementMagnitudes");
     expect(lensReferenceEngineSource).not.toContain("sampleCapsuleField");
-    expect(displacementMapSource).toContain("calculateDisplacementMagnitudes");
     expect(displacementMapSource).toContain("sampleCapsuleField");
+    expect(displacementMapSource).toContain("falloffPower = 4.8");
+    expect(displacementMapSource).toContain("maxChannelMagnitude = 127");
+    expect(lensPipelineSource).toContain("referenceLensDisplacementFalloff = 25");
     expect(lensReferenceEngineSource).toContain('result="magnifying_displacement_map"');
     expect(lensReferenceEngineSource).toContain('result="displacement_map"');
     expect(lensReferenceEngineSource).toContain('result="specular_layer"');

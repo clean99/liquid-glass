@@ -68,10 +68,12 @@ filter.
 
 The two pixel maps are intentionally different. `createLensMagnificationPixelMap`
 models source zoom as a full rectangular center-pull field. The capsule field is
-used by `createLensDisplacementPixelMap` for the bevel pass. Collapsing those
-two maps into one edge-only function is a regression because it produces
-non-physical crossing lines instead of a coherent optical pull followed by edge
-bending.
+used by `createLensDisplacementPixelMap` for the bevel pass, but its effective
+falloff is narrower than the capsule radius. The `75px` radius defines shape;
+the `25px` displacement falloff defines where the edge bends back to neutral.
+Collapsing those two maps into one edge-only function, or using the full radius
+as displacement falloff, is a regression because it produces non-physical
+crossing lines instead of a coherent optical pull followed by edge bending.
 
 `createLensSpecularPixelMap` is a separate thin-rim model. It keeps the center
 transparent, fades out again a few pixels inside the edge, and uses gray

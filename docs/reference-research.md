@@ -45,10 +45,11 @@ transparent, pixels a few CSS pixels inside the capsule are transparent again,
 and diagonal cap normals are deliberately darker. This is the difference between
 a physical edge glint and a plastic outline.
 
-`bezelWidth` remains a physical scale input, but the flat map falloff uses the
-full `75px` capsule radius for the reference lens. Keeping those fields separate
-prevents the displacement map from collapsing into an unrealistically narrow
-edge band.
+`bezelWidth`, capsule radius, and displacement falloff are separate inputs. The
+capsule radius is `75px`, but the observed bevel displacement returns to neutral
+within roughly `25px` from the edge. Treating the full radius as the falloff was
+a real bug: it kept pushing pixels too far into the center and made the lens
+look like crossed texture instead of edge refraction.
 
 The same script also performs real pointer actions for the magnifying-glass demo:
 

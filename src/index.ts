@@ -250,6 +250,7 @@ export {
   sampleCapsuleField
 } from "./utils/displacement-map";
 export {
+  referenceLensDisplacementFalloff,
   referenceLensDisplacementRefraction,
   referenceLensGeometry,
   resolveLensReferencePipeline,

@@ -3,7 +3,6 @@ import {
   resolveLensReferencePipeline,
   type LensPipelineStage
 } from "./lens-pipeline";
-import { calculateDisplacementMagnitudes } from "./optics";
 
 export type LiquidPixelMap = {
   data: Uint8ClampedArray;
@@ -90,14 +89,9 @@ export function createLensDisplacementPixelMap(
   const width = geometry.opticalWidth * resolvedPixelRatio;
   const height = geometry.opticalHeight * resolvedPixelRatio;
   const data = new Uint8ClampedArray(width * height * 4);
-  const magnitudes = calculateDisplacementMagnitudes({
-    bezelWidth: stage.bezelWidth,
-    glassThickness: stage.glassThickness,
-    profile: stage.profile,
-    refractiveIndex: stage.refractiveIndex
-  });
-  const maxMagnitude = Math.max(...magnitudes.map(Math.abs));
   const effectiveBezelWidth = stage.mapFalloffWidth;
+  const falloffPower = 4.8;
+  const maxChannelMagnitude = 127;
 
   for (let py = 0; py < height; py += 1) {
     for (let px = 0; px < width; px += 1) {
@@ -106,19 +100,15 @@ export function createLensDisplacementPixelMap(
       const y = (py + 0.5) / resolvedPixelRatio;
       const sample = sampleCapsuleField(x, y, geometry);
 
-      if (!sample || sample.distanceFromEdge > effectiveBezelWidth || maxMagnitude <= 0) {
+      if (!sample || sample.distanceFromEdge > effectiveBezelWidth || effectiveBezelWidth <= 0) {
         writeRgba(data, index, 128, 128, 0, 255);
         continue;
       }
 
-      const progress = clamp01(sample.distanceFromEdge / effectiveBezelWidth);
-      const magnitudeIndex = Math.min(
-        magnitudes.length - 1,
-        Math.max(0, Math.round(progress * (magnitudes.length - 1)))
-      );
-      const normalizedMagnitude = (magnitudes[magnitudeIndex] ?? 0) / maxMagnitude;
-      const red = 128 - sample.normalX * normalizedMagnitude * 127;
-      const green = 128 - sample.normalY * normalizedMagnitude * 127;
+      const edgeProgress = clamp01(1 - sample.distanceFromEdge / effectiveBezelWidth);
+      const channelMagnitude = Math.pow(edgeProgress, falloffPower) * maxChannelMagnitude;
+      const red = 128 - sample.normalX * channelMagnitude;
+      const green = 128 - sample.normalY * channelMagnitude;
 
       writeRgba(data, index, red, green, 0, 255);
     }
