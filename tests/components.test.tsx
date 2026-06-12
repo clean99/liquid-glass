@@ -5,6 +5,15 @@ import {
   LiquidAccordion,
   LiquidAlert,
   LiquidAlertDescription,
+  LiquidAlertDialog,
+  LiquidAlertDialogAction,
+  LiquidAlertDialogCancel,
+  LiquidAlertDialogContent,
+  LiquidAlertDialogDescription,
+  LiquidAlertDialogFooter,
+  LiquidAlertDialogHeader,
+  LiquidAlertDialogTitle,
+  LiquidAlertDialogTrigger,
   LiquidAlertTitle,
   LiquidAspectRatio,
   LiquidAvatar,
@@ -32,6 +41,12 @@ import {
   LiquidDialogHeader,
   LiquidDialogTitle,
   LiquidDialogTrigger,
+  LiquidDrawer,
+  LiquidDrawerClose,
+  LiquidDrawerContent,
+  LiquidDrawerDescription,
+  LiquidDrawerTitle,
+  LiquidDrawerTrigger,
   LiquidEmpty,
   LiquidEmptyDescription,
   LiquidEmptyIcon,
@@ -45,6 +60,7 @@ import {
   LiquidIconButton,
   LiquidInput,
   LiquidInputGroup,
+  LiquidInputOtp,
   LiquidItem,
   LiquidKbd,
   LiquidLens,
@@ -70,6 +86,7 @@ import {
   LiquidSearchBox,
   LiquidProvider,
   LiquidSegmentedControl,
+  LiquidSelect,
   LiquidSeparator,
   LiquidSlider,
   LiquidSkeleton,
@@ -315,6 +332,43 @@ describe("Liquid components", () => {
     expect(screen.getByText("Reference material")).toHaveAttribute("data-variant", "lead");
   });
 
+  it("renders select and otp form primitives with native behavior", () => {
+    const onValueChange = vi.fn();
+    render(
+      <>
+        <LiquidSelect aria-label="Release mode" defaultValue="fallback">
+          <option value="enhanced">Enhanced</option>
+          <option value="fallback">Fallback</option>
+        </LiquidSelect>
+        <LiquidInputOtp
+          aria-label="Verification code"
+          name="verification-code"
+          onValueChange={onValueChange}
+        />
+      </>
+    );
+
+    const select = screen.getByRole("combobox", { name: "Release mode" });
+    expect(select).toHaveClass("lg-select");
+    expect(select.closest(".lg-field-control")).toHaveClass("lg-select-surface");
+
+    const otpFields = screen.getAllByRole("textbox");
+    expect(otpFields).toHaveLength(6);
+
+    fireEvent.paste(otpFields[0], {
+      clipboardData: {
+        getData: (type: string) => (type === "text/plain" ? "123456" : "")
+      }
+    });
+
+    expect(screen.getByDisplayValue("123456")).toHaveAttribute("name", "verification-code");
+    expect(onValueChange).toHaveBeenLastCalledWith("123456");
+
+    fireEvent.keyDown(otpFields[5], { key: "Backspace" });
+
+    expect(onValueChange).toHaveBeenLastCalledWith("12345");
+  });
+
   it("renders table, pagination, radio group, and scroll area primitives", () => {
     const onValueChange = vi.fn();
     render(
@@ -530,6 +584,26 @@ describe("Liquid components", () => {
     expect(sheet).toHaveTextContent("Controls for the current view.");
   });
 
+  it("renders drawer as a bottom sheet by default", async () => {
+    render(
+      <LiquidDrawer>
+        <LiquidDrawerTrigger>Open release drawer</LiquidDrawerTrigger>
+        <LiquidDrawerContent mode="fallback">
+          <LiquidDrawerTitle>Release drawer</LiquidDrawerTitle>
+          <LiquidDrawerDescription>Focused controls for a short task.</LiquidDrawerDescription>
+          <LiquidDrawerClose>Close drawer</LiquidDrawerClose>
+        </LiquidDrawerContent>
+      </LiquidDrawer>
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Open release drawer" }));
+
+    const drawer = await screen.findByRole("dialog", { name: "Release drawer" });
+    expect(drawer).toHaveClass("lg-drawer");
+    expect(drawer).toHaveAttribute("data-side", "bottom");
+    expect(drawer).toHaveTextContent("Focused controls for a short task.");
+  });
+
   it("opens and closes an accessible liquid dialog", async () => {
     const onOpenChange = vi.fn();
     render(
@@ -558,6 +632,38 @@ describe("Liquid components", () => {
 
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
     expect(onOpenChange).toHaveBeenCalledWith(false);
+  });
+
+  it("opens alert dialogs with alertdialog semantics", async () => {
+    render(
+      <LiquidAlertDialog>
+        <LiquidAlertDialogTrigger>Delete baseline</LiquidAlertDialogTrigger>
+        <LiquidAlertDialogContent mode="fallback">
+          <LiquidAlertDialogHeader>
+            <LiquidAlertDialogTitle>Delete visual baseline?</LiquidAlertDialogTitle>
+            <LiquidAlertDialogDescription>
+              This changes the screenshot reference used by CI.
+            </LiquidAlertDialogDescription>
+          </LiquidAlertDialogHeader>
+          <LiquidAlertDialogFooter>
+            <LiquidAlertDialogCancel>Cancel</LiquidAlertDialogCancel>
+            <LiquidAlertDialogAction>Delete</LiquidAlertDialogAction>
+          </LiquidAlertDialogFooter>
+        </LiquidAlertDialogContent>
+      </LiquidAlertDialog>
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Delete baseline" }));
+
+    const alertDialog = await screen.findByRole("alertdialog", {
+      name: "Delete visual baseline?"
+    });
+    expect(alertDialog).toHaveClass("lg-alert-dialog");
+    expect(alertDialog).toHaveTextContent("This changes the screenshot reference used by CI.");
+
+    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+
+    await waitFor(() => expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument());
   });
 
   it("asks controlled liquid dialogs to close on native cancel", async () => {

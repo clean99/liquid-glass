@@ -121,6 +121,13 @@ Implemented components:
 - `LiquidAlert`
 - `LiquidAlertTitle`
 - `LiquidAlertDescription`
+- `LiquidAlertDialog`
+- `LiquidAlertDialogTrigger`
+- `LiquidAlertDialogContent`
+- `LiquidAlertDialogTitle`
+- `LiquidAlertDialogDescription`
+- `LiquidAlertDialogCancel`
+- `LiquidAlertDialogAction`
 - `LiquidAspectRatio`
 - `LiquidAvatar`
 - `LiquidAvatarImage`
@@ -134,6 +141,12 @@ Implemented components:
 - `LiquidCollapsibleTrigger`
 - `LiquidCollapsibleContent`
 - `LiquidDirection`
+- `LiquidDrawer`
+- `LiquidDrawerTrigger`
+- `LiquidDrawerContent`
+- `LiquidDrawerTitle`
+- `LiquidDrawerDescription`
+- `LiquidDrawerClose`
 - `LiquidEmpty`
 - `LiquidIconButton`
 - `LiquidDialog`
@@ -146,6 +159,7 @@ Implemented components:
 - `LiquidLabel`
 - `LiquidInput`
 - `LiquidInputGroup`
+- `LiquidInputOtp`
 - `LiquidTextarea`
 - `LiquidFieldDescription`
 - `LiquidFieldError`
@@ -157,6 +171,7 @@ Implemented components:
 - `LiquidLens`
 - `LiquidSearchBox`
 - `LiquidNativeSelect`
+- `LiquidSelect`
 - `LiquidPagination`
 - `LiquidPaginationList`
 - `LiquidPaginationItem`
@@ -248,7 +263,11 @@ The package supports system color scheme and explicit theme scopes:
 
 - Interactive components use native buttons or anchors by default.
 - Dialog uses the native `<dialog>` element, labelled content, and native cancel/close events.
+- AlertDialog reuses dialog plumbing but exposes `role="alertdialog"` and disables backdrop dismissal by default.
+- Drawer reuses sheet semantics and defaults to a bottom-mounted surface for mobile ergonomics.
 - Field controls use native `input`, `textarea`, `label`, and alert semantics.
+- Select is a styled native `<select>` entry point; complex combobox behavior remains a separate planned primitive.
+- InputOtp uses real text inputs with paste distribution, arrow-key navigation, hidden form value support, and forwarded group refs.
 - `LiquidToggle` uses `aria-pressed`.
 - `LiquidNav` and `LiquidToolbar` require accessible labels.
 - `LiquidSegmentedControl` uses `radiogroup` / `radio`.

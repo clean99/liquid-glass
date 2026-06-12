@@ -448,6 +448,79 @@
   pointer-events: none;
 }
 
+.lg-select {
+  cursor: pointer;
+}
+
+.lg-select-surface {
+  min-width: 11rem;
+}
+
+.lg-input-otp {
+  display: flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 0.48rem;
+}
+
+.lg-input-otp__field {
+  width: 2.75rem;
+  height: 3.1rem;
+  padding: 0;
+  color: color-mix(in srgb, var(--lg-text), transparent 8%);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.06)),
+    color-mix(in srgb, var(--lg-surface), transparent 28%);
+  border: 1px solid color-mix(in srgb, var(--lg-glass-border), transparent 20%);
+  border-radius: var(--lg-radius-md);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -12px 24px rgba(0, 0, 0, 0.08),
+    0 12px 30px rgba(0, 0, 0, 0.08);
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 720;
+  line-height: 1;
+  text-align: center;
+  transition:
+    transform 220ms var(--lg-ease-apple),
+    box-shadow 220ms var(--lg-ease-apple),
+    background 220ms var(--lg-ease-apple),
+    color 220ms var(--lg-ease-apple);
+  -webkit-backdrop-filter: blur(24px) saturate(1.25);
+  backdrop-filter: blur(24px) saturate(1.25);
+  outline: 0;
+}
+
+.lg-input-otp__field:focus-visible {
+  color: rgba(255, 255, 255, 0.9);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.4), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0.12)), rgba(40, 42, 44, 0.44);
+  box-shadow:
+    0 18px 42px var(--lg-control-focus-depth),
+    inset 0 1px 0 rgba(255, 255, 255, 0.26),
+    inset 0 -14px 24px rgba(0, 0, 0, 0.22),
+    inset 0 0 30px var(--lg-control-focus-mist);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.72),
+    0 0 10px rgba(0, 0, 0, 0.28);
+  transform: translateY(-1px) scale(1.055);
+}
+
+.lg-input-otp__field::placeholder {
+  color: color-mix(in srgb, var(--lg-text), transparent 62%);
+}
+
+.lg-input-otp__field:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+.lg-input-otp[data-invalid] .lg-input-otp__field {
+  border-color: color-mix(in srgb, #ff453a, var(--lg-glass-border) 32%);
+}
+
 .lg-input-group__inner {
   display: flex;
   width: 100%;

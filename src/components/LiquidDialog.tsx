@@ -46,10 +46,7 @@ export type LiquidDialogTriggerProps = Omit<LiquidButtonProps, "aria-controls"> 
   onClick?: MouseEventHandler<HTMLElement>;
 };
 
-export type LiquidDialogContentProps = Omit<
-  LiquidSurfaceProps,
-  "as" | "children" | "kind" | "role"
-> & {
+export type LiquidDialogContentProps = Omit<LiquidSurfaceProps, "as" | "children" | "kind"> & {
   children: ReactNode;
   closeOnBackdropClick?: boolean;
   container?: Element | null;

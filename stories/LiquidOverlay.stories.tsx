@@ -1,8 +1,25 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import {
+  LiquidAlertDialog,
+  LiquidAlertDialogAction,
+  LiquidAlertDialogCancel,
+  LiquidAlertDialogContent,
+  LiquidAlertDialogDescription,
+  LiquidAlertDialogFooter,
+  LiquidAlertDialogHeader,
+  LiquidAlertDialogTitle,
+  LiquidAlertDialogTrigger,
   LiquidCollapsible,
   LiquidCollapsibleContent,
   LiquidCollapsibleTrigger,
+  LiquidDrawer,
+  LiquidDrawerClose,
+  LiquidDrawerContent,
+  LiquidDrawerDescription,
+  LiquidDrawerFooter,
+  LiquidDrawerHeader,
+  LiquidDrawerTitle,
+  LiquidDrawerTrigger,
   LiquidHoverCard,
   LiquidHoverCardContent,
   LiquidHoverCardTrigger,
@@ -101,6 +118,41 @@ function OverlayExample() {
             </LiquidSheetFooter>
           </LiquidSheetContent>
         </LiquidSheet>
+
+        <LiquidDrawer>
+          <LiquidDrawerTrigger>Open drawer</LiquidDrawerTrigger>
+          <LiquidDrawerContent side="bottom">
+            <LiquidDrawerHeader>
+              <LiquidDrawerTitle>Release drawer</LiquidDrawerTitle>
+              <LiquidDrawerDescription>
+                Drawer defaults to a bottom sheet so mobile ergonomics stay sane.
+              </LiquidDrawerDescription>
+            </LiquidDrawerHeader>
+            <LiquidTypography variant="p">
+              Use drawers for short, focused decisions. They reuse sheet semantics instead of a
+              separate overlay model.
+            </LiquidTypography>
+            <LiquidDrawerFooter>
+              <LiquidDrawerClose>Done</LiquidDrawerClose>
+            </LiquidDrawerFooter>
+          </LiquidDrawerContent>
+        </LiquidDrawer>
+
+        <LiquidAlertDialog>
+          <LiquidAlertDialogTrigger>Delete snapshot</LiquidAlertDialogTrigger>
+          <LiquidAlertDialogContent mode="fallback">
+            <LiquidAlertDialogHeader>
+              <LiquidAlertDialogTitle>Delete visual baseline?</LiquidAlertDialogTitle>
+              <LiquidAlertDialogDescription>
+                This action changes the reference snapshot used by CI. Keep a reviewable diff.
+              </LiquidAlertDialogDescription>
+            </LiquidAlertDialogHeader>
+            <LiquidAlertDialogFooter>
+              <LiquidAlertDialogCancel>Cancel</LiquidAlertDialogCancel>
+              <LiquidAlertDialogAction>Delete</LiquidAlertDialogAction>
+            </LiquidAlertDialogFooter>
+          </LiquidAlertDialogContent>
+        </LiquidAlertDialog>
       </div>
 
       <LiquidCollapsible defaultOpen>

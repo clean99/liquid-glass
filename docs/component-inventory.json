@@ -21,7 +21,9 @@
     {
       "name": "alert-dialog",
       "export": "LiquidAlertDialog",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidAlertDialog.tsx",
+      "story": "stories/LiquidOverlay.stories.tsx",
       "category": "overlay"
     },
     {
@@ -163,7 +165,9 @@
     {
       "name": "drawer",
       "export": "LiquidDrawer",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidDrawer.tsx",
+      "story": "stories/LiquidOverlay.stories.tsx",
       "category": "overlay"
     },
     {
@@ -215,7 +219,9 @@
     {
       "name": "input-otp",
       "export": "LiquidInputOtp",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidInputOtp.tsx",
+      "story": "stories/LiquidField.stories.tsx",
       "category": "form"
     },
     {
@@ -321,7 +327,9 @@
     {
       "name": "select",
       "export": "LiquidSelect",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidSelect.tsx",
+      "story": "stories/LiquidField.stories.tsx",
       "category": "control"
     },
     {
