@@ -33,7 +33,7 @@ export function createLensFilterPixelMaps(
   options: LiquidLensPixelMapOptions = {}
 ): LiquidLensFilterPixelMaps {
   const pipeline = resolveLensReferencePipeline();
-  const [magnificationStage, displacementStage] = pipeline.stages;
+  const [, displacementStage] = pipeline.stages;
   const pixelRatio = options.pixelRatio;
 
   return {
@@ -41,7 +41,7 @@ export function createLensFilterPixelMaps(
       ...options,
       pixelRatio: pixelRatio ?? 2
     }),
-    magnification: createLensDisplacementPixelMap(magnificationStage, {
+    magnification: createLensMagnificationPixelMap({
       ...options,
       pixelRatio: pixelRatio ?? 1
     }),
@@ -49,6 +49,36 @@ export function createLensFilterPixelMaps(
       ...options,
       pixelRatio: pixelRatio ?? 2
     })
+  };
+}
+
+export function createLensMagnificationPixelMap({
+  geometry = referenceLensGeometry,
+  pixelRatio = 1
+}: LiquidLensPixelMapOptions = {}): LiquidPixelMap {
+  const resolvedPixelRatio = resolvePixelRatio(pixelRatio);
+  const width = geometry.opticalWidth * resolvedPixelRatio;
+  const height = geometry.opticalHeight * resolvedPixelRatio;
+  const data = new Uint8ClampedArray(width * height * 4);
+  const centerX = width / 2;
+  const centerY = height / 2;
+  const normalizer = Math.max(centerX, centerY);
+
+  for (let py = 0; py < height; py += 1) {
+    for (let px = 0; px < width; px += 1) {
+      const index = (py * width + px) * 4;
+      const red = 128 + ((centerX - px) / normalizer) * 127;
+      const green = 128 + ((centerY - py) / normalizer) * 127;
+
+      writeRgba(data, index, red, green, 0, 255);
+    }
+  }
+
+  return {
+    data,
+    height,
+    pixelRatio: resolvedPixelRatio,
+    width
   };
 }
 

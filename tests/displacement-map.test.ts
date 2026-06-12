@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   createLensDisplacementPixelMap,
   createLensFilterPixelMaps,
+  createLensMagnificationPixelMap,
   createLensSpecularPixelMap,
   referenceLensGeometry,
   resolveLensReferencePipeline,
@@ -41,6 +42,18 @@ describe("lens displacement pixel maps", () => {
       expect(map.width).toBe(expectedWidth);
       expect(map.height).toBe(expectedHeight);
     }
+  });
+
+  it("models the Kube magnification pass as a full rectangular center-pull field", () => {
+    const map = createLensMagnificationPixelMap({ pixelRatio: 1 });
+
+    expect(rgbaAt(map, 105, 75)).toEqual([128, 128, 0, 255]);
+    expect(rgbaAt(map, 0, 0)).toEqual([255, 219, 0, 255]);
+    expect(rgbaAt(map, 105, 0)).toEqual([128, 219, 0, 255]);
+    expect(rgbaAt(map, 1, 75)).toEqual([254, 128, 0, 255]);
+    expect(rgbaAt(map, 208, 75)).toEqual([3, 128, 0, 255]);
+    expect(rgbaAt(map, 105, 148)).toEqual([128, 40, 0, 255]);
+    expect(rgbaAt(map, 52, 37)).toEqual([192, 174, 0, 255]);
   });
 
   it("keeps the displacement center neutral while bending each bevel along its normal", () => {

@@ -32,6 +32,13 @@ The generated default map sizes follow the live reference assets:
 - `displacement_map`: `420x300`,
 - `specular_layer`: `420x300`.
 
+The magnification map is not a capsule-edge map. Sampling the live reference
+shows a full rectangular center-pull field: the center is neutral
+`[128,128]`, the top-left corner pulls strongly down and right, and the right
+edge pulls back toward the center. That first pass zooms the source image before
+the second capsule bevel pass bends the perimeter. Reusing one capsule field for
+both passes creates the impossible crossing artifacts called out in review.
+
 `bezelWidth` remains a physical scale input, but the flat map falloff uses the
 full `75px` capsule radius for the reference lens. Keeping those fields separate
 prevents the displacement map from collapsing into an unrealistically narrow
@@ -52,6 +59,10 @@ The draggable magnifying glass uses the same observable geometry as the public
 reference: the optical body is `210x150`, and the idle visual height comes from
 `scaleY(0.8)`, not from making the DOM node `120px` tall. Pressed and dragged
 states change the outer optical body's scale from that baseline. The reference
+CSS coordinate is `top: 19.5px`; the apparent visual top is lower only because
+the scaled element uses a centered transform origin. The static comparison story
+keeps its absolute visual overlay coordinate separate from the draggable CSS
+coordinate so the two fixtures do not drift. The reference
 engine also changes the two filter stages during active input:
 
 - idle displacement thickness: `glassThickness: 88`,

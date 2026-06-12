@@ -59,10 +59,19 @@ rounded lens geometry, two-pass displacement, and pointer-driven interaction
 without leaking article-specific code into the component API.
 
 `src/utils/displacement-map.ts` owns generated RGBA pixel maps for the reference
-lens. It is deliberately pure: it samples the capsule field, converts optical
-magnitudes into red/green SVG displacement channels, and generates specular alpha
-without touching React state or the DOM. `LensReferenceEngine` only converts
-those maps into browser data URLs and wires them into the two-pass SVG filter.
+lens. It is deliberately pure: it samples the Kube-style rectangular
+magnification field, samples the capsule bevel field, converts optical
+magnitudes into red/green SVG displacement channels, and generates specular
+alpha without touching React state or the DOM. `LensReferenceEngine` only
+converts those maps into browser data URLs and wires them into the two-pass SVG
+filter.
+
+The two pixel maps are intentionally different. `createLensMagnificationPixelMap`
+models source zoom as a full rectangular center-pull field. The capsule field is
+used by `createLensDisplacementPixelMap` for the bevel pass. Collapsing those
+two maps into one edge-only function is a regression because it produces
+non-physical crossing lines instead of a coherent optical pull followed by edge
+bending.
 
 The reference lens can vary the two pass strengths through refraction options.
 The idle Kube-like magnifier uses `glassThickness: 88` and

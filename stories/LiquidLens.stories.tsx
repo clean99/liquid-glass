@@ -30,7 +30,7 @@ type Story = StoryObj;
 
 const precisionLensSize = { width: 210, height: 150 };
 const precisionLensBounds = { width: 706, height: 460, padding: 16 };
-const precisionLensInitialPosition = { x: 19.5, y: 34.5 };
+const precisionLensInitialPosition = { x: 19.5, y: 19.5 };
 const precisionLensIdleRefraction = {
   blur: 0,
   glassThickness: 88,

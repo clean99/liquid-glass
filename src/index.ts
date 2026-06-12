@@ -245,6 +245,7 @@ export { sampleLiquidEdgeMask, sampleLiquidEdgeMaskRamp } from "./utils/edge-mas
 export {
   createLensDisplacementPixelMap,
   createLensFilterPixelMaps,
+  createLensMagnificationPixelMap,
   createLensSpecularPixelMap,
   sampleCapsuleField
 } from "./utils/displacement-map";

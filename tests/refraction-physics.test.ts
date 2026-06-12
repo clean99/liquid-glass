@@ -15,6 +15,7 @@ import {
 
 const styles = fs.readFileSync(path.resolve("src/styles/styles.css"), "utf8");
 const storyFixture = fs.readFileSync(path.resolve("stories/story-fixtures.tsx"), "utf8");
+const lensStorySource = fs.readFileSync(path.resolve("stories/LiquidLens.stories.tsx"), "utf8");
 const lensSource = fs.readFileSync(path.resolve("src/components/LiquidLens.tsx"), "utf8");
 const lensReferenceEngineSource = fs.readFileSync(
   path.resolve("src/engines/lens-reference-engine.tsx"),
@@ -214,6 +215,13 @@ describe("Liquid Glass physics contract", () => {
     expect(handleRule).toContain("transform-origin: center");
     expect(handleLensRule).toContain("transform: none");
     expect(handleRule).not.toContain("padding: 0.9375rem 0");
+  });
+
+  it("uses Kube CSS coordinates for the draggable lens initial position", () => {
+    expect(lensStorySource).toContain("const precisionLensInitialPosition = { x: 19.5, y: 19.5 }");
+    expect(lensStorySource).toContain(
+      'style={{ position: "absolute", top: 34.5, left: 19.5, zIndex: 3 }}'
+    );
   });
 
   it("keeps foreground content outside the displacement/filter layer", () => {
