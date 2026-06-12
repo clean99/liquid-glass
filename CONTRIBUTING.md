@@ -12,17 +12,21 @@ pnpm dev
 Before opening a pull request, run:
 
 ```sh
-pnpm lint
-pnpm typecheck
-pnpm test:docs
-pnpm test:inventory
-pnpm test:unit
-pnpm test:storybook
-pnpm build
-pnpm test:package
+pnpm run ci
 ```
 
-Use `pnpm test:kube-reference` when changing the optical model, lens, searchbox, switch, slider, or music player demos.
+`pnpm run ci` includes `pnpm test:docs` and `pnpm test:inventory`, so
+documentation and component coverage drift fail before review.
+
+Before tagging or publishing a release, run:
+
+```sh
+pnpm verify
+```
+
+Use `pnpm test:kube-reference` when changing the optical model, lens,
+searchbox, switch, slider, or music player demos. Use `pnpm test:e2e` when you
+want the browser behavior gate without the visual and Kube reference runs.
 
 ## Component Rules
 

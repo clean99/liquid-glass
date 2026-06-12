@@ -4,14 +4,17 @@
 
 ## Validation
 
+- [ ] `pnpm format`
 - [ ] `pnpm lint`
 - [ ] `pnpm typecheck`
 - [ ] `pnpm test:docs`
 - [ ] `pnpm test:inventory`
 - [ ] `pnpm test:unit`
+- [ ] `pnpm test:e2e`
 - [ ] `pnpm test:storybook`
 - [ ] `pnpm build`
 - [ ] `pnpm test:package`
+- [ ] `pnpm verify` for release candidates
 
 ## Optical Changes
 

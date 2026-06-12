@@ -76,6 +76,7 @@ mustInclude("README.md", [
   "Browser Support",
   "Accessibility",
   "Performance",
+  "pnpm verify",
   "test:inventory",
   "test:kube-reference",
   "shadcn-style Registry"
@@ -127,7 +128,18 @@ mustInclude("docs/testing.md", [
   "tests/edge-mask.test.ts"
 ]);
 
-mustInclude("CONTRIBUTING.md", ["pnpm test:docs", "pnpm test:inventory"]);
+mustInclude("CONTRIBUTING.md", ["pnpm verify", "pnpm test:docs", "pnpm test:inventory"]);
+mustInclude("docs/open-source-release.md", ["pnpm verify", "pnpm pack --dry-run"]);
+
+if (fs.existsSync(path.join(root, "package.json"))) {
+  const packageJson = JSON.parse(read("package.json"));
+  if (!packageJson.scripts?.verify?.includes("pnpm run ci")) {
+    errors.push("package.json scripts.verify must call pnpm run ci, not pnpm ci");
+  }
+  if (!packageJson.scripts?.["test:e2e"]) {
+    errors.push("package.json must include test:e2e");
+  }
+}
 
 if (
   fs.existsSync(path.join(root, "liquid-glass.json")) &&

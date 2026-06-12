@@ -44,15 +44,18 @@ export function Example() {
 ```sh
 pnpm install
 pnpm dev
+pnpm format
 pnpm lint
 pnpm typecheck
 pnpm test:docs
 pnpm test:inventory
 pnpm test:unit
+pnpm test:e2e
 pnpm test:storybook
 pnpm build
 pnpm test:package
-pnpm ci
+pnpm run ci
+pnpm verify
 ```
 
 Storybook runs at `http://localhost:6006`.
@@ -351,13 +354,20 @@ pnpm typecheck
 pnpm test:docs
 pnpm test:inventory
 pnpm test:unit
+pnpm test:e2e
 pnpm test:storybook
 pnpm test:kube-reference
 pnpm build
 pnpm test:package
+pnpm verify
 ```
 
 `test:storybook` builds Storybook, opens stories in Chromium, checks enhanced mode contracts, focus/hover/active behavior, and records real pointer-driven drag frames for the draggable lens board.
+
+`pnpm verify` is the release gate. It runs formatting, linting, typechecking,
+docs and inventory validation, unit/component/physics checks, Storybook
+behavior checks, build/package checks, visual regression, Kube reference
+comparison, and `pnpm pack --dry-run`.
 
 ## shadcn-style Registry
 

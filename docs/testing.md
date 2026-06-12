@@ -8,10 +8,21 @@ pnpm typecheck
 pnpm test:docs
 pnpm test:inventory
 pnpm test:unit
+pnpm test:e2e
 pnpm test:storybook
 pnpm build
 pnpm test:package
 ```
+
+Release check:
+
+```sh
+pnpm verify
+```
+
+`pnpm verify` runs `pnpm run ci`, visual regression, Kube reference comparison,
+and `pnpm pack --dry-run`. Use it before versioning, tagging, or publishing the
+package.
 
 Optical checks:
 

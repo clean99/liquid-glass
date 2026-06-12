@@ -26,12 +26,12 @@ must contain.
 
 ## Release Flow
 
-1. Run `pnpm ci`.
-2. Run `pnpm test:visual`.
-3. Run `pnpm test:kube-reference` when optical behavior changed.
-4. Add a changeset for user-visible changes.
-5. Merge to `main`.
-6. Run the release workflow manually after reviewing the generated version PR.
+1. Run `pnpm verify`.
+2. Confirm `pnpm pack --dry-run` includes only package, docs, examples, registry,
+   schema, license, README, and attribution files.
+3. Add a changeset for user-visible changes.
+4. Merge to `main`.
+5. Run the release workflow manually after reviewing the generated version PR.
 
 ## GitHub Pages
 
