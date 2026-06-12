@@ -32,6 +32,9 @@ The Storybook behavior test opens the built Storybook in Chromium and performs r
 `pnpm test:kube-reference` captures the public Kube reference page and matching
 Storybook stories. It includes static component screenshots plus
 `pressed and dragged magnifying-glass screenshots` produced by real pointer input.
+For the magnifying-glass target, the script also asserts the SVG filter contract:
+the candidate must expose the same two-pass displacement pipeline and matching
+map count before pixels are compared.
 The interactive lens screenshots are report-only today, but their pointer action
 metrics are hard assertions so press and drag cannot silently stop working.
 Those hard metrics include the Kube-derived water-drop rule that press expands
@@ -46,7 +49,9 @@ The physical unit tests intentionally exercise pure functions before UI:
 
 - `tests/displacement-map.test.ts` samples generated RGBA displacement and
   specular maps so capsule edge direction, neutral center behavior, and pixel
-  ratio clamping stay deterministic.
+  ratio clamping stay deterministic. It also locks the reference lens map
+  dimensions to `210x150` for magnification and `420x300` for displacement and
+  specular maps, matching the live reference assets.
 - `tests/edge-mask.test.ts` verifies edge-only refraction and clean-center
   recovery.
 - `tests/elasticity.test.ts` verifies bounded pointer-driven scaling and

@@ -19,6 +19,24 @@ The comparison script `scripts/compare-kube-reference.mjs` opens the public page
 captures target sections, captures local Storybook stories, and compares pixels.
 This is intentionally a regression gate, not a manual screenshot review.
 
+The magnifying-glass gate also reads the live SVG filter contract. The local
+reference lens must use the same observable two-pass structure as the target:
+three `feImage` inputs, two `feDisplacementMap` stages, source magnification
+before bevel displacement, and matching displacement scales. This catches the
+failure mode where a screenshot happens to look passable while the underlying
+optics are still a one-pass or wrong-map implementation.
+
+The generated default map sizes follow the live reference assets:
+
+- `magnifying_displacement_map`: `210x150`,
+- `displacement_map`: `420x300`,
+- `specular_layer`: `420x300`.
+
+`bezelWidth` remains a physical scale input, but the flat map falloff uses the
+full `75px` capsule radius for the reference lens. Keeping those fields separate
+prevents the displacement map from collapsing into an unrealistically narrow
+edge band.
+
 The same script also performs real pointer actions for the magnifying-glass demo:
 
 - press the lens and capture the water-drop scale state,

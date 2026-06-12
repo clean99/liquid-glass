@@ -12,6 +12,27 @@ import {
 describe("lens displacement pixel maps", () => {
   it("creates default reference maps at the expected optical dimensions", () => {
     const maps = createLensFilterPixelMaps();
+
+    expect(maps.magnification.pixelRatio).toBe(1);
+    expect(maps.magnification.width).toBe(referenceLensGeometry.opticalWidth);
+    expect(maps.magnification.height).toBe(referenceLensGeometry.opticalHeight);
+    expect(maps.magnification.data).toHaveLength(
+      referenceLensGeometry.opticalWidth * referenceLensGeometry.opticalHeight * 4
+    );
+
+    for (const map of [maps.displacement, maps.specular]) {
+      const expectedWidth = referenceLensGeometry.opticalWidth * 2;
+      const expectedHeight = referenceLensGeometry.opticalHeight * 2;
+
+      expect(map.pixelRatio).toBe(2);
+      expect(map.width).toBe(expectedWidth);
+      expect(map.height).toBe(expectedHeight);
+      expect(map.data).toHaveLength(expectedWidth * expectedHeight * 4);
+    }
+  });
+
+  it("allows tests to force one deterministic pixel ratio for every map", () => {
+    const maps = createLensFilterPixelMaps({ pixelRatio: 3 });
     const expectedWidth = referenceLensGeometry.opticalWidth * 3;
     const expectedHeight = referenceLensGeometry.opticalHeight * 3;
 
@@ -19,7 +40,6 @@ describe("lens displacement pixel maps", () => {
       expect(map.pixelRatio).toBe(3);
       expect(map.width).toBe(expectedWidth);
       expect(map.height).toBe(expectedHeight);
-      expect(map.data).toHaveLength(expectedWidth * expectedHeight * 4);
     }
   });
 
@@ -27,7 +47,7 @@ describe("lens displacement pixel maps", () => {
     const [, displacementStage] = resolveLensReferencePipeline().stages;
     const map = createLensDisplacementPixelMap(displacementStage, { pixelRatio: 1 });
 
-    expect(rgbaAt(map, 105, 75)).toEqual([128, 128, 128, 255]);
+    expect(rgbaAt(map, 105, 75)).toEqual([128, 128, 0, 255]);
 
     const top = rgbaAt(map, 105, 1);
     const bottom = rgbaAt(map, 105, 149);
@@ -38,6 +58,14 @@ describe("lens displacement pixel maps", () => {
     expect(bottom[1]).toBeLessThan(128);
     expect(left[0]).toBeGreaterThan(128);
     expect(right[0]).toBeLessThan(128);
+  });
+
+  it("keeps spatial falloff separate from physical bevel scale", () => {
+    const [magnificationStage, displacementStage] = resolveLensReferencePipeline().stages;
+
+    expect(magnificationStage.mapFalloffWidth).toBe(referenceLensGeometry.radius);
+    expect(displacementStage.mapFalloffWidth).toBe(referenceLensGeometry.radius);
+    expect(displacementStage.bezelWidth).toBe(18);
   });
 
   it("keeps points outside the capsule transparent in the specular map", () => {

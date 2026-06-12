@@ -140,6 +140,9 @@ try {
       `[data-lg-reference-frame="${reference.candidateFrame ?? reference.name}"]`
     );
     await candidateElement.waitFor({ state: "visible", timeout: 10_000 });
+    if (reference.targetId === "magnifying-glass") {
+      await waitForFilterContract(candidateElement, 2);
+    }
 
     const candidatePath = path.join(artifactDir, `${reference.name}-candidate.png`);
     const candidateAction = reference.action
@@ -157,11 +160,12 @@ try {
         readFilterContract(targetElement, "kube"),
         readFilterContract(candidateElement, "local")
       ]);
+      const filterSummary = summarizeFilterContract(targetContract, candidateContract);
       await fs.writeFile(
         path.join(artifactDir, `${reference.name}-filter-contract.json`),
         `${JSON.stringify(
           {
-            summary: summarizeFilterContract(targetContract, candidateContract),
+            summary: filterSummary,
             target: targetContract,
             candidate: candidateContract
           },
@@ -169,6 +173,7 @@ try {
           2
         )}\n`
       );
+      assertFilterContractParity(reference, filterSummary);
     }
 
     const diff = await compareImagesInBrowser(
@@ -254,6 +259,54 @@ async function findTargetDemo(page, id) {
   }, id);
 
   return handle.asElement();
+}
+
+async function waitForFilterContract(locator, minDisplacementMaps) {
+  const deadline = Date.now() + 5_000;
+  let lastCount = 0;
+
+  while (Date.now() < deadline) {
+    lastCount = await locator.evaluate((root) => {
+      const surface = findFilterSurface(root);
+      const value = surface
+        ? getComputedStyle(surface).backdropFilter || getComputedStyle(surface).webkitBackdropFilter
+        : "";
+      const filterId = extractFilterId(value);
+      const filter = filterId ? document.getElementById(filterId) : null;
+
+      return filter?.querySelectorAll("feDisplacementMap").length ?? 0;
+
+      function findFilterSurface(base) {
+        const candidates = [base, ...base.querySelectorAll("*")];
+        return (
+          candidates.find((candidate) => {
+            const style = getComputedStyle(candidate);
+            const filterValue = style.backdropFilter || style.webkitBackdropFilter;
+            return filterValue && filterValue !== "none" && filterValue.includes("url(");
+          }) ?? null
+        );
+      }
+
+      function extractFilterId(value) {
+        const match = value?.match(/url\((?:"|')?#?([^"')]+)(?:"|')?\)/);
+        return match?.[1] ?? null;
+      }
+    });
+
+    if (lastCount >= minDisplacementMaps) {
+      return;
+    }
+
+    await delay(100);
+  }
+
+  throw new Error(
+    `Timed out waiting for two-pass lens filter: expected at least ${minDisplacementMaps} feDisplacementMap nodes, got ${lastCount}`
+  );
+}
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function applyTargetAction(page, targetElement, action) {
@@ -498,12 +551,31 @@ function summarizeFilterContract(target, candidate) {
     candidateFilterId: candidate.filterId,
     candidateImageCount: candidate.counts.feImage ?? 0,
     candidateLooksOnePass: (candidate.counts.feDisplacementMap ?? 0) === 1,
+    candidateLooksTwoPass: (candidate.counts.feDisplacementMap ?? 0) >= 2,
     targetDisplacementMapCount: target.counts.feDisplacementMap ?? 0,
     targetDisplacementScales: target.displacementScales,
     targetFilterId: target.filterId,
     targetImageCount: target.counts.feImage ?? 0,
     targetLooksTwoPass: (target.counts.feDisplacementMap ?? 0) >= 2
   };
+}
+
+function assertFilterContractParity(reference, summary) {
+  if (reference.name !== "magnifying-glass") {
+    return;
+  }
+
+  if (summary.targetLooksTwoPass && !summary.candidateLooksTwoPass) {
+    throw new Error(
+      `Kube filter contract mismatch for ${reference.name}: target is two-pass but candidate is not (${JSON.stringify(summary)})`
+    );
+  }
+
+  if (summary.candidateDisplacementMapCount !== summary.targetDisplacementMapCount) {
+    throw new Error(
+      `Kube displacement map count mismatch for ${reference.name}: target=${summary.targetDisplacementMapCount}, candidate=${summary.candidateDisplacementMapCount} (${JSON.stringify(summary)})`
+    );
+  }
 }
 
 async function compareImagesInBrowser(browser, targetPath, candidatePath, compareRegion) {

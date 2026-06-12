@@ -34,11 +34,21 @@ export function createLensFilterPixelMaps(
 ): LiquidLensFilterPixelMaps {
   const pipeline = resolveLensReferencePipeline();
   const [magnificationStage, displacementStage] = pipeline.stages;
+  const pixelRatio = options.pixelRatio;
 
   return {
-    displacement: createLensDisplacementPixelMap(displacementStage, options),
-    magnification: createLensDisplacementPixelMap(magnificationStage, options),
-    specular: createLensSpecularPixelMap(options)
+    displacement: createLensDisplacementPixelMap(displacementStage, {
+      ...options,
+      pixelRatio: pixelRatio ?? 2
+    }),
+    magnification: createLensDisplacementPixelMap(magnificationStage, {
+      ...options,
+      pixelRatio: pixelRatio ?? 1
+    }),
+    specular: createLensSpecularPixelMap({
+      ...options,
+      pixelRatio: pixelRatio ?? 2
+    })
   };
 }
 
@@ -57,7 +67,7 @@ export function createLensDisplacementPixelMap(
     refractiveIndex: stage.refractiveIndex
   });
   const maxMagnitude = Math.max(...magnitudes.map(Math.abs));
-  const effectiveBezelWidth = stage.bezelWidth > 0 ? stage.bezelWidth : geometry.radius;
+  const effectiveBezelWidth = stage.mapFalloffWidth;
 
   for (let py = 0; py < height; py += 1) {
     for (let px = 0; px < width; px += 1) {
@@ -67,7 +77,7 @@ export function createLensDisplacementPixelMap(
       const sample = sampleCapsuleField(x, y, geometry);
 
       if (!sample || sample.distanceFromEdge > effectiveBezelWidth || maxMagnitude <= 0) {
-        writeRgba(data, index, 128, 128, 128, 255);
+        writeRgba(data, index, 128, 128, 0, 255);
         continue;
       }
 
@@ -80,7 +90,7 @@ export function createLensDisplacementPixelMap(
       const red = 128 - sample.normalX * normalizedMagnitude * 127;
       const green = 128 - sample.normalY * normalizedMagnitude * 127;
 
-      writeRgba(data, index, red, green, 128, 255);
+      writeRgba(data, index, red, green, 0, 255);
     }
   }
 

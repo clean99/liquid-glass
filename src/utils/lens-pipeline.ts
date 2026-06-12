@@ -4,6 +4,7 @@ import { estimateMaximumDisplacement, type OpticalSurfaceProfile } from "./optic
 export type LensPipelineStage = {
   bezelWidth: number;
   glassThickness: number;
+  mapFalloffWidth: number;
   name: "magnification" | "displacement";
   profile: OpticalSurfaceProfile;
   refractiveIndex: number;
@@ -39,11 +40,13 @@ export function resolveLensReferencePipeline(): LensPipeline {
   const magnificationStage = createStage({
     bezelWidth: 0,
     glassThickness: 21.5,
+    mapFalloffWidth: referenceLensGeometry.radius,
     name: "magnification"
   });
   const displacementStage = createStage({
     bezelWidth: referenceLensDisplacementRefraction.bezelWidth ?? 0,
     glassThickness: referenceLensDisplacementRefraction.glassThickness ?? 0,
+    mapFalloffWidth: referenceLensGeometry.radius,
     name: "displacement"
   });
 
@@ -57,10 +60,12 @@ export function resolveLensReferencePipeline(): LensPipeline {
 function createStage({
   bezelWidth,
   glassThickness,
+  mapFalloffWidth,
   name
 }: {
   bezelWidth: number;
   glassThickness: number;
+  mapFalloffWidth: number;
   name: LensPipelineStage["name"];
 }): LensPipelineStage {
   const profile: OpticalSurfaceProfile = "convex-squircle";
@@ -69,6 +74,7 @@ function createStage({
   return {
     bezelWidth,
     glassThickness,
+    mapFalloffWidth,
     name,
     profile,
     refractiveIndex,

@@ -29,6 +29,8 @@ type Story = StoryObj;
 const precisionLensSize = { width: 210, height: 120 };
 const precisionLensBounds = { width: 706, height: 460, padding: 16 };
 const precisionLensInitialPosition = { x: 20, y: 36 };
+const kubeLensImage =
+  "https://images.unsplash.com/photo-1579380656108-f98e4df8ea62?q=80&w=800&auto=format&fit=crop";
 
 type DragSession = {
   pointerStart: LiquidLensPoint;
@@ -70,50 +72,113 @@ export const KubeReference: Story = {
             borderRadius: 12
           }}
         >
-          <div style={{ position: "absolute", inset: 0 }}>
+          <div style={{ position: "absolute", inset: 1 }}>
             <div
               style={{
                 position: "absolute",
-                top: 46,
-                left: 34,
-                display: "flex",
-                alignItems: "center",
-                gap: 12,
-                color: "#dc2626",
-                height: 22
+                top: 32.5,
+                left: 32.5,
+                width: 353.765625,
+                height: 393
               }}
             >
-              <span style={{ width: 40, height: 2, background: "currentColor" }} />
-              <span
+              <div
                 style={{
-                  fontSize: 11,
-                  fontWeight: 500,
-                  letterSpacing: "0.25em",
-                  lineHeight: "22px",
-                  textTransform: "uppercase"
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 9.75,
+                  color: "oklch(0.577 0.245 27.325)",
+                  height: 22,
+                  marginTop: 12.265625
                 }}
               >
-                Optics Study
-              </span>
+                <span style={{ width: 32.5, height: 2, background: "currentColor" }} />
+                <span
+                  style={{
+                    display: "block",
+                    fontSize: 11,
+                    fontWeight: 500,
+                    letterSpacing: 2.75,
+                    lineHeight: "22px",
+                    textTransform: "uppercase"
+                  }}
+                >
+                  Optics Study
+                </span>
+              </div>
+              <h3
+                style={{
+                  width: 353.765625,
+                  margin: "13px 0 0",
+                  fontSize: 54,
+                  fontWeight: 800,
+                  letterSpacing: -1.35,
+                  lineHeight: "51.3px"
+                }}
+              >
+                Liquid Glass<span style={{ color: "oklab(0 0 0 / 0.4)" }}>—</span>Precision Lens
+              </h3>
+              <div
+                style={{
+                  margin: "13px 0 0",
+                  color: "oklab(0 0 0 / 0.7)",
+                  fontSize: 16,
+                  lineHeight: "24.8px"
+                }}
+              >
+                <p style={{ margin: "0 0 9.75px" }}>
+                  Drag the capsule to bend the page. This lens is a compact SVG displacement rig
+                  that refracts whatever sits beneath it.
+                </p>
+                <p style={{ margin: "0 0 9.75px" }}>
+                  The field comes from a rounded bezel profile; pixels are pushed along its
+                  gradient, then topped with a subtle specular bloom for depth.
+                </p>
+                <p style={{ color: "oklab(0 0 0 / 0.6)", margin: 0 }}>
+                  Sweep across strong edges—high contrast makes the bend snap.
+                </p>
+              </div>
             </div>
-            <h3
+            <div
               style={{
                 position: "absolute",
-                top: 81,
-                left: 34,
-                width: 354,
-                margin: 0,
-                fontSize: 54,
-                fontWeight: 800,
-                letterSpacing: "-0.025em",
-                lineHeight: 0.95
+                top: 32.5,
+                left: 418.765625,
+                width: 293.9375,
+                height: 393,
+                overflow: "hidden",
+                border: "1px solid rgba(0,0,0,0.1)",
+                borderRadius: 6.5
               }}
             >
-              Liquid&nbsp;Glass<span style={{ color: "rgba(0,0,0,0.4)" }}>—</span>
-              Precision&nbsp;Lens
-            </h3>
+              <img
+                alt="Abstract architectural lines"
+                src={kubeLensImage}
+                style={{
+                  display: "block",
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover"
+                }}
+              />
+            </div>
+            <div
+              style={{
+                position: "absolute",
+                top: 427.875,
+                left: 459.546875,
+                color: "rgb(117, 107, 154)",
+                fontSize: 9,
+                letterSpacing: 1.35,
+                lineHeight: "22px",
+                textTransform: "uppercase"
+              }}
+            >
+              Photo: Stephanie LeBlanc / Unsplash
+            </div>
           </div>
           <LiquidLens
+            engine="reference"
             refraction={{
               blur: 0,
               glassThickness: 88,
@@ -122,7 +187,7 @@ export const KubeReference: Story = {
               specularOpacity: 0.5,
               specularAngle: 0.8
             }}
-            style={{ position: "absolute", top: 36, left: 20, zIndex: 3 }}
+            style={{ position: "absolute", top: 34.5, left: 19.5, zIndex: 3 }}
           />
         </div>
       </div>
@@ -300,6 +365,7 @@ function DraggablePrecisionLensDemo() {
           tabIndex={0}
         >
           <LiquidLens
+            engine="reference"
             refraction={{
               blur: 0,
               glassThickness: 88,
