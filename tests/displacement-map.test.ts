@@ -82,10 +82,22 @@ describe("lens displacement pixel maps", () => {
   });
 
   it("keeps points outside the capsule transparent in the specular map", () => {
-    const map = createLensSpecularPixelMap({ pixelRatio: 1 });
+    const map = createLensSpecularPixelMap({ pixelRatio: 2 });
 
     expect(rgbaAt(map, 0, 0)).toEqual([0, 0, 0, 0]);
-    expect(rgbaAt(map, 105, 1)[3]).toBeGreaterThan(rgbaAt(map, 105, 75)[3]);
+    expect(rgbaAt(map, 210, 150)).toEqual([0, 0, 0, 0]);
+    expect(rgbaAt(map, 4, 150)).toEqual([0, 0, 0, 0]);
+
+    const sideRim = rgbaAt(map, 1, 150);
+    const topRim = rgbaAt(map, 210, 1);
+    const bottomRim = rgbaAt(map, 210, 298);
+
+    expect(countNonTransparentPixels(map)).toBeGreaterThan(4000);
+    expect(countNonTransparentPixels(map)).toBeLessThan(5000);
+    expect(topRim[0]).toBeLessThan(220);
+    expect(sideRim[0]).toBeLessThan(topRim[0]);
+    expect(sideRim[3]).toBeLessThan(topRim[3]);
+    expect(bottomRim[3]).toBe(topRim[3]);
   });
 
   it("samples the capsule field with finite normals and no outside false positives", () => {
@@ -117,4 +129,16 @@ function rgbaAt(map: LiquidPixelMap, x: number, y: number) {
   const index = (y * map.width + x) * 4;
 
   return [map.data[index], map.data[index + 1], map.data[index + 2], map.data[index + 3]];
+}
+
+function countNonTransparentPixels(map: LiquidPixelMap) {
+  let count = 0;
+
+  for (let index = 3; index < map.data.length; index += 4) {
+    if ((map.data[index] ?? 0) > 0) {
+      count += 1;
+    }
+  }
+
+  return count;
 }

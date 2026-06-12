@@ -140,8 +140,9 @@ export function createLensSpecularPixelMap({
   const width = geometry.opticalWidth * resolvedPixelRatio;
   const height = geometry.opticalHeight * resolvedPixelRatio;
   const data = new Uint8ClampedArray(width * height * 4);
-  const lightX = Math.cos(0.8);
-  const lightY = Math.sin(0.8);
+  const peakDistance = 0.95;
+  const endDistance = 1.95;
+  const axisPower = 2.5;
 
   for (let py = 0; py < height; py += 1) {
     for (let px = 0; px < width; px += 1) {
@@ -155,10 +156,20 @@ export function createLensSpecularPixelMap({
         continue;
       }
 
-      const edgeStrength = Math.max(0, 1 - sample.distanceFromEdge / 18);
-      const directional = Math.abs(sample.normalX * lightX + sample.normalY * lightY);
-      const alpha = 255 * edgeStrength * edgeStrength * directional;
-      writeRgba(data, index, 255, 255, 255, alpha);
+      const coverage = sampleSpecularCoverage(sample.distanceFromEdge, peakDistance, endDistance);
+
+      if (coverage <= 0) {
+        writeRgba(data, index, 0, 0, 0, 0);
+        continue;
+      }
+
+      const normalAxis = Math.max(Math.abs(sample.normalX), Math.abs(sample.normalY));
+      const diagonalFalloff = Math.pow(normalAxis, axisPower);
+      const verticalNormal = Math.abs(sample.normalY);
+      const alpha = coverage * diagonalFalloff * (64 + 155 * verticalNormal);
+      const gray = diagonalFalloff * (108 + 80 * verticalNormal);
+
+      writeRgba(data, index, gray, gray, gray, alpha);
     }
   }
 
@@ -168,6 +179,18 @@ export function createLensSpecularPixelMap({
     pixelRatio: resolvedPixelRatio,
     width
   };
+}
+
+function sampleSpecularCoverage(distanceFromEdge: number, peakDistance: number, endDistance: number) {
+  if (distanceFromEdge <= 0 || distanceFromEdge >= endDistance) {
+    return 0;
+  }
+
+  if (distanceFromEdge <= peakDistance) {
+    return clamp01(distanceFromEdge / peakDistance);
+  }
+
+  return clamp01((endDistance - distanceFromEdge) / (endDistance - peakDistance));
 }
 
 export function sampleCapsuleField(

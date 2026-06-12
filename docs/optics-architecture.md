@@ -73,6 +73,11 @@ two maps into one edge-only function is a regression because it produces
 non-physical crossing lines instead of a coherent optical pull followed by edge
 bending.
 
+`createLensSpecularPixelMap` is a separate thin-rim model. It keeps the center
+transparent, fades out again a few pixels inside the edge, and uses gray
+directional intensity instead of opaque white. Wide white highlights are treated
+as plastic, not glass, and are covered by pixel-map tests.
+
 The reference lens can vary the two pass strengths through refraction options.
 The idle Kube-like magnifier uses `glassThickness: 88` and
 `magnificationGlassThickness: 21.5`; the active pointer state uses

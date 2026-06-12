@@ -38,9 +38,9 @@ Measured locally on 2026-06-13 against `https://kube.io/blog/liquid-glass-css-sv
 
 | Reference                | Diff ratio | Threshold | Mode   |
 | ------------------------ | ---------: | --------: | ------ |
-| magnifying-glass         |     0.2425 |    0.3000 | gate   |
-| magnifying-glass-pressed |     0.5815 |    0.4200 | report |
-| magnifying-glass-dragged |     0.5948 |    0.4500 | report |
+| magnifying-glass         |     0.2417 |    0.3000 | gate   |
+| magnifying-glass-pressed |     0.5803 |    0.4200 | report |
+| magnifying-glass-dragged |     0.5832 |    0.4500 | report |
 | searchbox                |     0.0167 |    0.0300 | gate   |
 | switch                   |     0.0142 |    0.0300 | gate   |
 | slider                   |     0.0149 |    0.0300 | gate   |
@@ -50,7 +50,8 @@ This measurement includes two verified geometry fixes:
 - the draggable story uses the Kube CSS coordinate `top: 19.5px`; the visual
   top becomes roughly `34.5px` only after the reference `scaleY(0.8)` transform,
 - the magnification pass uses a full rectangular center-pull displacement map;
-  the bevel-only capsule field is reserved for the second displacement pass.
+  the bevel-only capsule field is reserved for the second displacement pass,
+- the specular pass uses a narrow gray rim instead of a broad white highlight.
 
 This proves three things:
 

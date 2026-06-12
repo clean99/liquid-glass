@@ -39,6 +39,12 @@ edge pulls back toward the center. That first pass zooms the source image before
 the second capsule bevel pass bends the perimeter. Reusing one capsule field for
 both passes creates the impossible crossing artifacts called out in review.
 
+The specular map is also much thinner than a normal glassmorphism highlight. It
+is a narrow gray capsule rim, not a white filled ring. The center is fully
+transparent, pixels a few CSS pixels inside the capsule are transparent again,
+and diagonal cap normals are deliberately darker. This is the difference between
+a physical edge glint and a plastic outline.
+
 `bezelWidth` remains a physical scale input, but the flat map falloff uses the
 full `75px` capsule radius for the reference lens. Keeping those fields separate
 prevents the displacement map from collapsing into an unrealistically narrow
