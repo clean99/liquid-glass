@@ -20,6 +20,10 @@ const lensReferenceEngineSource = fs.readFileSync(
   path.resolve("src/engines/lens-reference-engine.tsx"),
   "utf8"
 );
+const displacementMapSource = fs.readFileSync(
+  path.resolve("src/utils/displacement-map.ts"),
+  "utf8"
+);
 const lensPipelineSource = fs.readFileSync(path.resolve("src/utils/lens-pipeline.ts"), "utf8");
 const surfaceSource = fs.readFileSync(path.resolve("src/components/LiquidSurface.tsx"), "utf8");
 
@@ -135,6 +139,11 @@ describe("Liquid Glass physics contract", () => {
   it("keeps the reference lens engine as a real two-pass SVG filter", () => {
     expect(lensReferenceEngineSource.match(/<feImage/g)).toHaveLength(3);
     expect(lensReferenceEngineSource.match(/<feDisplacementMap/g)).toHaveLength(2);
+    expect(lensReferenceEngineSource).toContain("createLensFilterPixelMaps");
+    expect(lensReferenceEngineSource).not.toContain("calculateDisplacementMagnitudes");
+    expect(lensReferenceEngineSource).not.toContain("sampleCapsuleField");
+    expect(displacementMapSource).toContain("calculateDisplacementMagnitudes");
+    expect(displacementMapSource).toContain("sampleCapsuleField");
     expect(lensReferenceEngineSource).toContain('result="magnifying_displacement_map"');
     expect(lensReferenceEngineSource).toContain('result="displacement_map"');
     expect(lensReferenceEngineSource).toContain('result="specular_layer"');

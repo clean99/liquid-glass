@@ -34,6 +34,9 @@ templates, registry files, docs, attributions, testing notes, and package script
 
 The physical unit tests intentionally exercise pure functions before UI:
 
+- `tests/displacement-map.test.ts` samples generated RGBA displacement and
+  specular maps so capsule edge direction, neutral center behavior, and pixel
+  ratio clamping stay deterministic.
 - `tests/edge-mask.test.ts` verifies edge-only refraction and clean-center
   recovery.
 - `tests/elasticity.test.ts` verifies bounded pointer-driven scaling and

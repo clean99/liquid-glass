@@ -92,6 +92,8 @@ mustInclude("docs/optics-architecture.md", [
   "LiquidSurface",
   "edge",
   "foreground content",
+  "displacement-map.ts",
+  "tests/displacement-map.test.ts",
   "test:physics",
   "test:kube-reference"
 ]);
@@ -108,6 +110,7 @@ mustInclude("docs/reference-research.md", [
 mustInclude("docs/rdev-liquid-glass-react.md", [
   "MIT licensed",
   "sampleLiquidEdgeMask",
+  "createLensFilterPixelMaps",
   "resolveLiquidElasticResponse",
   "Baked base64 displacement maps",
   "edge/center blend",
@@ -118,6 +121,7 @@ mustInclude("docs/testing.md", [
   "real pointer actions",
   "requestAnimationFrame",
   "test:kube-reference",
+  "tests/displacement-map.test.ts",
   "tests/edge-mask.test.ts"
 ]);
 

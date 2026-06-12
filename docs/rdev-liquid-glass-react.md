@@ -33,6 +33,7 @@ flowchart TD
   C --> E["fallback engine"]
   D --> F["edge mask model"]
   D --> G["refraction math"]
+  G --> J["createLensFilterPixelMaps"]
   A --> H["pointer interaction utilities"]
   H --> I["bounded elasticity"]
 ```
@@ -90,6 +91,9 @@ The following gates make the research actionable:
 
 - `tests/edge-mask.test.ts` proves the edge/center blend is monotonic,
   continuous, finite, and center-restoring.
+- `tests/displacement-map.test.ts` proves generated maps keep the center neutral,
+  bend each capsule edge in the expected normal direction, and isolate specular
+  alpha to the bevel.
 - `tests/elasticity.test.ts` proves pointer elasticity is bounded and respects
   reduced motion.
 - `tests/refraction-physics.test.ts` proves foreground content stays outside the
@@ -99,9 +103,11 @@ The following gates make the research actionable:
 - `scripts/verify-liquid-behavior.mjs` performs real pointer and drag actions
   against built Storybook.
 
-## Next Implementation Layer
+## Implemented Map Layer
 
-The next layer should connect edge-mask sampling to generated displacement maps
-for component-sized surfaces. The rule is simple: first make the map generator a
-pure, testable function; then let an engine consume it. Do not add another
-component-level special case.
+`src/utils/displacement-map.ts` now connects capsule field sampling to generated
+displacement maps. `createLensFilterPixelMaps()` returns displacement,
+magnification, and specular pixel maps as pure data. The reference engine consumes
+those maps; it does not own the optical sampling math. This keeps component code
+reviewable and lets tests catch impossible map direction or center distortion
+before screenshots are involved.
