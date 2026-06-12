@@ -93,8 +93,12 @@ the bevel, keeps the center readable, and adds restrained specular highlights.
 ## Test Gates
 
 - `pnpm test:physics` checks pure optical math and DOM layering contracts.
-- `pnpm test:storybook` runs real pointer, focus, hover, press, and drag behavior
+- `pnpm test:storybook` checks enhanced rendering contracts against built
+  Storybook stories.
+- `pnpm test:e2e` runs real pointer, focus, hover, press, and drag behavior
   against built Storybook stories.
 - `pnpm test:kube-reference` captures the public Kube reference and compares
   selected local stories with screenshot diff thresholds.
+- `pnpm test:kube-reference:strict` promotes interactive pressed and dragged
+  lens screenshots into hard Kube parity gates.
 - `pnpm test:visual` tracks deterministic component screenshots.

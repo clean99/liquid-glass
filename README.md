@@ -363,6 +363,7 @@ pnpm test:e2e
 pnpm test:a11y
 pnpm test:storybook
 pnpm test:kube-reference
+pnpm test:kube-reference:strict
 pnpm build
 pnpm test:package
 pnpm verify
@@ -379,6 +380,11 @@ the draggable lens board.
 `test:a11y` builds static Storybook and runs `@axe-core/playwright` against
 representative component stories. CI fails on critical or serious violations,
 and writes the JSON summary under `test-results/a11y`.
+
+`test:kube-reference` captures the public Kube reference and local Storybook
+stories. `test:kube-reference:strict` additionally turns pressed and dragged
+lens pixels into hard gates through `KUBE_STRICT_INTERACTIVE=1`; that command is
+the target for release-candidate visual parity.
 
 `pnpm verify` is the release gate. It runs formatting, linting, typechecking,
 docs and inventory validation, unit/component/physics checks, Storybook

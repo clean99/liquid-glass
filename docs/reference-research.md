@@ -90,6 +90,12 @@ press and drag metrics must stay within the configured tolerances of the live
 Kube target, so future visual tuning cannot silently regress the physical
 behavior.
 
+`pnpm test:kube-reference:strict` sets `KUBE_STRICT_INTERACTIVE=1` and promotes
+the pressed and dragged screenshots from report-only rows to hard pixel gates.
+The current measured status is documented in `docs/kube-parity-gate.md`; the
+strict command is expected to fail until the interactive lens material and
+water-drop deformation converge with the public reference.
+
 ## rdev/liquid-glass-react
 
 The repository `rdev/liquid-glass-react` was inspected at commit

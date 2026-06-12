@@ -15,6 +15,7 @@ const targetNavigationTimeoutMs = Number(process.env.KUBE_NAVIGATION_TIMEOUT_MS 
 const globalMaxDiffRatio = process.env.KUBE_MAX_DIFF_RATIO
   ? Number(process.env.KUBE_MAX_DIFF_RATIO)
   : undefined;
+const strictInteractivePixels = process.env.KUBE_STRICT_INTERACTIVE === "1";
 
 const references = [
   {
@@ -187,12 +188,15 @@ try {
       reference.compareRegion
     );
     assertActionMetricParity(reference, targetAction?.metrics, candidateAction?.metrics);
+    const reportOnly = Boolean(reference.reportOnly) && !strictInteractivePixels;
+
     results.push({
       ...reference,
       ...diff,
       candidateActionMetrics: candidateAction?.metrics,
       maxDiffRatio: globalMaxDiffRatio ?? reference.maxDiffRatio,
-      reportOnly: Boolean(reference.reportOnly),
+      reportOnly,
+      strictInteractivePixels,
       targetActionMetrics: targetAction?.metrics
     });
     await candidatePage.close();

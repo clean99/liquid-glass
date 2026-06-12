@@ -27,12 +27,13 @@ must contain.
 ## Release Flow
 
 1. Run `pnpm verify`.
-2. Confirm `pnpm pack --dry-run` includes only package, docs, examples, registry,
+2. Run `pnpm test:kube-reference:strict` for release-candidate visual parity.
+3. Confirm `pnpm pack --dry-run` includes only package, docs, examples, registry,
    schema, license, README, and attribution files.
-3. Add a changeset for user-visible changes.
-4. Merge to `main`.
-5. Run the release workflow manually after reviewing the generated version PR.
-6. The release workflow runs `pnpm verify`, then uses Changesets to either open
+4. Add a changeset for user-visible changes.
+5. Merge to `main`.
+6. Run the release workflow manually after reviewing the generated version PR.
+7. The release workflow runs `pnpm verify`, then uses Changesets to either open
    a version PR or publish the already-versioned package with `pnpm release`.
 
 Publishing requires repository secrets:

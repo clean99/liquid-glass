@@ -44,6 +44,7 @@ const requiredFiles = [
   "docs/component-inventory.md",
   "docs/design-principles.md",
   "docs/installation.md",
+  "docs/kube-parity-gate.md",
   "docs/open-source-release.md",
   "docs/optics-architecture.md",
   "docs/reference-research.md",
@@ -85,6 +86,7 @@ mustInclude("README.md", [
   "test:registry",
   "test:shadcn-parity",
   "test:kube-reference",
+  "test:kube-reference:strict",
   "test:a11y",
   "test:e2e",
   "@axe-core/playwright",
@@ -105,7 +107,8 @@ mustInclude("docs/optics-architecture.md", [
   "displacement-map.ts",
   "tests/displacement-map.test.ts",
   "test:physics",
-  "test:kube-reference"
+  "test:kube-reference",
+  "test:kube-reference:strict"
 ]);
 
 mustInclude("docs/reference-research.md", [
@@ -115,6 +118,7 @@ mustInclude("docs/reference-research.md", [
   "rounded-rect SDF",
   "mouseContainer",
   "Pressed and dragged lens screenshots",
+  "test:kube-reference:strict",
   "shadcn/ui Registry Pattern"
 ]);
 
@@ -133,12 +137,14 @@ mustInclude("docs/testing.md", [
   "pressed and dragged magnifying-glass screenshots",
   "requestAnimationFrame",
   "test:kube-reference",
+  "test:kube-reference:strict",
   "test:package",
   "test:a11y",
   "test:e2e",
   "@axe-core/playwright",
   "critical",
   "serious",
+  "KUBE_STRICT_INTERACTIVE",
   "sideEffects",
   "tests/displacement-map.test.ts",
   "tests/edge-mask.test.ts"
@@ -149,6 +155,7 @@ mustInclude("docs/open-source-release.md", [
   "pnpm verify",
   "pnpm pack --dry-run",
   "pnpm test:a11y",
+  "pnpm test:kube-reference:strict",
   "pnpm release",
   "NPM_TOKEN",
   "publishConfig.access"
@@ -184,6 +191,12 @@ if (fs.existsSync(path.join(root, "package.json"))) {
   }
   if (!packageJson.scripts?.["test:e2e"]) {
     errors.push("package.json must include test:e2e");
+  }
+  if (!packageJson.scripts?.["test:kube-reference:strict"]) {
+    errors.push("package.json must include test:kube-reference:strict");
+  }
+  if (!packageJson.scripts?.["test:kube-reference:strict"]?.includes("KUBE_STRICT_INTERACTIVE=1")) {
+    errors.push("package.json test:kube-reference:strict must enable strict Kube interactions");
   }
   if (!packageJson.scripts?.["test:e2e"]?.includes("verify-liquid-behavior.mjs")) {
     errors.push("package.json test:e2e must run the real Storybook interaction gate");
@@ -221,6 +234,7 @@ for (const script of [
   "test:registry",
   "test:shadcn-parity",
   "test:kube-reference",
+  "test:kube-reference:strict",
   "test:storybook",
   "test:package",
   "release"
