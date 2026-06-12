@@ -17,7 +17,7 @@ import {
   type LiquidLensDropletResponse,
   type LiquidLensPoint
 } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { localOpticsImage, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidLens",
@@ -45,9 +45,6 @@ const precisionLensActiveRefraction = {
   glassThickness: 110,
   magnificationGlassThickness: 43
 };
-const kubeLensImage =
-  "https://images.unsplash.com/photo-1579380656108-f98e4df8ea62?q=80&w=800&auto=format&fit=crop";
-
 type DragSession = {
   pointerStart: LiquidLensPoint;
   positionStart: LiquidLensPoint;
@@ -355,7 +352,7 @@ function KubeLensBoard({
         >
           <img
             alt="Abstract architectural lines"
-            src={kubeLensImage}
+            src={localOpticsImage}
             style={{
               display: "block",
               width: "100%",
@@ -376,7 +373,7 @@ function KubeLensBoard({
             textTransform: "uppercase"
           }}
         >
-          Photo: Stephanie LeBlanc / Unsplash
+          Local deterministic optics fixture
         </div>
       </div>
       {children}
