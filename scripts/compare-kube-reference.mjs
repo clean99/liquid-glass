@@ -8,6 +8,8 @@ import { chromium } from "playwright";
 const staticDir = path.resolve(process.env.STORYBOOK_STATIC_DIR ?? "storybook-static-test");
 const artifactDir = path.resolve("test-results/kube-reference");
 const targetUrl = "https://kube.io/blog/liquid-glass-css-svg/";
+const targetNavigationRetries = Number(process.env.KUBE_NAVIGATION_RETRIES ?? 3);
+const targetNavigationTimeoutMs = Number(process.env.KUBE_NAVIGATION_TIMEOUT_MS ?? 60_000);
 const globalMaxDiffRatio = process.env.KUBE_MAX_DIFF_RATIO
   ? Number(process.env.KUBE_MAX_DIFF_RATIO)
   : undefined;
@@ -114,7 +116,7 @@ const results = [];
 
 try {
   const referencePage = await browser.newPage({ viewport: { width: 1100, height: 760 } });
-  await referencePage.goto(targetUrl, { waitUntil: "domcontentloaded", timeout: 60_000 });
+  await gotoTargetReference(referencePage);
   await referencePage.waitForLoadState("load", { timeout: 20_000 }).catch(() => undefined);
 
   for (const reference of references) {
@@ -225,6 +227,33 @@ if (failures.length > 0) {
       .map((failure) => `${failure.name} (${failure.diffRatio.toFixed(4)})`)
       .join(", ")}`
   );
+}
+
+async function gotoTargetReference(page) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= targetNavigationRetries; attempt += 1) {
+    try {
+      await page.goto(targetUrl, {
+        timeout: targetNavigationTimeoutMs,
+        waitUntil: "domcontentloaded"
+      });
+      return;
+    } catch (error) {
+      lastError = error;
+
+      if (attempt >= targetNavigationRetries) {
+        break;
+      }
+
+      console.warn(
+        `Kube reference navigation failed on attempt ${attempt}; retrying before visual comparison.`
+      );
+      await page.waitForTimeout(1_000 * attempt);
+    }
+  }
+
+  throw lastError;
 }
 
 async function findTargetDemo(page, id) {

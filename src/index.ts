@@ -154,6 +154,28 @@ export {
   LiquidSheetTitle,
   LiquidSheetTrigger
 } from "./components/LiquidSheet";
+export {
+  LiquidSidebar,
+  LiquidSidebarContent,
+  LiquidSidebarFooter,
+  LiquidSidebarGroup,
+  LiquidSidebarGroupAction,
+  LiquidSidebarGroupContent,
+  LiquidSidebarGroupLabel,
+  LiquidSidebarHeader,
+  LiquidSidebarInput,
+  LiquidSidebarInset,
+  LiquidSidebarMenu,
+  LiquidSidebarMenuAction,
+  LiquidSidebarMenuBadge,
+  LiquidSidebarMenuButton,
+  LiquidSidebarMenuItem,
+  LiquidSidebarProvider,
+  LiquidSidebarRail,
+  LiquidSidebarSeparator,
+  LiquidSidebarTrigger,
+  useLiquidSidebar
+} from "./components/LiquidSidebar";
 export { LiquidSpinner } from "./components/LiquidSpinner";
 export { LiquidSurface } from "./components/LiquidSurface";
 export {
@@ -442,6 +464,23 @@ export type {
   LiquidSheetTitleProps,
   LiquidSheetTriggerProps
 } from "./components/LiquidSheet";
+export type {
+  LiquidSidebarGroupActionProps,
+  LiquidSidebarGroupLabelProps,
+  LiquidSidebarInputProps,
+  LiquidSidebarInsetProps,
+  LiquidSidebarMenuActionProps,
+  LiquidSidebarMenuBadgeProps,
+  LiquidSidebarMenuButtonProps,
+  LiquidSidebarMenuItemProps,
+  LiquidSidebarMenuProps,
+  LiquidSidebarProps,
+  LiquidSidebarProviderProps,
+  LiquidSidebarRailProps,
+  LiquidSidebarSectionProps,
+  LiquidSidebarSeparatorProps,
+  LiquidSidebarTriggerProps
+} from "./components/LiquidSidebar";
 export type { LiquidSpinnerProps } from "./components/LiquidSpinner";
 export type {
   LiquidTableBodyProps,
@@ -485,6 +524,7 @@ export type {
   LiquidCommandItemRecord,
   LiquidCommandNavigationDirection
 } from "./utils/command";
+export type { LiquidSidebarCollapsible, LiquidSidebarState } from "./utils/sidebar";
 export type {
   LiquidLensBounds,
   LiquidLensDragState,

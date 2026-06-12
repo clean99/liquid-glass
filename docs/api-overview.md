@@ -55,6 +55,9 @@ DOM access. Examples:
 - `LiquidResizableHandle`
 - `LiquidScrollArea`
 - `LiquidSheet`
+- `LiquidSidebar`
+- `LiquidSidebarProvider`
+- `LiquidSidebarTrigger`
 - `LiquidTabs`
 - `LiquidTable`
 - `LiquidDataTable`

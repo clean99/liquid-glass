@@ -365,7 +365,9 @@
     {
       "name": "sidebar",
       "export": "LiquidSidebar",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidSidebar.tsx",
+      "story": "stories/LiquidSidebar.stories.tsx",
       "category": "navigation"
     },
     {

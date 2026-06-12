@@ -119,6 +119,22 @@ import {
   LiquidSheetDescription,
   LiquidSheetTitle,
   LiquidSheetTrigger,
+  LiquidSidebar,
+  LiquidSidebarContent,
+  LiquidSidebarGroup,
+  LiquidSidebarGroupContent,
+  LiquidSidebarGroupLabel,
+  LiquidSidebarHeader,
+  LiquidSidebarInset,
+  LiquidSidebarMenu,
+  LiquidSidebarMenuAction,
+  LiquidSidebarMenuBadge,
+  LiquidSidebarMenuButton,
+  LiquidSidebarMenuItem,
+  LiquidSidebarProvider,
+  LiquidSidebarRail,
+  LiquidSidebarSeparator,
+  LiquidSidebarTrigger,
   LiquidSpinner,
   LiquidSurface,
   LiquidTabs,
@@ -680,6 +696,52 @@ describe("Liquid components", () => {
     expect(screen.getByText("Sidebar").closest(".lg-resizable__panel")).toBeInTheDocument();
     expect(screen.getByRole("separator")).toHaveClass("lg-resizable__handle");
     expect(screen.getByRole("separator")).toHaveAttribute("aria-orientation", "vertical");
+  });
+
+  it("renders sidebar layout and toggles collapsed state", () => {
+    render(
+      <LiquidSidebarProvider defaultOpen={false}>
+        <LiquidSidebar aria-label="Workspace navigation" collapsible="icon" id="workspace-nav">
+          <LiquidSidebarHeader>Liquid Glass</LiquidSidebarHeader>
+          <LiquidSidebarContent>
+            <LiquidSidebarGroup>
+              <LiquidSidebarGroupLabel>Project</LiquidSidebarGroupLabel>
+              <LiquidSidebarGroupContent>
+                <LiquidSidebarMenu>
+                  <LiquidSidebarMenuItem>
+                    <LiquidSidebarMenuButton active as="a" href="/docs">
+                      Docs
+                    </LiquidSidebarMenuButton>
+                    <LiquidSidebarMenuBadge>12</LiquidSidebarMenuBadge>
+                    <LiquidSidebarMenuAction aria-label="Pin docs">Pin</LiquidSidebarMenuAction>
+                  </LiquidSidebarMenuItem>
+                </LiquidSidebarMenu>
+              </LiquidSidebarGroupContent>
+            </LiquidSidebarGroup>
+          </LiquidSidebarContent>
+          <LiquidSidebarSeparator />
+          <LiquidSidebarRail aria-label="Toggle workspace navigation rail" />
+        </LiquidSidebar>
+        <LiquidSidebarInset>
+          <LiquidSidebarTrigger controls="workspace-nav">Toggle sidebar</LiquidSidebarTrigger>
+        </LiquidSidebarInset>
+      </LiquidSidebarProvider>
+    );
+
+    const sidebar = screen.getByRole("complementary", { name: "Workspace navigation" });
+    expect(sidebar).toHaveAttribute("data-state", "collapsed");
+    expect(sidebar).toHaveAttribute("data-collapsible", "icon");
+    expect(screen.getByRole("link", { name: "Docs" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByText("12")).toHaveClass("lg-sidebar-menu__badge");
+
+    const trigger = screen.getByRole("button", { name: "Toggle sidebar" });
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    fireEvent.click(trigger);
+    expect(sidebar).toHaveAttribute("data-state", "expanded");
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+    fireEvent.click(screen.getByRole("button", { name: "Toggle workspace navigation rail" }));
+    expect(sidebar).toHaveAttribute("data-state", "collapsed");
   });
 
   it("renders a labeled liquid input with helper text and adornments", () => {
