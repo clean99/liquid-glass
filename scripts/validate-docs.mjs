@@ -54,6 +54,7 @@ const requiredFiles = [
   "registry.json",
   "liquid-glass.json",
   "registry/liquid-glass.json",
+  "scripts/build-component-registry.mjs",
   "schema/component-inventory.schema.json",
   "schema/shadcn-parity.schema.json",
   ".github/workflows/ci.yml",
@@ -79,6 +80,7 @@ mustInclude("README.md", [
   "Performance",
   "pnpm verify",
   "test:inventory",
+  "test:registry",
   "test:kube-reference",
   "shadcn-style Registry"
 ]);
@@ -180,8 +182,10 @@ if (
 
 const packageJson = JSON.parse(read("package.json"));
 for (const script of [
+  "registry:build",
   "test:docs",
   "test:inventory",
+  "test:registry",
   "test:kube-reference",
   "test:storybook",
   "test:package",

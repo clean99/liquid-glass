@@ -49,6 +49,7 @@ pnpm lint
 pnpm typecheck
 pnpm test:docs
 pnpm test:inventory
+pnpm test:registry
 pnpm test:unit
 pnpm test:e2e
 pnpm test:storybook
@@ -373,7 +374,10 @@ comparison, and `pnpm pack --dry-run`.
 
 This repository includes a root `registry.json`, a flat `liquid-glass.json`, and a package-local `registry/liquid-glass.json`. It is intentionally source-readable: consumers can inspect the components, tokens, and examples without depending on a private monorepo layout.
 
-The docs gate verifies the registry files stay present and equivalent.
+The registry also includes generated package-backed entries under
+`registry/components/`, one per implemented component. Run `pnpm registry:build`
+after inventory changes and `pnpm test:registry` before review. The gate fails if
+the root registry or component entries drift from `docs/component-inventory.json`.
 
 ## Release
 
