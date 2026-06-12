@@ -1,0 +1,68 @@
+# Optics Architecture
+
+This package treats Liquid Glass as an optical system, not as a decorative blur.
+The implementation is split into small layers so the component API can stay
+stable while the refraction engine improves.
+
+## Layers
+
+```mermaid
+flowchart TD
+  A["React component API"] --> B["LiquidSurface"]
+  B --> C["mode resolver"]
+  C --> D["@hashintel/refractive enhanced engine"]
+  C --> E["fallback material engine"]
+  C --> F["solid engine"]
+  B --> G["foreground content layer"]
+  D --> H["background displacement layer"]
+  E --> H
+```
+
+`LiquidSurface` is the only high-level boundary that selects an engine. Buttons,
+tabs, search inputs, switches, and nav components compose `LiquidSurface`; they do
+not import `@hashintel/refractive` directly.
+
+## Physical Invariants
+
+- Foreground content is sharp and sits outside the displacement filter layer.
+- Enhanced refraction bends the background, not the readable product text.
+- Intensity is monotonic: strong mode cannot produce less displacement than
+  subtle mode for the same geometry.
+- Filter radius is capped by physical geometry unless a lens explicitly opts into
+  overscan.
+- Filter slices must not overlap in a way that creates crossing seams.
+- Invalid input must clamp to finite optical values instead of leaking `NaN`.
+- Fake crosshatch or stripe textures are forbidden; visible lines must come from
+  the background being refracted.
+- Focus state changes material depth and scale. Hard white or black outline rings
+  are treated as a regression.
+
+These invariants are covered by `tests/refraction-physics.test.ts`.
+
+## Engine Strategy
+
+Chrome and Chromium are the only enhanced targets today because the underlying
+SVG backdrop-filter behavior is still browser-specific. Safari, Firefox, iOS,
+reduced transparency, high contrast, and low-power mobile paths are first-class
+fallback targets.
+
+The default enhanced path is `@hashintel/refractive`. The experimental reference
+lens path exists for comparison and fixture work only. It helps us reason about
+rounded lens geometry, two-pass displacement, and pointer-driven interaction
+without leaking article-specific code into the component API.
+
+## Why The Center Must Stay Calm
+
+The Kube reference components show edge bending and frosted center material. If
+the whole pill is displaced with equal force, the result looks like plastic and
+creates impossible crossing lines. A better model concentrates displacement near
+the bevel, keeps the center readable, and adds restrained specular highlights.
+
+## Test Gates
+
+- `pnpm test:physics` checks pure optical math and DOM layering contracts.
+- `pnpm test:storybook` runs real pointer, focus, hover, press, and drag behavior
+  against built Storybook stories.
+- `pnpm test:kube-reference` captures the public Kube reference and compares
+  selected local stories with screenshot diff thresholds.
+- `pnpm test:visual` tracks deterministic component screenshots.

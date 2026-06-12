@@ -10,7 +10,7 @@
       "description": "Refractive Liquid Glass React components with accessible fallbacks.",
       "files": [
         {
-          "path": "registry/liquid-glass.json",
+          "path": "liquid-glass.json",
           "type": "registry:ui"
         }
       ]

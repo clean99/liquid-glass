@@ -46,6 +46,7 @@ pnpm install
 pnpm dev
 pnpm lint
 pnpm typecheck
+pnpm test:docs
 pnpm test:inventory
 pnpm test:unit
 pnpm test:storybook
@@ -227,6 +228,7 @@ The repository includes unit, component, SSR, CSS contract, Storybook behavior, 
 ```sh
 pnpm lint
 pnpm typecheck
+pnpm test:docs
 pnpm test:inventory
 pnpm test:unit
 pnpm test:storybook
@@ -239,7 +241,18 @@ pnpm test:package
 
 ## shadcn-style Registry
 
-This repository includes a registry entry under `registry/liquid-glass.json` and a root `registry.json`. It is intentionally source-readable: consumers can inspect the components, tokens, and examples without depending on a private monorepo layout.
+This repository includes a root `registry.json`, a flat `liquid-glass.json`, and a package-local `registry/liquid-glass.json`. It is intentionally source-readable: consumers can inspect the components, tokens, and examples without depending on a private monorepo layout.
+
+The docs gate verifies the registry files stay present and equivalent.
+
+## Documentation Map
+
+- `docs/api-overview.md`: public API shape and mode model.
+- `docs/component-inventory.md`: implemented and planned component inventory.
+- `docs/optics-architecture.md`: physical invariants and engine boundaries.
+- `docs/reference-research.md`: Kube, rdev, and registry research notes.
+- `docs/testing.md`: local and CI validation strategy.
+- `docs/open-source-release.md`: release, Pages, and rollback checklist.
 
 ## Known Limitations
 

@@ -14,6 +14,8 @@ Before opening a pull request, run:
 ```sh
 pnpm lint
 pnpm typecheck
+pnpm test:docs
+pnpm test:inventory
 pnpm test:unit
 pnpm test:storybook
 pnpm build

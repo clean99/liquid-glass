@@ -1,0 +1,27 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      frontend-tooling:
+        patterns:
+          - "@storybook/*"
+          - "storybook"
+          - "vite"
+          - "vitest"
+          - "typescript"
+          - "eslint*"
+          - "@eslint/*"
+          - "typescript-eslint"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
