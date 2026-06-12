@@ -33,11 +33,30 @@ describe("draggable lens response", () => {
     });
 
     expect(response.active).toBe(true);
+    expect(response.phase).toBe("pressed");
     expect(response.originX).toBeGreaterThan(0.5);
     expect(response.originY).toBeLessThan(0.5);
-    expect(response.scaleX).toBeGreaterThan(1.04);
-    expect(response.scaleY).toBeLessThan(1);
+    expect(response.scaleX).toBeGreaterThan(1.09);
+    expect(response.scaleY).toBeGreaterThan(1.16);
     expect(response.transform).toContain("scaleX");
+  });
+
+  it("models dragging as the taller, narrower Kube water-drop response", () => {
+    const pressed = resolveLensDropletResponse({
+      pressed: true,
+      point: { x: 260, y: 155 },
+      rect: { left: 100, top: 100, width: 210, height: 120 }
+    });
+    const dragging = resolveLensDropletResponse({
+      phase: "dragging",
+      pressed: true,
+      point: { x: 260, y: 155 },
+      rect: { left: 100, top: 100, width: 210, height: 120 }
+    });
+
+    expect(dragging.phase).toBe("dragging");
+    expect(dragging.scaleX).toBeLessThan(pressed.scaleX);
+    expect(dragging.scaleY).toBeGreaterThan(pressed.scaleY);
   });
 
   it("keeps pressed feedback visible but removes motion when requested", () => {
@@ -49,6 +68,7 @@ describe("draggable lens response", () => {
     });
 
     expect(response.active).toBe(true);
+    expect(response.phase).toBe("pressed");
     expect(response.scaleX).toBe(1);
     expect(response.scaleY).toBe(1);
     expect(response.translateX).toBe(0);

@@ -34,6 +34,8 @@ Storybook stories. It includes static component screenshots plus
 `pressed and dragged magnifying-glass screenshots` produced by real pointer input.
 The interactive lens screenshots are report-only today, but their pointer action
 metrics are hard assertions so press and drag cannot silently stop working.
+Those hard metrics include the Kube-derived water-drop rule that press expands
+both axes, while drag is taller and narrower than press.
 
 `pnpm test:docs` verifies the open-source repository contract: required GitHub
 templates, registry files, docs, attributions, testing notes, and package scripts.

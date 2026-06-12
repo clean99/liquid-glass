@@ -289,6 +289,7 @@ export type {
   LiquidLensBounds,
   LiquidLensDragState,
   LiquidLensDropletOptions,
+  LiquidLensDropletPhase,
   LiquidLensDropletResponse,
   LiquidLensPoint,
   LiquidLensRect,

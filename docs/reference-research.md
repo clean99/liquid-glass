@@ -32,6 +32,20 @@ report-only while the demo artwork and droplet deformation are still converging;
 their action metrics are hard assertions, and the pixel rows are intended to
 become hard gates once the local board matches the reference fixture.
 
+Current measured interaction contract:
+
+- press state expands both axes, matching the Kube water-drop response instead
+  of flattening the capsule,
+- drag state becomes taller and narrower than press while preserving pointer
+  travel,
+- target press sample is approximately `+22px` width and `+22px` height,
+- target drag sample is approximately `+11px` width and `+25px` height.
+
+The local `LiquidLensDropletPhase` model intentionally separates `pressed` and
+`dragging`. A boolean pressed state was not enough: it made the drag handle keep
+the same wide shape after movement, which is not what the reference component
+does under real pointer input.
+
 ## rdev/liquid-glass-react
 
 The repository `rdev/liquid-glass-react` was inspected at commit

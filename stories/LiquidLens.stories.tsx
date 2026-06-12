@@ -171,7 +171,7 @@ function DraggablePrecisionLensDemo() {
       positionStart: position
     };
     setIsDragging(false);
-    setDroplet(readDroplet(event.currentTarget, event.clientX, event.clientY));
+    setDroplet(readDroplet(event.currentTarget, event.clientX, event.clientY, "pressed"));
   };
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -198,7 +198,7 @@ function DraggablePrecisionLensDemo() {
         positionStart: session.positionStart
       })
     );
-    setDroplet(readDroplet(event.currentTarget, event.clientX, event.clientY));
+    setDroplet(readDroplet(event.currentTarget, event.clientX, event.clientY, "dragging"));
   };
 
   const handlePointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -315,9 +315,15 @@ function DraggablePrecisionLensDemo() {
   );
 }
 
-function readDroplet(element: HTMLElement, clientX: number, clientY: number) {
+function readDroplet(
+  element: HTMLElement,
+  clientX: number,
+  clientY: number,
+  phase: "pressed" | "dragging"
+) {
   const rect = element.getBoundingClientRect();
   return resolveLensDropletResponse({
+    phase,
     point: { x: clientX, y: clientY },
     pressed: true,
     rect
