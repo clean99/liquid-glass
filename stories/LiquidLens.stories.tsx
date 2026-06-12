@@ -28,7 +28,7 @@ type Story = StoryObj;
 
 const precisionLensSize = { width: 210, height: 120 };
 const precisionLensBounds = { width: 706, height: 460, padding: 16 };
-const precisionLensInitialPosition = { x: 46, y: 74 };
+const precisionLensInitialPosition = { x: 20, y: 36 };
 
 type DragSession = {
   pointerStart: LiquidLensPoint;
@@ -253,7 +253,12 @@ function DraggablePrecisionLensDemo() {
 
   return (
     <div className="lg-precision-lens-demo" data-lg-theme="light">
-      <div className="lg-precision-lens-demo__card" data-lg-lens-board="" ref={boardRef}>
+      <div
+        className="lg-precision-lens-demo__card"
+        data-lg-lens-board=""
+        data-lg-reference-frame="magnifying-glass-interactive"
+        ref={boardRef}
+      >
         <section className="lg-precision-lens-demo__copy" aria-label="Precision lens copy">
           <p className="lg-precision-lens-demo__eyebrow">
             <span />

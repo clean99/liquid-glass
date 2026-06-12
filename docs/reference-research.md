@@ -19,6 +19,19 @@ The comparison script `scripts/compare-kube-reference.mjs` opens the public page
 captures target sections, captures local Storybook stories, and compares pixels.
 This is intentionally a regression gate, not a manual screenshot review.
 
+The same script also performs real pointer actions for the magnifying-glass demo:
+
+- press the lens and capture the water-drop scale state,
+- drag the lens across text edges and capture the held drag state,
+- compare those interactive screenshots against the matching Storybook board.
+
+This does not replace full visual parity. It prevents a weaker failure mode:
+passing the static screenshot while breaking the interaction that makes the
+glass feel physical. The pressed and dragged screenshots are currently
+report-only while the demo artwork and droplet deformation are still converging;
+their action metrics are hard assertions, and the pixel rows are intended to
+become hard gates once the local board matches the reference fixture.
+
 ## rdev/liquid-glass-react
 
 The repository `rdev/liquid-glass-react` was inspected at commit
@@ -66,6 +79,7 @@ source and as a flat registry-style URL target.
 ## What We Will Keep Measuring
 
 - Pixel distance from the Kube reference components.
+- Pressed and dragged lens screenshots from real pointer input.
 - Pointer-driven drag frames, not inferred drag state.
 - Focus material growth and frosted depth.
 - No hard outline rings for focus.

@@ -28,7 +28,7 @@ export const LiquidSwitch = forwardRef<HTMLButtonElement, LiquidSwitchProps>(fun
   {
     checked,
     className,
-    defaultChecked = true,
+    defaultChecked = false,
     disabled,
     onCheckedChange,
     onClick,

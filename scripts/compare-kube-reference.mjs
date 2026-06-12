@@ -21,6 +21,36 @@ const references = [
     maxDiffRatio: 0.3
   },
   {
+    name: "magnifying-glass-pressed",
+    storyId: "liquid-glass-liquidlens--draggable-precision-lens",
+    targetId: "magnifying-glass",
+    candidateFrame: "magnifying-glass-interactive",
+    action: {
+      kind: "press",
+      point: { x: 0.42, y: 0.54 },
+      pressMs: 220
+    },
+    capture: "handle",
+    maxDiffRatio: 0.42,
+    reportOnly: true
+  },
+  {
+    name: "magnifying-glass-dragged",
+    storyId: "liquid-glass-liquidlens--draggable-precision-lens",
+    targetId: "magnifying-glass",
+    candidateFrame: "magnifying-glass-interactive",
+    action: {
+      delta: { x: 132, y: 76 },
+      kind: "drag",
+      point: { x: 0.42, y: 0.54 },
+      pressMs: 180,
+      settleMs: 160
+    },
+    capture: "handle",
+    maxDiffRatio: 0.45,
+    reportOnly: true
+  },
+  {
     name: "searchbox",
     storyId: "liquid-glass-liquidsearchbox--kube-reference",
     targetId: "searchbox",
@@ -76,21 +106,39 @@ try {
   await referencePage.waitForLoadState("load", { timeout: 20_000 }).catch(() => undefined);
 
   for (const reference of references) {
+    await referencePage.mouse.move(0, 0).catch(() => undefined);
     const targetElement = await findTargetDemo(referencePage, reference.targetId);
     const targetPath = path.join(artifactDir, `${reference.name}-target.png`);
-    await targetElement.screenshot({ path: targetPath });
+    const targetAction = reference.action
+      ? await applyTargetAction(referencePage, targetElement, reference.action)
+      : null;
+    const targetScreenshotSubject =
+      reference.capture === "handle" ? (targetAction?.subject ?? targetElement) : targetElement;
+    await targetScreenshotSubject.screenshot({ path: targetPath });
+    await targetAction?.cleanup();
 
     const candidatePage = await browser.newPage({ viewport: { width: 900, height: 560 } });
     await candidatePage.goto(
       `http://127.0.0.1:${port}/iframe.html?id=${reference.storyId}&viewMode=story`,
       { waitUntil: "networkidle", timeout: 20_000 }
     );
+    await candidatePage.mouse.move(0, 0).catch(() => undefined);
 
-    const candidateElement = candidatePage.locator(`[data-lg-reference-frame="${reference.name}"]`);
+    const candidateElement = candidatePage.locator(
+      `[data-lg-reference-frame="${reference.candidateFrame ?? reference.name}"]`
+    );
     await candidateElement.waitFor({ state: "visible", timeout: 10_000 });
 
     const candidatePath = path.join(artifactDir, `${reference.name}-candidate.png`);
-    await candidateElement.screenshot({ path: candidatePath });
+    const candidateAction = reference.action
+      ? await applyCandidateAction(candidatePage, candidateElement, reference.action)
+      : null;
+    const candidateScreenshotSubject =
+      reference.capture === "handle"
+        ? (candidateAction?.subject ?? candidateElement)
+        : candidateElement;
+    await candidateScreenshotSubject.screenshot({ path: candidatePath });
+    await candidateAction?.cleanup();
 
     if (reference.name === "magnifying-glass") {
       const [targetContract, candidateContract] = await Promise.all([
@@ -120,7 +168,10 @@ try {
     results.push({
       ...reference,
       ...diff,
-      maxDiffRatio: globalMaxDiffRatio ?? reference.maxDiffRatio
+      candidateActionMetrics: candidateAction?.metrics,
+      maxDiffRatio: globalMaxDiffRatio ?? reference.maxDiffRatio,
+      reportOnly: Boolean(reference.reportOnly),
+      targetActionMetrics: targetAction?.metrics
     });
     await candidatePage.close();
   }
@@ -129,7 +180,14 @@ try {
   await new Promise((resolve) => server.close(resolve));
 }
 
-const failures = results.filter((result) => result.diffRatio > result.maxDiffRatio);
+await fs.writeFile(
+  path.join(artifactDir, "kube-reference-results.json"),
+  `${JSON.stringify(results, null, 2)}\n`
+);
+
+const failures = results.filter(
+  (result) => !result.reportOnly && result.diffRatio > result.maxDiffRatio
+);
 console.table(
   results.map((result) => ({
     name: result.name,
@@ -138,7 +196,8 @@ console.table(
     diffRatio: result.diffRatio.toFixed(4),
     meanDelta: result.meanDelta.toFixed(2),
     rmsDelta: result.rmsDelta.toFixed(2),
-    maxDiffRatio: result.maxDiffRatio
+    maxDiffRatio: result.maxDiffRatio,
+    mode: result.reportOnly ? "report" : "gate"
   }))
 );
 
@@ -182,6 +241,114 @@ async function findTargetDemo(page, id) {
   }, id);
 
   return handle.asElement();
+}
+
+async function applyTargetAction(page, targetElement, action) {
+  const handle = await findTargetDragHandle(targetElement);
+
+  return applyPointerAction(page, handle, action);
+}
+
+async function applyCandidateAction(page, candidateElement, action) {
+  const handle = candidateElement.locator("[data-lg-draggable-lens]").first();
+  await handle.waitFor({ state: "visible", timeout: 10_000 });
+
+  return applyPointerAction(page, handle, action);
+}
+
+async function findTargetDragHandle(root) {
+  const handle = await root.evaluateHandle((base) => {
+    const candidates = [base, ...base.querySelectorAll("*")];
+
+    return (
+      candidates.find((candidate) => {
+        const rect = candidate.getBoundingClientRect();
+        const style = getComputedStyle(candidate);
+
+        return (
+          rect.width >= 180 &&
+          rect.height >= 90 &&
+          style.cursor.includes("grab") &&
+          style.pointerEvents !== "none"
+        );
+      }) ?? null
+    );
+  });
+  const element = handle.asElement();
+
+  if (!element) {
+    throw new Error("Missing draggable lens handle in Kube reference demo");
+  }
+
+  return element;
+}
+
+async function applyPointerAction(page, handle, action) {
+  const box = await handle.boundingBox();
+
+  if (!box) {
+    throw new Error(`Missing bounding box for ${action.kind} action`);
+  }
+
+  const startX = box.x + box.width * action.point.x;
+  const startY = box.y + box.height * action.point.y;
+  await page.mouse.move(startX, startY);
+  await page.mouse.down();
+  await page.waitForTimeout(action.pressMs ?? 180);
+
+  if (action.kind === "drag") {
+    await page.mouse.move(startX + action.delta.x, startY + action.delta.y, { steps: 8 });
+    await page.waitForTimeout(action.settleMs ?? 120);
+  }
+
+  const after = await handle.boundingBox();
+  const metrics = summarizeActionMetrics(box, after, action);
+  assertPointerActionMetrics(metrics, action);
+
+  return {
+    cleanup: async () => {
+      await page.mouse.up().catch(() => undefined);
+      await page.mouse.move(0, 0).catch(() => undefined);
+      await page.waitForTimeout(160);
+    },
+    metrics,
+    subject: handle
+  };
+}
+
+function summarizeActionMetrics(before, after, action) {
+  if (!after) {
+    throw new Error(`Missing post-action bounding box for ${action.kind} action`);
+  }
+
+  return {
+    deltaX: round(after.x - before.x),
+    deltaY: round(after.y - before.y),
+    height: round(after.height),
+    heightDelta: round(after.height - before.height),
+    kind: action.kind,
+    width: round(after.width),
+    widthDelta: round(after.width - before.width)
+  };
+}
+
+function assertPointerActionMetrics(metrics, action) {
+  if (action.kind === "press") {
+    const changedSize = Math.abs(metrics.widthDelta) + Math.abs(metrics.heightDelta);
+
+    if (changedSize < 10) {
+      throw new Error(`Press action did not deform the lens enough: ${JSON.stringify(metrics)}`);
+    }
+    return;
+  }
+
+  if (Math.abs(metrics.deltaX) < Math.abs(action.delta.x) * 0.45) {
+    throw new Error(`Drag action did not move the lens on x enough: ${JSON.stringify(metrics)}`);
+  }
+
+  if (Math.abs(metrics.deltaY) < Math.abs(action.delta.y) * 0.45) {
+    throw new Error(`Drag action did not move the lens on y enough: ${JSON.stringify(metrics)}`);
+  }
 }
 
 async function readFilterContract(element, label) {
@@ -393,4 +560,8 @@ function contentType(filePath) {
   }
 
   return "application/octet-stream";
+}
+
+function round(value) {
+  return Math.round(value * 100) / 100;
 }

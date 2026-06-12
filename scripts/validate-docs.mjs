@@ -104,6 +104,7 @@ mustInclude("docs/reference-research.md", [
   "chromatic aberration",
   "rounded-rect SDF",
   "mouseContainer",
+  "Pressed and dragged lens screenshots",
   "shadcn/ui Registry Pattern"
 ]);
 
@@ -119,6 +120,7 @@ mustInclude("docs/rdev-liquid-glass-react.md", [
 
 mustInclude("docs/testing.md", [
   "real pointer actions",
+  "pressed and dragged magnifying-glass screenshots",
   "requestAnimationFrame",
   "test:kube-reference",
   "tests/displacement-map.test.ts",

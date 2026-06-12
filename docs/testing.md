@@ -29,6 +29,12 @@ pnpm test:visual:update
 
 The Storybook behavior test opens the built Storybook in Chromium and performs real pointer actions for the draggable lens board. The test records `requestAnimationFrame` samples and asserts pressed, dragging, and released animation states.
 
+`pnpm test:kube-reference` captures the public Kube reference page and matching
+Storybook stories. It includes static component screenshots plus
+`pressed and dragged magnifying-glass screenshots` produced by real pointer input.
+The interactive lens screenshots are report-only today, but their pointer action
+metrics are hard assertions so press and drag cannot silently stop working.
+
 `pnpm test:docs` verifies the open-source repository contract: required GitHub
 templates, registry files, docs, attributions, testing notes, and package scripts.
 
