@@ -3585,6 +3585,137 @@
   box-shadow: var(--lg-glass-shadow);
 }
 
+.lg-chart-container {
+  position: relative;
+  width: 100%;
+  min-height: 15rem;
+  color: var(--lg-text);
+  font-family: var(--lg-font-family);
+}
+
+.lg-chart-container .recharts-cartesian-axis-tick text,
+.lg-chart-container .recharts-polar-angle-axis-tick text {
+  fill: color-mix(in srgb, var(--lg-text), transparent 42%);
+  font-size: 0.75rem;
+}
+
+.lg-chart-container .recharts-cartesian-grid line {
+  stroke: color-mix(in srgb, var(--lg-glass-border), transparent 32%);
+}
+
+.lg-chart-container .recharts-tooltip-cursor {
+  fill: color-mix(in srgb, var(--lg-glass-fill-strong), transparent 24%);
+  stroke: color-mix(in srgb, var(--lg-glass-border), transparent 12%);
+}
+
+.lg-chart-tooltip {
+  min-width: 11rem;
+  padding: 0.72rem;
+  color: var(--lg-text);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--lg-glass-highlight), transparent 72%),
+      transparent
+    ),
+    color-mix(in srgb, var(--lg-surface-strong), transparent 10%);
+  border: 1px solid color-mix(in srgb, var(--lg-glass-border), transparent 14%);
+  border-radius: var(--lg-radius-md);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--lg-glass-edge), transparent 18%),
+    0 18px 42px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(18px) saturate(1.35);
+}
+
+.lg-chart-tooltip__label {
+  margin-bottom: 0.45rem;
+  color: color-mix(in srgb, var(--lg-text), transparent 20%);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.lg-chart-tooltip__items {
+  display: grid;
+  gap: 0.38rem;
+}
+
+.lg-chart-tooltip__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.48rem;
+  font-size: 0.78rem;
+}
+
+.lg-chart-tooltip__indicator {
+  display: block;
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: var(--lg-radius-pill);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--lg-glass-edge), transparent 25%);
+}
+
+.lg-chart-tooltip__indicator[data-indicator="line"],
+.lg-chart-tooltip__indicator[data-indicator="dashed"] {
+  width: 0.75rem;
+  height: 0.16rem;
+  border-radius: var(--lg-radius-pill);
+}
+
+.lg-chart-tooltip__indicator[data-indicator="dashed"] {
+  height: 0;
+  background: transparent !important;
+  border-top: 2px dashed currentColor;
+}
+
+.lg-chart-tooltip__name {
+  min-width: 0;
+  overflow: hidden;
+  color: color-mix(in srgb, var(--lg-text), transparent 28%);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lg-chart-tooltip__value {
+  color: var(--lg-text);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.lg-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.72rem 1rem;
+  color: color-mix(in srgb, var(--lg-text), transparent 30%);
+  font-size: 0.78rem;
+}
+
+.lg-chart-legend[data-vertical-align="top"] {
+  padding-bottom: 0.65rem;
+}
+
+.lg-chart-legend[data-vertical-align="bottom"] {
+  padding-top: 0.65rem;
+}
+
+.lg-chart-legend__item {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.42rem;
+}
+
+.lg-chart-legend__swatch {
+  width: 0.62rem;
+  height: 0.62rem;
+  flex: 0 0 auto;
+  border-radius: var(--lg-radius-pill);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--lg-glass-edge), transparent 28%);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lg-surface {
     transition: none;

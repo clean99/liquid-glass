@@ -61,6 +61,10 @@ DOM access. Examples:
 - `LiquidTabs`
 - `LiquidTable`
 - `LiquidDataTable`
+- `LiquidChart`
+- `LiquidChartContainer`
+- `LiquidChartTooltipContent`
+- `LiquidChartLegendContent`
 - `LiquidSearchBox`
 - `LiquidSwitch`
 - `LiquidToast`

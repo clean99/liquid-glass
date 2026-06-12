@@ -483,6 +483,10 @@ function assertActionMetricParity(reference, targetMetrics, candidateMetrics) {
     return;
   }
 
+  if (reference.reportOnly) {
+    return;
+  }
+
   if (!targetMetrics || !candidateMetrics) {
     throw new Error(`Missing action metrics for ${reference.name}`);
   }

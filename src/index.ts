@@ -28,6 +28,16 @@ export {
 export { LiquidButton } from "./components/LiquidButton";
 export { LiquidButtonGroup } from "./components/LiquidButtonGroup";
 export { LiquidCard } from "./components/LiquidCard";
+export {
+  LiquidChart,
+  LiquidChartContainer,
+  LiquidChartLegend,
+  LiquidChartLegendContent,
+  LiquidChartStyle,
+  LiquidChartTooltip,
+  LiquidChartTooltipContent,
+  useLiquidChart
+} from "./components/LiquidChart";
 export { LiquidCheckbox } from "./components/LiquidCheckbox";
 export {
   LiquidCollapsible,
@@ -269,6 +279,13 @@ export {
   normalizeCommandText,
   resolveCommandNavigationValue
 } from "./utils/command";
+export {
+  buildChartCssProperties,
+  buildChartStyleText,
+  getChartPayloadKey,
+  getChartSeriesColor,
+  getChartSeriesLabel
+} from "./utils/chart";
 
 export const liquidPackageName = "@clean99/liquid-glass";
 
@@ -314,6 +331,17 @@ export type {
 export type { LiquidButtonProps } from "./components/LiquidButton";
 export type { LiquidButtonGroupProps } from "./components/LiquidButtonGroup";
 export type { LiquidCardProps } from "./components/LiquidCard";
+export type {
+  LiquidChartContainerProps,
+  LiquidChartLegendContentProps,
+  LiquidChartTooltipContentProps
+} from "./components/LiquidChart";
+export type {
+  LiquidChartConfig,
+  LiquidChartConfigItem,
+  LiquidChartPayloadItem,
+  LiquidChartTheme
+} from "./utils/chart";
 export type { LiquidEdgeMaskOptions, LiquidEdgeMaskSample } from "./utils/edge-mask";
 export type {
   LiquidCapsuleFieldSample,

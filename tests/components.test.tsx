@@ -28,6 +28,9 @@ import {
   LiquidButton,
   LiquidButtonGroup,
   LiquidCard,
+  LiquidChartContainer,
+  LiquidChartLegendContent,
+  LiquidChartTooltipContent,
   LiquidCheckbox,
   LiquidCollapsible,
   LiquidCollapsibleContent,
@@ -742,6 +745,50 @@ describe("Liquid components", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Toggle workspace navigation rail" }));
     expect(sidebar).toHaveAttribute("data-state", "collapsed");
+  });
+
+  it("renders chart container tokens, tooltip content, and legend content", () => {
+    render(
+      <LiquidChartContainer
+        chartId="release-chart"
+        config={{
+          desktop: { color: "var(--chart-1)", label: "Desktop" },
+          mobile: { color: "var(--chart-2)", label: "Mobile" }
+        }}
+        responsiveProps={{ height: 240, width: 420 }}
+      >
+        <div aria-label="Release velocity chart" role="img" />
+        <LiquidChartTooltipContent
+          active
+          label="June"
+          payload={[
+            {
+              color: "var(--chart-1)",
+              dataKey: "desktop",
+              name: "desktop",
+              value: 186
+            }
+          ]}
+        />
+        <LiquidChartLegendContent
+          payload={[
+            {
+              color: "var(--chart-2)",
+              dataKey: "mobile",
+              value: "mobile"
+            }
+          ]}
+        />
+      </LiquidChartContainer>
+    );
+
+    expect(screen.getByRole("img", { name: "Release velocity chart" })).toBeInTheDocument();
+    expect(document.querySelector('[data-chart="release-chart"]')).toHaveClass(
+      "lg-chart-container"
+    );
+    expect(screen.getByRole("status")).toHaveTextContent("Desktop");
+    expect(screen.getByRole("status")).toHaveTextContent("186");
+    expect(screen.getByText("Mobile")).toBeInTheDocument();
   });
 
   it("renders a labeled liquid input with helper text and adornments", () => {

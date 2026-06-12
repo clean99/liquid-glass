@@ -97,7 +97,9 @@
     {
       "name": "chart",
       "export": "LiquidChart",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidChart.tsx",
+      "story": "stories/LiquidChart.stories.tsx",
       "category": "data"
     },
     {
