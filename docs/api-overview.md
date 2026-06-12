@@ -33,11 +33,14 @@ DOM access. Examples:
 - `LiquidButtonGroup`
 - `LiquidAlertDialog`
 - `LiquidCollapsible`
+- `LiquidContextMenu`
 - `LiquidDrawer`
+- `LiquidDropdownMenu`
 - `LiquidHoverCard`
 - `LiquidIconButton`
 - `LiquidInputOtp`
 - `LiquidLink`
+- `LiquidMenubar`
 - `LiquidNav`
 - `LiquidNativeSelect`
 - `LiquidSelect`

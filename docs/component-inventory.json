@@ -131,7 +131,9 @@
     {
       "name": "context-menu",
       "export": "LiquidContextMenu",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidContextMenu.tsx",
+      "story": "stories/LiquidOverlay.stories.tsx",
       "category": "overlay"
     },
     {
@@ -173,7 +175,9 @@
     {
       "name": "dropdown-menu",
       "export": "LiquidDropdownMenu",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidDropdownMenu.tsx",
+      "story": "stories/LiquidOverlay.stories.tsx",
       "category": "overlay"
     },
     {
@@ -251,7 +255,9 @@
     {
       "name": "menubar",
       "export": "LiquidMenubar",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidMenubar.tsx",
+      "story": "stories/LiquidOverlay.stories.tsx",
       "category": "navigation"
     },
     {

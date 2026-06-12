@@ -34,6 +34,14 @@ export {
   LiquidCollapsibleContent,
   LiquidCollapsibleTrigger
 } from "./components/LiquidCollapsible";
+export {
+  LiquidContextMenu,
+  LiquidContextMenuContent,
+  LiquidContextMenuItem,
+  LiquidContextMenuLabel,
+  LiquidContextMenuSeparator,
+  LiquidContextMenuTrigger
+} from "./components/LiquidContextMenu";
 export { LiquidDirection } from "./components/LiquidDirection";
 export {
   LiquidDrawer,
@@ -55,6 +63,14 @@ export {
   LiquidDialogTitle,
   LiquidDialogTrigger
 } from "./components/LiquidDialog";
+export {
+  LiquidDropdownMenu,
+  LiquidDropdownMenuContent,
+  LiquidDropdownMenuItem,
+  LiquidDropdownMenuLabel,
+  LiquidDropdownMenuSeparator,
+  LiquidDropdownMenuTrigger
+} from "./components/LiquidDropdownMenu";
 export {
   LiquidEmpty,
   LiquidEmptyActions,
@@ -82,6 +98,7 @@ export { LiquidItem } from "./components/LiquidItem";
 export { LiquidKbd } from "./components/LiquidKbd";
 export { LiquidLens } from "./components/LiquidLens";
 export { LiquidLink } from "./components/LiquidLink";
+export { LiquidMenubar } from "./components/LiquidMenubar";
 export { LiquidMusicPlayerBar } from "./components/LiquidMusicPlayerBar";
 export { LiquidNav } from "./components/LiquidNav";
 export { LiquidNativeSelect } from "./components/LiquidNativeSelect";
@@ -256,6 +273,14 @@ export type {
   LiquidCollapsibleProps,
   LiquidCollapsibleTriggerProps
 } from "./components/LiquidCollapsible";
+export type {
+  LiquidContextMenuContentProps,
+  LiquidContextMenuItemProps,
+  LiquidContextMenuLabelProps,
+  LiquidContextMenuProps,
+  LiquidContextMenuSeparatorProps,
+  LiquidContextMenuTriggerProps
+} from "./components/LiquidContextMenu";
 export type { LiquidDirectionProps } from "./components/LiquidDirection";
 export type {
   LiquidDrawerCloseProps,
@@ -277,6 +302,14 @@ export type {
   LiquidDialogTitleProps,
   LiquidDialogTriggerProps
 } from "./components/LiquidDialog";
+export type {
+  LiquidDropdownMenuContentProps,
+  LiquidDropdownMenuItemProps,
+  LiquidDropdownMenuLabelProps,
+  LiquidDropdownMenuProps,
+  LiquidDropdownMenuSeparatorProps,
+  LiquidDropdownMenuTriggerProps
+} from "./components/LiquidDropdownMenu";
 export type {
   LiquidEmptyActionsProps,
   LiquidEmptyDescriptionProps,
@@ -305,6 +338,11 @@ export type { LiquidItemProps } from "./components/LiquidItem";
 export type { LiquidKbdProps } from "./components/LiquidKbd";
 export type { LiquidLensProps } from "./components/LiquidLens";
 export type { LiquidLinkProps } from "./components/LiquidLink";
+export type {
+  LiquidMenubarItem,
+  LiquidMenubarMenu,
+  LiquidMenubarProps
+} from "./components/LiquidMenubar";
 export type { LiquidMusicPlayerBarProps } from "./components/LiquidMusicPlayerBar";
 export type { LiquidNavProps } from "./components/LiquidNav";
 export type { LiquidNativeSelectProps } from "./components/LiquidNativeSelect";

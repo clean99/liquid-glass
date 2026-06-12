@@ -9,9 +9,21 @@ import {
   LiquidAlertDialogHeader,
   LiquidAlertDialogTitle,
   LiquidAlertDialogTrigger,
+  LiquidContextMenu,
+  LiquidContextMenuContent,
+  LiquidContextMenuItem,
+  LiquidContextMenuLabel,
+  LiquidContextMenuSeparator,
+  LiquidContextMenuTrigger,
   LiquidCollapsible,
   LiquidCollapsibleContent,
   LiquidCollapsibleTrigger,
+  LiquidDropdownMenu,
+  LiquidDropdownMenuContent,
+  LiquidDropdownMenuItem,
+  LiquidDropdownMenuLabel,
+  LiquidDropdownMenuSeparator,
+  LiquidDropdownMenuTrigger,
   LiquidDrawer,
   LiquidDrawerClose,
   LiquidDrawerContent,
@@ -23,6 +35,7 @@ import {
   LiquidHoverCard,
   LiquidHoverCardContent,
   LiquidHoverCardTrigger,
+  LiquidMenubar,
   LiquidPopover,
   LiquidPopoverClose,
   LiquidPopoverContent,
@@ -153,7 +166,62 @@ function OverlayExample() {
             </LiquidAlertDialogFooter>
           </LiquidAlertDialogContent>
         </LiquidAlertDialog>
+
+        <LiquidDropdownMenu>
+          <LiquidDropdownMenuTrigger>Actions</LiquidDropdownMenuTrigger>
+          <LiquidDropdownMenuContent aria-label="Release actions" align="start">
+            <LiquidDropdownMenuLabel>Release</LiquidDropdownMenuLabel>
+            <LiquidDropdownMenuItem>Copy link</LiquidDropdownMenuItem>
+            <LiquidDropdownMenuItem>Open report</LiquidDropdownMenuItem>
+            <LiquidDropdownMenuSeparator />
+            <LiquidDropdownMenuItem disabled>Archive locked</LiquidDropdownMenuItem>
+          </LiquidDropdownMenuContent>
+        </LiquidDropdownMenu>
       </div>
+
+      <LiquidMenubar
+        aria-label="Project navigation"
+        menus={[
+          {
+            label: "File",
+            value: "file",
+            items: [
+              { label: "New note", value: "new-note" },
+              { label: "Export", value: "export" }
+            ]
+          },
+          {
+            label: "View",
+            value: "view",
+            items: [
+              { label: "Command center", value: "command-center" },
+              { label: "Toggle sidebar", value: "toggle-sidebar" }
+            ]
+          }
+        ]}
+      />
+
+      <LiquidContextMenu>
+        <LiquidContextMenuTrigger>
+          <div
+            style={{
+              border: "1px dashed color-mix(in srgb, var(--lg-text), transparent 72%)",
+              borderRadius: 18,
+              padding: "1rem",
+              color: "var(--lg-text-muted)"
+            }}
+          >
+            Right click or press Shift+F10 for context actions.
+          </div>
+        </LiquidContextMenuTrigger>
+        <LiquidContextMenuContent aria-label="Block actions">
+          <LiquidContextMenuLabel>Block</LiquidContextMenuLabel>
+          <LiquidContextMenuItem>Copy block link</LiquidContextMenuItem>
+          <LiquidContextMenuItem>Duplicate</LiquidContextMenuItem>
+          <LiquidContextMenuSeparator />
+          <LiquidContextMenuItem disabled>Delete locked</LiquidContextMenuItem>
+        </LiquidContextMenuContent>
+      </LiquidContextMenu>
 
       <LiquidCollapsible defaultOpen>
         <LiquidCollapsibleTrigger>Toggle implementation notes</LiquidCollapsibleTrigger>

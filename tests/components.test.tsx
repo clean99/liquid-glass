@@ -32,6 +32,11 @@ import {
   LiquidCollapsible,
   LiquidCollapsibleContent,
   LiquidCollapsibleTrigger,
+  LiquidContextMenu,
+  LiquidContextMenuContent,
+  LiquidContextMenuItem,
+  LiquidContextMenuLabel,
+  LiquidContextMenuTrigger,
   LiquidDirection,
   LiquidDialog,
   LiquidDialogClose,
@@ -47,6 +52,11 @@ import {
   LiquidDrawerDescription,
   LiquidDrawerTitle,
   LiquidDrawerTrigger,
+  LiquidDropdownMenu,
+  LiquidDropdownMenuContent,
+  LiquidDropdownMenuItem,
+  LiquidDropdownMenuLabel,
+  LiquidDropdownMenuTrigger,
   LiquidEmpty,
   LiquidEmptyDescription,
   LiquidEmptyIcon,
@@ -65,6 +75,7 @@ import {
   LiquidKbd,
   LiquidLens,
   LiquidLink,
+  LiquidMenubar,
   LiquidLabel,
   LiquidNav,
   LiquidNativeSelect,
@@ -539,6 +550,98 @@ describe("Liquid components", () => {
 
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
     expect(trigger).toHaveFocus();
+  });
+
+  it("opens dropdown menus and moves focus across enabled items", async () => {
+    render(
+      <LiquidDropdownMenu>
+        <LiquidDropdownMenuTrigger>Actions</LiquidDropdownMenuTrigger>
+        <LiquidDropdownMenuContent aria-label="Release actions" mode="fallback">
+          <LiquidDropdownMenuLabel>Release</LiquidDropdownMenuLabel>
+          <LiquidDropdownMenuItem>Copy link</LiquidDropdownMenuItem>
+          <LiquidDropdownMenuItem disabled>Archive</LiquidDropdownMenuItem>
+          <LiquidDropdownMenuItem>Open report</LiquidDropdownMenuItem>
+        </LiquidDropdownMenuContent>
+      </LiquidDropdownMenu>
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Actions" }));
+
+    const menu = await screen.findByRole("menu", { name: "Release actions" });
+    await waitFor(() => expect(screen.getByRole("menuitem", { name: "Copy link" })).toHaveFocus());
+
+    fireEvent.keyDown(menu, { key: "ArrowDown" });
+
+    expect(screen.getByRole("menuitem", { name: "Open report" })).toHaveFocus();
+
+    fireEvent.keyDown(menu, { key: "Escape" });
+
+    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
+    expect(screen.getByRole("button", { name: "Actions" })).toHaveFocus();
+  });
+
+  it("opens context menus with pointer and keyboard paths", async () => {
+    render(
+      <LiquidContextMenu>
+        <LiquidContextMenuTrigger>Open context target</LiquidContextMenuTrigger>
+        <LiquidContextMenuContent aria-label="Block actions" mode="fallback">
+          <LiquidContextMenuLabel>Block</LiquidContextMenuLabel>
+          <LiquidContextMenuItem>Copy block link</LiquidContextMenuItem>
+          <LiquidContextMenuItem>Duplicate</LiquidContextMenuItem>
+        </LiquidContextMenuContent>
+      </LiquidContextMenu>
+    );
+
+    const trigger = screen.getByText("Open context target");
+    fireEvent.contextMenu(trigger, { pageX: 48, pageY: 64 });
+
+    expect(await screen.findByRole("menu", { name: "Block actions" })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("menuitem", { name: "Copy block link" }));
+
+    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
+
+    trigger.focus();
+    fireEvent.keyDown(trigger, { key: "F10", shiftKey: true });
+
+    expect(await screen.findByRole("menu", { name: "Block actions" })).toBeInTheDocument();
+  });
+
+  it("navigates menubar triggers and selects menu items", async () => {
+    const onSelect = vi.fn();
+    render(
+      <LiquidMenubar
+        aria-label="Project navigation"
+        menus={[
+          {
+            label: "File",
+            value: "file",
+            items: [
+              { label: "New note", value: "new-note" },
+              { label: "Export", value: "export" }
+            ]
+          },
+          {
+            label: "View",
+            value: "view",
+            items: [{ label: "Command center", value: "command-center", onSelect }]
+          }
+        ]}
+      />
+    );
+
+    const file = screen.getByRole("menuitem", { name: "File" });
+    const view = screen.getByRole("menuitem", { name: "View" });
+    fireEvent.keyDown(file, { key: "ArrowRight" });
+    expect(view).toHaveFocus();
+
+    fireEvent.click(view);
+
+    const command = await screen.findByRole("menuitem", { name: "Command center" });
+    fireEvent.click(command);
+
+    expect(onSelect).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
   });
 
   it("shows tooltip and hover card through real focus/hover paths", async () => {

@@ -986,6 +986,14 @@
   min-width: 16rem;
 }
 
+.lg-menu {
+  position: absolute;
+  z-index: 80;
+  min-width: 12rem;
+  max-width: min(18rem, calc(100vw - 1rem));
+  padding: 0;
+}
+
 .lg-popover > .lg-surface__content,
 .lg-hover-card > .lg-surface__content {
   display: grid;
@@ -993,6 +1001,136 @@
   gap: 0.75rem;
   justify-items: stretch;
   padding: 0.95rem;
+}
+
+.lg-menu > .lg-surface__content {
+  display: grid;
+  width: 100%;
+  gap: 0.2rem;
+  justify-items: stretch;
+  padding: 0.42rem;
+}
+
+.lg-menu__label {
+  padding: 0.42rem 0.58rem 0.25rem;
+  color: var(--lg-text-muted);
+  font-size: 0.74rem;
+  font-weight: 720;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.lg-menu__item {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.55rem;
+  padding: 0.58rem 0.62rem;
+  color: color-mix(in srgb, var(--lg-text), transparent 8%);
+  background: transparent;
+  border: 0;
+  border-radius: calc(var(--lg-radius-md) - 2px);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 620;
+  line-height: 1.2;
+  text-align: left;
+  text-decoration: none;
+  text-shadow: var(--lg-control-text-shadow);
+  transition:
+    background 160ms var(--lg-ease-apple),
+    color 160ms var(--lg-ease-apple),
+    transform 160ms var(--lg-ease-apple);
+}
+
+.lg-menu__item:hover,
+.lg-menu__item:focus-visible {
+  color: rgba(255, 255, 255, 0.92);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.24), transparent 48%),
+    rgba(28, 30, 33, 0.34);
+  outline: 0;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.74),
+    0 0 10px rgba(0, 0, 0, 0.28);
+  transform: scale(1.012);
+}
+
+.lg-menu__item[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.46;
+}
+
+.lg-menu__separator {
+  height: 1px;
+  margin: 0.24rem 0.38rem;
+  background: color-mix(in srgb, var(--lg-glass-border), transparent 18%);
+}
+
+.lg-context-menu__trigger {
+  outline: 0;
+}
+
+.lg-context-menu__trigger:focus-visible {
+  border-radius: var(--lg-radius-lg);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--lg-accent), transparent 25%),
+    0 0 0 5px color-mix(in srgb, var(--lg-accent), transparent 84%);
+}
+
+.lg-menubar {
+  display: inline-flex;
+  max-width: 100%;
+}
+
+.lg-menubar__list > .lg-surface__content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.18rem;
+  padding: 0.22rem;
+}
+
+.lg-menubar__trigger {
+  min-height: 2.15rem;
+  padding: 0.42rem 0.75rem;
+  color: color-mix(in srgb, var(--lg-text), transparent 8%);
+  background: transparent;
+  border: 0;
+  border-radius: var(--lg-radius-pill);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 680;
+  line-height: 1;
+  text-shadow: var(--lg-control-text-shadow);
+  transition:
+    background 180ms var(--lg-ease-apple),
+    color 180ms var(--lg-ease-apple),
+    transform 180ms var(--lg-ease-apple);
+}
+
+.lg-menubar__trigger:hover,
+.lg-menubar__trigger:focus-visible,
+.lg-menubar__trigger[data-state="open"] {
+  color: rgba(255, 255, 255, 0.92);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.26), transparent 50%),
+    rgba(34, 36, 38, 0.36);
+  outline: 0;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.72),
+    0 0 10px rgba(0, 0, 0, 0.28);
+  transform: scale(1.018);
+}
+
+.lg-menubar__trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .lg-tooltip {
