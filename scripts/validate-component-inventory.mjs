@@ -3,8 +3,10 @@ import path from "node:path";
 
 const root = process.cwd();
 const inventoryPath = path.join(root, "docs/component-inventory.json");
+const parityPath = path.join(root, "docs/shadcn-parity.json");
 const indexPath = path.join(root, "src/index.ts");
 const inventory = JSON.parse(fs.readFileSync(inventoryPath, "utf8"));
+const parity = JSON.parse(fs.readFileSync(parityPath, "utf8"));
 const indexSource = fs.readFileSync(indexPath, "utf8");
 const errors = [];
 const seenNames = new Set();
@@ -42,6 +44,12 @@ for (const component of inventory.components) {
   }
 }
 
+for (const componentName of parity.components) {
+  if (!seenNames.has(componentName)) {
+    errors.push(`Missing shadcn parity component: ${componentName}`);
+  }
+}
+
 if (errors.length > 0) {
   throw new Error(
     `Component inventory is invalid:\n${errors.map((error) => `- ${error}`).join("\n")}`
@@ -49,4 +57,6 @@ if (errors.length > 0) {
 }
 
 const implemented = inventory.components.filter((component) => component.status === "implemented");
-console.log(`Validated ${implemented.length} implemented components in component inventory.`);
+console.log(
+  `Validated ${implemented.length} implemented components and ${parity.components.length} shadcn parity entries.`
+);

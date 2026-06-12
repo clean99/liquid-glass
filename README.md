@@ -121,13 +121,17 @@ Implemented components:
 - `LiquidAlert`
 - `LiquidAlertTitle`
 - `LiquidAlertDescription`
+- `LiquidAspectRatio`
 - `LiquidAvatar`
 - `LiquidAvatarImage`
 - `LiquidAvatarFallback`
 - `LiquidBadge`
 - `LiquidBreadcrumb`
 - `LiquidButton`
+- `LiquidButtonGroup`
 - `LiquidCheckbox`
+- `LiquidDirection`
+- `LiquidEmpty`
 - `LiquidIconButton`
 - `LiquidDialog`
 - `LiquidDialogTrigger`
@@ -138,14 +142,19 @@ Implemented components:
 - `LiquidField`
 - `LiquidLabel`
 - `LiquidInput`
+- `LiquidInputGroup`
 - `LiquidTextarea`
 - `LiquidFieldDescription`
 - `LiquidFieldError`
+- `LiquidItem`
+- `LiquidKbd`
 - `LiquidLens`
 - `LiquidSearchBox`
+- `LiquidNativeSelect`
 - `LiquidProgress`
 - `LiquidSeparator`
 - `LiquidSkeleton`
+- `LiquidSpinner`
 - `LiquidSwitch`
 - `LiquidSlider`
 - `LiquidMusicPlayerBar`
@@ -157,8 +166,12 @@ Implemented components:
 - `LiquidTabs`
 - `LiquidToolbar`
 - `LiquidLink`
+- `LiquidTypography`
 
 Coverage against shadcn/ui-style primitives is tracked in `docs/component-inventory.json`. Implemented rows are verified by `pnpm test:inventory`.
+
+The current shadcn/ui component baseline is stored in `docs/shadcn-parity.json`.
+`pnpm test:inventory` fails if the inventory misses a baseline entry.
 
 `LiquidSurface` is the only component abstraction that selects the render engine. Higher-level components compose it instead of importing `@hashintel/refractive` directly.
 

@@ -27,7 +27,9 @@
     {
       "name": "aspect-ratio",
       "export": "LiquidAspectRatio",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidAspectRatio.tsx",
+      "story": "stories/LiquidFoundation.stories.tsx",
       "category": "layout"
     },
     {
@@ -60,6 +62,14 @@
       "status": "implemented",
       "source": "src/components/LiquidButton.tsx",
       "story": "stories/LiquidButton.stories.tsx",
+      "category": "control"
+    },
+    {
+      "name": "button-group",
+      "export": "LiquidButtonGroup",
+      "status": "implemented",
+      "source": "src/components/LiquidButtonGroup.tsx",
+      "story": "stories/LiquidFoundation.stories.tsx",
       "category": "control"
     },
     {
@@ -141,6 +151,14 @@
       "category": "overlay"
     },
     {
+      "name": "direction",
+      "export": "LiquidDirection",
+      "status": "implemented",
+      "source": "src/components/LiquidDirection.tsx",
+      "story": "stories/LiquidFoundation.stories.tsx",
+      "category": "utility"
+    },
+    {
       "name": "drawer",
       "export": "LiquidDrawer",
       "status": "planned",
@@ -153,7 +171,15 @@
       "category": "overlay"
     },
     {
-      "name": "form",
+      "name": "empty",
+      "export": "LiquidEmpty",
+      "status": "implemented",
+      "source": "src/components/LiquidEmpty.tsx",
+      "story": "stories/LiquidFoundation.stories.tsx",
+      "category": "feedback"
+    },
+    {
+      "name": "field",
       "export": "LiquidField",
       "status": "implemented",
       "source": "src/components/LiquidField.tsx",
@@ -175,10 +201,34 @@
       "category": "form"
     },
     {
+      "name": "input-group",
+      "export": "LiquidInputGroup",
+      "status": "implemented",
+      "source": "src/components/LiquidInputGroup.tsx",
+      "story": "stories/LiquidFoundation.stories.tsx",
+      "category": "form"
+    },
+    {
       "name": "input-otp",
       "export": "LiquidInputOtp",
       "status": "planned",
       "category": "form"
+    },
+    {
+      "name": "item",
+      "export": "LiquidItem",
+      "status": "implemented",
+      "source": "src/components/LiquidItem.tsx",
+      "story": "stories/LiquidFoundation.stories.tsx",
+      "category": "display"
+    },
+    {
+      "name": "kbd",
+      "export": "LiquidKbd",
+      "status": "implemented",
+      "source": "src/components/LiquidKbd.tsx",
+      "story": "stories/LiquidFoundation.stories.tsx",
+      "category": "display"
     },
     {
       "name": "label",
@@ -193,6 +243,14 @@
       "export": "LiquidMenubar",
       "status": "planned",
       "category": "navigation"
+    },
+    {
+      "name": "native-select",
+      "export": "LiquidNativeSelect",
+      "status": "implemented",
+      "source": "src/components/LiquidNativeSelect.tsx",
+      "story": "stories/LiquidFoundation.stories.tsx",
+      "category": "form"
     },
     {
       "name": "navigation-menu",
@@ -283,6 +341,14 @@
       "category": "feedback"
     },
     {
+      "name": "spinner",
+      "export": "LiquidSpinner",
+      "status": "implemented",
+      "source": "src/components/LiquidSpinner.tsx",
+      "story": "stories/LiquidFoundation.stories.tsx",
+      "category": "feedback"
+    },
+    {
       "name": "slider",
       "export": "LiquidSlider",
       "status": "implemented",
@@ -353,6 +419,14 @@
       "export": "LiquidTooltip",
       "status": "planned",
       "category": "overlay"
+    },
+    {
+      "name": "typography",
+      "export": "LiquidTypography",
+      "status": "implemented",
+      "source": "src/components/LiquidTypography.tsx",
+      "story": "stories/LiquidFoundation.stories.tsx",
+      "category": "typography"
     }
   ]
 }

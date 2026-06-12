@@ -30,15 +30,20 @@ Controls are typed React components with forwarded refs where interaction needs
 DOM access. Examples:
 
 - `LiquidButton`
+- `LiquidButtonGroup`
 - `LiquidIconButton`
 - `LiquidLink`
 - `LiquidNav`
+- `LiquidNativeSelect`
 - `LiquidTabs`
 - `LiquidSearchBox`
 - `LiquidSwitch`
 - `LiquidSlider`
 - `LiquidDialog`
 - `LiquidAccordion`
+- `LiquidAspectRatio`
+- `LiquidSpinner`
+- `LiquidTypography`
 
 ## Modes
 

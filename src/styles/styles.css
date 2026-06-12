@@ -421,6 +421,41 @@
   resize: vertical;
 }
 
+.lg-native-select {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  color: color-mix(in srgb, var(--lg-text), transparent 10%);
+  appearance: none;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  outline: none;
+}
+
+.lg-native-select:disabled {
+  cursor: not-allowed;
+}
+
+.lg-native-select__chevron {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  color: color-mix(in srgb, var(--lg-text), transparent 38%);
+  font-size: 1rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.lg-input-group__inner {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 0.55rem;
+}
+
 .lg-segmented-control {
   --lg-surface-padding-x: 0.35rem;
   --lg-surface-padding-y: 0.35rem;
@@ -1392,6 +1427,222 @@
   border-color: color-mix(in srgb, var(--lg-alert-accent), transparent 50%);
 }
 
+.lg-aspect-ratio {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.lg-aspect-ratio > * {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.lg-button-group {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.lg-button-group[data-orientation="vertical"] {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.lg-direction {
+  display: contents;
+}
+
+.lg-empty {
+  display: grid;
+  justify-items: center;
+  gap: 0.65rem;
+  padding: 2rem;
+  color: var(--lg-text);
+  text-align: center;
+}
+
+.lg-empty__icon {
+  display: inline-grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border: 1px solid var(--lg-glass-border);
+  border-radius: var(--lg-radius-xl);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.08)),
+    var(--lg-glass-fill);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    0 0.8rem 1.8rem rgba(15, 23, 42, 0.14);
+}
+
+.lg-empty__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 720;
+  line-height: 1.25;
+}
+
+.lg-empty__description {
+  max-width: 24rem;
+  margin: 0;
+  color: var(--lg-text-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.lg-empty__actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.lg-item {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--lg-radius-md);
+  color: var(--lg-text);
+}
+
+.lg-item[data-interactive] {
+  cursor: pointer;
+  transition:
+    background-color 160ms var(--lg-ease-apple),
+    color 160ms var(--lg-ease-apple),
+    transform 180ms var(--lg-ease-apple);
+}
+
+.lg-item[data-interactive]:hover:not([data-disabled]) {
+  background: color-mix(in srgb, var(--lg-surface), transparent 54%);
+  transform: translateY(-1px);
+}
+
+.lg-item[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.52;
+}
+
+.lg-kbd {
+  display: inline-flex;
+  min-width: 1.55rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.16rem 0.38rem;
+  border: 1px solid color-mix(in srgb, var(--lg-glass-border), var(--lg-text) 12%);
+  border-radius: 0.42rem;
+  color: color-mix(in srgb, var(--lg-text), transparent 8%);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent),
+    color-mix(in srgb, var(--lg-surface), transparent 8%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    0 0.18rem 0 color-mix(in srgb, var(--lg-text), transparent 86%);
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+  font-size: 0.76em;
+  font-weight: 650;
+  line-height: 1.15;
+  vertical-align: text-bottom;
+}
+
+.lg-spinner {
+  display: inline-block;
+  width: var(--lg-spinner-size, 1rem);
+  height: var(--lg-spinner-size, 1rem);
+  border: max(2px, calc(var(--lg-spinner-size, 1rem) * 0.12)) solid
+    color-mix(in srgb, var(--lg-text), transparent 82%);
+  border-top-color: color-mix(in srgb, var(--lg-accent), white 18%);
+  border-radius: var(--lg-radius-pill);
+  animation: lg-spinner-spin 860ms linear infinite;
+}
+
+.lg-spinner[data-size="sm"] {
+  --lg-spinner-size: 0.85rem;
+}
+
+.lg-spinner[data-size="md"] {
+  --lg-spinner-size: 1rem;
+}
+
+.lg-spinner[data-size="lg"] {
+  --lg-spinner-size: 1.35rem;
+}
+
+@keyframes lg-spinner-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.lg-typography {
+  max-width: 72ch;
+  margin: 0;
+  color: var(--lg-text);
+  letter-spacing: 0;
+}
+
+.lg-typography[data-variant="h1"] {
+  font-size: clamp(2.4rem, 2.1rem + 1vw, 4rem);
+  font-weight: 820;
+  line-height: 0.98;
+}
+
+.lg-typography[data-variant="h2"] {
+  font-size: clamp(1.8rem, 1.6rem + 0.7vw, 2.65rem);
+  font-weight: 780;
+  line-height: 1.04;
+}
+
+.lg-typography[data-variant="h3"] {
+  font-size: 1.2rem;
+  font-weight: 720;
+  line-height: 1.18;
+}
+
+.lg-typography[data-variant="p"],
+.lg-typography[data-variant="lead"],
+.lg-typography[data-variant="muted"] {
+  line-height: 1.62;
+}
+
+.lg-typography[data-variant="lead"] {
+  color: color-mix(in srgb, var(--lg-text), transparent 18%);
+  font-size: 1.12rem;
+}
+
+.lg-typography[data-variant="muted"],
+.lg-typography[data-variant="small"] {
+  color: var(--lg-text-muted);
+}
+
+.lg-typography[data-variant="small"] {
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.lg-typography[data-variant="code"] {
+  display: inline;
+  padding: 0.12rem 0.3rem;
+  border-radius: 0.38rem;
+  background: color-mix(in srgb, var(--lg-surface), transparent 28%);
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+  font-size: 0.88em;
+}
+
 .lg-breadcrumb {
   color: var(--lg-text-muted);
   font-size: 0.92rem;
@@ -1665,6 +1916,13 @@
 @keyframes lg-skeleton-shimmer {
   to {
     transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg-spinner,
+  .lg-skeleton::after {
+    animation: none;
   }
 }
 

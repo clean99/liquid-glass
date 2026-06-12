@@ -6,6 +6,7 @@ import {
   LiquidAlert,
   LiquidAlertDescription,
   LiquidAlertTitle,
+  LiquidAspectRatio,
   LiquidAvatar,
   LiquidAvatarFallback,
   LiquidBadge,
@@ -16,8 +17,10 @@ import {
   LiquidBreadcrumbPage,
   LiquidBreadcrumbSeparator,
   LiquidButton,
+  LiquidButtonGroup,
   LiquidCard,
   LiquidCheckbox,
+  LiquidDirection,
   LiquidDialog,
   LiquidDialogClose,
   LiquidDialogContent,
@@ -26,15 +29,23 @@ import {
   LiquidDialogHeader,
   LiquidDialogTitle,
   LiquidDialogTrigger,
+  LiquidEmpty,
+  LiquidEmptyDescription,
+  LiquidEmptyIcon,
+  LiquidEmptyTitle,
   LiquidField,
   LiquidFieldDescription,
   LiquidFieldError,
   LiquidIconButton,
   LiquidInput,
+  LiquidInputGroup,
+  LiquidItem,
+  LiquidKbd,
   LiquidLens,
   LiquidLink,
   LiquidLabel,
   LiquidNav,
+  LiquidNativeSelect,
   LiquidPill,
   LiquidProgress,
   LiquidSearchBox,
@@ -43,12 +54,14 @@ import {
   LiquidSeparator,
   LiquidSlider,
   LiquidSkeleton,
+  LiquidSpinner,
   LiquidSurface,
   LiquidTabs,
   LiquidSwitch,
   LiquidTextarea,
   LiquidToggle,
   LiquidToolbar,
+  LiquidTypography,
   LiquidMusicPlayerBar,
   liquidModeStorageKey
 } from "../src";
@@ -214,6 +227,56 @@ describe("Liquid components", () => {
     expect(progress).toHaveAttribute("aria-valuenow", "150");
     expect(screen.getByRole("separator")).toHaveAttribute("aria-orientation", "vertical");
     expect(screen.getByTestId("skeleton")).toHaveAttribute("aria-hidden", "true");
+  });
+
+  it("renders lightweight shadcn parity primitives with native semantics", () => {
+    render(
+      <>
+        <LiquidAspectRatio data-testid="aspect-ratio" ratio={4 / 3}>
+          <img alt="Preview" src="/preview.png" />
+        </LiquidAspectRatio>
+        <LiquidButtonGroup aria-label="Actions">
+          <LiquidButton>Save</LiquidButton>
+          <LiquidButton>Share</LiquidButton>
+        </LiquidButtonGroup>
+        <LiquidDirection dir="rtl" data-testid="rtl">
+          مرحبا
+        </LiquidDirection>
+        <LiquidEmpty>
+          <LiquidEmptyIcon>∅</LiquidEmptyIcon>
+          <LiquidEmptyTitle>No data</LiquidEmptyTitle>
+          <LiquidEmptyDescription>Try another filter.</LiquidEmptyDescription>
+        </LiquidEmpty>
+        <LiquidInputGroup data-testid="input-group">
+          <LiquidKbd>⌘K</LiquidKbd>
+          <LiquidInput aria-label="Command search" />
+        </LiquidInputGroup>
+        <LiquidItem interactive>Open command palette</LiquidItem>
+        <LiquidNativeSelect aria-label="Mode" defaultValue="fallback">
+          <option value="fallback">Fallback</option>
+          <option value="solid">Solid</option>
+        </LiquidNativeSelect>
+        <LiquidSpinner label="Loading stories" />
+        <LiquidSpinner decorative data-testid="decorative-spinner" />
+        <LiquidTypography variant="lead">Reference material</LiquidTypography>
+      </>
+    );
+
+    expect(screen.getByTestId("aspect-ratio")).toHaveClass("lg-aspect-ratio");
+    expect(screen.getByRole("img", { name: "Preview" })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Actions" })).toHaveAttribute(
+      "data-orientation",
+      "horizontal"
+    );
+    expect(screen.getByTestId("rtl")).toHaveAttribute("dir", "rtl");
+    expect(screen.getByRole("heading", { name: "No data" })).toHaveClass("lg-empty__title");
+    expect(screen.getByText("⌘K").tagName).toBe("KBD");
+    expect(screen.getByTestId("input-group")).toHaveClass("lg-input-group__inner");
+    expect(screen.getByText("Open command palette")).toHaveAttribute("data-interactive");
+    expect(screen.getByRole("combobox", { name: "Mode" })).toHaveClass("lg-native-select");
+    expect(screen.getByRole("status", { name: "Loading stories" })).toHaveClass("lg-spinner");
+    expect(screen.getByTestId("decorative-spinner")).toHaveAttribute("aria-hidden", "true");
+    expect(screen.getByText("Reference material")).toHaveAttribute("data-variant", "lead");
   });
 
   it("renders a labeled liquid input with helper text and adornments", () => {

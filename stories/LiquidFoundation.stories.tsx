@@ -3,6 +3,7 @@ import {
   LiquidAlert,
   LiquidAlertDescription,
   LiquidAlertTitle,
+  LiquidAspectRatio,
   LiquidAvatar,
   LiquidAvatarFallback,
   LiquidBadge,
@@ -12,10 +13,27 @@ import {
   LiquidBreadcrumbList,
   LiquidBreadcrumbPage,
   LiquidBreadcrumbSeparator,
+  LiquidButton,
+  LiquidButtonGroup,
   LiquidCheckbox,
+  LiquidDirection,
+  LiquidEmpty,
+  LiquidEmptyActions,
+  LiquidEmptyDescription,
+  LiquidEmptyIcon,
+  LiquidEmptyTitle,
+  LiquidField,
+  LiquidInput,
+  LiquidInputGroup,
+  LiquidItem,
+  LiquidKbd,
+  LiquidLabel,
+  LiquidNativeSelect,
   LiquidProgress,
   LiquidSeparator,
-  LiquidSkeleton
+  LiquidSkeleton,
+  LiquidSpinner,
+  LiquidTypography
 } from "../src";
 import { StoryFrame } from "./story-fixtures";
 
@@ -69,6 +87,65 @@ export const ComponentSet: Story = {
         <LiquidProgress aria-label="Build progress" value={72} />
 
         <LiquidSeparator decorative={false} />
+
+        <LiquidButtonGroup aria-label="Document actions">
+          <LiquidButton>Preview</LiquidButton>
+          <LiquidButton>Publish</LiquidButton>
+        </LiquidButtonGroup>
+
+        <LiquidAspectRatio ratio={16 / 9}>
+          <div
+            style={{
+              display: "grid",
+              placeItems: "center",
+              borderRadius: 16,
+              background: "linear-gradient(135deg, rgba(42,128,255,.24), rgba(76,217,100,.2))"
+            }}
+          >
+            <LiquidTypography variant="h3">Aspect Ratio</LiquidTypography>
+          </div>
+        </LiquidAspectRatio>
+
+        <LiquidField>
+          <LiquidLabel htmlFor="release-channel">Release channel</LiquidLabel>
+          <LiquidInputGroup>
+            <LiquidKbd>⌘K</LiquidKbd>
+            <LiquidInput id="release-channel" placeholder="Search channels" />
+            <LiquidSpinner decorative size="sm" />
+          </LiquidInputGroup>
+        </LiquidField>
+
+        <LiquidField>
+          <LiquidLabel htmlFor="native-select">Native select</LiquidLabel>
+          <LiquidNativeSelect id="native-select" defaultValue="fallback">
+            <option value="enhanced">Enhanced</option>
+            <option value="fallback">Fallback</option>
+            <option value="solid">Solid</option>
+          </LiquidNativeSelect>
+        </LiquidField>
+
+        <LiquidEmpty>
+          <LiquidEmptyIcon>∅</LiquidEmptyIcon>
+          <LiquidEmptyTitle>No snapshots yet</LiquidEmptyTitle>
+          <LiquidEmptyDescription>
+            Visual baselines appear after running the update command.
+          </LiquidEmptyDescription>
+          <LiquidEmptyActions>
+            <LiquidButton>Create baseline</LiquidButton>
+          </LiquidEmptyActions>
+        </LiquidEmpty>
+
+        <div style={{ display: "grid", gap: 6 }}>
+          <LiquidItem interactive>
+            <LiquidBadge variant="accent">Docs</LiquidBadge>
+            <span>Open-source release checklist</span>
+          </LiquidItem>
+          <LiquidDirection dir="rtl">
+            <LiquidItem>
+              <span>RTL direction wrapper</span>
+            </LiquidItem>
+          </LiquidDirection>
+        </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <LiquidAvatar>
