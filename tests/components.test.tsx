@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom/vitest";
-import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   LiquidAccordion,
@@ -44,6 +44,8 @@ import {
   LiquidContextMenuItem,
   LiquidContextMenuLabel,
   LiquidContextMenuTrigger,
+  LiquidDataTable,
+  type LiquidDataTableColumnDef,
   LiquidDirection,
   LiquidDialog,
   LiquidDialogClose,
@@ -576,6 +578,85 @@ describe("Liquid components", () => {
     expect(screen.getByRole("region", { name: "Scrollable release notes" })).toHaveClass(
       "lg-scroll-area"
     );
+  });
+
+  it("renders a typed data table with sorting, filtering, and pagination", () => {
+    type Row = {
+      component: string;
+      owner: string;
+      status: string;
+    };
+    const rows: Row[] = [
+      { component: "Zed", owner: "Platform", status: "Reviewing" },
+      { component: "Atlas", owner: "Design", status: "Ready" },
+      { component: "Orbit", owner: "AI Lab", status: "Blocked" }
+    ];
+    const columns: LiquidDataTableColumnDef<Row>[] = [
+      { accessorKey: "component", header: "Component" },
+      { accessorKey: "owner", header: "Owner" },
+      { accessorKey: "status", header: "Status" }
+    ];
+
+    render(
+      <LiquidDataTable
+        caption="Release table"
+        columns={columns}
+        data={rows}
+        filterPlaceholder="Filter releases..."
+        getRowId={(row) => row.component}
+        initialPageSize={2}
+        pageSizeOptions={[2, 3]}
+      />
+    );
+
+    expect(screen.getByRole("table", { name: "Release table" })).toBeInTheDocument();
+    expect(screen.getByRole("searchbox", { name: "Filter table rows" })).toHaveAttribute(
+      "type",
+      "search"
+    );
+    expect(screen.getByRole("columnheader", { name: /Component/ })).toHaveAttribute(
+      "aria-sort",
+      "none"
+    );
+    expect(screen.getByText("Page 1 of 2")).toBeInTheDocument();
+    expect(screen.queryByText("Orbit")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /Component/ }));
+
+    const sortedRows = screen.getAllByRole("row").slice(1);
+    expect(within(sortedRows[0]).getByText("Atlas")).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: /Component/ })).toHaveAttribute(
+      "aria-sort",
+      "ascending"
+    );
+
+    fireEvent.change(screen.getByRole("searchbox", { name: "Filter table rows" }), {
+      target: { value: "orbit" }
+    });
+
+    expect(screen.getByText("Orbit")).toBeInTheDocument();
+    expect(screen.queryByText("Atlas")).not.toBeInTheDocument();
+    expect(screen.getByText("Page 1 of 1")).toBeInTheDocument();
+  });
+
+  it("renders data table empty state without toolbar controls", () => {
+    const columns: LiquidDataTableColumnDef<{ component: string }>[] = [
+      { accessorKey: "component", header: "Component" }
+    ];
+
+    render(
+      <LiquidDataTable
+        columns={columns}
+        data={[]}
+        emptyMessage="No matching components."
+        enableFiltering={false}
+        enablePagination={false}
+      />
+    );
+
+    expect(screen.getByText("No matching components.")).toHaveClass("lg-data-table__empty");
+    expect(screen.queryByRole("searchbox", { name: "Filter table rows" })).not.toBeInTheDocument();
+    expect(screen.queryByText(/Page/)).not.toBeInTheDocument();
   });
 
   it("renders resizable panel groups with accessible separators", () => {

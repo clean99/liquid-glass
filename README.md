@@ -152,6 +152,7 @@ Implemented components:
 - `LiquidContextMenuTrigger`
 - `LiquidContextMenuContent`
 - `LiquidContextMenuItem`
+- `LiquidDataTable`
 - `LiquidDirection`
 - `LiquidDrawer`
 - `LiquidDrawerTrigger`
@@ -302,6 +303,7 @@ The package supports system color scheme and explicit theme scopes:
 - Menu primitives use `menu` / `menuitem`, Escape dismissal, Home/End, arrow-key navigation, disabled item skipping, and context-menu keyboard fallback through Shift+F10.
 - Toast primitives use `status` for passive updates, `alert` for warning/danger variants, and expose dismiss controls with readable labels.
 - Resizable primitives wrap `react-resizable-panels`, preserving keyboard-accessible separators and panel constraints while applying Liquid Glass handle styling.
+- DataTable wraps TanStack Table for typed sorting, filtering, pagination, and `aria-sort` while keeping rows and cells as clear semantic table content.
 - Disabled controls suppress interaction and expose disabled state.
 - Focus-visible deepens and scales the material instead of drawing hard white/black rings.
 - Reduced transparency resolves to solid mode.
@@ -314,6 +316,7 @@ The package supports system color scheme and explicit theme scopes:
 - Foreground content is not placed inside a distorted filter layer.
 - The package is tree-shakable and exports CSS separately.
 - Avoid enhanced mode for article bodies, long lists, code blocks, and tables.
+- DataTable never creates enhanced refraction per row or cell; only toolbar controls may use material styling.
 
 ## Testing
 

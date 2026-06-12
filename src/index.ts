@@ -53,6 +53,7 @@ export {
   LiquidContextMenuTrigger
 } from "./components/LiquidContextMenu";
 export { LiquidDirection } from "./components/LiquidDirection";
+export { LiquidDataTable } from "./components/LiquidDataTable";
 export {
   LiquidDrawer,
   LiquidDrawerClose,
@@ -343,6 +344,7 @@ export type {
   LiquidDialogTitleProps,
   LiquidDialogTriggerProps
 } from "./components/LiquidDialog";
+export type { LiquidDataTableColumnDef, LiquidDataTableProps } from "./components/LiquidDataTable";
 export type {
   LiquidDropdownMenuContentProps,
   LiquidDropdownMenuItemProps,

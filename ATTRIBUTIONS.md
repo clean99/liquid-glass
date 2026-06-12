@@ -33,6 +33,12 @@ The visual direction is informed by Chris Feijoo's public Liquid Glass research 
   - License: MIT
   - Used as the behavior engine for `LiquidResizablePanelGroup`, `LiquidResizablePanel`, and `LiquidResizableHandle`.
 
+- `@tanstack/react-table`
+  - Package: https://www.npmjs.com/package/@tanstack/react-table
+  - Repository: https://github.com/TanStack/table
+  - License: MIT
+  - Used as the row-model, sorting, filtering, and pagination engine for `LiquidDataTable`.
+
 - Storybook demo image
   - Source: https://images.unsplash.com/photo-1579380656108-f98e4df8ea62
   - Credit shown in the story: Stephanie LeBlanc / Unsplash.

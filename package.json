@@ -81,6 +81,7 @@
   },
   "dependencies": {
     "@hashintel/refractive": "0.0.4",
+    "@tanstack/react-table": "^8.21.3",
     "react-resizable-panels": "^4.11.2"
   },
   "devDependencies": {

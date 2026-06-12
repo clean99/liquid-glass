@@ -57,6 +57,7 @@ DOM access. Examples:
 - `LiquidSheet`
 - `LiquidTabs`
 - `LiquidTable`
+- `LiquidDataTable`
 - `LiquidSearchBox`
 - `LiquidSwitch`
 - `LiquidToast`
