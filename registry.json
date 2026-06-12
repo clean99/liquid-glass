@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "clean99-liquid-glass",
+  "homepage": "https://github.com/clean99/liquid-glass",
+  "items": [
+    {
+      "name": "liquid-glass",
+      "type": "registry:ui",
+      "title": "Liquid Glass",
+      "description": "Refractive Liquid Glass React components with accessible fallbacks.",
+      "files": [
+        {
+          "path": "registry/liquid-glass.json",
+          "type": "registry:ui"
+        }
+      ]
+    }
+  ]
+}
