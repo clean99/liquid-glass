@@ -82,6 +82,8 @@
   "dependencies": {
     "@hashintel/refractive": "0.0.4",
     "@tanstack/react-table": "^8.21.3",
+    "embla-carousel": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "react-resizable-panels": "^4.11.2",
     "recharts": "^3.8.1"
   },

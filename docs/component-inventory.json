@@ -91,7 +91,9 @@
     {
       "name": "carousel",
       "export": "LiquidCarousel",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidCarousel.tsx",
+      "story": "stories/LiquidCarousel.stories.tsx",
       "category": "media"
     },
     {

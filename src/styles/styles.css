@@ -3716,6 +3716,81 @@
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--lg-glass-edge), transparent 28%);
 }
 
+.lg-carousel {
+  position: relative;
+  width: 100%;
+  color: var(--lg-text);
+}
+
+.lg-carousel__viewport {
+  overflow: hidden;
+  border-radius: var(--lg-radius-lg);
+}
+
+.lg-carousel__content {
+  display: flex;
+  touch-action: pan-y pinch-zoom;
+}
+
+.lg-carousel__content[data-orientation="vertical"] {
+  height: 22rem;
+  flex-direction: column;
+  touch-action: pan-x pinch-zoom;
+}
+
+.lg-carousel__item {
+  min-width: 0;
+  flex: 0 0 100%;
+  padding: 0.35rem;
+}
+
+.lg-carousel__item[data-orientation="vertical"] {
+  min-height: 0;
+  flex-basis: 100%;
+}
+
+.lg-carousel__button {
+  position: absolute;
+  z-index: 2;
+  width: 2.4rem;
+  min-width: 2.4rem;
+  height: 2.4rem;
+  color: var(--lg-text);
+  font-size: 1.55rem;
+  font-weight: 520;
+  line-height: 1;
+}
+
+.lg-carousel__control--previous {
+  top: 50%;
+  left: 0.75rem;
+  transform: translateY(-50%);
+}
+
+.lg-carousel__control--next {
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+}
+
+.lg-carousel--vertical .lg-carousel__control--previous {
+  top: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%) rotate(90deg);
+}
+
+.lg-carousel--vertical .lg-carousel__control--next {
+  top: auto;
+  right: auto;
+  bottom: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%) rotate(90deg);
+}
+
+.lg-carousel__button:disabled {
+  opacity: 0.42;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lg-surface {
     transition: none;

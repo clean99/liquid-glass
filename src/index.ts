@@ -29,6 +29,14 @@ export { LiquidButton } from "./components/LiquidButton";
 export { LiquidButtonGroup } from "./components/LiquidButtonGroup";
 export { LiquidCard } from "./components/LiquidCard";
 export {
+  LiquidCarousel,
+  LiquidCarouselContent,
+  LiquidCarouselItem,
+  LiquidCarouselNext,
+  LiquidCarouselPrevious,
+  useLiquidCarousel
+} from "./components/LiquidCarousel";
+export {
   LiquidChart,
   LiquidChartContainer,
   LiquidChartLegend,
@@ -280,6 +288,11 @@ export {
   resolveCommandNavigationValue
 } from "./utils/command";
 export {
+  getCarouselAxis,
+  getCarouselKeyboardAction,
+  getCarouselOrientationClass
+} from "./utils/carousel";
+export {
   buildChartCssProperties,
   buildChartStyleText,
   getChartPayloadKey,
@@ -331,6 +344,20 @@ export type {
 export type { LiquidButtonProps } from "./components/LiquidButton";
 export type { LiquidButtonGroupProps } from "./components/LiquidButtonGroup";
 export type { LiquidCardProps } from "./components/LiquidCard";
+export type {
+  LiquidCarouselApi,
+  LiquidCarouselContentProps,
+  LiquidCarouselControlProps,
+  LiquidCarouselItemProps,
+  LiquidCarouselOptions,
+  LiquidCarouselPlugin,
+  LiquidCarouselProps
+} from "./components/LiquidCarousel";
+export type {
+  LiquidCarouselDirection,
+  LiquidCarouselKeyboardAction,
+  LiquidCarouselOrientation
+} from "./utils/carousel";
 export type {
   LiquidChartContainerProps,
   LiquidChartLegendContentProps,

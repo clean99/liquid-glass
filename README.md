@@ -136,6 +136,11 @@ Implemented components:
 - `LiquidBreadcrumb`
 - `LiquidButton`
 - `LiquidButtonGroup`
+- `LiquidCarousel`
+- `LiquidCarouselContent`
+- `LiquidCarouselItem`
+- `LiquidCarouselPrevious`
+- `LiquidCarouselNext`
 - `LiquidCheckbox`
 - `LiquidCollapsible`
 - `LiquidCollapsibleTrigger`
@@ -313,6 +318,7 @@ The package supports system color scheme and explicit theme scopes:
 - Menu primitives use `menu` / `menuitem`, Escape dismissal, Home/End, arrow-key navigation, disabled item skipping, and context-menu keyboard fallback through Shift+F10.
 - Toast primitives use `status` for passive updates, `alert` for warning/danger variants, and expose dismiss controls with readable labels.
 - Resizable primitives wrap `react-resizable-panels`, preserving keyboard-accessible separators and panel constraints while applying Liquid Glass handle styling.
+- Carousel wraps Embla Carousel for drag physics, snapping, loop behavior, orientation, and API events while exposing labelled regions, slide groups, and native previous/next buttons.
 - DataTable wraps TanStack Table for typed sorting, filtering, pagination, and `aria-sort` while keeping rows and cells as clear semantic table content.
 - Chart wraps Recharts composition, scoped color variables, clear tooltip/legend content, and accessible chart output without refracting dense data labels.
 - Sidebar uses a provider-driven composition model with landmark, list, active link, trigger, and rail semantics while keeping dense navigation text outside enhanced refraction.
@@ -329,6 +335,7 @@ The package supports system color scheme and explicit theme scopes:
 - The package is tree-shakable and exports CSS separately.
 - Avoid enhanced mode for article bodies, long lists, code blocks, and tables.
 - DataTable never creates enhanced refraction per row or cell; only toolbar controls may use material styling.
+- Carousel delegates drag physics to Embla and applies material styling to the frame and controls instead of creating enhanced refraction per slide.
 
 ## Testing
 
@@ -357,6 +364,7 @@ The docs gate verifies the registry files stay present and equivalent.
 ## Documentation Map
 
 - `docs/api-overview.md`: public API shape and mode model.
+- `docs/carousel-architecture.md`: carousel composition, Embla boundary, accessibility, and test contract.
 - `docs/component-inventory.md`: implemented and planned component inventory.
 - `docs/optics-architecture.md`: physical invariants and engine boundaries.
 - `docs/reference-research.md`: Kube, rdev, and registry research notes.

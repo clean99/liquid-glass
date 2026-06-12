@@ -28,6 +28,11 @@ import {
   LiquidButton,
   LiquidButtonGroup,
   LiquidCard,
+  LiquidCarousel,
+  LiquidCarouselContent,
+  LiquidCarouselItem,
+  LiquidCarouselNext,
+  LiquidCarouselPrevious,
   LiquidChartContainer,
   LiquidChartLegendContent,
   LiquidChartTooltipContent,
@@ -167,6 +172,8 @@ import {
 describe("Liquid components", () => {
   beforeEach(() => {
     window.localStorage.clear();
+    installMatchMediaMock();
+    installIntersectionObserverMock();
     installResizeObserverMock();
   });
 
@@ -789,6 +796,30 @@ describe("Liquid components", () => {
     expect(screen.getByRole("status")).toHaveTextContent("Desktop");
     expect(screen.getByRole("status")).toHaveTextContent("186");
     expect(screen.getByText("Mobile")).toBeInTheDocument();
+  });
+
+  it("renders carousel semantics, slides, and controls", () => {
+    const setApi = vi.fn();
+    render(
+      <LiquidCarousel aria-label="Featured components" orientation="horizontal" setApi={setApi}>
+        <LiquidCarouselContent>
+          <LiquidCarouselItem>Surface</LiquidCarouselItem>
+          <LiquidCarouselItem>Button</LiquidCarouselItem>
+          <LiquidCarouselItem>Chart</LiquidCarouselItem>
+        </LiquidCarouselContent>
+        <LiquidCarouselPrevious />
+        <LiquidCarouselNext />
+      </LiquidCarousel>
+    );
+
+    const carousel = screen.getByRole("region", { name: "Featured components" });
+    expect(carousel).toHaveAttribute("aria-roledescription", "carousel");
+    expect(carousel).toHaveAttribute("data-orientation", "horizontal");
+    expect(screen.getAllByRole("group")).toHaveLength(3);
+    expect(screen.getByRole("button", { name: "Previous slide" })).toHaveClass(
+      "lg-carousel__button"
+    );
+    expect(screen.getByRole("button", { name: "Next slide" })).toHaveClass("lg-carousel__button");
   });
 
   it("renders a labeled liquid input with helper text and adornments", () => {
@@ -1447,9 +1478,56 @@ function installChromiumMocks() {
   window.matchMedia = vi.fn().mockImplementation((query: string) => ({
     matches: false,
     media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
     addEventListener: vi.fn(),
-    removeEventListener: vi.fn()
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn()
   }));
+}
+
+function installMatchMediaMock() {
+  window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn()
+  }));
+}
+
+function installIntersectionObserverMock() {
+  class IntersectionObserver {
+    readonly root = null;
+    readonly rootMargin = "";
+    readonly thresholds = [];
+
+    disconnect() {
+      return undefined;
+    }
+
+    observe() {
+      return undefined;
+    }
+
+    takeRecords() {
+      return [];
+    }
+
+    unobserve() {
+      return undefined;
+    }
+  }
+
+  vi.stubGlobal("IntersectionObserver", IntersectionObserver);
+  Object.defineProperty(window, "IntersectionObserver", {
+    configurable: true,
+    value: IntersectionObserver
+  });
 }
 
 function installResizeObserverMock() {
