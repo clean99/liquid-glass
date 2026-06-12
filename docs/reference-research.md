@@ -46,6 +46,12 @@ The local `LiquidLensDropletPhase` model intentionally separates `pressed` and
 the same wide shape after movement, which is not what the reference component
 does under real pointer input.
 
+`scripts/compare-kube-reference.mjs` now treats these interaction metrics as a
+hard contract even while the interactive pixels remain report-only. Candidate
+press and drag metrics must stay within the configured tolerances of the live
+Kube target, so future visual tuning cannot silently regress the physical
+behavior.
+
 ## rdev/liquid-glass-react
 
 The repository `rdev/liquid-glass-react` was inspected at commit

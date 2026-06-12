@@ -31,6 +31,12 @@ const references = [
       pressMs: 220
     },
     capture: "handle",
+    metricTolerances: {
+      deltaX: 4,
+      deltaY: 4,
+      heightDelta: 4,
+      widthDelta: 4
+    },
     maxDiffRatio: 0.42,
     reportOnly: true
   },
@@ -47,6 +53,12 @@ const references = [
       settleMs: 160
     },
     capture: "handle",
+    metricTolerances: {
+      deltaX: 8,
+      deltaY: 8,
+      heightDelta: 4,
+      widthDelta: 4
+    },
     maxDiffRatio: 0.45,
     reportOnly: true
   },
@@ -165,6 +177,7 @@ try {
       candidatePath,
       reference.compareRegion
     );
+    assertActionMetricParity(reference, targetAction?.metrics, candidateAction?.metrics);
     results.push({
       ...reference,
       ...diff,
@@ -348,6 +361,37 @@ function assertPointerActionMetrics(metrics, action) {
 
   if (Math.abs(metrics.deltaY) < Math.abs(action.delta.y) * 0.45) {
     throw new Error(`Drag action did not move the lens on y enough: ${JSON.stringify(metrics)}`);
+  }
+}
+
+function assertActionMetricParity(reference, targetMetrics, candidateMetrics) {
+  const tolerances = reference.metricTolerances;
+  if (!tolerances) {
+    return;
+  }
+
+  if (!targetMetrics || !candidateMetrics) {
+    throw new Error(`Missing action metrics for ${reference.name}`);
+  }
+
+  const failures = Object.entries(tolerances)
+    .map(([metricName, tolerance]) => {
+      const targetValue = targetMetrics[metricName];
+      const candidateValue = candidateMetrics[metricName];
+
+      if (!Number.isFinite(targetValue) || !Number.isFinite(candidateValue)) {
+        return `${metricName}: target=${targetValue}, candidate=${candidateValue}`;
+      }
+
+      const delta = Math.abs(candidateValue - targetValue);
+      return delta > tolerance
+        ? `${metricName}: target=${targetValue}, candidate=${candidateValue}, delta=${round(delta)}, tolerance=${tolerance}`
+        : null;
+    })
+    .filter(Boolean);
+
+  if (failures.length > 0) {
+    throw new Error(`Kube action metrics diverged for ${reference.name}: ${failures.join("; ")}`);
   }
 }
 
