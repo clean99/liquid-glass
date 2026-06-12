@@ -64,6 +64,13 @@ magnitudes into red/green SVG displacement channels, and generates specular alph
 without touching React state or the DOM. `LensReferenceEngine` only converts
 those maps into browser data URLs and wires them into the two-pass SVG filter.
 
+The reference lens can vary the two pass strengths through refraction options.
+The idle Kube-like magnifier uses `glassThickness: 88` and
+`magnificationGlassThickness: 21.5`; the active pointer state uses
+`glassThickness: 110` and `magnificationGlassThickness: 43`. Keeping those
+numbers in the pipeline makes pressed/dragged tests validate real SVG
+displacement changes instead of only checking a CSS transform.
+
 ## Edge Mask Model
 
 `sampleLiquidEdgeMask()` is the package-level contract for edge-only refraction.

@@ -3473,15 +3473,15 @@
   left: 0;
   z-index: 4;
   width: 13.125rem;
-  height: 7.5rem;
-  padding: 0.9375rem 0;
+  height: 9.375rem;
+  box-sizing: border-box;
+  padding: 0;
   border-radius: 999px;
   cursor: grab;
   touch-action: none;
   transform: translate3d(var(--lg-demo-lens-x, 0), var(--lg-demo-lens-y, 0), 0)
-    translate3d(var(--lg-demo-droplet-translate-x, 0), var(--lg-demo-droplet-translate-y, 0), 0)
-    scaleX(var(--lg-demo-droplet-scale-x, 1)) scaleY(var(--lg-demo-droplet-scale-y, 1));
-  transform-origin: var(--lg-demo-droplet-origin-x, 50%) var(--lg-demo-droplet-origin-y, 50%);
+    scaleX(var(--lg-demo-droplet-scale-x, 1)) scaleY(var(--lg-demo-droplet-scale-y, 0.8));
+  transform-origin: center;
   transition:
     filter 180ms var(--lg-ease-apple),
     transform 260ms var(--lg-ease-apple);
@@ -3504,6 +3504,8 @@
 
 .lg-precision-lens-demo__handle .lg-lens {
   pointer-events: none;
+  transform: none;
+  transform-origin: center;
 }
 
 .lg-precision-lens-demo__handle::before,

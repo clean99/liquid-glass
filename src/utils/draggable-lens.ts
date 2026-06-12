@@ -55,8 +55,8 @@ const idleDropletResponse: LiquidLensDropletResponse = {
   originY: 0.5,
   phase: "idle",
   scaleX: 1,
-  scaleY: 1,
-  transform: "translate3d(0px, 0px, 0) scaleX(1) scaleY(1)",
+  scaleY: 0.8,
+  transform: "scaleX(1) scaleY(0.8)",
   translateX: 0,
   translateY: 0
 };
@@ -121,19 +121,16 @@ export function resolveLensDropletResponse({
 
   const offsetX = originX - 0.5;
   const offsetY = originY - 0.5;
-  const axisBias = Math.min(1, Math.hypot(offsetX, offsetY) * 1.7);
   const horizontalPull = Math.abs(offsetX);
   const verticalPull = Math.abs(offsetY);
   const scaleX =
     phase === "dragging"
-      ? 1.06 + horizontalPull * 0.02 + verticalPull * 0.005
-      : 1.095 + horizontalPull * 0.045 + verticalPull * 0.015;
+      ? 1.055 + horizontalPull * 0.01 + verticalPull * 0.004
+      : 1.109 + horizontalPull * 0.018 + verticalPull * 0.008;
   const scaleY =
     phase === "dragging"
-      ? 1.161 + verticalPull * 0.065 + horizontalPull * 0.04
-      : 1.135 + verticalPull * 0.04 + horizontalPull * 0.02;
-  const translateX = offsetX * 34 * (0.55 + axisBias * 0.45);
-  const translateY = offsetY * 4 * (0.45 + axisBias * 0.35);
+      ? 0.962 + verticalPull * 0.018 + horizontalPull * 0.006
+      : 0.952 + verticalPull * 0.02 + horizontalPull * 0.01;
 
   return {
     active: true,
@@ -142,9 +139,9 @@ export function resolveLensDropletResponse({
     phase,
     scaleX: round(scaleX),
     scaleY: round(scaleY),
-    transform: `translate3d(${round(translateX)}px, ${round(translateY)}px, 0) scaleX(${round(scaleX)}) scaleY(${round(scaleY)})`,
-    translateX: round(translateX),
-    translateY: round(translateY)
+    transform: `scaleX(${round(scaleX)}) scaleY(${round(scaleY)})`,
+    translateX: 0,
+    translateY: 0
   };
 }
 

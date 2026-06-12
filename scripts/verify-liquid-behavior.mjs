@@ -169,92 +169,99 @@ async function verifyDraggableLensPlayground() {
   const page = await openStory(behaviorStories.draggableLens.id, {}, { width: 900, height: 680 });
   const locator = page.locator(behaviorStories.draggableLens.selector).first();
   const boardLocator = page.locator("[data-lg-lens-board]").first();
-  await boardLocator.waitFor({ state: "visible", timeout: 10_000 });
-  await locator.waitFor({ state: "visible", timeout: 10_000 });
-  await boardLocator.screenshot({
-    path: path.join(behaviorArtifactDir, "draggable-lens-board-idle.png")
-  });
-  await locator.screenshot({
-    path: path.join(behaviorArtifactDir, "draggable-lens-idle.png")
-  });
-  const idle = await readDraggableLensState(locator);
-  const box = await locator.boundingBox();
+  let framesPromise;
 
-  if (!box) {
-    throw new Error("draggable lens target is missing a bounding box");
+  try {
+    await boardLocator.waitFor({ state: "visible", timeout: 10_000 });
+    await locator.waitFor({ state: "visible", timeout: 10_000 });
+    await boardLocator.screenshot({
+      path: path.join(behaviorArtifactDir, "draggable-lens-board-idle.png")
+    });
+    await locator.screenshot({
+      path: path.join(behaviorArtifactDir, "draggable-lens-idle.png")
+    });
+    const idle = await readDraggableLensState(locator);
+    const box = await locator.boundingBox();
+
+    if (!box) {
+      throw new Error("draggable lens target is missing a bounding box");
+    }
+
+    await page.mouse.move(box.x + box.width * 0.42, box.y + box.height * 0.54);
+    framesPromise = recordAnimationFrames(page, behaviorStories.draggableLens.selector, 1_400);
+    await page.mouse.down();
+    await page.waitForTimeout(180);
+    await boardLocator.screenshot({
+      path: path.join(behaviorArtifactDir, "draggable-lens-board-pressed.png")
+    });
+    await locator.screenshot({
+      path: path.join(behaviorArtifactDir, "draggable-lens-pressed.png")
+    });
+    const pressed = await readDraggableLensState(locator);
+
+    assertEqual(pressed.dropletState, "pressed", "draggable lens pressed state");
+    assertGreaterThan(pressed.scaleX, 1.04, "draggable lens water-drop scaleX");
+    assertGreaterThan(pressed.scaleY, idle.scaleY + 0.12, "draggable lens water-drop scaleY");
+    assertLessThan(pressed.scaleY, 1, "draggable lens pressed scaleY stays optically flattened");
+    assertIncludes(pressed.dropletOriginX, "%", "draggable lens droplet origin x");
+    assertIncludes(pressed.dropletOriginY, "%", "draggable lens droplet origin y");
+
+    await page.mouse.move(box.x + box.width * 0.42 + 132, box.y + box.height * 0.54 + 76, {
+      steps: 8
+    });
+    await page.waitForTimeout(80);
+    await boardLocator.screenshot({
+      path: path.join(behaviorArtifactDir, "draggable-lens-board-dragged.png")
+    });
+    await locator.screenshot({
+      path: path.join(behaviorArtifactDir, "draggable-lens-dragged.png")
+    });
+    const dragged = await readDraggableLensState(locator);
+
+    assertEqual(dragged.draggingState, "true", "draggable lens dragging state");
+    assertGreaterThan(dragged.lensX, idle.lensX + 100, "draggable lens x movement");
+    assertGreaterThan(dragged.lensY, idle.lensY + 56, "draggable lens y movement");
+    assertGreaterThan(dragged.left, idle.left + 80, "draggable lens visual x movement");
+    assertGreaterThan(dragged.top, idle.top + 40, "draggable lens visual y movement");
+    assertLessThanOrEqual(dragged.scaleX, pressed.scaleX - 0.025, "dragged lens narrows vs press");
+    assertGreaterThan(dragged.scaleY, pressed.scaleY + 0.005, "dragged lens grows taller vs press");
+
+    await page.mouse.up();
+    await page.waitForTimeout(320);
+    await boardLocator.screenshot({
+      path: path.join(behaviorArtifactDir, "draggable-lens-board-released.png")
+    });
+    await locator.screenshot({
+      path: path.join(behaviorArtifactDir, "draggable-lens-released.png")
+    });
+    const frames = await framesPromise;
+    framesPromise = undefined;
+    const frameSummary = summarizeDraggableLensFrames(frames);
+    await fs.writeFile(
+      path.join(behaviorArtifactDir, "draggable-lens-frames.json"),
+      `${JSON.stringify({ frames, summary: frameSummary }, null, 2)}\n`
+    );
+
+    assertGreaterOrEqual(frameSummary.frameCount, 12, "draggable lens animation frame count");
+    assertGreaterThan(frameSummary.pressedFrameCount, 2, "draggable lens real pressed frames");
+    assertGreaterThan(frameSummary.draggingFrameCount, 2, "draggable lens real dragging frames");
+    assertGreaterThan(frameSummary.releasedFrameCount, 2, "draggable lens real release frames");
+    assertGreaterThan(frameSummary.scaleXRange, 0.035, "draggable lens animated scaleX range");
+    assertGreaterThan(frameSummary.scaleYRange, 0.025, "draggable lens animated scaleY range");
+    assertGreaterThan(frameSummary.leftRange, 80, "draggable lens animated x travel");
+    assertGreaterThan(frameSummary.topRange, 40, "draggable lens animated y travel");
+    assertGreaterThan(frameSummary.transformVariantCount, 3, "draggable lens transform variants");
+    assertApproxEqual(frameSummary.finalScaleX, 1, 0.012, "draggable lens final frame scaleX");
+    assertApproxEqual(frameSummary.finalScaleY, 0.8, 0.012, "draggable lens final frame scaleY");
+
+    const released = await readDraggableLensState(locator);
+    assertEqual(released.dropletState, "idle", "draggable lens released state");
+    assertApproxEqual(released.scaleX, 1, 0.01, "draggable lens released scaleX");
+    assertApproxEqual(released.scaleY, 0.8, 0.01, "draggable lens released scaleY");
+  } finally {
+    await framesPromise?.catch(() => []);
+    await page.close();
   }
-
-  await page.mouse.move(box.x + box.width * 0.42, box.y + box.height * 0.54);
-  const framesPromise = recordAnimationFrames(page, behaviorStories.draggableLens.selector, 1_400);
-  await page.mouse.down();
-  await page.waitForTimeout(180);
-  await boardLocator.screenshot({
-    path: path.join(behaviorArtifactDir, "draggable-lens-board-pressed.png")
-  });
-  await locator.screenshot({
-    path: path.join(behaviorArtifactDir, "draggable-lens-pressed.png")
-  });
-  const pressed = await readDraggableLensState(locator);
-
-  assertEqual(pressed.dropletState, "pressed", "draggable lens pressed state");
-  assertGreaterThan(pressed.scaleX, 1.04, "draggable lens water-drop scaleX");
-  assertGreaterThan(pressed.scaleY, 1.1, "draggable lens water-drop scaleY");
-  assertIncludes(pressed.dropletOriginX, "%", "draggable lens droplet origin x");
-  assertIncludes(pressed.dropletOriginY, "%", "draggable lens droplet origin y");
-
-  await page.mouse.move(box.x + box.width * 0.42 + 132, box.y + box.height * 0.54 + 76, {
-    steps: 8
-  });
-  await page.waitForTimeout(80);
-  await boardLocator.screenshot({
-    path: path.join(behaviorArtifactDir, "draggable-lens-board-dragged.png")
-  });
-  await locator.screenshot({
-    path: path.join(behaviorArtifactDir, "draggable-lens-dragged.png")
-  });
-  const dragged = await readDraggableLensState(locator);
-
-  assertEqual(dragged.draggingState, "true", "draggable lens dragging state");
-  assertGreaterThan(dragged.lensX, idle.lensX + 100, "draggable lens x movement");
-  assertGreaterThan(dragged.lensY, idle.lensY + 56, "draggable lens y movement");
-  assertGreaterThan(dragged.left, idle.left + 80, "draggable lens visual x movement");
-  assertGreaterThan(dragged.top, idle.top + 40, "draggable lens visual y movement");
-  assertLessThanOrEqual(dragged.scaleX, pressed.scaleX - 0.025, "dragged lens narrows vs press");
-  assertGreaterThan(dragged.scaleY, pressed.scaleY + 0.025, "dragged lens grows taller vs press");
-
-  await page.mouse.up();
-  await page.waitForTimeout(320);
-  await boardLocator.screenshot({
-    path: path.join(behaviorArtifactDir, "draggable-lens-board-released.png")
-  });
-  await locator.screenshot({
-    path: path.join(behaviorArtifactDir, "draggable-lens-released.png")
-  });
-  const frames = await framesPromise;
-  const frameSummary = summarizeDraggableLensFrames(frames);
-  await fs.writeFile(
-    path.join(behaviorArtifactDir, "draggable-lens-frames.json"),
-    `${JSON.stringify({ frames, summary: frameSummary }, null, 2)}\n`
-  );
-
-  assertGreaterOrEqual(frameSummary.frameCount, 12, "draggable lens animation frame count");
-  assertGreaterThan(frameSummary.pressedFrameCount, 2, "draggable lens real pressed frames");
-  assertGreaterThan(frameSummary.draggingFrameCount, 2, "draggable lens real dragging frames");
-  assertGreaterThan(frameSummary.releasedFrameCount, 2, "draggable lens real release frames");
-  assertGreaterThan(frameSummary.scaleXRange, 0.035, "draggable lens animated scaleX range");
-  assertGreaterThan(frameSummary.scaleYRange, 0.025, "draggable lens animated scaleY range");
-  assertGreaterThan(frameSummary.leftRange, 80, "draggable lens animated x travel");
-  assertGreaterThan(frameSummary.topRange, 40, "draggable lens animated y travel");
-  assertGreaterThan(frameSummary.transformVariantCount, 3, "draggable lens transform variants");
-  assertApproxEqual(frameSummary.finalScaleX, 1, 0.012, "draggable lens final frame scaleX");
-  assertApproxEqual(frameSummary.finalScaleY, 1, 0.012, "draggable lens final frame scaleY");
-
-  const released = await readDraggableLensState(locator);
-  assertEqual(released.dropletState, "idle", "draggable lens released state");
-  assertApproxEqual(released.scaleX, 1, 0.01, "draggable lens released scaleX");
-  assertApproxEqual(released.scaleY, 1, 0.01, "draggable lens released scaleY");
-
-  await page.close();
 }
 
 async function recordAnimationFrames(page, selector, durationMs) {
@@ -623,6 +630,12 @@ function assertGreaterThan(actual, expected, label) {
 function assertGreaterOrEqual(actual, expected, label) {
   if (!(actual >= expected)) {
     throw new Error(`${label}: expected ${actual} >= ${expected}`);
+  }
+}
+
+function assertLessThan(actual, expected, label) {
+  if (!(actual < expected)) {
+    throw new Error(`${label}: expected ${actual} < ${expected}`);
   }
 }
 

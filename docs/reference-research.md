@@ -48,6 +48,21 @@ fixture. That removes synthetic CSS artwork as a hidden variable: if the
 interactive rows drift, the remaining gap is in the lens material, the transform
 coordinate system, or the droplet response, not in a different background.
 
+The draggable magnifying glass uses the same observable geometry as the public
+reference: the optical body is `210x150`, and the idle visual height comes from
+`scaleY(0.8)`, not from making the DOM node `120px` tall. Pressed and dragged
+states change the outer optical body's scale from that baseline. The reference
+engine also changes the two filter stages during active input:
+
+- idle displacement thickness: `glassThickness: 88`,
+- active displacement thickness: `glassThickness: 110`,
+- idle magnification thickness: `magnificationGlassThickness: 21.5`,
+- active magnification thickness: `magnificationGlassThickness: 43`.
+
+This matters because the Kube component increases both the shape scale and the
+SVG displacement scale on pointer down. Matching only the DOM transform produces
+a correctly sized capsule with the wrong internal refraction.
+
 This does not replace full visual parity. It prevents a weaker failure mode:
 passing the static screenshot while breaking the interaction that makes the
 glass feel physical. The pressed and dragged screenshots are currently
@@ -61,8 +76,8 @@ Current measured interaction contract:
   of flattening the capsule,
 - drag state becomes taller and narrower than press while preserving pointer
   travel,
-- target press sample is approximately `+22px` width and `+22px` height,
-- target drag sample is approximately `+11px` width and `+25px` height.
+- target press sample is approximately `+21px` width and `+21px` height,
+- target drag sample is approximately `+12px` width and `+25px` height.
 
 The local `LiquidLensDropletPhase` model intentionally separates `pressed` and
 `dragging`. A boolean pressed state was not enough: it made the drag handle keep

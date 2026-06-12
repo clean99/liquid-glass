@@ -41,7 +41,7 @@ export const LensReferenceEngine = forwardRef<HTMLElement, LiquidEngineProps>(
     const reactId = useId();
     const filterId = `lg-lens-${reactId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
     const [maps, setMaps] = useState<LensFilterMaps | null>(null);
-    const pipeline = resolveLensReferencePipeline();
+    const pipeline = resolveLensReferencePipeline(refraction);
 
     useEffect(() => {
       let isMounted = true;

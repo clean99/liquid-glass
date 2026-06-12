@@ -5,6 +5,8 @@ import { chromium } from "playwright";
 
 /* global OffscreenCanvas, createImageBitmap, document, getComputedStyle */
 
+process.env.PW_TEST_SCREENSHOT_NO_FONTS_READY = "1";
+
 const staticDir = path.resolve(process.env.STORYBOOK_STATIC_DIR ?? "storybook-static-test");
 const artifactDir = path.resolve("test-results/kube-reference");
 const targetUrl = "https://kube.io/blog/liquid-glass-css-svg/";
@@ -480,10 +482,6 @@ function assertPointerActionMetrics(metrics, action) {
 function assertActionMetricParity(reference, targetMetrics, candidateMetrics) {
   const tolerances = reference.metricTolerances;
   if (!tolerances) {
-    return;
-  }
-
-  if (reference.reportOnly) {
     return;
   }
 

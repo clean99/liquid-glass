@@ -128,12 +128,23 @@ describe("Liquid Glass physics contract", () => {
       })
     ).toBeCloseTo(pipeline.stages[1]?.scale ?? 0, 6);
     expect(lensPipelineSource).toContain("glassThickness: 88");
+    expect(lensPipelineSource).toContain("magnificationGlassThickness: 21.5");
     expect(lensPipelineSource).toContain("refractiveIndex: 1.5");
     expect(lensSource).toContain("referenceLensDisplacementRefraction");
     expect(lensSource).toContain('engine = "refractive"');
     expect(lensSource).toContain('engine === "reference" ? "reference-lens" : "refractive"');
     expect(lensSource).not.toContain("defaultLensMagnificationRefraction");
     expect(lensSource).not.toContain('className="lg-lens__core"');
+  });
+
+  it("can increase the reference lens filter strength for the pressed Kube state", () => {
+    const pipeline = resolveLensReferencePipeline({
+      glassThickness: 110,
+      magnificationGlassThickness: 43
+    });
+
+    expect(pipeline.stages[0]?.scale).toBeCloseTo(48.0071220172629, 6);
+    expect(pipeline.stages[1]?.scale).toBeCloseTo(122.80891678834695, 6);
   });
 
   it("keeps the reference lens engine as a real two-pass SVG filter", () => {
@@ -186,6 +197,23 @@ describe("Liquid Glass physics contract", () => {
         width: 210
       }).hasOverlappingSlices
     ).toBe(true);
+  });
+
+  it("keeps the draggable precision handle at the optical Kube lens bounds", () => {
+    const handleRule = collectCssRuleBodies(styles, ".lg-precision-lens-demo__handle").join("\n");
+    const handleLensRule = collectCssRuleBodies(
+      styles,
+      ".lg-precision-lens-demo__handle .lg-lens"
+    ).join("\n");
+
+    expect(handleRule).toContain("width: 13.125rem");
+    expect(handleRule).toContain("height: 9.375rem");
+    expect(handleRule).toContain("box-sizing: border-box");
+    expect(handleRule).toContain("padding: 0");
+    expect(handleRule).toContain("scaleY(var(--lg-demo-droplet-scale-y, 0.8))");
+    expect(handleRule).toContain("transform-origin: center");
+    expect(handleLensRule).toContain("transform: none");
+    expect(handleRule).not.toContain("padding: 0.9375rem 0");
   });
 
   it("keeps foreground content outside the displacement/filter layer", () => {

@@ -28,9 +28,23 @@ const meta = {
 export default meta;
 type Story = StoryObj;
 
-const precisionLensSize = { width: 210, height: 120 };
+const precisionLensSize = { width: 210, height: 150 };
 const precisionLensBounds = { width: 706, height: 460, padding: 16 };
 const precisionLensInitialPosition = { x: 19.5, y: 34.5 };
+const precisionLensIdleRefraction = {
+  blur: 0,
+  glassThickness: 88,
+  bezelWidth: 18,
+  refractiveIndex: 1.5,
+  specularOpacity: 0.5,
+  specularAngle: 0.8,
+  magnificationGlassThickness: 21.5
+};
+const precisionLensActiveRefraction = {
+  ...precisionLensIdleRefraction,
+  glassThickness: 110,
+  magnificationGlassThickness: 43
+};
 const kubeLensImage =
   "https://images.unsplash.com/photo-1579380656108-f98e4df8ea62?q=80&w=800&auto=format&fit=crop";
 
@@ -52,14 +66,7 @@ export const KubeReference: Story = {
         <KubeLensBoard referenceFrame="magnifying-glass">
           <LiquidLens
             engine="reference"
-            refraction={{
-              blur: 0,
-              glassThickness: 88,
-              bezelWidth: 18,
-              refractiveIndex: 1.5,
-              specularOpacity: 0.5,
-              specularAngle: 0.8
-            }}
+            refraction={precisionLensIdleRefraction}
             style={{ position: "absolute", top: 34.5, left: 19.5, zIndex: 3 }}
           />
         </KubeLensBoard>
@@ -212,14 +219,9 @@ function DraggablePrecisionLensDemo() {
         >
           <LiquidLens
             engine="reference"
-            refraction={{
-              blur: 0,
-              glassThickness: 88,
-              bezelWidth: 18,
-              refractiveIndex: 1.5,
-              specularOpacity: 0.5,
-              specularAngle: 0.8
-            }}
+            refraction={
+              droplet.active ? precisionLensActiveRefraction : precisionLensIdleRefraction
+            }
           />
         </div>
       </KubeLensBoard>

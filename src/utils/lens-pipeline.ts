@@ -29,6 +29,7 @@ export const referenceLensGeometry = {
 export const referenceLensDisplacementRefraction = {
   blur: 0,
   glassThickness: 88,
+  magnificationGlassThickness: 21.5,
   bezelWidth: 18,
   refractiveIndex: 1.5,
   radius: referenceLensGeometry.radius,
@@ -36,22 +37,30 @@ export const referenceLensDisplacementRefraction = {
   specularAngle: 0.8
 } satisfies RefractiveOptions;
 
-export function resolveLensReferencePipeline(): LensPipeline {
+export function resolveLensReferencePipeline(
+  refraction: Partial<RefractiveOptions> = {}
+): LensPipeline {
+  const displacementRefraction = {
+    ...referenceLensDisplacementRefraction,
+    ...refraction
+  };
   const magnificationStage = createStage({
     bezelWidth: 0,
-    glassThickness: 21.5,
+    glassThickness:
+      displacementRefraction.magnificationGlassThickness ??
+      referenceLensDisplacementRefraction.magnificationGlassThickness,
     mapFalloffWidth: referenceLensGeometry.radius,
     name: "magnification"
   });
   const displacementStage = createStage({
-    bezelWidth: referenceLensDisplacementRefraction.bezelWidth ?? 0,
-    glassThickness: referenceLensDisplacementRefraction.glassThickness ?? 0,
+    bezelWidth: displacementRefraction.bezelWidth ?? 0,
+    glassThickness: displacementRefraction.glassThickness ?? 0,
     mapFalloffWidth: referenceLensGeometry.radius,
     name: "displacement"
   });
 
   return {
-    displacementRefraction: referenceLensDisplacementRefraction,
+    displacementRefraction,
     geometry: referenceLensGeometry,
     stages: [magnificationStage, displacementStage]
   };
