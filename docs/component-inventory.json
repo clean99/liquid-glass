@@ -315,7 +315,9 @@
     {
       "name": "resizable",
       "export": "LiquidResizable",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidResizable.tsx",
+      "story": "stories/LiquidResizable.stories.tsx",
       "category": "layout"
     },
     {

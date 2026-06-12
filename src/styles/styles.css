@@ -2837,6 +2837,93 @@
   box-shadow: inset 0 0 0 0.25rem color-mix(in srgb, var(--lg-accent), transparent 78%);
 }
 
+.lg-resizable {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--lg-glass-border), transparent 20%);
+  border-radius: var(--lg-radius-lg);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    color-mix(in srgb, var(--lg-surface), transparent 10%);
+  box-shadow: var(--lg-glass-shadow);
+}
+
+.lg-resizable[data-panel-group-direction="vertical"] {
+  flex-direction: column;
+}
+
+.lg-resizable__panel {
+  min-width: 0;
+  min-height: 0;
+}
+
+.lg-resizable__handle {
+  position: relative;
+  display: flex;
+  flex: 0 0 0.75rem;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent),
+    color-mix(in srgb, var(--lg-glass-fill), transparent 46%);
+  outline: 0;
+  transition:
+    background 170ms var(--lg-ease-apple),
+    box-shadow 180ms var(--lg-ease-apple);
+}
+
+.lg-resizable__handle[data-panel-group-direction="vertical"] {
+  flex-basis: 0.75rem;
+  background:
+    linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.1), transparent),
+    color-mix(in srgb, var(--lg-glass-fill), transparent 46%);
+}
+
+.lg-resizable__handle:hover,
+.lg-resizable__handle:focus-visible,
+.lg-resizable__handle[data-resize-handle-state="drag"] {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.24), transparent 62%),
+    color-mix(in srgb, var(--lg-glass-fill-strong), transparent 32%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 0 0 1px color-mix(in srgb, var(--lg-accent), transparent 46%);
+}
+
+.lg-resizable__handle-grip {
+  display: grid;
+  width: 0.42rem;
+  height: 1.9rem;
+  align-content: center;
+  justify-content: center;
+  gap: 0.22rem;
+  color: color-mix(in srgb, var(--lg-text), transparent 38%);
+}
+
+.lg-resizable__handle-grip > span {
+  display: block;
+  width: 0.18rem;
+  height: 0.18rem;
+  border-radius: var(--lg-radius-pill);
+  background: currentColor;
+  box-shadow: 0 0.34rem 0 currentColor;
+}
+
+.lg-resizable__handle[data-panel-group-direction="vertical"] .lg-resizable__handle-grip {
+  width: 1.9rem;
+  height: 0.42rem;
+  grid-auto-flow: column;
+}
+
+.lg-resizable__handle[data-panel-group-direction="vertical"] .lg-resizable__handle-grip > span {
+  width: 0.18rem;
+  height: 0.18rem;
+  box-shadow: 0.34rem 0 0 currentColor;
+}
+
 .lg-separator {
   flex: none;
   background: linear-gradient(

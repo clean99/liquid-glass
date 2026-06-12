@@ -130,6 +130,12 @@ export {
 } from "./components/LiquidPopover";
 export { LiquidProgress } from "./components/LiquidProgress";
 export { LiquidRadioGroup } from "./components/LiquidRadioGroup";
+export {
+  LiquidResizable,
+  LiquidResizableHandle,
+  LiquidResizablePanel,
+  LiquidResizablePanelGroup
+} from "./components/LiquidResizable";
 export { LiquidScrollArea } from "./components/LiquidScrollArea";
 export { LiquidSearchBox } from "./components/LiquidSearchBox";
 export { LiquidSegmentedControl } from "./components/LiquidSegmentedControl";
@@ -403,6 +409,16 @@ export type {
   LiquidRadioGroupProps,
   LiquidRadioInputProps
 } from "./components/LiquidRadioGroup";
+export type {
+  LiquidResizableHandleProps,
+  LiquidResizablePanelGroupProps,
+  LiquidResizablePanelProps
+} from "./components/LiquidResizable";
+export type {
+  GroupImperativeHandle as LiquidResizableGroupHandle,
+  Layout as LiquidResizableLayout,
+  PanelImperativeHandle as LiquidResizablePanelHandle
+} from "react-resizable-panels";
 export type { LiquidScrollAreaProps } from "./components/LiquidScrollArea";
 export type { LiquidSearchBoxProps } from "./components/LiquidSearchBox";
 export type {

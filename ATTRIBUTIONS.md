@@ -27,6 +27,12 @@ The visual direction is informed by Chris Feijoo's public Liquid Glass research 
   - Mentioned by `rdev/liquid-glass-react` as an adaptation source for shader utilities.
   - Used only as an attribution and research trail. No source code has been copied into this package.
 
+- `react-resizable-panels`
+  - Package: https://www.npmjs.com/package/react-resizable-panels
+  - Repository: https://github.com/bvaughn/react-resizable-panels
+  - License: MIT
+  - Used as the behavior engine for `LiquidResizablePanelGroup`, `LiquidResizablePanel`, and `LiquidResizableHandle`.
+
 - Storybook demo image
   - Source: https://images.unsplash.com/photo-1579380656108-f98e4df8ea62
   - Credit shown in the story: Stephanie LeBlanc / Unsplash.

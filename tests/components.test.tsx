@@ -100,6 +100,9 @@ import {
   LiquidPopoverTrigger,
   LiquidProgress,
   LiquidRadioGroup,
+  LiquidResizableHandle,
+  LiquidResizablePanel,
+  LiquidResizablePanelGroup,
   LiquidScrollArea,
   LiquidSearchBox,
   LiquidProvider,
@@ -143,6 +146,7 @@ import {
 describe("Liquid components", () => {
   beforeEach(() => {
     window.localStorage.clear();
+    installResizeObserverMock();
   });
 
   afterEach(() => {
@@ -572,6 +576,29 @@ describe("Liquid components", () => {
     expect(screen.getByRole("region", { name: "Scrollable release notes" })).toHaveClass(
       "lg-scroll-area"
     );
+  });
+
+  it("renders resizable panel groups with accessible separators", () => {
+    render(
+      <LiquidResizablePanelGroup
+        aria-label="Workspace split"
+        id="workspace"
+        style={{ height: 240 }}
+      >
+        <LiquidResizablePanel defaultSize="35%" id="sidebar" minSize="20%">
+          Sidebar
+        </LiquidResizablePanel>
+        <LiquidResizableHandle id="sidebar-main" withHandle />
+        <LiquidResizablePanel defaultSize="65%" id="main" minSize="30%">
+          Main
+        </LiquidResizablePanel>
+      </LiquidResizablePanelGroup>
+    );
+
+    expect(screen.getByText("Sidebar").closest("[data-panel]")).toBeInTheDocument();
+    expect(screen.getByText("Sidebar").closest(".lg-resizable__panel")).toBeInTheDocument();
+    expect(screen.getByRole("separator")).toHaveClass("lg-resizable__handle");
+    expect(screen.getByRole("separator")).toHaveAttribute("aria-orientation", "vertical");
   });
 
   it("renders a labeled liquid input with helper text and adornments", () => {
@@ -1208,22 +1235,7 @@ function installChromiumMocks() {
       );
     })
   });
-  vi.stubGlobal(
-    "ResizeObserver",
-    class ResizeObserver {
-      observe() {
-        return undefined;
-      }
-
-      unobserve() {
-        return undefined;
-      }
-
-      disconnect() {
-        return undefined;
-      }
-    }
-  );
+  installResizeObserverMock();
 
   Object.defineProperty(window.navigator, "userAgent", {
     configurable: true,
@@ -1248,4 +1260,26 @@ function installChromiumMocks() {
     addEventListener: vi.fn(),
     removeEventListener: vi.fn()
   }));
+}
+
+function installResizeObserverMock() {
+  class ResizeObserver {
+    observe() {
+      return undefined;
+    }
+
+    unobserve() {
+      return undefined;
+    }
+
+    disconnect() {
+      return undefined;
+    }
+  }
+
+  vi.stubGlobal("ResizeObserver", ResizeObserver);
+  Object.defineProperty(window, "ResizeObserver", {
+    configurable: true,
+    value: ResizeObserver
+  });
 }

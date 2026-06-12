@@ -49,6 +49,10 @@ DOM access. Examples:
 - `LiquidPagination`
 - `LiquidPopover`
 - `LiquidRadioGroup`
+- `LiquidResizable`
+- `LiquidResizablePanelGroup`
+- `LiquidResizablePanel`
+- `LiquidResizableHandle`
 - `LiquidScrollArea`
 - `LiquidSheet`
 - `LiquidTabs`

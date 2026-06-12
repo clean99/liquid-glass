@@ -138,9 +138,12 @@ export const LiquidCommand = forwardRef<HTMLElement, LiquidCommandProps>(functio
     [isControlled, onValueChange, setUncontrolledQuery]
   );
 
-  const setActiveValue = useCallback((nextValue: string) => {
-    setRequestedActiveValue(nextValue);
-  }, [setRequestedActiveValue]);
+  const setActiveValue = useCallback(
+    (nextValue: string) => {
+      setRequestedActiveValue(nextValue);
+    },
+    [setRequestedActiveValue]
+  );
 
   const selectValue = useCallback(
     (selectedValue: string) => {
@@ -155,18 +158,21 @@ export const LiquidCommand = forwardRef<HTMLElement, LiquidCommandProps>(functio
     [filter, onValueSelect, query]
   );
 
-  const registerItem = useCallback((item: LiquidCommandRegisteredItem) => {
-    itemMapRef.current.set(item.value, item);
-    setItems(Array.from(itemMapRef.current.values()));
+  const registerItem = useCallback(
+    (item: LiquidCommandRegisteredItem) => {
+      itemMapRef.current.set(item.value, item);
+      setItems(Array.from(itemMapRef.current.values()));
 
-    return () => {
-      const currentItem = itemMapRef.current.get(item.value);
-      if (currentItem?.id === item.id) {
-        itemMapRef.current.delete(item.value);
-        setItems(Array.from(itemMapRef.current.values()));
-      }
-    };
-  }, [setItems]);
+      return () => {
+        const currentItem = itemMapRef.current.get(item.value);
+        if (currentItem?.id === item.id) {
+          itemMapRef.current.delete(item.value);
+          setItems(Array.from(itemMapRef.current.values()));
+        }
+      };
+    },
+    [setItems]
+  );
 
   const valueForContext = useMemo<LiquidCommandContextValue>(
     () => ({

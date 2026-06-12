@@ -80,7 +80,8 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "@hashintel/refractive": "0.0.4"
+    "@hashintel/refractive": "0.0.4",
+    "react-resizable-panels": "^4.11.2"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.0",
