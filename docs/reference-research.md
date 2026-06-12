@@ -43,6 +43,11 @@ The same script also performs real pointer actions for the magnifying-glass demo
 - drag the lens across text edges and capture the held drag state,
 - compare those interactive screenshots against the matching Storybook board.
 
+The static and draggable Storybook stories now share the same Kube-sized board
+fixture. That removes synthetic CSS artwork as a hidden variable: if the
+interactive rows drift, the remaining gap is in the lens material, the transform
+coordinate system, or the droplet response, not in a different background.
+
 This does not replace full visual parity. It prevents a weaker failure mode:
 passing the static screenshot while breaking the interaction that makes the
 glass feel physical. The pressed and dragged screenshots are currently
