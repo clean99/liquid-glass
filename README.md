@@ -203,6 +203,10 @@ Implemented components:
 - `LiquidSheetClose`
 - `LiquidSkeleton`
 - `LiquidSpinner`
+- `LiquidToast`
+- `LiquidToastClose`
+- `LiquidToaster`
+- `LiquidSonner`
 - `LiquidSwitch`
 - `LiquidSlider`
 - `LiquidMusicPlayerBar`
@@ -283,6 +287,7 @@ The package supports system color scheme and explicit theme scopes:
 - `LiquidTabs` uses `tablist` / `tab` / `tabpanel`, roving tab index, Home/End, and arrow-key navigation.
 - `LiquidAccordion` uses native trigger buttons, `aria-expanded`, labelled region panels, and Arrow/Home/End focus movement.
 - Menu primitives use `menu` / `menuitem`, Escape dismissal, Home/End, arrow-key navigation, disabled item skipping, and context-menu keyboard fallback through Shift+F10.
+- Toast primitives use `status` for passive updates, `alert` for warning/danger variants, and expose dismiss controls with readable labels.
 - Disabled controls suppress interaction and expose disabled state.
 - Focus-visible deepens and scales the material instead of drawing hard white/black rings.
 - Reduced transparency resolves to solid mode.

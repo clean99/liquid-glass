@@ -387,7 +387,9 @@
     {
       "name": "sonner",
       "export": "LiquidToaster",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidToast.tsx",
+      "story": "stories/LiquidToast.stories.tsx",
       "category": "feedback"
     },
     {
@@ -425,7 +427,9 @@
     {
       "name": "toast",
       "export": "LiquidToast",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidToast.tsx",
+      "story": "stories/LiquidToast.stories.tsx",
       "category": "feedback"
     },
     {

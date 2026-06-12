@@ -53,6 +53,8 @@ DOM access. Examples:
 - `LiquidTable`
 - `LiquidSearchBox`
 - `LiquidSwitch`
+- `LiquidToast`
+- `LiquidToaster`
 - `LiquidSlider`
 - `LiquidDialog`
 - `LiquidAccordion`

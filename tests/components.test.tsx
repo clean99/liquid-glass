@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom/vitest";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   LiquidAccordion,
@@ -120,6 +120,8 @@ import {
   LiquidTableHeader,
   LiquidTableRow,
   LiquidTextarea,
+  LiquidToast,
+  LiquidToaster,
   LiquidToggle,
   LiquidToolbar,
   LiquidTooltip,
@@ -127,6 +129,7 @@ import {
   LiquidTooltipTrigger,
   LiquidTypography,
   LiquidMusicPlayerBar,
+  liquidToast,
   liquidModeStorageKey
 } from "../src";
 
@@ -136,6 +139,7 @@ describe("Liquid components", () => {
   });
 
   afterEach(() => {
+    liquidToast.clear();
     cleanup();
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
@@ -224,6 +228,42 @@ describe("Liquid components", () => {
     expect(screen.getByText("No critical accessibility violations.")).toHaveClass(
       "lg-alert__description"
     );
+  });
+
+  it("renders standalone toast with status and alert semantics", () => {
+    render(
+      <>
+        <LiquidToast description="Reference check completed." title="Build passed" />
+        <LiquidToast
+          description="Review before release."
+          title="Baseline changed"
+          variant="warning"
+        />
+      </>
+    );
+
+    expect(screen.getByRole("status")).toHaveTextContent("Build passed");
+    expect(screen.getByRole("alert")).toHaveTextContent("Baseline changed");
+  });
+
+  it("renders toaster queue and dismisses toast records", async () => {
+    render(<LiquidToaster position="top-center" />);
+
+    act(() => {
+      liquidToast.success({
+        title: "Published",
+        description: "The package output is ready.",
+        duration: 0
+      });
+    });
+
+    const toaster = screen.getByRole("list", { name: "Notifications" });
+    expect(toaster).toHaveAttribute("data-position", "top-center");
+    expect(await screen.findByRole("status")).toHaveTextContent("Published");
+
+    fireEvent.click(screen.getByRole("button", { name: "Dismiss notification" }));
+
+    await waitFor(() => expect(screen.queryByRole("status")).not.toBeInTheDocument());
   });
 
   it("renders badge variants without losing readable content layer", () => {
