@@ -157,7 +157,9 @@
     {
       "name": "date-picker",
       "export": "LiquidDatePicker",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidDatePicker.tsx",
+      "story": "stories/LiquidDatePicker.stories.tsx",
       "category": "date-time"
     },
     {

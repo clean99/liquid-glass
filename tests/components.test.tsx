@@ -55,6 +55,7 @@ import {
   LiquidContextMenuTrigger,
   LiquidDataTable,
   type LiquidDataTableColumnDef,
+  LiquidDatePicker,
   LiquidDirection,
   LiquidDialog,
   LiquidDialogClose,
@@ -839,6 +840,38 @@ describe("Liquid components", () => {
       screen.getByRole("button", { name: /Friday, June 12th, 2026, selected/i })
     ).toBeInTheDocument();
     expect(screen.getByRole("gridcell", { name: "12" })).toHaveAttribute("aria-selected", "true");
+  });
+
+  it("opens a date picker and emits a selected date", () => {
+    const onValueChange = vi.fn();
+    render(
+      <LiquidDatePicker
+        aria-label="Choose release date"
+        calendarProps={{ defaultMonth: new Date(2026, 5, 1) }}
+        onValueChange={onValueChange}
+      />
+    );
+
+    const trigger = screen.getByRole("button", { name: "Choose release date" });
+    expect(trigger).toHaveTextContent("Pick a date");
+
+    fireEvent.click(trigger);
+    fireEvent.click(screen.getByRole("button", { name: /Friday, June 12th, 2026/i }));
+
+    expect(onValueChange).toHaveBeenCalledWith(new Date(2026, 5, 12));
+  });
+
+  it("renders a range date picker value", () => {
+    render(
+      <LiquidDatePicker
+        mode="range"
+        value={{ from: new Date(2026, 5, 8), to: new Date(2026, 5, 12) }}
+      />
+    );
+
+    expect(screen.getByRole("button", { name: "Choose date range" })).toHaveTextContent(
+      "Jun 8, 2026 - Jun 12, 2026"
+    );
   });
 
   it("renders a labeled liquid input with helper text and adornments", () => {

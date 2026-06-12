@@ -32,6 +32,7 @@ DOM access. Examples:
 - `LiquidButton`
 - `LiquidButtonGroup`
 - `LiquidCalendar`
+- `LiquidDatePicker`
 - `LiquidCarousel`
 - `LiquidCarouselContent`
 - `LiquidCarouselItem`

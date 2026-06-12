@@ -163,6 +163,7 @@ Implemented components:
 - `LiquidChartTooltipContent`
 - `LiquidChartLegendContent`
 - `LiquidDataTable`
+- `LiquidDatePicker`
 - `LiquidDirection`
 - `LiquidDrawer`
 - `LiquidDrawerTrigger`
@@ -370,6 +371,7 @@ The docs gate verifies the registry files stay present and equivalent.
 - `docs/calendar-architecture.md`: DayPicker boundary, date-grid accessibility, and test contract.
 - `docs/carousel-architecture.md`: carousel composition, Embla boundary, accessibility, and test contract.
 - `docs/component-inventory.md`: implemented and planned component inventory.
+- `docs/date-picker-architecture.md`: DatePicker composition boundary, local date semantics, and accessibility contract.
 - `docs/optics-architecture.md`: physical invariants and engine boundaries.
 - `docs/reference-research.md`: Kube, rdev, and registry research notes.
 - `docs/testing.md`: local and CI validation strategy.
