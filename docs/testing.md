@@ -8,6 +8,7 @@ pnpm typecheck
 pnpm test:docs
 pnpm test:inventory
 pnpm test:unit
+pnpm test:a11y
 pnpm test:e2e
 pnpm test:storybook
 pnpm build
@@ -38,7 +39,21 @@ pnpm test:visual
 pnpm test:visual:update
 ```
 
-The Storybook behavior test opens the built Storybook in Chromium and performs real pointer actions for the draggable lens board. The test records `requestAnimationFrame` samples and asserts pressed, dragging, and released animation states.
+`pnpm test:storybook` builds static Storybook and checks the enhanced-mode
+contract for representative stories: resolved mode, SVG `url(...)` filter use,
+radius, dimensions, and background material values.
+
+`pnpm test:e2e` builds static Storybook, opens it in Chromium, and performs real
+pointer actions for focus, hover, active press, and the draggable lens board. The
+test uses real pointer actions instead of synthetic DOM events, records
+`requestAnimationFrame` samples, and asserts pressed, dragging, and released
+animation states.
+
+`pnpm test:a11y` builds static Storybook, opens representative component stories in
+Chromium, runs `@axe-core/playwright`, writes `test-results/a11y/storybook-a11y-summary.json`,
+and fails on any `critical` or `serious` accessibility violation. This is the CI
+gate; the Storybook addon is useful while developing, but it is not treated as
+the only source of truth.
 
 `pnpm test:kube-reference` captures the public Kube reference page and matching
 Storybook stories. It includes static component screenshots plus

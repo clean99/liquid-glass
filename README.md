@@ -360,6 +360,7 @@ pnpm test:docs
 pnpm test:inventory
 pnpm test:unit
 pnpm test:e2e
+pnpm test:a11y
 pnpm test:storybook
 pnpm test:kube-reference
 pnpm build
@@ -367,7 +368,17 @@ pnpm test:package
 pnpm verify
 ```
 
-`test:storybook` builds Storybook, opens stories in Chromium, checks enhanced mode contracts, focus/hover/active behavior, and records real pointer-driven drag frames for the draggable lens board.
+`test:storybook` builds Storybook, opens stories in Chromium, and checks
+enhanced-mode rendering contracts such as resolved mode, SVG filter use, radius,
+dimensions, and material values.
+
+`test:e2e` builds Storybook and runs real browser interaction checks for
+focus/hover/active behavior, reduced motion, and pointer-driven drag frames for
+the draggable lens board.
+
+`test:a11y` builds static Storybook and runs `@axe-core/playwright` against
+representative component stories. CI fails on critical or serious violations,
+and writes the JSON summary under `test-results/a11y`.
 
 `pnpm verify` is the release gate. It runs formatting, linting, typechecking,
 docs and inventory validation, unit/component/physics checks, Storybook

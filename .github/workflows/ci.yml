@@ -22,6 +22,7 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm format
       - run: pnpm lint
       - run: pnpm typecheck
@@ -33,6 +34,8 @@ jobs:
       - run: pnpm test:components
       - run: pnpm test:physics
       - run: pnpm test:storybook
+      - run: pnpm test:e2e
+      - run: pnpm test:a11y
       - run: pnpm build
       - run: pnpm test:package
 
@@ -42,6 +45,8 @@ jobs:
           name: ci-test-results
           path: |
             test-results
-            storybook-static-behavior
+            storybook-static-contracts
+            storybook-static-e2e
+            storybook-static-a11y
             playwright-report
           if-no-files-found: ignore

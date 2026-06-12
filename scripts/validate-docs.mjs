@@ -56,6 +56,7 @@ const requiredFiles = [
   "registry/liquid-glass.json",
   "scripts/build-component-registry.mjs",
   "scripts/check-shadcn-parity.mjs",
+  "scripts/verify-storybook-a11y.mjs",
   "schema/component-inventory.schema.json",
   "schema/shadcn-parity.schema.json",
   ".github/workflows/ci.yml",
@@ -84,6 +85,9 @@ mustInclude("README.md", [
   "test:registry",
   "test:shadcn-parity",
   "test:kube-reference",
+  "test:a11y",
+  "test:e2e",
+  "@axe-core/playwright",
   "shadcn-style Registry"
 ]);
 
@@ -130,6 +134,11 @@ mustInclude("docs/testing.md", [
   "requestAnimationFrame",
   "test:kube-reference",
   "test:package",
+  "test:a11y",
+  "test:e2e",
+  "@axe-core/playwright",
+  "critical",
+  "serious",
   "sideEffects",
   "tests/displacement-map.test.ts",
   "tests/edge-mask.test.ts"
@@ -139,6 +148,7 @@ mustInclude("CONTRIBUTING.md", ["pnpm verify", "pnpm test:docs", "pnpm test:inve
 mustInclude("docs/open-source-release.md", [
   "pnpm verify",
   "pnpm pack --dry-run",
+  "pnpm test:a11y",
   "pnpm release",
   "NPM_TOKEN",
   "publishConfig.access"
@@ -149,7 +159,18 @@ mustInclude(".github/workflows/release.yml", [
   "NPM_TOKEN",
   "playwright install --with-deps chromium"
 ]);
-mustInclude(".github/workflows/ci.yml", ["pnpm test:registry", "pnpm test:shadcn-parity"]);
+mustInclude(".github/workflows/ci.yml", [
+  "playwright install --with-deps chromium",
+  "pnpm test:registry",
+  "pnpm test:shadcn-parity",
+  "pnpm test:e2e",
+  "pnpm test:a11y"
+]);
+mustInclude(".github/workflows/pages.yml", [
+  "playwright install --with-deps chromium",
+  "pnpm test:a11y",
+  "actions/deploy-pages"
+]);
 mustInclude(".changeset/config.json", [
   '"access": "public"',
   '"baseBranch": "main"',
@@ -163,6 +184,12 @@ if (fs.existsSync(path.join(root, "package.json"))) {
   }
   if (!packageJson.scripts?.["test:e2e"]) {
     errors.push("package.json must include test:e2e");
+  }
+  if (!packageJson.scripts?.["test:e2e"]?.includes("verify-liquid-behavior.mjs")) {
+    errors.push("package.json test:e2e must run the real Storybook interaction gate");
+  }
+  if (!packageJson.scripts?.["test:a11y"]?.includes("verify-storybook-a11y.mjs")) {
+    errors.push("package.json test:a11y must run the Storybook axe gate");
   }
   if (packageJson.publishConfig?.access !== "public") {
     errors.push("package.json publishConfig.access must be public");

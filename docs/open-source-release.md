@@ -45,8 +45,9 @@ default to private publishing on npm unless this is explicit.
 
 ## GitHub Pages
 
-The `pages.yml` workflow builds Storybook and deploys it through GitHub Pages
-Actions. Repository settings must use "GitHub Actions" as the Pages source.
+The `pages.yml` workflow installs Chromium, runs `pnpm test:a11y`, builds
+Storybook, and deploys it through GitHub Pages Actions. Repository settings must
+use "GitHub Actions" as the Pages source.
 
 ## Rollback
 
