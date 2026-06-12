@@ -3,8 +3,21 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   LiquidAccordion,
+  LiquidAlert,
+  LiquidAlertDescription,
+  LiquidAlertTitle,
+  LiquidAvatar,
+  LiquidAvatarFallback,
+  LiquidBadge,
+  LiquidBreadcrumb,
+  LiquidBreadcrumbItem,
+  LiquidBreadcrumbLink,
+  LiquidBreadcrumbList,
+  LiquidBreadcrumbPage,
+  LiquidBreadcrumbSeparator,
   LiquidButton,
   LiquidCard,
+  LiquidCheckbox,
   LiquidDialog,
   LiquidDialogClose,
   LiquidDialogContent,
@@ -23,10 +36,13 @@ import {
   LiquidLabel,
   LiquidNav,
   LiquidPill,
+  LiquidProgress,
   LiquidSearchBox,
   LiquidProvider,
   LiquidSegmentedControl,
+  LiquidSeparator,
   LiquidSlider,
+  LiquidSkeleton,
   LiquidSurface,
   LiquidTabs,
   LiquidSwitch,
@@ -115,6 +131,89 @@ describe("Liquid components", () => {
       "lg-searchbox__input"
     );
     expect(container.querySelector("svg.lg-searchbox__magnifier")).toBeInTheDocument();
+  });
+
+  it("renders liquid alert title and description with status semantics", () => {
+    render(
+      <LiquidAlert variant="info">
+        <LiquidAlertTitle>Build passed</LiquidAlertTitle>
+        <LiquidAlertDescription>No critical accessibility violations.</LiquidAlertDescription>
+      </LiquidAlert>
+    );
+
+    const alert = screen.getByRole("status");
+    expect(alert).toHaveAttribute("data-variant", "info");
+    expect(screen.getByRole("heading", { name: "Build passed" })).toHaveClass("lg-alert__title");
+    expect(screen.getByText("No critical accessibility violations.")).toHaveClass(
+      "lg-alert__description"
+    );
+  });
+
+  it("renders badge variants without losing readable content layer", () => {
+    render(<LiquidBadge variant="success">Stable</LiquidBadge>);
+
+    const badge = screen.getByText("Stable").closest(".lg-badge");
+    expect(badge).toHaveAttribute("data-variant", "success");
+    expect(screen.getByText("Stable")).toHaveClass("lg-surface__content");
+  });
+
+  it("renders breadcrumb navigation with the current page", () => {
+    render(
+      <LiquidBreadcrumb>
+        <LiquidBreadcrumbList>
+          <LiquidBreadcrumbItem>
+            <LiquidBreadcrumbLink href="/">Home</LiquidBreadcrumbLink>
+            <LiquidBreadcrumbSeparator />
+          </LiquidBreadcrumbItem>
+          <LiquidBreadcrumbItem>
+            <LiquidBreadcrumbPage>Writing</LiquidBreadcrumbPage>
+          </LiquidBreadcrumbItem>
+        </LiquidBreadcrumbList>
+      </LiquidBreadcrumb>
+    );
+
+    expect(screen.getByRole("navigation", { name: "Breadcrumb" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
+    expect(screen.getByText("Writing")).toHaveAttribute("aria-current", "page");
+  });
+
+  it("renders avatar fallback content", () => {
+    render(
+      <LiquidAvatar size="lg">
+        <LiquidAvatarFallback>KH</LiquidAvatarFallback>
+      </LiquidAvatar>
+    );
+
+    expect(screen.getByText("KH")).toHaveClass("lg-avatar__fallback");
+    expect(screen.getByText("KH").closest(".lg-avatar")).toHaveAttribute("data-size", "lg");
+  });
+
+  it("renders native checkbox semantics with description", () => {
+    render(<LiquidCheckbox description="Included in release notes.">Publish</LiquidCheckbox>);
+
+    const checkbox = screen.getByRole("checkbox", { name: /Publish/ });
+    expect(checkbox).not.toBeChecked();
+
+    fireEvent.click(screen.getByText("Publish"));
+
+    expect(checkbox).toBeChecked();
+    expect(screen.getByText("Included in release notes.")).toHaveClass("lg-checkbox__description");
+  });
+
+  it("renders progress, separator, and skeleton primitives", () => {
+    render(
+      <>
+        <LiquidProgress aria-label="Release progress" max={200} value={150} />
+        <LiquidSeparator decorative={false} orientation="vertical" />
+        <LiquidSkeleton data-testid="skeleton" />
+      </>
+    );
+
+    const progress = screen.getByRole("progressbar", { name: "Release progress" });
+    expect(progress).toHaveAttribute("aria-valuemax", "200");
+    expect(progress).toHaveAttribute("aria-valuenow", "150");
+    expect(screen.getByRole("separator")).toHaveAttribute("aria-orientation", "vertical");
+    expect(screen.getByTestId("skeleton")).toHaveAttribute("aria-hidden", "true");
   });
 
   it("renders a labeled liquid input with helper text and adornments", () => {

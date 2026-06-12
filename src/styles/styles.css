@@ -1309,6 +1309,365 @@
   border-color: color-mix(in srgb, var(--lg-accent), white 14%);
 }
 
+.lg-alert {
+  display: block;
+  min-width: 0;
+}
+
+.lg-alert > .lg-surface__content {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.lg-alert__title {
+  margin: 0;
+  color: var(--lg-text);
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+.lg-alert__description {
+  margin: 0;
+  color: var(--lg-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.lg-alert[data-variant="info"],
+.lg-badge[data-variant="accent"] {
+  --lg-alert-accent: var(--lg-accent);
+}
+
+.lg-alert[data-variant="success"],
+.lg-badge[data-variant="success"] {
+  --lg-alert-accent: #34c759;
+}
+
+.lg-alert[data-variant="warning"],
+.lg-badge[data-variant="warning"] {
+  --lg-alert-accent: #ff9f0a;
+}
+
+.lg-alert[data-variant="danger"],
+.lg-badge[data-variant="danger"] {
+  --lg-alert-accent: #ff453a;
+}
+
+.lg-alert[data-variant="info"],
+.lg-alert[data-variant="success"],
+.lg-alert[data-variant="warning"],
+.lg-alert[data-variant="danger"] {
+  border-color: color-mix(in srgb, var(--lg-alert-accent), transparent 54%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 0 0 1px color-mix(in srgb, var(--lg-alert-accent), transparent 78%),
+    var(--lg-glass-shadow);
+}
+
+.lg-badge {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 1.65rem;
+  vertical-align: middle;
+}
+
+.lg-badge > .lg-surface__content {
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.24rem 0.58rem;
+  color: var(--lg-text);
+  font-size: 0.76rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.lg-badge[data-variant="accent"],
+.lg-badge[data-variant="success"],
+.lg-badge[data-variant="warning"],
+.lg-badge[data-variant="danger"] {
+  border-color: color-mix(in srgb, var(--lg-alert-accent), transparent 50%);
+}
+
+.lg-breadcrumb {
+  color: var(--lg-text-muted);
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.lg-breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.42rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.lg-breadcrumb__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  min-width: 0;
+}
+
+.lg-breadcrumb__link {
+  color: inherit;
+  text-decoration: none;
+  transition:
+    color 160ms var(--lg-ease-apple),
+    text-shadow 160ms var(--lg-ease-apple);
+}
+
+.lg-breadcrumb__link:hover {
+  color: var(--lg-text);
+}
+
+.lg-breadcrumb__link:focus-visible {
+  outline: none;
+  color: var(--lg-text);
+  text-shadow: 0 0 1rem color-mix(in srgb, var(--lg-accent), transparent 24%);
+}
+
+.lg-breadcrumb__page {
+  max-width: 18rem;
+  overflow: hidden;
+  color: var(--lg-text);
+  font-weight: 620;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lg-breadcrumb__separator {
+  color: color-mix(in srgb, var(--lg-text-muted), transparent 24%);
+  user-select: none;
+}
+
+.lg-avatar {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  width: var(--lg-avatar-size, 2.5rem);
+  height: var(--lg-avatar-size, 2.5rem);
+  overflow: hidden;
+  place-items: center;
+  border: 1px solid var(--lg-glass-border);
+  border-radius: var(--lg-radius-pill);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.08)),
+    var(--lg-glass-fill);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 0.65rem 1.6rem rgba(15, 23, 42, 0.16);
+}
+
+.lg-avatar[data-size="sm"] {
+  --lg-avatar-size: 2rem;
+}
+
+.lg-avatar[data-size="md"] {
+  --lg-avatar-size: 2.5rem;
+}
+
+.lg-avatar[data-size="lg"] {
+  --lg-avatar-size: 3.25rem;
+}
+
+.lg-avatar__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lg-avatar__fallback {
+  color: var(--lg-text);
+  font-size: calc(var(--lg-avatar-size, 2.5rem) * 0.38);
+  font-weight: 720;
+  letter-spacing: 0;
+}
+
+.lg-checkbox {
+  display: inline-flex;
+  min-width: 0;
+  color: var(--lg-text);
+  cursor: pointer;
+}
+
+.lg-checkbox[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.lg-checkbox__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.lg-checkbox__surface > .lg-surface__content {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.72rem;
+  align-items: center;
+  padding: 0.65rem 0.78rem;
+}
+
+.lg-checkbox__control {
+  position: relative;
+  width: 1.12rem;
+  height: 1.12rem;
+  border: 1px solid color-mix(in srgb, var(--lg-text), transparent 68%);
+  border-radius: 0.38rem;
+  background: color-mix(in srgb, var(--lg-surface), transparent 14%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    0 0.35rem 0.9rem rgba(15, 23, 42, 0.12);
+}
+
+.lg-checkbox__control::after {
+  position: absolute;
+  top: 0.12rem;
+  left: 0.34rem;
+  width: 0.32rem;
+  height: 0.58rem;
+  border: solid white;
+  border-width: 0 0.13rem 0.13rem 0;
+  content: "";
+  opacity: 0;
+  transform: rotate(42deg) scale(0.75);
+  transition:
+    opacity 160ms var(--lg-ease-apple),
+    transform 180ms var(--lg-ease-apple);
+}
+
+.lg-checkbox__input:checked + .lg-checkbox__surface .lg-checkbox__control {
+  border-color: color-mix(in srgb, var(--lg-accent), transparent 18%);
+  background: linear-gradient(135deg, var(--lg-accent), var(--lg-accent-2));
+}
+
+.lg-checkbox__input:checked + .lg-checkbox__surface .lg-checkbox__control::after {
+  opacity: 1;
+  transform: rotate(42deg) scale(1);
+}
+
+.lg-checkbox__input:focus-visible + .lg-checkbox__surface {
+  transform: scale(1.018);
+  filter: drop-shadow(0 0.55rem 1.4rem rgba(0, 0, 0, 0.16));
+}
+
+.lg-checkbox__body {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.lg-checkbox__label {
+  font-size: 0.92rem;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.lg-checkbox__description {
+  color: var(--lg-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.lg-progress {
+  width: 100%;
+}
+
+.lg-progress__track {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 0.62rem;
+  overflow: hidden;
+  border: 1px solid var(--lg-glass-border);
+  border-radius: var(--lg-radius-pill);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24), transparent),
+    color-mix(in srgb, var(--lg-surface), transparent 12%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.06);
+}
+
+.lg-progress__indicator {
+  display: block;
+  width: var(--lg-progress-value, 0%);
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--lg-accent), var(--lg-accent-2));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 0 1.2rem color-mix(in srgb, var(--lg-accent), transparent 58%);
+  transition: width 260ms var(--lg-ease-apple);
+}
+
+.lg-separator {
+  flex: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--lg-text), transparent 78%),
+    transparent
+  );
+}
+
+.lg-separator[data-orientation="horizontal"] {
+  width: 100%;
+  height: 1px;
+}
+
+.lg-separator[data-orientation="vertical"] {
+  width: 1px;
+  height: 1.5rem;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--lg-text), transparent 78%),
+    transparent
+  );
+}
+
+.lg-skeleton {
+  position: relative;
+  min-height: 1rem;
+  overflow: hidden;
+  border-radius: var(--lg-radius-md);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24), transparent),
+    color-mix(in srgb, var(--lg-surface), transparent 12%);
+}
+
+.lg-skeleton::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  content: "";
+  transform: translateX(-100%);
+  animation: lg-skeleton-shimmer 1.35s var(--lg-ease-apple) infinite;
+}
+
+@keyframes lg-skeleton-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
 .lg-precision-lens-demo {
   min-height: 38rem;
   padding: 2.5rem;
@@ -1598,8 +1957,10 @@
   .lg-surface--interactive:not(.lg-surface--disabled):focus-visible,
   .lg-tabs__tab:focus-visible,
   .lg-searchbox:focus-within,
-  .lg-field-control:focus-within {
+  .lg-field-control:focus-within,
+  .lg-skeleton::after {
     transform: none;
+    animation: none;
   }
 }
 

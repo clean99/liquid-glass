@@ -46,6 +46,7 @@ pnpm install
 pnpm dev
 pnpm lint
 pnpm typecheck
+pnpm test:inventory
 pnpm test:unit
 pnpm test:storybook
 pnpm build
@@ -116,7 +117,16 @@ Implemented components:
 - `LiquidSurface`
 - `FallbackGlassSurface`
 - `LiquidAccordion`
+- `LiquidAlert`
+- `LiquidAlertTitle`
+- `LiquidAlertDescription`
+- `LiquidAvatar`
+- `LiquidAvatarImage`
+- `LiquidAvatarFallback`
+- `LiquidBadge`
+- `LiquidBreadcrumb`
 - `LiquidButton`
+- `LiquidCheckbox`
 - `LiquidIconButton`
 - `LiquidDialog`
 - `LiquidDialogTrigger`
@@ -132,6 +142,9 @@ Implemented components:
 - `LiquidFieldError`
 - `LiquidLens`
 - `LiquidSearchBox`
+- `LiquidProgress`
+- `LiquidSeparator`
+- `LiquidSkeleton`
 - `LiquidSwitch`
 - `LiquidSlider`
 - `LiquidMusicPlayerBar`
@@ -143,6 +156,8 @@ Implemented components:
 - `LiquidTabs`
 - `LiquidToolbar`
 - `LiquidLink`
+
+Coverage against shadcn/ui-style primitives is tracked in `docs/component-inventory.json`. Implemented rows are verified by `pnpm test:inventory`.
 
 `LiquidSurface` is the only component abstraction that selects the render engine. Higher-level components compose it instead of importing `@hashintel/refractive` directly.
 
@@ -212,6 +227,7 @@ The repository includes unit, component, SSR, CSS contract, Storybook behavior, 
 ```sh
 pnpm lint
 pnpm typecheck
+pnpm test:inventory
 pnpm test:unit
 pnpm test:storybook
 pnpm test:kube-reference
