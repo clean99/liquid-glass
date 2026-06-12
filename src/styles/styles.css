@@ -755,6 +755,80 @@
   margin-bottom: 0;
 }
 
+.lg-collapsible {
+  display: grid;
+  gap: 0.7rem;
+  max-width: 100%;
+}
+
+.lg-collapsible__content {
+  display: block;
+}
+
+.lg-collapsible__content > .lg-surface__content {
+  display: block;
+  width: 100%;
+  padding: 0.85rem 1rem;
+}
+
+.lg-popover,
+.lg-hover-card,
+.lg-tooltip {
+  position: absolute;
+  z-index: 70;
+  max-width: min(24rem, calc(100vw - 1rem));
+}
+
+.lg-popover,
+.lg-hover-card {
+  min-width: 16rem;
+}
+
+.lg-popover > .lg-surface__content,
+.lg-hover-card > .lg-surface__content {
+  display: grid;
+  width: 100%;
+  gap: 0.75rem;
+  justify-items: stretch;
+  padding: 0.95rem;
+}
+
+.lg-tooltip {
+  max-width: min(18rem, calc(100vw - 1rem));
+  min-height: 0;
+  pointer-events: none;
+}
+
+.lg-tooltip > .lg-surface__content {
+  padding: 0.42rem 0.62rem;
+  color: var(--lg-text);
+  font-size: 0.78rem;
+  font-weight: 620;
+  line-height: 1.25;
+  text-align: center;
+  text-shadow: var(--lg-control-text-shadow);
+}
+
+[data-lg-theme="dark"] .lg-tooltip > .lg-surface__content {
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.75),
+    0 0 10px rgba(0, 0, 0, 0.28);
+}
+
+.lg-tooltip__trigger,
+.lg-hover-card__trigger {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, currentColor, transparent 54%);
+  text-underline-offset: 0.18em;
+}
+
+.lg-tooltip__trigger:focus-visible,
+.lg-hover-card__trigger:focus-visible {
+  outline: 0;
+  text-shadow: 0 0 0.85rem color-mix(in srgb, var(--lg-accent), transparent 32%);
+}
+
 .lg-dialog {
   width: min(34rem, calc(100vw - 2rem));
   max-height: min(82vh, calc(100vh - 2rem));
@@ -817,6 +891,52 @@
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 0.55rem;
+}
+
+.lg-sheet {
+  width: min(30rem, calc(100vw - 1.25rem));
+  height: auto;
+  max-height: calc(100vh - 1.25rem);
+}
+
+.lg-sheet[data-side="right"],
+.lg-sheet[data-side="left"] {
+  position: fixed;
+  top: 0.625rem;
+  bottom: 0.625rem;
+  height: calc(100vh - 1.25rem);
+  max-height: none;
+  margin: 0;
+}
+
+.lg-sheet[data-side="right"] {
+  right: 0.625rem;
+  left: auto;
+}
+
+.lg-sheet[data-side="left"] {
+  right: auto;
+  left: 0.625rem;
+}
+
+.lg-sheet[data-side="top"],
+.lg-sheet[data-side="bottom"] {
+  position: fixed;
+  right: 0.625rem;
+  left: 0.625rem;
+  width: auto;
+  max-width: none;
+  margin: 0;
+}
+
+.lg-sheet[data-side="top"] {
+  top: 0.625rem;
+  bottom: auto;
+}
+
+.lg-sheet[data-side="bottom"] {
+  top: auto;
+  bottom: 0.625rem;
 }
 
 .lg-surface--fallback,

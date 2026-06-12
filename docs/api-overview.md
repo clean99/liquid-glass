@@ -31,16 +31,21 @@ DOM access. Examples:
 
 - `LiquidButton`
 - `LiquidButtonGroup`
+- `LiquidCollapsible`
+- `LiquidHoverCard`
 - `LiquidIconButton`
 - `LiquidLink`
 - `LiquidNav`
 - `LiquidNativeSelect`
+- `LiquidPopover`
+- `LiquidSheet`
 - `LiquidTabs`
 - `LiquidSearchBox`
 - `LiquidSwitch`
 - `LiquidSlider`
 - `LiquidDialog`
 - `LiquidAccordion`
+- `LiquidTooltip`
 - `LiquidAspectRatio`
 - `LiquidSpinner`
 - `LiquidTypography`

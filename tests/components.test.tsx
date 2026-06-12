@@ -20,6 +20,9 @@ import {
   LiquidButtonGroup,
   LiquidCard,
   LiquidCheckbox,
+  LiquidCollapsible,
+  LiquidCollapsibleContent,
+  LiquidCollapsibleTrigger,
   LiquidDirection,
   LiquidDialog,
   LiquidDialogClose,
@@ -36,6 +39,9 @@ import {
   LiquidField,
   LiquidFieldDescription,
   LiquidFieldError,
+  LiquidHoverCard,
+  LiquidHoverCardContent,
+  LiquidHoverCardTrigger,
   LiquidIconButton,
   LiquidInput,
   LiquidInputGroup,
@@ -47,6 +53,10 @@ import {
   LiquidNav,
   LiquidNativeSelect,
   LiquidPill,
+  LiquidPopover,
+  LiquidPopoverClose,
+  LiquidPopoverContent,
+  LiquidPopoverTrigger,
   LiquidProgress,
   LiquidSearchBox,
   LiquidProvider,
@@ -54,6 +64,12 @@ import {
   LiquidSeparator,
   LiquidSlider,
   LiquidSkeleton,
+  LiquidSheet,
+  LiquidSheetClose,
+  LiquidSheetContent,
+  LiquidSheetDescription,
+  LiquidSheetTitle,
+  LiquidSheetTrigger,
   LiquidSpinner,
   LiquidSurface,
   LiquidTabs,
@@ -61,6 +77,9 @@ import {
   LiquidTextarea,
   LiquidToggle,
   LiquidToolbar,
+  LiquidTooltip,
+  LiquidTooltipContent,
+  LiquidTooltipTrigger,
   LiquidTypography,
   LiquidMusicPlayerBar,
   liquidModeStorageKey
@@ -333,6 +352,94 @@ describe("Liquid components", () => {
     expect(textarea.tagName).toBe("TEXTAREA");
     expect(textarea).toHaveClass("lg-textarea");
     expect(textarea.closest(".lg-surface")).toHaveClass("lg-textarea-surface");
+  });
+
+  it("toggles collapsible content with labelled region semantics", async () => {
+    render(
+      <LiquidCollapsible>
+        <LiquidCollapsibleTrigger>Implementation notes</LiquidCollapsibleTrigger>
+        <LiquidCollapsibleContent>Keep content outside distorted layers.</LiquidCollapsibleContent>
+      </LiquidCollapsible>
+    );
+
+    const trigger = screen.getByRole("button", { name: "Implementation notes" });
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(screen.queryByText("Keep content outside distorted layers.")).not.toBeInTheDocument();
+
+    fireEvent.click(trigger);
+
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+    expect(await screen.findByRole("region", { name: "Implementation notes" })).toHaveTextContent(
+      "Keep content outside distorted layers."
+    );
+  });
+
+  it("opens and closes an accessible liquid popover", async () => {
+    render(
+      <LiquidPopover>
+        <LiquidPopoverTrigger>Mode details</LiquidPopoverTrigger>
+        <LiquidPopoverContent mode="fallback">
+          <h2>Fallback mode</h2>
+          <p>Readable material for Safari and Firefox.</p>
+          <LiquidPopoverClose>Close popover</LiquidPopoverClose>
+        </LiquidPopoverContent>
+      </LiquidPopover>
+    );
+
+    const trigger = screen.getByRole("button", { name: "Mode details" });
+    fireEvent.click(trigger);
+
+    const popover = await screen.findByRole("dialog", { name: "Mode details" });
+    expect(popover).toHaveTextContent("Readable material for Safari and Firefox.");
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+    fireEvent.keyDown(popover, { key: "Escape" });
+
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    expect(trigger).toHaveFocus();
+  });
+
+  it("shows tooltip and hover card through real focus/hover paths", async () => {
+    render(
+      <>
+        <LiquidTooltip delayDuration={0}>
+          <LiquidTooltipTrigger>Help</LiquidTooltipTrigger>
+          <LiquidTooltipContent>Keyboard accessible hint</LiquidTooltipContent>
+        </LiquidTooltip>
+        <LiquidHoverCard openDelay={0}>
+          <LiquidHoverCardTrigger href="#author">Author</LiquidHoverCardTrigger>
+          <LiquidHoverCardContent>Systems notes and essays.</LiquidHoverCardContent>
+        </LiquidHoverCard>
+      </>
+    );
+
+    fireEvent.focus(screen.getByRole("button", { name: "Help" }));
+
+    expect(await screen.findByRole("tooltip")).toHaveTextContent("Keyboard accessible hint");
+
+    fireEvent.mouseEnter(screen.getByRole("link", { name: "Author" }));
+
+    expect(await screen.findByRole("dialog")).toHaveTextContent("Systems notes and essays.");
+  });
+
+  it("renders sheet as side-mounted dialog content", async () => {
+    render(
+      <LiquidSheet>
+        <LiquidSheetTrigger>Open settings</LiquidSheetTrigger>
+        <LiquidSheetContent side="left" mode="fallback">
+          <LiquidSheetTitle>Settings</LiquidSheetTitle>
+          <LiquidSheetDescription>Controls for the current view.</LiquidSheetDescription>
+          <LiquidSheetClose>Close settings</LiquidSheetClose>
+        </LiquidSheetContent>
+      </LiquidSheet>
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Open settings" }));
+
+    const sheet = await screen.findByRole("dialog", { name: "Settings" });
+    expect(sheet).toHaveClass("lg-sheet");
+    expect(sheet).toHaveAttribute("data-side", "left");
+    expect(sheet).toHaveTextContent("Controls for the current view.");
   });
 
   it("opens and closes an accessible liquid dialog", async () => {

@@ -109,7 +109,9 @@
     {
       "name": "collapsible",
       "export": "LiquidCollapsible",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidCollapsible.tsx",
+      "story": "stories/LiquidOverlay.stories.tsx",
       "category": "disclosure"
     },
     {
@@ -189,7 +191,9 @@
     {
       "name": "hover-card",
       "export": "LiquidHoverCard",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidHoverCard.tsx",
+      "story": "stories/LiquidOverlay.stories.tsx",
       "category": "overlay"
     },
     {
@@ -269,7 +273,9 @@
     {
       "name": "popover",
       "export": "LiquidPopover",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidPopover.tsx",
+      "story": "stories/LiquidOverlay.stories.tsx",
       "category": "overlay"
     },
     {
@@ -323,7 +329,9 @@
     {
       "name": "sheet",
       "export": "LiquidSheet",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidSheet.tsx",
+      "story": "stories/LiquidOverlay.stories.tsx",
       "category": "overlay"
     },
     {
@@ -417,7 +425,9 @@
     {
       "name": "tooltip",
       "export": "LiquidTooltip",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidTooltip.tsx",
+      "story": "stories/LiquidOverlay.stories.tsx",
       "category": "overlay"
     },
     {
