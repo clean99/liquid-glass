@@ -129,6 +129,8 @@ mustInclude("docs/testing.md", [
   "pressed and dragged magnifying-glass screenshots",
   "requestAnimationFrame",
   "test:kube-reference",
+  "test:package",
+  "sideEffects",
   "tests/displacement-map.test.ts",
   "tests/edge-mask.test.ts"
 ]);
