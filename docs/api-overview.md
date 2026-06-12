@@ -37,9 +37,13 @@ DOM access. Examples:
 - `LiquidLink`
 - `LiquidNav`
 - `LiquidNativeSelect`
+- `LiquidPagination`
 - `LiquidPopover`
+- `LiquidRadioGroup`
+- `LiquidScrollArea`
 - `LiquidSheet`
 - `LiquidTabs`
+- `LiquidTable`
 - `LiquidSearchBox`
 - `LiquidSwitch`
 - `LiquidSlider`

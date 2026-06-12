@@ -63,6 +63,15 @@ export { LiquidLink } from "./components/LiquidLink";
 export { LiquidMusicPlayerBar } from "./components/LiquidMusicPlayerBar";
 export { LiquidNav } from "./components/LiquidNav";
 export { LiquidNativeSelect } from "./components/LiquidNativeSelect";
+export {
+  LiquidPagination,
+  LiquidPaginationEllipsis,
+  LiquidPaginationItem,
+  LiquidPaginationLink,
+  LiquidPaginationList,
+  LiquidPaginationNext,
+  LiquidPaginationPrevious
+} from "./components/LiquidPagination";
 export { LiquidPill } from "./components/LiquidPill";
 export {
   LiquidPopover,
@@ -71,6 +80,8 @@ export {
   LiquidPopoverTrigger
 } from "./components/LiquidPopover";
 export { LiquidProgress } from "./components/LiquidProgress";
+export { LiquidRadioGroup } from "./components/LiquidRadioGroup";
+export { LiquidScrollArea } from "./components/LiquidScrollArea";
 export { LiquidSearchBox } from "./components/LiquidSearchBox";
 export { LiquidSegmentedControl } from "./components/LiquidSegmentedControl";
 export { LiquidSeparator } from "./components/LiquidSeparator";
@@ -88,6 +99,17 @@ export {
 } from "./components/LiquidSheet";
 export { LiquidSpinner } from "./components/LiquidSpinner";
 export { LiquidSurface } from "./components/LiquidSurface";
+export {
+  LiquidTable,
+  LiquidTableBody,
+  LiquidTableCaption,
+  LiquidTableCell,
+  LiquidTableContainer,
+  LiquidTableFooter,
+  LiquidTableHead,
+  LiquidTableHeader,
+  LiquidTableRow
+} from "./components/LiquidTable";
 export { LiquidTabs } from "./components/LiquidTabs";
 export { LiquidSwitch } from "./components/LiquidSwitch";
 export { LiquidToggle } from "./components/LiquidToggle";
@@ -241,6 +263,15 @@ export type { LiquidLinkProps } from "./components/LiquidLink";
 export type { LiquidMusicPlayerBarProps } from "./components/LiquidMusicPlayerBar";
 export type { LiquidNavProps } from "./components/LiquidNav";
 export type { LiquidNativeSelectProps } from "./components/LiquidNativeSelect";
+export type {
+  LiquidPaginationEllipsisProps,
+  LiquidPaginationItemProps,
+  LiquidPaginationLinkProps,
+  LiquidPaginationListProps,
+  LiquidPaginationNextProps,
+  LiquidPaginationPreviousProps,
+  LiquidPaginationProps
+} from "./components/LiquidPagination";
 export type { LiquidPillProps } from "./components/LiquidPill";
 export type {
   LiquidPopoverCloseProps,
@@ -249,6 +280,12 @@ export type {
   LiquidPopoverTriggerProps
 } from "./components/LiquidPopover";
 export type { LiquidProgressProps } from "./components/LiquidProgress";
+export type {
+  LiquidRadioGroupOption,
+  LiquidRadioGroupProps,
+  LiquidRadioInputProps
+} from "./components/LiquidRadioGroup";
+export type { LiquidScrollAreaProps } from "./components/LiquidScrollArea";
 export type { LiquidSearchBoxProps } from "./components/LiquidSearchBox";
 export type {
   LiquidSegmentedControlItem,
@@ -269,6 +306,17 @@ export type {
   LiquidSheetTriggerProps
 } from "./components/LiquidSheet";
 export type { LiquidSpinnerProps } from "./components/LiquidSpinner";
+export type {
+  LiquidTableBodyProps,
+  LiquidTableCaptionProps,
+  LiquidTableCellProps,
+  LiquidTableContainerProps,
+  LiquidTableFooterProps,
+  LiquidTableHeadProps,
+  LiquidTableHeaderProps,
+  LiquidTableProps,
+  LiquidTableRowProps
+} from "./components/LiquidTable";
 export type {
   LiquidTabsItem,
   LiquidTabsProps,

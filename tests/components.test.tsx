@@ -52,12 +52,21 @@ import {
   LiquidLabel,
   LiquidNav,
   LiquidNativeSelect,
+  LiquidPagination,
+  LiquidPaginationEllipsis,
+  LiquidPaginationItem,
+  LiquidPaginationLink,
+  LiquidPaginationList,
+  LiquidPaginationNext,
+  LiquidPaginationPrevious,
   LiquidPill,
   LiquidPopover,
   LiquidPopoverClose,
   LiquidPopoverContent,
   LiquidPopoverTrigger,
   LiquidProgress,
+  LiquidRadioGroup,
+  LiquidScrollArea,
   LiquidSearchBox,
   LiquidProvider,
   LiquidSegmentedControl,
@@ -74,6 +83,14 @@ import {
   LiquidSurface,
   LiquidTabs,
   LiquidSwitch,
+  LiquidTable,
+  LiquidTableBody,
+  LiquidTableCaption,
+  LiquidTableCell,
+  LiquidTableContainer,
+  LiquidTableHead,
+  LiquidTableHeader,
+  LiquidTableRow,
   LiquidTextarea,
   LiquidToggle,
   LiquidToolbar,
@@ -296,6 +313,77 @@ describe("Liquid components", () => {
     expect(screen.getByRole("status", { name: "Loading stories" })).toHaveClass("lg-spinner");
     expect(screen.getByTestId("decorative-spinner")).toHaveAttribute("aria-hidden", "true");
     expect(screen.getByText("Reference material")).toHaveAttribute("data-variant", "lead");
+  });
+
+  it("renders table, pagination, radio group, and scroll area primitives", () => {
+    const onValueChange = vi.fn();
+    render(
+      <>
+        <LiquidTableContainer>
+          <LiquidTable>
+            <LiquidTableCaption>Release checklist</LiquidTableCaption>
+            <LiquidTableHeader>
+              <LiquidTableRow>
+                <LiquidTableHead>Component</LiquidTableHead>
+                <LiquidTableHead>Status</LiquidTableHead>
+              </LiquidTableRow>
+            </LiquidTableHeader>
+            <LiquidTableBody>
+              <LiquidTableRow>
+                <LiquidTableCell>LiquidTable</LiquidTableCell>
+                <LiquidTableCell>Implemented</LiquidTableCell>
+              </LiquidTableRow>
+            </LiquidTableBody>
+          </LiquidTable>
+        </LiquidTableContainer>
+        <LiquidPagination>
+          <LiquidPaginationList>
+            <LiquidPaginationItem>
+              <LiquidPaginationPrevious aria-disabled="true" href="#previous" />
+            </LiquidPaginationItem>
+            <LiquidPaginationItem>
+              <LiquidPaginationLink href="#page-1" isActive>
+                1
+              </LiquidPaginationLink>
+            </LiquidPaginationItem>
+            <LiquidPaginationItem>
+              <LiquidPaginationEllipsis />
+            </LiquidPaginationItem>
+            <LiquidPaginationItem>
+              <LiquidPaginationNext href="#next" />
+            </LiquidPaginationItem>
+          </LiquidPaginationList>
+        </LiquidPagination>
+        <LiquidRadioGroup
+          aria-label="Release visibility"
+          defaultValue="public"
+          onValueChange={onValueChange}
+          options={[
+            { label: "Public", value: "public" },
+            { label: "Private", value: "private" },
+            { label: "Archived", value: "archived", disabled: true }
+          ]}
+        />
+        <LiquidScrollArea aria-label="Scrollable release notes" maxHeight="4rem">
+          <p>Readable clipped content.</p>
+        </LiquidScrollArea>
+      </>
+    );
+
+    expect(screen.getByRole("table", { name: "Release checklist" })).toHaveClass("lg-table");
+    expect(screen.getByRole("columnheader", { name: "Component" })).toHaveAttribute("scope", "col");
+    expect(screen.getByRole("navigation", { name: "Pagination" })).toHaveClass("lg-pagination");
+    expect(screen.getByRole("link", { name: "1" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: /Previous/ })).toHaveAttribute("aria-disabled", "true");
+
+    const group = screen.getByRole("radiogroup", { name: "Release visibility" });
+    expect(screen.getByRole("radio", { name: "Public" })).toBeChecked();
+    fireEvent.keyDown(group, { key: "ArrowDown" });
+    expect(screen.getByRole("radio", { name: "Private" })).toBeChecked();
+    expect(onValueChange).toHaveBeenCalledWith("private");
+    expect(screen.getByRole("region", { name: "Scrollable release notes" })).toHaveClass(
+      "lg-scroll-area"
+    );
   });
 
   it("renders a labeled liquid input with helper text and adornments", () => {

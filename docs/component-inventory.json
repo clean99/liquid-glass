@@ -267,7 +267,9 @@
     {
       "name": "pagination",
       "export": "LiquidPagination",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidPagination.tsx",
+      "story": "stories/LiquidFoundation.stories.tsx",
       "category": "navigation"
     },
     {
@@ -289,7 +291,9 @@
     {
       "name": "radio-group",
       "export": "LiquidRadioGroup",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidRadioGroup.tsx",
+      "story": "stories/LiquidFoundation.stories.tsx",
       "category": "control"
     },
     {
@@ -301,7 +305,9 @@
     {
       "name": "scroll-area",
       "export": "LiquidScrollArea",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidScrollArea.tsx",
+      "story": "stories/LiquidFoundation.stories.tsx",
       "category": "layout"
     },
     {
@@ -381,7 +387,9 @@
     {
       "name": "table",
       "export": "LiquidTable",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidTable.tsx",
+      "story": "stories/LiquidFoundation.stories.tsx",
       "category": "data"
     },
     {

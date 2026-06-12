@@ -41,6 +41,10 @@ Those hard metrics include the Kube-derived water-drop rule that press expands
 both axes, while drag is taller and narrower than press. The comparison script
 also compares candidate action metrics against the live Kube target with explicit
 per-metric tolerances.
+The script waits for observable pointer-action geometry before capture instead
+of trusting a fixed timeout. This avoids a bad flaky pattern: pressing the real
+reference page during hydration or animation startup and measuring the resting
+box as if the interaction had failed.
 
 `pnpm test:docs` verifies the open-source repository contract: required GitHub
 templates, registry files, docs, attributions, testing notes, and package scripts.

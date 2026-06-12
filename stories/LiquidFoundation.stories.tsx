@@ -29,10 +29,27 @@ import {
   LiquidKbd,
   LiquidLabel,
   LiquidNativeSelect,
+  LiquidPagination,
+  LiquidPaginationEllipsis,
+  LiquidPaginationItem,
+  LiquidPaginationLink,
+  LiquidPaginationList,
+  LiquidPaginationNext,
+  LiquidPaginationPrevious,
   LiquidProgress,
+  LiquidRadioGroup,
+  LiquidScrollArea,
   LiquidSeparator,
   LiquidSkeleton,
   LiquidSpinner,
+  LiquidTable,
+  LiquidTableBody,
+  LiquidTableCaption,
+  LiquidTableCell,
+  LiquidTableContainer,
+  LiquidTableHead,
+  LiquidTableHeader,
+  LiquidTableRow,
   LiquidTypography
 } from "../src";
 import { StoryFrame } from "./story-fixtures";
@@ -88,10 +105,80 @@ export const ComponentSet: Story = {
 
         <LiquidSeparator decorative={false} />
 
+        <LiquidRadioGroup
+          aria-label="Release visibility"
+          defaultValue="public"
+          options={[
+            { label: "Public", value: "public", description: "Visible in docs and package pages." },
+            { label: "Private", value: "private", description: "Draft-only implementation notes." },
+            { label: "Archived", value: "archived", disabled: true }
+          ]}
+        />
+
         <LiquidButtonGroup aria-label="Document actions">
           <LiquidButton>Preview</LiquidButton>
           <LiquidButton>Publish</LiquidButton>
         </LiquidButtonGroup>
+
+        <LiquidTableContainer>
+          <LiquidTable>
+            <LiquidTableCaption>Component release readiness</LiquidTableCaption>
+            <LiquidTableHeader>
+              <LiquidTableRow>
+                <LiquidTableHead>Component</LiquidTableHead>
+                <LiquidTableHead>Status</LiquidTableHead>
+                <LiquidTableHead>Gate</LiquidTableHead>
+              </LiquidTableRow>
+            </LiquidTableHeader>
+            <LiquidTableBody>
+              <LiquidTableRow>
+                <LiquidTableCell>LiquidTable</LiquidTableCell>
+                <LiquidTableCell>Implemented</LiquidTableCell>
+                <LiquidTableCell>Native table semantics</LiquidTableCell>
+              </LiquidTableRow>
+              <LiquidTableRow>
+                <LiquidTableCell>LiquidRadioGroup</LiquidTableCell>
+                <LiquidTableCell>Implemented</LiquidTableCell>
+                <LiquidTableCell>Keyboard selection</LiquidTableCell>
+              </LiquidTableRow>
+            </LiquidTableBody>
+          </LiquidTable>
+        </LiquidTableContainer>
+
+        <LiquidPagination>
+          <LiquidPaginationList>
+            <LiquidPaginationItem>
+              <LiquidPaginationPrevious aria-disabled="true" href="#previous" />
+            </LiquidPaginationItem>
+            <LiquidPaginationItem>
+              <LiquidPaginationLink href="#page-1" isActive>
+                1
+              </LiquidPaginationLink>
+            </LiquidPaginationItem>
+            <LiquidPaginationItem>
+              <LiquidPaginationLink href="#page-2">2</LiquidPaginationLink>
+            </LiquidPaginationItem>
+            <LiquidPaginationItem>
+              <LiquidPaginationEllipsis />
+            </LiquidPaginationItem>
+            <LiquidPaginationItem>
+              <LiquidPaginationNext href="#next" />
+            </LiquidPaginationItem>
+          </LiquidPaginationList>
+        </LiquidPagination>
+
+        <LiquidScrollArea aria-label="Release notes preview" maxHeight="8rem">
+          <div style={{ display: "grid", gap: 12 }}>
+            {Array.from({ length: 6 }, (_, index) => (
+              <LiquidItem key={index}>
+                <span>Release note #{index + 1}</span>
+                <span style={{ color: "var(--lg-text-muted)" }}>
+                  Long-form docs remain readable inside a clipped material surface.
+                </span>
+              </LiquidItem>
+            ))}
+          </div>
+        </LiquidScrollArea>
 
         <LiquidAspectRatio ratio={16 / 9}>
           <div

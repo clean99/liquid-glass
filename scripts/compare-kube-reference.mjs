@@ -367,7 +367,7 @@ async function applyPointerAction(page, handle, action) {
     await page.waitForTimeout(action.settleMs ?? 120);
   }
 
-  const after = await handle.boundingBox();
+  const after = await waitForPointerActionEffect(handle, box, action);
   const metrics = summarizeActionMetrics(box, after, action);
   assertPointerActionMetrics(metrics, action);
 
@@ -380,6 +380,24 @@ async function applyPointerAction(page, handle, action) {
     metrics,
     subject: handle
   };
+}
+
+async function waitForPointerActionEffect(handle, before, action) {
+  const deadline = Date.now() + (action.effectTimeoutMs ?? 1_000);
+  let lastBox = await handle.boundingBox();
+
+  while (Date.now() < deadline) {
+    const metrics = summarizeActionMetrics(before, lastBox, action);
+
+    if (hasPointerActionEffect(metrics, action)) {
+      return lastBox;
+    }
+
+    await delay(50);
+    lastBox = await handle.boundingBox();
+  }
+
+  return lastBox;
 }
 
 function summarizeActionMetrics(before, after, action) {
@@ -398,22 +416,35 @@ function summarizeActionMetrics(before, after, action) {
   };
 }
 
-function assertPointerActionMetrics(metrics, action) {
+function hasPointerActionEffect(metrics, action) {
   if (action.kind === "press") {
     const changedSize = Math.abs(metrics.widthDelta) + Math.abs(metrics.heightDelta);
 
-    if (changedSize < 10) {
+    return changedSize >= 10;
+  }
+
+  return (
+    Math.abs(metrics.deltaX) >= Math.abs(action.delta.x) * 0.45 &&
+    Math.abs(metrics.deltaY) >= Math.abs(action.delta.y) * 0.45
+  );
+}
+
+function assertPointerActionMetrics(metrics, action) {
+  if (action.kind === "press") {
+    if (!hasPointerActionEffect(metrics, action)) {
       throw new Error(`Press action did not deform the lens enough: ${JSON.stringify(metrics)}`);
     }
     return;
   }
 
-  if (Math.abs(metrics.deltaX) < Math.abs(action.delta.x) * 0.45) {
-    throw new Error(`Drag action did not move the lens on x enough: ${JSON.stringify(metrics)}`);
-  }
-
-  if (Math.abs(metrics.deltaY) < Math.abs(action.delta.y) * 0.45) {
-    throw new Error(`Drag action did not move the lens on y enough: ${JSON.stringify(metrics)}`);
+  if (!hasPointerActionEffect(metrics, action)) {
+    const minX = Math.abs(action.delta.x) * 0.45;
+    const minY = Math.abs(action.delta.y) * 0.45;
+    throw new Error(
+      `Drag action did not move the lens enough: expected at least ${round(minX)}px x and ${round(
+        minY
+      )}px y, got ${JSON.stringify(metrics)}`
+    );
   }
 }
 
