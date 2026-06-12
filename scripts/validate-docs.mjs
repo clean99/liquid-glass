@@ -37,6 +37,7 @@ const requiredFiles = [
   "SECURITY.md",
   "CODE_OF_CONDUCT.md",
   "CHANGELOG.md",
+  ".changeset/config.json",
   "docs/api-overview.md",
   "docs/browser-support.md",
   "docs/component-inventory.json",
@@ -129,7 +130,24 @@ mustInclude("docs/testing.md", [
 ]);
 
 mustInclude("CONTRIBUTING.md", ["pnpm verify", "pnpm test:docs", "pnpm test:inventory"]);
-mustInclude("docs/open-source-release.md", ["pnpm verify", "pnpm pack --dry-run"]);
+mustInclude("docs/open-source-release.md", [
+  "pnpm verify",
+  "pnpm pack --dry-run",
+  "pnpm release",
+  "NPM_TOKEN",
+  "publishConfig.access"
+]);
+mustInclude(".github/workflows/release.yml", [
+  "pnpm verify",
+  "pnpm release",
+  "NPM_TOKEN",
+  "playwright install --with-deps chromium"
+]);
+mustInclude(".changeset/config.json", [
+  '"access": "public"',
+  '"baseBranch": "main"',
+  '"updateInternalDependencies": "patch"'
+]);
 
 if (fs.existsSync(path.join(root, "package.json"))) {
   const packageJson = JSON.parse(read("package.json"));
@@ -138,6 +156,12 @@ if (fs.existsSync(path.join(root, "package.json"))) {
   }
   if (!packageJson.scripts?.["test:e2e"]) {
     errors.push("package.json must include test:e2e");
+  }
+  if (packageJson.publishConfig?.access !== "public") {
+    errors.push("package.json publishConfig.access must be public");
+  }
+  if (packageJson.scripts?.release !== "pnpm changeset publish") {
+    errors.push("package.json scripts.release must publish through Changesets");
   }
 }
 
@@ -160,7 +184,8 @@ for (const script of [
   "test:inventory",
   "test:kube-reference",
   "test:storybook",
-  "test:package"
+  "test:package",
+  "release"
 ]) {
   if (!packageJson.scripts?.[script]) {
     errors.push(`package.json is missing script: ${script}`);

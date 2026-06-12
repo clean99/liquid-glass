@@ -375,6 +375,19 @@ This repository includes a root `registry.json`, a flat `liquid-glass.json`, and
 
 The docs gate verifies the registry files stay present and equivalent.
 
+## Release
+
+The package uses Changesets. For user-visible changes, run:
+
+```sh
+pnpm changeset
+```
+
+The GitHub release workflow runs `pnpm verify`, then uses Changesets to open a
+version PR or publish the package with `pnpm release`. npm publishing requires an
+`NPM_TOKEN` repository secret, and `publishConfig.access` is pinned to `public`
+so the scoped package cannot accidentally publish as private.
+
 ## Documentation Map
 
 - `docs/api-overview.md`: public API shape and mode model.
@@ -396,7 +409,7 @@ The docs gate verifies the registry files stay present and equivalent.
 
 ## Roadmap
 
-- Publish to npm after API review.
+- Publish the first npm version after final API review and repository creation.
 - Add copyable shadcn registry items per component.
 - Add more navigation and disclosure primitives.
 - Add build-time generated filter presets.

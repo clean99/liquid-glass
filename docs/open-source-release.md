@@ -32,6 +32,16 @@ must contain.
 3. Add a changeset for user-visible changes.
 4. Merge to `main`.
 5. Run the release workflow manually after reviewing the generated version PR.
+6. The release workflow runs `pnpm verify`, then uses Changesets to either open
+   a version PR or publish the already-versioned package with `pnpm release`.
+
+Publishing requires repository secrets:
+
+- `NPM_TOKEN`: npm automation token with publish access for the package.
+- `GITHUB_TOKEN`: provided by GitHub Actions for the version PR.
+
+`package.json` must keep `publishConfig.access` set to `public`; scoped packages
+default to private publishing on npm unless this is explicit.
 
 ## GitHub Pages
 
@@ -42,4 +52,4 @@ Actions. Repository settings must use "GitHub Actions" as the Pages source.
 
 For documentation or Storybook issues, revert the commit and let Pages redeploy.
 For package issues, publish a patch release that reverts the exported API or mark
-the bad version as deprecated in npm after npm publishing is enabled.
+the bad version as deprecated in npm.

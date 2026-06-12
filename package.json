@@ -51,6 +51,9 @@
     "LICENSE",
     "ATTRIBUTIONS.md"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts --sourcemap --clean && node scripts/copy-css.mjs",
     "changeset": "changeset",
@@ -75,6 +78,7 @@
     "test:visual:update": "playwright test tests/visual --config=playwright.config.ts --update-snapshots",
     "typecheck": "tsc --noEmit",
     "ci": "pnpm format && pnpm lint && pnpm typecheck && pnpm test:docs && pnpm test:inventory && pnpm test:unit && pnpm test:components && pnpm test:physics && pnpm test:storybook && pnpm build && pnpm test:package",
+    "release": "pnpm changeset publish",
     "verify": "pnpm run ci && pnpm test:visual && pnpm test:kube-reference && pnpm pack --dry-run"
   },
   "peerDependencies": {
