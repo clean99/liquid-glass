@@ -50,6 +50,7 @@ pnpm typecheck
 pnpm test:docs
 pnpm test:inventory
 pnpm test:registry
+pnpm test:shadcn-parity
 pnpm test:unit
 pnpm test:e2e
 pnpm test:storybook
@@ -267,6 +268,9 @@ Coverage against shadcn/ui-style primitives is tracked in `docs/component-invent
 
 The current shadcn/ui component baseline is stored in `docs/shadcn-parity.json`.
 `pnpm test:inventory` fails if the inventory misses a baseline entry.
+`pnpm test:shadcn-parity` fetches the official shadcn/ui component index and
+fails when the local baseline falls behind. Run `pnpm shadcn:sync` only when you
+are ready to update the baseline and implement the newly detected components.
 
 `LiquidSurface` is the only component abstraction that selects the render engine. Higher-level components compose it instead of importing `@hashintel/refractive` directly.
 

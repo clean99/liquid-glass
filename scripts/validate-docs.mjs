@@ -55,6 +55,7 @@ const requiredFiles = [
   "liquid-glass.json",
   "registry/liquid-glass.json",
   "scripts/build-component-registry.mjs",
+  "scripts/check-shadcn-parity.mjs",
   "schema/component-inventory.schema.json",
   "schema/shadcn-parity.schema.json",
   ".github/workflows/ci.yml",
@@ -81,6 +82,7 @@ mustInclude("README.md", [
   "pnpm verify",
   "test:inventory",
   "test:registry",
+  "test:shadcn-parity",
   "test:kube-reference",
   "shadcn-style Registry"
 ]);
@@ -145,6 +147,7 @@ mustInclude(".github/workflows/release.yml", [
   "NPM_TOKEN",
   "playwright install --with-deps chromium"
 ]);
+mustInclude(".github/workflows/ci.yml", ["pnpm test:registry", "pnpm test:shadcn-parity"]);
 mustInclude(".changeset/config.json", [
   '"access": "public"',
   '"baseBranch": "main"',
@@ -183,9 +186,11 @@ if (
 const packageJson = JSON.parse(read("package.json"));
 for (const script of [
   "registry:build",
+  "shadcn:sync",
   "test:docs",
   "test:inventory",
   "test:registry",
+  "test:shadcn-parity",
   "test:kube-reference",
   "test:storybook",
   "test:package",
