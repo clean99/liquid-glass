@@ -3482,9 +3482,7 @@
   transform: translate3d(var(--lg-demo-lens-x, 0), var(--lg-demo-lens-y, 0), 0)
     scaleX(var(--lg-demo-droplet-scale-x, 1)) scaleY(var(--lg-demo-droplet-scale-y, 0.8));
   transform-origin: center;
-  transition:
-    filter 180ms var(--lg-ease-apple),
-    transform 260ms var(--lg-ease-apple);
+  transition: transform 260ms var(--lg-ease-apple);
   will-change: transform;
 }
 
@@ -3499,11 +3497,12 @@
 
 .lg-precision-lens-demo__handle[data-liquid-dragging="true"] {
   cursor: grabbing;
-  transition: filter 180ms var(--lg-ease-apple);
+  transition: none;
 }
 
 .lg-precision-lens-demo__handle .lg-lens {
   pointer-events: none;
+  transition: box-shadow 220ms var(--lg-ease-apple);
   transform: none;
   transform-origin: center;
 }
@@ -3552,9 +3551,11 @@
   transform: translate(-50%, -50%) scale(0.45);
 }
 
-.lg-precision-lens-demo__handle[data-liquid-droplet="pressed"] {
-  filter: drop-shadow(0 1.25rem 2.9rem rgba(0, 0, 0, 0.24))
-    drop-shadow(0 0 0.65rem rgba(255, 255, 255, 0.2));
+.lg-precision-lens-demo__handle[data-liquid-droplet="pressed"] .lg-lens {
+  box-shadow:
+    4px 16px 24px rgba(0, 0, 0, 0.22),
+    inset 2px 8px 24px rgba(0, 0, 0, 0.27),
+    inset -2px -8px 24px rgba(255, 255, 255, 0.27);
 }
 
 .lg-precision-lens-demo__handle[data-liquid-droplet="pressed"]::before,

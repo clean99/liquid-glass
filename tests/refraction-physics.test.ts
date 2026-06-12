@@ -208,6 +208,14 @@ describe("Liquid Glass physics contract", () => {
       styles,
       ".lg-precision-lens-demo__handle .lg-lens"
     ).join("\n");
+    const pressedHandleRule = collectCssRuleBodies(
+      styles,
+      '.lg-precision-lens-demo__handle[data-liquid-droplet="pressed"]'
+    ).join("\n");
+    const pressedLensRule = collectCssRuleBodies(
+      styles,
+      '.lg-precision-lens-demo__handle[data-liquid-droplet="pressed"] .lg-lens'
+    ).join("\n");
 
     expect(handleRule).toContain("width: 13.125rem");
     expect(handleRule).toContain("height: 9.375rem");
@@ -217,6 +225,10 @@ describe("Liquid Glass physics contract", () => {
     expect(handleRule).toContain("transform-origin: center");
     expect(handleLensRule).toContain("transform: none");
     expect(handleRule).not.toContain("padding: 0.9375rem 0");
+    expect(pressedHandleRule).not.toContain("drop-shadow");
+    expect(pressedLensRule).toContain("4px 16px 24px rgba(0, 0, 0, 0.22)");
+    expect(pressedLensRule).toContain("inset 2px 8px 24px rgba(0, 0, 0, 0.27)");
+    expect(pressedLensRule).toContain("inset -2px -8px 24px rgba(255, 255, 255, 0.27)");
   });
 
   it("uses Kube CSS coordinates for the draggable lens initial position", () => {

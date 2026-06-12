@@ -39,8 +39,8 @@ Measured locally on 2026-06-13 against `https://kube.io/blog/liquid-glass-css-sv
 | Reference                | Diff ratio | Threshold | Mode   |
 | ------------------------ | ---------: | --------: | ------ |
 | magnifying-glass         |     0.2000 |    0.3000 | gate   |
-| magnifying-glass-pressed |     0.5803 |    0.4200 | report |
-| magnifying-glass-dragged |     0.5832 |    0.4500 | report |
+| magnifying-glass-pressed |     0.4580 |    0.4200 | report |
+| magnifying-glass-dragged |     0.4939 |    0.4500 | report |
 | searchbox                |     0.0167 |    0.0300 | gate   |
 | switch                   |     0.0142 |    0.0300 | gate   |
 | slider                   |     0.0149 |    0.0300 | gate   |
@@ -54,6 +54,9 @@ This measurement includes two verified geometry fixes:
 - the specular pass uses a narrow gray rim instead of a broad white highlight.
 - the bevel displacement pass uses a `25px` edge falloff, not the full capsule
   radius.
+- the active water-drop shadow belongs to the lens surface itself; applying it
+  as an outer handle `drop-shadow()` makes the material read like plastic and
+  regresses the pressed/dragged screenshot rows.
 
 This proves three things:
 
@@ -61,8 +64,8 @@ This proves three things:
   screenshot budget.
 - The static magnifying glass passes a loose gate, but it is still visually far
   from pixel parity.
-- The pressed and dragged water-drop states are not acceptable yet. They must not
-  be described as complete.
+- The pressed and dragged water-drop states improved materially, but they are
+  still not strict-pass quality. They must not be described as complete.
 
 ## Why Strict Mode Fails Today
 
