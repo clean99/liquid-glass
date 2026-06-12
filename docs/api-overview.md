@@ -31,6 +31,7 @@ DOM access. Examples:
 
 - `LiquidButton`
 - `LiquidButtonGroup`
+- `LiquidCalendar`
 - `LiquidCarousel`
 - `LiquidCarouselContent`
 - `LiquidCarouselItem`

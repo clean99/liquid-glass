@@ -27,6 +27,7 @@ import {
   LiquidBreadcrumbSeparator,
   LiquidButton,
   LiquidButtonGroup,
+  LiquidCalendar,
   LiquidCard,
   LiquidCarousel,
   LiquidCarouselContent,
@@ -820,6 +821,24 @@ describe("Liquid components", () => {
       "lg-carousel__button"
     );
     expect(screen.getByRole("button", { name: "Next slide" })).toHaveClass("lg-carousel__button");
+  });
+
+  it("renders calendar grid semantics and selected date", () => {
+    render(
+      <LiquidCalendar
+        aria-label="Release calendar"
+        defaultMonth={new Date(2026, 5, 1)}
+        mode="single"
+        selected={new Date(2026, 5, 12)}
+      />
+    );
+
+    expect(screen.getByLabelText("Release calendar")).toHaveClass("lg-calendar");
+    expect(screen.getByRole("grid", { name: /June 2026/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Friday, June 12th, 2026, selected/i })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("gridcell", { name: "12" })).toHaveAttribute("aria-selected", "true");
   });
 
   it("renders a labeled liquid input with helper text and adornments", () => {

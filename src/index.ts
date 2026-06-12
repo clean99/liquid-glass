@@ -27,6 +27,7 @@ export {
 } from "./components/LiquidBreadcrumb";
 export { LiquidButton } from "./components/LiquidButton";
 export { LiquidButtonGroup } from "./components/LiquidButtonGroup";
+export { LiquidCalendar } from "./components/LiquidCalendar";
 export { LiquidCard } from "./components/LiquidCard";
 export {
   LiquidCarousel,
@@ -292,6 +293,7 @@ export {
   getCarouselKeyboardAction,
   getCarouselOrientationClass
 } from "./utils/carousel";
+export { createCalendarClassNames, getCalendarCaptionLabel } from "./utils/calendar";
 export {
   buildChartCssProperties,
   buildChartStyleText,
@@ -343,6 +345,7 @@ export type {
 } from "./components/LiquidBreadcrumb";
 export type { LiquidButtonProps } from "./components/LiquidButton";
 export type { LiquidButtonGroupProps } from "./components/LiquidButtonGroup";
+export type { LiquidCalendarProps } from "./components/LiquidCalendar";
 export type { LiquidCardProps } from "./components/LiquidCard";
 export type {
   LiquidCarouselApi,

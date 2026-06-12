@@ -77,7 +77,9 @@
     {
       "name": "calendar",
       "export": "LiquidCalendar",
-      "status": "planned",
+      "status": "implemented",
+      "source": "src/components/LiquidCalendar.tsx",
+      "story": "stories/LiquidCalendar.stories.tsx",
       "category": "date-time"
     },
     {

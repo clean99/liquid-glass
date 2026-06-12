@@ -3716,6 +3716,243 @@
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--lg-glass-edge), transparent 28%);
 }
 
+.lg-calendar {
+  --rdp-accent-color: var(--lg-accent);
+  --rdp-accent-background-color: color-mix(in srgb, var(--lg-accent), transparent 84%);
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.9rem;
+  color: var(--lg-text);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--lg-glass-highlight), transparent 76%),
+      transparent 42%
+    ),
+    color-mix(in srgb, var(--lg-surface), transparent 12%);
+  border: 1px solid color-mix(in srgb, var(--lg-glass-border), transparent 18%);
+  border-radius: var(--lg-radius-lg);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--lg-glass-edge), transparent 20%),
+    0 20px 52px rgba(0, 0, 0, 0.16);
+  backdrop-filter: blur(18px) saturate(1.28);
+}
+
+.lg-calendar__months {
+  display: flex;
+  gap: 1rem;
+}
+
+.lg-calendar__month {
+  display: grid;
+  gap: 0.72rem;
+}
+
+.lg-calendar__caption {
+  display: flex;
+  min-height: 2.15rem;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 2.8rem;
+}
+
+.lg-calendar__caption-label {
+  color: var(--lg-text);
+  font-size: 0.92rem;
+  font-weight: 720;
+  letter-spacing: 0;
+}
+
+.lg-calendar__nav {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  left: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.lg-calendar__nav-button {
+  display: inline-grid;
+  width: 2.05rem;
+  height: 2.05rem;
+  place-items: center;
+  color: color-mix(in srgb, var(--lg-text), transparent 18%);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, white, transparent 74%), transparent),
+    color-mix(in srgb, var(--lg-glass-fill), transparent 20%);
+  border: 1px solid color-mix(in srgb, var(--lg-glass-border), transparent 18%);
+  border-radius: var(--lg-radius-pill);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--lg-glass-edge), transparent 28%),
+    0 0.75rem 1.6rem rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    background 180ms var(--lg-ease-apple),
+    color 180ms var(--lg-ease-apple),
+    transform 180ms var(--lg-ease-apple);
+}
+
+.lg-calendar__nav-button:hover {
+  color: var(--lg-text);
+  background: color-mix(in srgb, var(--lg-glass-fill-strong), transparent 8%);
+  transform: scale(1.05);
+}
+
+.lg-calendar__nav-button:focus-visible {
+  color: var(--lg-text);
+  outline: none;
+  transform: scale(1.08);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--lg-glass-edge), transparent 12%),
+    0 0.85rem 1.9rem rgba(0, 0, 0, 0.14),
+    0 0 0 0.35rem color-mix(in srgb, var(--lg-accent), transparent 78%);
+}
+
+.lg-calendar__nav-button:disabled {
+  cursor: default;
+  opacity: 0.38;
+  transform: none;
+}
+
+.lg-calendar__chevron {
+  width: 1rem;
+  height: 1rem;
+}
+
+.lg-calendar__dropdowns {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.lg-calendar__dropdown {
+  color: var(--lg-text);
+  background: color-mix(in srgb, var(--lg-surface), transparent 12%);
+  border: 1px solid color-mix(in srgb, var(--lg-glass-border), transparent 16%);
+  border-radius: var(--lg-radius-md);
+  font: inherit;
+}
+
+.lg-calendar__grid {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.lg-calendar__weekdays,
+.lg-calendar__week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(2.25rem, 1fr));
+  gap: 0.18rem;
+}
+
+.lg-calendar__weekday {
+  display: grid;
+  min-width: 2.25rem;
+  height: 1.7rem;
+  place-items: center;
+  color: color-mix(in srgb, var(--lg-text), transparent 46%);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.lg-calendar__weeks {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.lg-calendar__day {
+  position: relative;
+  display: grid;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  color: var(--lg-text);
+  border-radius: var(--lg-radius-pill);
+}
+
+.lg-calendar__day-button {
+  display: grid;
+  width: 2.16rem;
+  height: 2.16rem;
+  place-items: center;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: var(--lg-radius-pill);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  transition:
+    background 160ms var(--lg-ease-apple),
+    color 160ms var(--lg-ease-apple),
+    transform 160ms var(--lg-ease-apple),
+    box-shadow 160ms var(--lg-ease-apple);
+}
+
+.lg-calendar__day-button:hover {
+  background: color-mix(in srgb, var(--lg-glass-fill-strong), transparent 18%);
+  transform: scale(1.05);
+}
+
+.lg-calendar__day-button:focus-visible {
+  outline: none;
+  transform: scale(1.08);
+  box-shadow:
+    0 0 0 0.32rem color-mix(in srgb, var(--lg-accent), transparent 78%),
+    inset 0 1px 0 color-mix(in srgb, var(--lg-glass-edge), transparent 24%);
+}
+
+.lg-calendar__day--today .lg-calendar__day-button {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lg-accent), transparent 28%);
+}
+
+.lg-calendar__day--selected .lg-calendar__day-button,
+.lg-calendar__day[aria-selected="true"] .lg-calendar__day-button {
+  color: white;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, white, transparent 72%), transparent),
+    linear-gradient(135deg, var(--lg-accent), var(--lg-accent-2));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    0 0.9rem 1.75rem color-mix(in srgb, var(--lg-accent), transparent 66%);
+}
+
+.lg-calendar__day--range-start .lg-calendar__day-button,
+.lg-calendar__day--range-end .lg-calendar__day-button {
+  color: white;
+  background: linear-gradient(135deg, var(--lg-accent), var(--lg-accent-2));
+}
+
+.lg-calendar__day--range-middle {
+  background: color-mix(in srgb, var(--lg-accent), transparent 82%);
+  border-radius: var(--lg-radius-md);
+}
+
+.lg-calendar__day--outside,
+.lg-calendar__day--disabled {
+  color: color-mix(in srgb, var(--lg-text), transparent 62%);
+}
+
+.lg-calendar__day--disabled .lg-calendar__day-button {
+  cursor: default;
+  opacity: 0.56;
+  transform: none;
+}
+
+.lg-calendar__day--hidden {
+  visibility: hidden;
+}
+
+.lg-calendar__footer {
+  margin-top: 0.75rem;
+  color: color-mix(in srgb, var(--lg-text), transparent 34%);
+  font-size: 0.78rem;
+}
+
 .lg-carousel {
   position: relative;
   width: 100%;

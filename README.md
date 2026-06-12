@@ -136,6 +136,7 @@ Implemented components:
 - `LiquidBreadcrumb`
 - `LiquidButton`
 - `LiquidButtonGroup`
+- `LiquidCalendar`
 - `LiquidCarousel`
 - `LiquidCarouselContent`
 - `LiquidCarouselItem`
@@ -318,6 +319,7 @@ The package supports system color scheme and explicit theme scopes:
 - Menu primitives use `menu` / `menuitem`, Escape dismissal, Home/End, arrow-key navigation, disabled item skipping, and context-menu keyboard fallback through Shift+F10.
 - Toast primitives use `status` for passive updates, `alert` for warning/danger variants, and expose dismiss controls with readable labels.
 - Resizable primitives wrap `react-resizable-panels`, preserving keyboard-accessible separators and panel constraints while applying Liquid Glass handle styling.
+- Calendar wraps React DayPicker for localized date grids, selection modes, keyboard focus, and ARIA semantics while applying Liquid Glass shell styling.
 - Carousel wraps Embla Carousel for drag physics, snapping, loop behavior, orientation, and API events while exposing labelled regions, slide groups, and native previous/next buttons.
 - DataTable wraps TanStack Table for typed sorting, filtering, pagination, and `aria-sort` while keeping rows and cells as clear semantic table content.
 - Chart wraps Recharts composition, scoped color variables, clear tooltip/legend content, and accessible chart output without refracting dense data labels.
@@ -334,6 +336,7 @@ The package supports system color scheme and explicit theme scopes:
 - Foreground content is not placed inside a distorted filter layer.
 - The package is tree-shakable and exports CSS separately.
 - Avoid enhanced mode for article bodies, long lists, code blocks, and tables.
+- Calendar never creates enhanced refraction per date cell; date buttons stay clear and cheap to render.
 - DataTable never creates enhanced refraction per row or cell; only toolbar controls may use material styling.
 - Carousel delegates drag physics to Embla and applies material styling to the frame and controls instead of creating enhanced refraction per slide.
 
@@ -364,6 +367,7 @@ The docs gate verifies the registry files stay present and equivalent.
 ## Documentation Map
 
 - `docs/api-overview.md`: public API shape and mode model.
+- `docs/calendar-architecture.md`: DayPicker boundary, date-grid accessibility, and test contract.
 - `docs/carousel-architecture.md`: carousel composition, Embla boundary, accessibility, and test contract.
 - `docs/component-inventory.md`: implemented and planned component inventory.
 - `docs/optics-architecture.md`: physical invariants and engine boundaries.
