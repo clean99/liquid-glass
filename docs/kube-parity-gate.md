@@ -61,12 +61,12 @@ Measured locally on 2026-06-13 against `https://kube.io/blog/liquid-glass-css-sv
 
 | Reference                | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | ------------------------ | ---------: | ---------- | ---------: | --------: | ---- |
-| magnifying-glass         |     0.2016 | `0,-1`     |     0.1894 |    0.2400 | gate |
-| magnifying-glass-pressed |     0.3282 | `0,1`      |     0.3294 |    0.3600 | gate |
-| magnifying-glass-dragged |     0.3994 | `-4,-1`    |     0.3670 |    0.4050 | gate |
-| searchbox                |     0.0167 | `0,0`      |     0.0111 |    0.0200 | gate |
-| switch                   |     0.0142 | `0,0`      |     0.0090 |    0.0200 | gate |
-| slider                   |     0.0149 | `0,0`      |     0.0074 |    0.0200 | gate |
+| magnifying-glass         |     0.2007 | `0,-1`     |     0.1908 |    0.2400 | gate |
+| magnifying-glass-pressed |     0.3447 | `-1,2`     |     0.3325 |    0.3600 | gate |
+| magnifying-glass-dragged |     0.3853 | `-2,1`     |     0.3803 |    0.4050 | gate |
+| searchbox                |     0.0180 | `0,0`      |     0.0169 |    0.0200 | gate |
+| switch                   |     0.0136 | `0,0`      |     0.0132 |    0.0200 | gate |
+| slider                   |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
 
 This measurement includes these verified geometry fixes:
 
@@ -113,7 +113,7 @@ This proves five things:
   is still not the final target.
 - The pressed and dragged water-drop states now pass the current hard gate, but
   the thresholds are still loose while the fixture moves toward tighter pixel
-  parity. Pressed is now gated at `0.3600`; dragged is now gated at `0.4050`.
+  parity. Pressed is now gated at `0.3600`; dragged remains gated at `0.4050`.
   They must not be described as 100% complete.
 - The latest specular change improved the pressed screenshot but did not improve
   every lens state. That is acceptable only because the generated specular map

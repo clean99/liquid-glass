@@ -20,6 +20,11 @@ const searchboxStorySource = fs.readFileSync(
   path.resolve("stories/LiquidSearchBox.stories.tsx"),
   "utf8"
 );
+const switchStorySource = fs.readFileSync(path.resolve("stories/LiquidSwitch.stories.tsx"), "utf8");
+const sliderStorySource = fs.readFileSync(path.resolve("stories/LiquidSlider.stories.tsx"), "utf8");
+const packageJson = JSON.parse(fs.readFileSync(path.resolve("package.json"), "utf8")) as {
+  scripts: Record<string, string>;
+};
 const lensSource = fs.readFileSync(path.resolve("src/components/LiquidLens.tsx"), "utf8");
 const lensReferenceEngineSource = fs.readFileSync(
   path.resolve("src/engines/lens-reference-engine.tsx"),
@@ -264,12 +269,40 @@ describe("Liquid Glass physics contract", () => {
     );
   });
 
+  it("uses the Kube lens demo image instead of the local optics illustration", () => {
+    expect(lensStorySource).toContain(
+      "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=400&h=700&crop=focalpoint&fp-x=0.3&fp-y=0.6&fp-z=1.9"
+    );
+    expect(lensStorySource).toContain("Photo: Stephanie LeBlanc / Unsplash");
+    expect(lensStorySource).not.toContain("src={localOpticsImage}");
+  });
+
   it("uses the Kube searchbox demo image instead of a synthetic photo fallback", () => {
     expect(searchboxStorySource).toContain(
       "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop"
     );
     expect(searchboxStorySource).toContain("Photo by Teemu Paananen");
     expect(searchboxStorySource).not.toContain("radial-gradient(ellipse at 18% 24%");
+  });
+
+  it("keeps Kube control reference frames at the measured target size", () => {
+    const frameSources = [searchboxStorySource, switchStorySource, sliderStorySource];
+
+    for (const source of frameSources) {
+      expect(source).toContain('boxSizing: "border-box"');
+      expect(source).toContain("width: 706");
+      expect(source).toContain("height: 313");
+      expect(source).not.toContain("minHeight: 312");
+    }
+  });
+
+  it("keeps Kube parity Storybook builds isolated per command run", () => {
+    const kubeScript = packageJson.scripts["test:kube-reference"];
+
+    expect(kubeScript).toContain("KUBE_STORYBOOK_STATIC_DIR");
+    expect(kubeScript).toContain("storybook-static-kube-reference-$$");
+    expect(kubeScript).toContain('--output-dir "$KUBE_STORYBOOK_STATIC_DIR"');
+    expect(kubeScript).toContain('STORYBOOK_STATIC_DIR="$KUBE_STORYBOOK_STATIC_DIR"');
   });
 
   it("rejects impossible target-page drag samples before comparing parity", () => {

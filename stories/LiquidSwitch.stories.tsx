@@ -18,8 +18,9 @@ export const KubeReference: Story = {
         data-lg-reference-frame="switch"
         data-lg-theme="light"
         style={{
+          boxSizing: "border-box",
           display: "grid",
-          minHeight: 312,
+          height: 313,
           placeItems: "center",
           position: "relative",
           background:

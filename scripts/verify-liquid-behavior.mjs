@@ -7,6 +7,7 @@ import { chromium } from "playwright";
 
 const staticDir = path.resolve(process.env.STORYBOOK_STATIC_DIR ?? "storybook-static-test");
 const behaviorArtifactDir = path.resolve("test-results/liquid-behavior");
+const kubeLensImageId = "photo-1688494930098-e88c53c26e3a";
 const kubeSearchboxImageId = "photo-1497250681960-ef046c08a56e";
 
 await fs.mkdir(behaviorArtifactDir, { recursive: true });
@@ -254,11 +255,19 @@ async function verifyDraggableLensPlayground() {
   const page = await openStory(behaviorStories.draggableLens.id, {}, { width: 900, height: 680 });
   const locator = page.locator(behaviorStories.draggableLens.selector).first();
   const boardLocator = page.locator("[data-lg-lens-board]").first();
+  const lensImage = page.getByAltText("Green frog on a red post").first();
   let framesPromise;
 
   try {
     await boardLocator.waitFor({ state: "visible", timeout: 10_000 });
     await locator.waitFor({ state: "visible", timeout: 10_000 });
+    await lensImage.waitFor({ state: "visible", timeout: 10_000 });
+    assertIncludes(
+      await lensImage.getAttribute("src"),
+      kubeLensImageId,
+      "draggable lens Kube image"
+    );
+    await waitForImageRequest(page, kubeLensImageId);
     await boardLocator.screenshot({
       path: path.join(behaviorArtifactDir, "draggable-lens-board-idle.png")
     });

@@ -40,8 +40,9 @@ function KubeSearchboxReferenceStory() {
           data-lg-reference-frame="searchbox"
           style={{
             position: "relative",
+            boxSizing: "border-box",
             width: 706,
-            height: 312,
+            height: 313,
             overflow: "hidden",
             border: "1px solid rgba(0, 0, 0, 0.1)",
             borderRadius: 9.75,
@@ -108,8 +109,9 @@ export const FocusPhotoReference: Story = {
           data-lg-reference-frame="searchbox-focus"
           style={{
             position: "relative",
+            boxSizing: "border-box",
             width: 706,
-            height: 312,
+            height: 313,
             overflow: "hidden",
             borderRadius: 12,
             background: `url("${kubeSearchboxImageBackground}")`,

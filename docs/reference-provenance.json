@@ -42,6 +42,20 @@
       "requiredDocs": ["ATTRIBUTIONS.md", "stories/LiquidSearchBox.stories.tsx"]
     },
     {
+      "name": "Kube lens demo image",
+      "kind": "visual-reference",
+      "url": "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a",
+      "license": "Unsplash",
+      "commit": null,
+      "copiedSource": false,
+      "usedFor": [
+        "Lens visual reference background",
+        "Storybook magnifying-glass reference",
+        "Kube-aligned visual documentation"
+      ],
+      "requiredDocs": ["ATTRIBUTIONS.md", "stories/LiquidLens.stories.tsx"]
+    },
+    {
       "name": "rdev/liquid-glass-react",
       "kind": "implementation-reference",
       "url": "https://github.com/rdev/liquid-glass-react",

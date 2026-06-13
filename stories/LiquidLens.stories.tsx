@@ -17,7 +17,7 @@ import {
   type LiquidLensDropletResponse,
   type LiquidLensPoint
 } from "../src";
-import { localOpticsImage, StoryFrame } from "./story-fixtures";
+import { StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidLens",
@@ -31,6 +31,8 @@ type Story = StoryObj;
 const precisionLensSize = { width: 210, height: 150 };
 const precisionLensBounds = { width: 706, height: 460, padding: 16 };
 const precisionLensInitialPosition = { x: 19.5, y: 19.5 };
+const kubeLensImageBackground =
+  "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=400&h=700&crop=focalpoint&fp-x=0.3&fp-y=0.6&fp-z=1.9";
 const precisionLensIdleRefraction = {
   blur: 0,
   glassThickness: 88,
@@ -227,7 +229,9 @@ function KubeLensStoryShell({ children }: { children: ReactNode }) {
         padding: 40,
         background:
           "linear-gradient(90deg, rgba(15,23,42,0.055) 0 1px, transparent 1px 48px), linear-gradient(180deg, rgba(15,23,42,0.045) 0 1px, transparent 1px 48px), linear-gradient(135deg, #fff, #f5f6f4)",
-        backgroundSize: "48px 48px, 48px 48px, auto"
+        backgroundSize: "48px 48px, 48px 48px, auto",
+        fontFamily:
+          'InterVariable, Inter, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
       }}
     >
       {children}
@@ -348,8 +352,8 @@ function KubeLensBoard({
           }}
         >
           <img
-            alt="Abstract architectural lines"
-            src={localOpticsImage}
+            alt="Green frog on a red post"
+            src={kubeLensImageBackground}
             style={{
               display: "block",
               width: "100%",
@@ -370,7 +374,7 @@ function KubeLensBoard({
             textTransform: "uppercase"
           }}
         >
-          Local deterministic optics fixture
+          Photo: Stephanie LeBlanc / Unsplash
         </div>
       </div>
       {children}
