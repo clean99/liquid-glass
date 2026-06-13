@@ -62,8 +62,8 @@ Measured locally on 2026-06-13 against `https://kube.io/blog/liquid-glass-css-sv
 | Reference                | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | ------------------------ | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass         |     0.2007 | `0,-1`     |     0.1908 |    0.2400 | gate |
-| magnifying-glass-pressed |     0.3447 | `-1,2`     |     0.3325 |    0.3600 | gate |
-| magnifying-glass-dragged |     0.3853 | `-2,1`     |     0.3803 |    0.4050 | gate |
+| magnifying-glass-pressed |     0.3507 | `-2,0`     |     0.3438 |    0.3600 | gate |
+| magnifying-glass-dragged |     0.3957 | `-1,1`     |     0.3857 |    0.4050 | gate |
 | searchbox                |     0.0180 | `0,0`      |     0.0169 |    0.0200 | gate |
 | switch                   |     0.0136 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                   |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
