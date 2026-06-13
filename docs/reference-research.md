@@ -228,6 +228,14 @@ viewport-space operations, so the sampler now gates drag movement with viewport
 fields for diagnosis. This removes the false rejection without changing any
 pixel-diff budget.
 
+Another 2026-06-13 CI sample showed a polluted Kube drag state with a huge
+negative viewport and document `deltaY` while `scrollDeltaY` stayed at `0`.
+That is not a parity signal: it means the live reference handle jumped outside
+the capture coordinate system before a screenshot could be taken. The target
+action wrapper now treats that exact implausible drag failure as recoverable,
+reloads the Kube page, reacquires the demo and handle, and reruns the real
+pointer path before failing the gate.
+
 `pnpm test:kube-reference:strict` sets `KUBE_STRICT_INTERACTIVE=1` and promotes
 the release-candidate path used by CI and manual reviews. The current measured
 status is documented in `docs/kube-parity-gate.md`. The command now passes, but

@@ -167,11 +167,14 @@ try {
 
     try {
       await referencePage.mouse.move(0, 0).catch(() => undefined);
-      const targetElement = await findTargetDemo(referencePage, reference.targetId);
+      let targetElement = await findTargetDemo(referencePage, reference.targetId);
       const targetPath = path.join(artifactDir, `${reference.name}-target.png`);
       const targetAction = reference.action
-        ? await applyTargetAction(referencePage, targetElement, reference.action)
+        ? await applyTargetActionWithPageRecovery(referencePage, reference, targetElement)
         : null;
+      if (targetAction?.targetElement) {
+        targetElement = targetAction.targetElement;
+      }
       const targetControlContract = reference.controlContract
         ? await readControlContract(targetElement, "kube", reference.controlContract)
         : null;
@@ -522,6 +525,49 @@ async function applyTargetAction(page, targetElement, action) {
   const handle = await findTargetDragHandle(targetElement);
 
   return applyPointerAction(page, handle, action);
+}
+
+async function applyTargetActionWithPageRecovery(page, reference, targetElement) {
+  const attempts = reference.action?.pageRecoveryAttempts ?? 2;
+  let currentTargetElement = targetElement;
+  let lastError = null;
+
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      const result = await applyTargetAction(page, currentTargetElement, reference.action);
+
+      return {
+        ...result,
+        targetElement: currentTargetElement
+      };
+    } catch (error) {
+      lastError = error;
+
+      if (!isRecoverableTargetActionError(error, reference.action) || attempt === attempts) {
+        throw error;
+      }
+
+      await resetTargetReferencePage(page);
+      currentTargetElement = await findTargetDemo(page, reference.targetId);
+    }
+  }
+
+  throw lastError;
+}
+
+function isRecoverableTargetActionError(error, action) {
+  return (
+    action?.kind === "drag" &&
+    error instanceof Error &&
+    error.message.includes("implausible movement or deformation sample")
+  );
+}
+
+async function resetTargetReferencePage(page) {
+  await page.mouse.up().catch(() => undefined);
+  await page.mouse.move(0, 0).catch(() => undefined);
+  await gotoTargetReference(page);
+  await page.waitForLoadState("load", { timeout: 20_000 }).catch(() => undefined);
 }
 
 async function applyCandidateAction(page, candidateElement, action) {

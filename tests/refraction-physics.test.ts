@@ -529,6 +529,9 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain("actionPathBounds");
     expect(kubeReferenceCompareSource).toContain("addPointerActionScrollSlack");
     expect(kubeReferenceCompareSource).toContain("removePointerActionScrollSlack");
+    expect(kubeReferenceCompareSource).toContain("applyTargetActionWithPageRecovery");
+    expect(kubeReferenceCompareSource).toContain("isRecoverableTargetActionError");
+    expect(kubeReferenceCompareSource).toContain("resetTargetReferencePage");
     expect(kubeReferenceCompareSource).toContain(
       'import { summarizePointerActionMetrics } from "./kube-pointer-metrics.mjs"'
     );
@@ -546,6 +549,7 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain(
       "Drag action produced an implausible movement or deformation sample"
     );
+    expect(kubeReferenceCompareSource).toContain("currentTargetElement = await findTargetDemo");
   });
 
   it("keeps strict Kube budgets honest about loaded media and lens CI variance", () => {
