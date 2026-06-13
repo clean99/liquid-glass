@@ -43,7 +43,11 @@ loose thresholds.
 Each row writes target, candidate, and diff PNG artifacts under
 `test-results/kube-reference/`. The diff image is generated from the same crop
 used for the metric, so it is useful for diagnosing phase, material, and edge
-errors without changing the gate.
+errors without changing the gate. `kube-reference-results.json` also records the
+target screenshot size, candidate screenshot size, effective compare region,
+diff threshold, and action metrics. Those fields are required for lens work:
+without them a pressed-state regression can be mistaken for a material problem
+when the real issue is a capture-size or crop mismatch.
 
 ## Latest Measurement
 

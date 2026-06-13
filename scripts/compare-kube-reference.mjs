@@ -233,6 +233,8 @@ const failures = results.filter(
 console.table(
   results.map((result) => ({
     name: result.name,
+    target: `${result.targetImageSize.width}x${result.targetImageSize.height}`,
+    candidate: `${result.candidateImageSize.width}x${result.candidateImageSize.height}`,
     width: result.width,
     height: result.height,
     diffRatio: result.diffRatio.toFixed(4),
@@ -707,6 +709,8 @@ async function compareImagesInBrowser(
     async ({ targetBase64, candidateBase64, pixelThreshold, region }) => {
       const targetImage = await loadImage(targetBase64);
       const candidateImage = await loadImage(candidateBase64);
+      const targetImageSize = { height: targetImage.height, width: targetImage.width };
+      const candidateImageSize = { height: candidateImage.height, width: candidateImage.width };
       const source = region ?? {
         x: 0,
         y: 0,
@@ -763,11 +767,14 @@ async function compareImagesInBrowser(
 
       const pixelCount = width * height;
       return {
+        candidateImageSize,
+        compareRegion: source,
         diffRatio: different / pixelCount,
         diffPngBase64,
         height,
         meanDelta: totalDelta / pixelCount,
         rmsDelta: Math.sqrt(totalSquaredDelta / pixelCount),
+        targetImageSize,
         width
       };
 
