@@ -47,7 +47,7 @@ the automation.
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | Repository first screen  | README, `llms.txt`, and package metadata tell users and assistants the true project status.                                                     |
 | Documentation structure  | Required docs exist and include visual flow diagrams, component page standards, `docs/components/index.md`, accessibility, and an AI/agent map. |
-| Contribution workflow    | PR and issue templates route bugs, features, and registry issues.                                                                               |
+| Contribution workflow    | PR and issue templates route bugs, features, registry issues, and `docs/maintainer-runbook.md` handoffs.                                        |
 | Release CI               | CI, release, visual, and Pages workflows use the expected gates.                                                                                |
 | Registry distribution    | shadcn-style registry files are generated, tested, and honest about npm dependency.                                                             |
 | Storybook Pages          | The workflow can build and deploy Storybook after Pages is enabled.                                                                             |

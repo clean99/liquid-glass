@@ -35,6 +35,7 @@ const packageRequiredFiles = [
   "LICENSE",
   "ATTRIBUTIONS.md",
   "CONTRIBUTING.md",
+  "MAINTAINERS.md",
   "SECURITY.md",
   "CODE_OF_CONDUCT.md",
   "CHANGELOG.md",
@@ -61,6 +62,7 @@ const packageRequiredFiles = [
   "docs/index.md",
   "docs/installation.md",
   "docs/kube-parity-gate.md",
+  "docs/maintainer-runbook.md",
   "docs/open-source-governance.md",
   "docs/open-source-release.md",
   "docs/optics-architecture.md",
@@ -149,6 +151,7 @@ mustInclude("README.md", [
   "docs/accessibility.md",
   "docs/component-documentation.md",
   "docs/components/index.md",
+  "docs/maintainer-runbook.md",
   "llms.txt",
   "Open-source governance",
   "UI library benchmark",
@@ -167,6 +170,7 @@ mustInclude("llms.txt", [
   "Assistant Rules",
   "docs/accessibility.md",
   "docs/components/index.md",
+  "docs/maintainer-runbook.md",
   "pnpm test:release-readiness",
   "pnpm test:kube-reference:strict",
   "pnpm test:kube-reference:exact",
@@ -186,6 +190,7 @@ mustInclude("docs/index.md", [
   "Component Navigation",
   "docs/component-documentation.md",
   "docs/components/index.md",
+  "docs/maintainer-runbook.md",
   "Visual Documentation",
   "Quality Gates",
   "docs/accessibility.md",
@@ -197,6 +202,35 @@ mustInclude("docs/index.md", [
   "test:kube-reference:exact",
   "pnpm test:visual-docs",
   "pnpm verify"
+]);
+
+mustInclude("MAINTAINERS.md", [
+  "Maintainers",
+  "@clean99",
+  "docs/maintainer-runbook.md",
+  "not published to npm yet",
+  "pnpm test:kube-reference:exact",
+  "ATTRIBUTIONS.md",
+  "docs/reference-provenance.json"
+]);
+
+mustInclude("docs/maintainer-runbook.md", [
+  "Maintainer Runbook",
+  "shadcn/ui",
+  "Radix UI",
+  "Chakra UI",
+  "HeroUI",
+  "```mermaid",
+  "Triage Flow",
+  "CI Failure Handling",
+  "Release Procedure",
+  "Pages Procedure",
+  "Security Procedure",
+  "Rollback Procedure",
+  "not published to npm yet",
+  "pnpm verify",
+  "pnpm test:kube-reference:exact",
+  "CHECK_REMOTE_GOVERNANCE=1 pnpm audit:governance"
 ]);
 
 mustInclude("docs/adoption-guide.md", [
@@ -379,6 +413,7 @@ mustInclude("SUPPORT.md", [
   "pre-1.0",
   "not published yet",
   "private security advisory",
+  "docs/maintainer-runbook.md",
   "Accessibility regression",
   "registry issue",
   "pnpm test:kube-reference:exact",
@@ -417,6 +452,7 @@ mustInclude("docs/open-source-governance.md", [
   "pnpm test:a11y",
   "docs/accessibility.md",
   "docs/components/index.md",
+  "docs/maintainer-runbook.md",
   "main push",
   "Current Gaps",
   "Release Flow"
@@ -429,6 +465,7 @@ mustInclude("docs/governance-scorecard.md", [
   "CHECK_REMOTE_GOVERNANCE=1",
   "docs/ui-library-benchmark.md",
   "docs/components/index.md",
+  "docs/maintainer-runbook.md",
   "remoteStatus.checked",
   "GitHub Pages",
   "not part of CI"
@@ -442,8 +479,10 @@ mustInclude("docs/ui-library-benchmark.md", [
   "mermaid",
   "Public Benchmark Surface",
   "Component page standard",
+  "Maintainer operations",
   "docs/component-documentation.md",
   "docs/components/index.md",
+  "docs/maintainer-runbook.md",
   "Support routing",
   "Visual regression signal",
   "Local governance gate",
@@ -589,6 +628,7 @@ mustInclude("docs/testing.md", [
 
 mustInclude("CONTRIBUTING.md", [
   "SUPPORT.md",
+  "docs/maintainer-runbook.md",
   "pnpm verify",
   "pnpm test:docs",
   "pnpm test:inventory"
@@ -601,6 +641,7 @@ mustInclude("docs/open-source-release.md", [
   "pnpm test:a11y",
   "pnpm test:e2e",
   "docs/accessibility.md",
+  "docs/maintainer-runbook.md",
   "pnpm test:kube-reference:strict",
   "pnpm release",
   "NPM_TOKEN",

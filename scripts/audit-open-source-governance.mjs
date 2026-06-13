@@ -68,6 +68,7 @@ const categoryChecks = [
       exists("docs/testing.md"),
       exists("docs/open-source-governance.md"),
       exists("docs/governance-scorecard.md"),
+      exists("docs/maintainer-runbook.md"),
       exists("docs/ui-library-benchmark.md"),
       exists("docs/visual-documentation.md"),
       exists("docs/visual-state-coverage.json"),
@@ -78,6 +79,8 @@ const categoryChecks = [
       fileIncludes("docs/ui-library-benchmark.md", "Public Benchmark Surface"),
       fileIncludes("docs/ui-library-benchmark.md", "Public launch score"),
       fileIncludes("docs/visual-documentation.md", "```mermaid"),
+      fileIncludes("docs/maintainer-runbook.md", "```mermaid"),
+      fileIncludes("docs/maintainer-runbook.md", "Release Procedure"),
       fileIncludes("ROADMAP.md", "```mermaid")
     ]
   },
@@ -85,10 +88,15 @@ const categoryChecks = [
     name: "contribution-workflow",
     checks: [
       exists("CONTRIBUTING.md"),
+      exists("MAINTAINERS.md"),
       exists("SUPPORT.md"),
+      fileIncludes("MAINTAINERS.md", "docs/maintainer-runbook.md"),
+      fileIncludes("MAINTAINERS.md", "pnpm test:kube-reference:exact"),
       fileIncludes("SUPPORT.md", "Where To Go"),
+      fileIncludes("SUPPORT.md", "docs/maintainer-runbook.md"),
       fileIncludes("SUPPORT.md", "not published yet"),
       fileIncludes("CONTRIBUTING.md", "pnpm test:inventory"),
+      fileIncludes("CONTRIBUTING.md", "docs/maintainer-runbook.md"),
       fileIncludes("CONTRIBUTING.md", "pnpm verify"),
       exists(".github/PULL_REQUEST_TEMPLATE.md"),
       fileIncludes(".github/PULL_REQUEST_TEMPLATE.md", "pnpm test:governance"),
@@ -197,6 +205,7 @@ const categoryChecks = [
       arrayIncludes(packageJson.files, "dist", "package files include dist"),
       arrayIncludes(packageJson.files, "README.md", "package files include README"),
       arrayIncludes(packageJson.files, "llms.txt", "package files include llms.txt"),
+      arrayIncludes(packageJson.files, "MAINTAINERS.md", "package files include MAINTAINERS"),
       arrayIncludes(packageJson.files, "ROADMAP.md", "package files include ROADMAP"),
       fileIncludes("docs/open-source-release.md", "not published to npm yet")
     ]

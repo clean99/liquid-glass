@@ -44,6 +44,7 @@ reference parity checks.
 - [Testing strategy](docs/testing.md)
 - [shadcn-style Registry](docs/shadcn-registry.md)
 - [Open-source governance](docs/open-source-governance.md)
+- [Maintainer runbook](docs/maintainer-runbook.md)
 - [Governance scorecard](docs/governance-scorecard.md)
 - [UI library benchmark](docs/ui-library-benchmark.md)
 - [Release checklist](docs/open-source-release.md)
@@ -124,6 +125,8 @@ Primary docs:
 - `docs/visual-documentation.md`: Storybook Pages, light and dark states,
   reduced motion, high contrast, mobile, and Kube reference evidence.
 - `docs/testing.md`: local and CI validation strategy.
+- `docs/maintainer-runbook.md`: maintainer triage, CI failure, Pages, release,
+  security, registry, and rollback procedures.
 - `docs/open-source-release.md`: release, Pages, npm, and rollback checklist.
 
 ## Components

@@ -58,7 +58,8 @@ the accessibility contract.
 
 Repository-level settings are tracked in `docs/github-repository-settings.md`.
 The shadcn-style registry distribution model is tracked in
-`docs/shadcn-registry.md`.
+`docs/shadcn-registry.md`. Maintainer triage and incident procedures are tracked
+in `docs/maintainer-runbook.md`.
 
 ## Publication Status
 

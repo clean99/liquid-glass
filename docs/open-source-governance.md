@@ -69,6 +69,13 @@ The visual documentation contract lives in `docs/visual-documentation.md`. It
 keeps Storybook examples, visual snapshots, a11y checks, Pages deployment, and
 Kube reference claims tied to one standard instead of scattered prose.
 
+## Maintainer Operations
+
+Maintainer procedures live in `docs/maintainer-runbook.md`. The runbook keeps
+triage, CI failure handling, Pages enablement, npm release, registry validation,
+security reports, and rollback decisions in one reviewable place so operational
+claims do not depend on private memory.
+
 ## Accessibility Contract
 
 The accessibility contract lives in `docs/accessibility.md`. It separates what

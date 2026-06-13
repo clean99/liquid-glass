@@ -55,6 +55,7 @@ flowchart TD
 | Testing              | `docs/testing.md`                 | Local gates, CI gates, Storybook, accessibility, and Kube reference checks.       |
 | Registry             | `docs/shadcn-registry.md`         | shadcn-compatible registry files and install path after npm publish.              |
 | Governance           | `docs/open-source-governance.md`  | Benchmark against shadcn/ui, Radix UI, Chakra UI, and HeroUI.                     |
+| Maintainers          | `docs/maintainer-runbook.md`      | Triage, CI failure, Pages, release, security, registry, and rollback procedures.  |
 | Release              | `docs/open-source-release.md`     | npm, provenance, Pages, rollback, and release readiness checklist.                |
 | Roadmap              | `ROADMAP.md`                      | Staged project plan.                                                              |
 

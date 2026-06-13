@@ -15,6 +15,8 @@ Check these docs first:
 - `docs/shadcn-registry.md` for shadcn-style registry behavior.
 - `docs/testing.md` for local verification commands.
 - `docs/kube-parity-gate.md` for Kube reference status.
+- `docs/maintainer-runbook.md` for maintainer triage, release, security,
+  rollback, Pages, registry, and CI failure procedures.
 
 The package is prepared for npm release, but it is not published yet. Do not
 report a missing npm install path as a release bug until the first npm publish

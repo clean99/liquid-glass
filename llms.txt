@@ -64,6 +64,8 @@ run has succeeded.
 
 - [Open-source governance](docs/open-source-governance.md): benchmark against
   shadcn/ui, Radix UI, Chakra UI, and HeroUI.
+- [Maintainer runbook](docs/maintainer-runbook.md): maintainer triage, CI
+  failure handling, Pages, release, security, registry, and rollback procedures.
 - [Governance scorecard](docs/governance-scorecard.md): local and remote-aware
   readiness audit commands.
 - [Repository settings](docs/github-repository-settings.md): GitHub Pages,

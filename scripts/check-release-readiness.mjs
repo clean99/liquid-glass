@@ -153,6 +153,7 @@ const packageRequiredFiles = [
   "LICENSE",
   "ATTRIBUTIONS.md",
   "CONTRIBUTING.md",
+  "MAINTAINERS.md",
   "SECURITY.md",
   "CODE_OF_CONDUCT.md",
   "CHANGELOG.md",
@@ -161,6 +162,7 @@ const packageRequiredFiles = [
   "docs/accessibility.md",
   "docs/github-repository-settings.md",
   "docs/governance-scorecard.md",
+  "docs/maintainer-runbook.md",
   "docs/open-source-governance.md",
   "docs/open-source-release.md",
   "docs/shadcn-registry.md",
@@ -244,6 +246,14 @@ mustInclude("docs/accessibility.md", "Accessibility");
 mustInclude("docs/accessibility.md", "pnpm test:a11y");
 mustInclude("docs/accessibility.md", "WCAG certification");
 mustInclude("docs/open-source-release.md", "llms.txt");
+mustInclude("docs/open-source-release.md", "docs/maintainer-runbook.md");
+mustInclude("MAINTAINERS.md", "docs/maintainer-runbook.md");
+mustInclude("MAINTAINERS.md", "pnpm test:kube-reference:exact");
+mustInclude("docs/maintainer-runbook.md", "Release Procedure");
+mustInclude("docs/maintainer-runbook.md", "Pages Procedure");
+mustInclude("docs/maintainer-runbook.md", "Rollback Procedure");
+mustInclude("docs/maintainer-runbook.md", "pnpm verify");
+mustInclude("docs/maintainer-runbook.md", "not published to npm yet");
 mustInclude("llms.txt", "Assistant Rules");
 mustInclude("llms.txt", "not published to npm yet");
 mustInclude("llms.txt", "pnpm test:kube-reference:exact");

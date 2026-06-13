@@ -10,6 +10,8 @@ Use `SUPPORT.md` to choose the right path for usage questions, accessibility
 bugs, registry or package install issues, security reports, and release status
 questions.
 
+Maintainer triage and release operations live in `docs/maintainer-runbook.md`.
+
 ## Local Setup
 
 ```sh
