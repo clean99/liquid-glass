@@ -29,18 +29,19 @@ flowchart TD
 
 ## Current Evidence Table
 
-| Claim area           | Evidence source                                                                      | Current status                                      | Required before public claim                                    |
-| -------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------- | --------------------------------------------------------------- |
-| Repository identity  | GitHub API, `package.json`, README, topics, license.                                 | Proven for `clean99/liquid-glass`.                  | Keep description, topics, license, and package metadata synced. |
-| Local governance     | `pnpm test:governance`, `pnpm test:docs`, `pnpm test:release-readiness`.             | Gate-backed locally.                                | Keep all three green after governance changes.                  |
-| CI health            | `CI` workflow on `main`, Node 24, pnpm 11.5.2, workflow job timeout.                 | Latest main run must be checked before release.     | Required check passes on the release commit.                    |
-| Visual regression    | `Visual Regression` workflow, `pnpm test:visual`, `pnpm test:kube-reference:strict`. | Strict visual gate is release-candidate evidence.   | Required check passes on the release commit.                    |
-| Storybook Pages      | `Storybook Pages` workflow plus repository Pages API.                                | Build can pass; public URL waits for Pages setting. | Enable Pages with GitHub Actions and verify the public URL.     |
-| npm package          | `release.yml`, Changesets, `NPM_TOKEN`, provenance, `pnpm pack --dry-run`.           | Prepared, not published to npm yet.                 | Successful release workflow publish with provenance.            |
-| shadcn registry      | `registry.json`, `liquid-glass.json`, generated registry items.                      | Metadata is tested; consumer path waits for npm.    | npm package exists before documenting registry install as live. |
-| Accessibility        | `docs/accessibility.md`, `pnpm test:a11y`, `pnpm test:e2e`, Storybook metadata.      | Gate-backed, not a WCAG certification claim.        | Keep a11y and e2e green on release commit.                      |
-| Reference provenance | `ATTRIBUTIONS.md`, `docs/reference-provenance.json`, `pnpm test:research`.           | Gate-backed.                                        | Add every new external reference before using it.               |
-| Kube exact parity    | `pnpm test:kube-reference:exact`.                                                    | Not complete.                                       | Exact gate passes with zero-diff thresholds.                    |
+| Claim area           | Evidence source                                                                      | Current status                                        | Required before public claim                                    |
+| -------------------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------- | --------------------------------------------------------------- |
+| Repository identity  | GitHub API, `package.json`, README, topics, license.                                 | Proven for `clean99/liquid-glass`.                    | Keep description, topics, license, and package metadata synced. |
+| Local governance     | `pnpm test:governance`, `pnpm test:docs`, `pnpm test:release-readiness`.             | Gate-backed locally.                                  | Keep all three green after governance changes.                  |
+| CI health            | `CI` workflow on `main`, Node 24, pnpm 11.5.2, workflow job timeout.                 | Latest main run must be checked before release.       | Required check passes on the release commit.                    |
+| Visual regression    | `Visual Regression` workflow, `pnpm test:visual`, `pnpm test:kube-reference:strict`. | Strict visual gate is release-candidate evidence.     | Required check passes on the release commit.                    |
+| Branch protection    | `.github/rulesets/main-release-gate.json` plus repository ruleset state.             | Proposed locally; remote application must be checked. | Apply the main release gate after `ci` and `visual` are green.  |
+| Storybook Pages      | `Storybook Pages` workflow plus repository Pages API.                                | Build can pass; public URL waits for Pages setting.   | Enable Pages with GitHub Actions and verify the public URL.     |
+| npm package          | `release.yml`, Changesets, `NPM_TOKEN`, provenance, `pnpm pack --dry-run`.           | Prepared, not published to npm yet.                   | Successful release workflow publish with provenance.            |
+| shadcn registry      | `registry.json`, `liquid-glass.json`, generated registry items.                      | Metadata is tested; consumer path waits for npm.      | npm package exists before documenting registry install as live. |
+| Accessibility        | `docs/accessibility.md`, `pnpm test:a11y`, `pnpm test:e2e`, Storybook metadata.      | Gate-backed, not a WCAG certification claim.          | Keep a11y and e2e green on release commit.                      |
+| Reference provenance | `ATTRIBUTIONS.md`, `docs/reference-provenance.json`, `pnpm test:research`.           | Gate-backed.                                          | Add every new external reference before using it.               |
+| Kube exact parity    | `pnpm test:kube-reference:exact`.                                                    | Not complete.                                         | Exact gate passes with zero-diff thresholds.                    |
 
 ## Maintainer Scoreboard
 

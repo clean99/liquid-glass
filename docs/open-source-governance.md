@@ -88,6 +88,14 @@ triage, CI failure handling, Pages enablement, npm release, registry validation,
 security reports, and rollback decisions in one reviewable place so operational
 claims do not depend on private memory.
 
+## Branch Protection
+
+The proposed main-branch ruleset lives in
+`.github/rulesets/main-release-gate.json`. It turns the release gate into a
+repository setting that can require pull requests, code-owner review, resolved
+threads, no force pushes, no branch deletion, and the `ci` plus `visual` checks
+before code lands on `main`.
+
 ## Accessibility Contract
 
 The accessibility contract lives in `docs/accessibility.md`. It separates what

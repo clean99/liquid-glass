@@ -142,7 +142,11 @@ const categoryChecks = [
       workflowIncludes("release.yml", "id-token: write"),
       workflowIncludes("release.yml", "timeout-minutes: 75"),
       workflowIncludes("pages.yml", "timeout-minutes: 35"),
-      workflowIncludes("pages.yml", "timeout-minutes: 10")
+      workflowIncludes("pages.yml", "timeout-minutes: 10"),
+      exists(".github/rulesets/main-release-gate.json"),
+      fileIncludes(".github/rulesets/main-release-gate.json", "required_status_checks"),
+      fileIncludes(".github/rulesets/main-release-gate.json", '"context": "ci"'),
+      fileIncludes(".github/rulesets/main-release-gate.json", '"context": "visual"')
     ]
   },
   {

@@ -118,10 +118,28 @@ Use linear history if the repository does not need merge commits. Do not enable
 rules that block the Changesets release workflow from opening its version pull
 request.
 
-Branch protection can be configured through the GitHub UI or REST API. The
-important contract is that the `ci` check must be required after it has reported
-success on `main`; `visual` should be required for pull requests before external
-contributions are accepted.
+Branch protection can be configured through the GitHub UI, the branch protection
+REST API, or a repository ruleset. The proposed ruleset lives at
+`.github/rulesets/main-release-gate.json`. It applies to the default branch,
+blocks deletion and force pushes, requires a pull request with code-owner review
+and resolved threads, and requires the `ci` and `visual` checks with strict
+latest-branch status checks.
+
+Apply the ruleset only after both checks have reported success on `main`:
+
+```sh
+gh api \
+  --method POST \
+  -H "Accept: application/vnd.github+json" \
+  -H "X-GitHub-Api-Version: 2026-03-10" \
+  repos/clean99/liquid-glass/rulesets \
+  --input .github/rulesets/main-release-gate.json
+```
+
+The REST API requires repository Administration write permission for creating or
+updating rulesets. If the ruleset blocks a required maintainer workflow, update
+the JSON first and apply it again through the API; do not bypass the rules by
+force pushing.
 
 ## Repository Secrets
 

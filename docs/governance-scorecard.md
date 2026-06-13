@@ -49,7 +49,7 @@ the automation.
 | Repository first screen  | README, `llms.txt`, and package metadata tell users and assistants the true project status.                                                                       |
 | Documentation structure  | Required docs exist and include visual flow diagrams, component page standards, `docs/components/index.md`, release evidence, accessibility, and an AI/agent map. |
 | Contribution workflow    | PR and issue templates route bugs, features, registry issues, and `docs/maintainer-runbook.md` handoffs.                                                          |
-| Release CI               | CI, release, visual, and Pages workflows use the expected gates and job timeouts.                                                                                 |
+| Release CI               | CI, release, visual, and Pages workflows use the expected gates and job timeouts; the main-branch ruleset proposal requires `ci` and `visual`.                    |
 | Registry distribution    | shadcn-style registry files are generated, tested, and honest about npm dependency.                                                                               |
 | Storybook Pages          | The workflow can build and deploy Storybook after Pages is enabled.                                                                                               |
 | Visual documentation     | Storybook, screenshots, state profiles, a11y, and reference gates describe the visual contract.                                                                   |

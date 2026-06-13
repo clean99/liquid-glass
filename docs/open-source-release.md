@@ -48,6 +48,7 @@ those files already live in this repository.
 - `.github/workflows/visual.yml`
 - `.github/workflows/pages.yml`
 - `.github/workflows/release.yml`
+- `.github/rulesets/main-release-gate.json`
 - `.github/ISSUE_TEMPLATE/bug_report.yml`
 - `.github/ISSUE_TEMPLATE/feature_request.yml`
 - `.github/PULL_REQUEST_TEMPLATE.md`
@@ -97,8 +98,10 @@ GitHub Actions run Node 24. The package `engines.node` lower bound is
    schema, license, README, and attribution files.
 9. Add a changeset for user-visible changes.
 10. Merge to `main`.
-11. Run the release workflow manually after reviewing the generated version PR.
-12. The release workflow runs `pnpm verify`, then uses Changesets to either open
+11. Confirm the `main release gate` ruleset is applied or intentionally deferred
+    with maintainer approval.
+12. Run the release workflow manually after reviewing the generated version PR.
+13. The release workflow runs `pnpm verify`, then uses Changesets to either open
     a version PR or publish the already-versioned package with `pnpm release`.
     The workflow sets `NPM_CONFIG_PROVENANCE=true` so npm receives a GitHub
     Actions provenance statement for published artifacts.

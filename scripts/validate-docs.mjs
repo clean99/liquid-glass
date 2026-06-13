@@ -102,6 +102,7 @@ const standaloneRequiredFiles = [
   ".github/workflows/visual.yml",
   ".github/workflows/pages.yml",
   ".github/workflows/release.yml",
+  ".github/rulesets/main-release-gate.json",
   ".github/ISSUE_TEMPLATE/bug_report.yml",
   ".github/ISSUE_TEMPLATE/docs_report.yml",
   ".github/ISSUE_TEMPLATE/feature_request.yml",
@@ -507,6 +508,7 @@ mustInclude("docs/open-source-governance.md", [
   "docs/components/index.md",
   "docs/maintainer-runbook.md",
   "docs/release-evidence.md",
+  ".github/rulesets/main-release-gate.json",
   "main push",
   "Current Gaps",
   "Release Flow"
@@ -538,6 +540,7 @@ mustInclude("docs/ui-library-benchmark.md", [
   "docs/components/map.md",
   "docs/components/index.md",
   "docs/maintainer-runbook.md",
+  ".github/rulesets/main-release-gate.json",
   "Support routing",
   "Visual regression signal",
   "Release evidence",
@@ -555,6 +558,7 @@ mustInclude("docs/release-evidence.md", [
   "Current Evidence Table",
   "Maintainer Scoreboard",
   "Do Not Claim Until Proven",
+  ".github/rulesets/main-release-gate.json",
   "CHECK_REMOTE_GOVERNANCE=1 pnpm --silent audit:governance:json",
   "Storybook Pages",
   "npm publish",
@@ -719,6 +723,7 @@ mustInclude("docs/open-source-release.md", [
   "docs/accessibility.md",
   "docs/maintainer-runbook.md",
   "docs/release-evidence.md",
+  ".github/rulesets/main-release-gate.json",
   "pnpm test:kube-reference:strict",
   "pnpm release",
   "NPM_TOKEN",
@@ -775,6 +780,15 @@ if (isStandaloneRepository) {
     "pnpm test:visual",
     "pnpm test:kube-reference:strict",
     "timeout-minutes: 45"
+  ]);
+  mustInclude(".github/rulesets/main-release-gate.json", [
+    "main release gate",
+    "required_status_checks",
+    '"context": "ci"',
+    '"context": "visual"',
+    "pull_request",
+    "non_fast_forward",
+    "deletion"
   ]);
 }
 mustInclude(".changeset/config.json", [
@@ -940,6 +954,7 @@ if (!packageJson.files?.includes("llms.txt")) {
 }
 
 validateComponentMap();
+validateRepositoryRuleset();
 
 if (errors.length > 0) {
   throw new Error(`Documentation gate failed:\n${errors.map((error) => `- ${error}`).join("\n")}`);
@@ -1005,6 +1020,44 @@ function validateComponentMap() {
     );
     if (!categoryCountPattern.test(componentMap)) {
       errors.push(`docs/components/map.md is missing category count ${category}: ${count}`);
+    }
+  }
+}
+
+function validateRepositoryRuleset() {
+  if (!isStandaloneRepository) {
+    return;
+  }
+
+  const ruleset = JSON.parse(read(".github/rulesets/main-release-gate.json"));
+  const ruleTypes = new Set(ruleset.rules?.map((rule) => rule.type) ?? []);
+  const requiredChecks =
+    ruleset.rules
+      ?.find((rule) => rule.type === "required_status_checks")
+      ?.parameters?.required_status_checks?.map((check) => check.context) ?? [];
+
+  if (ruleset.name !== "main release gate") {
+    errors.push(".github/rulesets/main-release-gate.json must be named main release gate");
+  }
+  if (ruleset.target !== "branch") {
+    errors.push(".github/rulesets/main-release-gate.json must target branch rules");
+  }
+  if (ruleset.enforcement !== "active") {
+    errors.push(".github/rulesets/main-release-gate.json must be active when applied");
+  }
+  if (!ruleset.conditions?.ref_name?.include?.includes("~DEFAULT_BRANCH")) {
+    errors.push(".github/rulesets/main-release-gate.json must include the default branch");
+  }
+
+  for (const ruleType of ["deletion", "non_fast_forward", "pull_request"]) {
+    if (!ruleTypes.has(ruleType)) {
+      errors.push(`.github/rulesets/main-release-gate.json must include ${ruleType}`);
+    }
+  }
+
+  for (const requiredCheck of ["ci", "visual"]) {
+    if (!requiredChecks.includes(requiredCheck)) {
+      errors.push(`.github/rulesets/main-release-gate.json must require ${requiredCheck}`);
     }
   }
 }

@@ -191,6 +191,7 @@ const standaloneRequiredFiles = [
   ".github/workflows/visual.yml",
   ".github/workflows/pages.yml",
   ".github/workflows/release.yml",
+  ".github/rulesets/main-release-gate.json",
   ".github/ISSUE_TEMPLATE/bug_report.yml",
   ".github/ISSUE_TEMPLATE/docs_report.yml",
   ".github/ISSUE_TEMPLATE/feature_request.yml",
@@ -255,6 +256,10 @@ if (isStandaloneRepository) {
   mustInclude(".github/workflows/pages.yml", "needs.build.outputs.pages-enabled");
   mustInclude(".github/workflows/pages.yml", "timeout-minutes: 35");
   mustInclude(".github/workflows/pages.yml", "timeout-minutes: 10");
+  mustInclude(".github/rulesets/main-release-gate.json", "main release gate");
+  mustInclude(".github/rulesets/main-release-gate.json", "required_status_checks");
+  mustInclude(".github/rulesets/main-release-gate.json", '"context": "ci"');
+  mustInclude(".github/rulesets/main-release-gate.json", '"context": "visual"');
 }
 mustInclude("docs/open-source-release.md", "pnpm test:release-readiness");
 mustInclude("docs/open-source-release.md", "docs/accessibility.md");
@@ -264,6 +269,7 @@ mustInclude("docs/accessibility.md", "WCAG certification");
 mustInclude("docs/open-source-release.md", "llms.txt");
 mustInclude("docs/open-source-release.md", "docs/maintainer-runbook.md");
 mustInclude("docs/open-source-release.md", "docs/release-evidence.md");
+mustInclude("docs/open-source-release.md", ".github/rulesets/main-release-gate.json");
 mustInclude("MAINTAINERS.md", "docs/maintainer-runbook.md");
 mustInclude("MAINTAINERS.md", "pnpm test:kube-reference:exact");
 mustInclude("docs/maintainer-runbook.md", "Release Procedure");
@@ -285,6 +291,7 @@ mustInclude("docs/ui-library-benchmark.md", "Public launch score");
 mustInclude("docs/ui-library-benchmark.md", "not published");
 mustInclude("docs/ui-library-benchmark.md", "docs/components/map.md");
 mustInclude("docs/ui-library-benchmark.md", "docs/release-evidence.md");
+mustInclude("docs/ui-library-benchmark.md", ".github/rulesets/main-release-gate.json");
 mustInclude("docs/release-evidence.md", "Release Evidence Dashboard");
 mustInclude("docs/release-evidence.md", "Do Not Claim Until Proven");
 mustInclude("docs/release-evidence.md", "pnpm test:kube-reference:exact");
