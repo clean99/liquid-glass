@@ -39,9 +39,12 @@ hashes live in `stories/assets/kube/manifest.json`. The local files live under
 `<image>`/`<feImage>` hrefs, then compares those live demo URLs against the
 manifest before `pnpm test:kube-reference` captures pixels. The URL gate covers
 the loaded demo photos, album-art fixtures, and Kube same-origin SVG filter maps.
-If Kube has no rendered source image for a future component state, the fallback
-must be a captured/generated reference fixture with provenance instead of a
-synthetic placeholder.
+It also fails if a rendered CSS demo background is not covered by the manifest
+or an explicit generated fallback entry. The current Chrome sample found real
+source images for the rendered CSS demo backgrounds, so
+`generatedFallbackAssets` is intentionally empty. If Kube has no rendered source
+image for a future component state, the fallback must be a captured/generated
+reference fixture with provenance instead of a synthetic placeholder.
 
 - Searchbox image background:
   `photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop`,

@@ -97,6 +97,7 @@ type KubeReferenceAssetManifest = {
       width: number;
     }
   >;
+  generatedFallbackAssets: Array<{ sourceUrl?: string }>;
   captureMethod: string;
   observedOn: string;
   sourcePage: string;
@@ -405,6 +406,7 @@ describe("Liquid Glass physics contract", () => {
     );
     expect(kubeReferenceAssetManifest.captureMethod).toContain("Chrome DOM");
     expect(kubeReferenceAssetManifest.captureMethod).toContain("CDP");
+    expect(kubeReferenceAssetManifest.generatedFallbackAssets).toEqual([]);
     expect(kubeReferenceAssetManifest.assets).toMatchObject(expectedKubeDemoImageAssets);
 
     for (const [name, asset] of Object.entries(kubeReferenceAssetManifest.assets)) {
@@ -442,6 +444,12 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeDemoAssetVerifierSource).toContain("readRasterSize(bytes)");
     expect(kubeDemoAssetVerifierSource).toContain("localAssets: localAssetChecks");
     expect(kubeDemoAssetVerifierSource).toContain("filterMapAssets");
+    expect(kubeDemoAssetVerifierSource).toContain("observedCssBackgrounds");
+    expect(kubeDemoAssetVerifierSource).toContain("uncoveredCssBackgrounds");
+    expect(kubeDemoAssetVerifierSource).toContain("generatedFallbackAssets");
+    expect(kubeDemoAssetVerifierSource).toContain(
+      "Add these rendered CSS backgrounds to stories/assets/kube/manifest.json or record a generated fallback"
+    );
   });
 
   it("locks Kube same-origin filter maps for exact parity diagnostics", () => {

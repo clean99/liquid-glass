@@ -2,6 +2,7 @@
   "sourcePage": "https://kube.io/blog/liquid-glass-css-svg/",
   "observedOn": "2026-06-14",
   "captureMethod": "Chrome DOM, CDP, and pageAssets sampling of rendered Kube demos",
+  "generatedFallbackAssets": [],
   "assets": {
     "lensDemoBackground": {
       "file": "lens-demo-background.jpg",

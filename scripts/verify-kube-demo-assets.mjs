@@ -144,6 +144,19 @@ try {
     ...observed.imageUrls.map((image) => image.src),
     ...observed.svgImageUrls.map((image) => image.href)
   ]);
+  const expectedUrlValues = new Set(expectedUrls.values());
+  const observedCssBackgroundUrls = [
+    ...new Set(observed.cssBackgrounds.flatMap((background) => background.urls))
+  ];
+  const generatedFallbackAssets = manifest.generatedFallbackAssets ?? [];
+  const coveredFallbackSourceUrls = new Set(
+    generatedFallbackAssets
+      .map((asset) => asset?.sourceUrl)
+      .filter((sourceUrl) => typeof sourceUrl === "string" && sourceUrl.length > 0)
+  );
+  const uncoveredCssBackgrounds = observedCssBackgroundUrls.filter(
+    (url) => !expectedUrlValues.has(url) && !coveredFallbackSourceUrls.has(url)
+  );
 
   const missing = [...expectedUrls].filter(([, url]) => !observedUrls.has(url));
 
@@ -153,10 +166,13 @@ try {
     JSON.stringify(
       {
         expected: Object.fromEntries(expectedUrls),
+        generatedFallbackAssets,
         missing: missing.map(([name, url]) => ({ name, url })),
         localAssets: localAssetChecks,
         observed,
+        observedCssBackgrounds: observedCssBackgroundUrls,
         observedAt: new Date().toISOString(),
+        uncoveredCssBackgrounds,
         sourcePage: targetUrl
       },
       null,
@@ -168,6 +184,14 @@ try {
     throw new Error(
       `Kube demo asset verification failed:\n${missing
         .map(([name, url]) => `- ${name}: ${url}`)
+        .join("\n")}`
+    );
+  }
+
+  if (uncoveredCssBackgrounds.length > 0) {
+    throw new Error(
+      `Kube demo background asset verification failed. Add these rendered CSS backgrounds to stories/assets/kube/manifest.json or record a generated fallback:\n${uncoveredCssBackgrounds
+        .map((url) => `- ${url}`)
         .join("\n")}`
     );
   }
