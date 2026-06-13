@@ -49,6 +49,7 @@ pnpm lint
 pnpm typecheck
 pnpm test:docs
 pnpm test:inventory
+pnpm test:component-coverage
 pnpm test:registry
 pnpm test:shadcn-parity
 pnpm test:release-readiness
@@ -359,6 +360,7 @@ pnpm lint
 pnpm typecheck
 pnpm test:docs
 pnpm test:inventory
+pnpm test:component-coverage
 pnpm test:release-readiness
 pnpm test:unit
 pnpm test:e2e

@@ -7,6 +7,7 @@ pnpm lint
 pnpm typecheck
 pnpm test:docs
 pnpm test:inventory
+pnpm test:component-coverage
 pnpm test:unit
 pnpm test:a11y
 pnpm test:e2e
@@ -80,6 +81,11 @@ box as if the interaction had failed.
 
 `pnpm test:docs` verifies the open-source repository contract: required GitHub
 templates, registry files, docs, attributions, testing notes, and package scripts.
+
+`pnpm test:component-coverage` verifies that every implemented component in
+`docs/component-inventory.json` is imported and exercised in
+`tests/components.test.tsx`. It exists because a source file, story, and registry
+shim are not enough to prove a component has behavior coverage.
 
 `pnpm test:package` builds the package and verifies the publish contract:
 CommonJS and ESM entries, type declarations, CSS exports, `sideEffects`, npm

@@ -56,8 +56,9 @@ The shadcn-style registry distribution model is tracked in
 
 ## Release Flow
 
-1. Run `pnpm test:release-readiness` to validate package metadata, workflows,
-   docs, registry files, Changesets, and strict release gates.
+1. Run `pnpm test:component-coverage` and `pnpm test:release-readiness` to
+   validate component behavior coverage, package metadata, workflows, docs,
+   registry files, Changesets, and strict release gates.
 2. Run `pnpm verify`.
 3. Run `pnpm test:kube-reference:strict` for release-candidate visual parity.
 4. Confirm `pnpm pack --dry-run` includes only package, docs, examples, registry,
