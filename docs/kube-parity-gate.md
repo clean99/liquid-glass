@@ -109,9 +109,9 @@ This measurement includes these verified geometry fixes:
   keeps its height growth near the middle of recent local and CI Kube samples,
   matching Kube's water-drop interaction shape without changing the idle lens
   contract.
-- the pressed action metric guard allows `5px` width-delta and `7px`
+- the pressed action metric guard allows `7px` width-delta and `7px`
   height-delta variance because the live Kube page has recently sampled between
-  roughly `17px` and `21px` of width growth and `15px` and `21px` of height
+  roughly `15px` and `21px` of width growth and `15px` and `21px` of height
   growth during press deformation; the screenshot gate remains unchanged.
 - the dragged action metric guard allows `8px` height-delta and `10px`
   width-delta variance for the same live-page sampling reason; it is still only

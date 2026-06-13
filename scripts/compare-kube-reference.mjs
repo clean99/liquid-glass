@@ -60,7 +60,7 @@ const references = [
       deltaX: 4,
       deltaY: 4,
       heightDelta: 7,
-      widthDelta: 5
+      widthDelta: 7
     },
     maxDiffRatio: 0.405,
     reportOnly: false

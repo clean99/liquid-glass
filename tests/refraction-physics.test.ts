@@ -470,6 +470,7 @@ describe("Liquid Glass physics contract", () => {
     expect(readKubeMaxDiffRatio("magnifying-glass-dragged")).toBe(0.455);
     expect(kubeReferenceCompareSource).toContain("heightDelta: 7");
     expect(kubeReferenceCompareSource).toContain("heightDelta: 8");
+    expect(kubeReferenceCompareSource).toContain("widthDelta: 7");
     expect(kubeReferenceCompareSource).toContain("widthDelta: 10");
     expect(kubeReferenceCompareSource).toContain("emitGithubError(");
     expect(kubeReferenceCompareSource).toContain("Kube reference parity failed");
