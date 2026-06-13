@@ -160,6 +160,7 @@ mustInclude("docs/kube-parity-gate.md", [
   "test:kube-reference:exact",
   "KUBE_EXACT_PARITY=1",
   "KUBE_MAX_DIFF_RATIO=0",
+  "KUBE_PIXEL_DELTA_THRESHOLD=0",
   "final acceptance target",
   "not part of `ci` or `verify`"
 ]);
@@ -260,6 +261,11 @@ if (fs.existsSync(path.join(root, "package.json"))) {
   }
   if (!packageJson.scripts?.["test:kube-reference:exact"]?.includes("KUBE_MAX_DIFF_RATIO=0")) {
     errors.push("package.json test:kube-reference:exact must set zero pixel diff tolerance");
+  }
+  if (
+    !packageJson.scripts?.["test:kube-reference:exact"]?.includes("KUBE_PIXEL_DELTA_THRESHOLD=0")
+  ) {
+    errors.push("package.json test:kube-reference:exact must set zero per-pixel delta tolerance");
   }
   if (!packageJson.scripts?.["test:kube-reference:exact"]?.includes("KUBE_EXACT_PARITY=1")) {
     errors.push("package.json test:kube-reference:exact must mark exact parity mode");

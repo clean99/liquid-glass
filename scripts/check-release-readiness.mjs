@@ -104,6 +104,7 @@ mustScript(packageJson, "test:kube-reference:strict", ["KUBE_STRICT_INTERACTIVE=
 mustScript(packageJson, "test:kube-reference:exact", [
   "KUBE_EXACT_PARITY=1",
   "KUBE_MAX_DIFF_RATIO=0",
+  "KUBE_PIXEL_DELTA_THRESHOLD=0",
   "KUBE_STRICT_INTERACTIVE=1"
 ]);
 mustScript(packageJson, "test:a11y", ["verify-storybook-a11y.mjs"]);

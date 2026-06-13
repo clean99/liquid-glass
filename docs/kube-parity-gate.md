@@ -33,11 +33,12 @@ the release-candidate command used by CI and manual reviews. The interactive
 screenshots are hard gates in both commands.
 
 `pnpm test:kube-reference:exact` is the final acceptance target. It sets
-`KUBE_EXACT_PARITY=1`, `KUBE_STRICT_INTERACTIVE=1`, and `KUBE_MAX_DIFF_RATIO=0`,
-then runs the same browser comparison against the public Kube page. This command
-is intentionally not part of `ci` or `verify` while the current implementation
-still fails exact pixel parity. It exists so the project has a real 1:1 target
-instead of silently redefining success around loose thresholds.
+`KUBE_EXACT_PARITY=1`, `KUBE_STRICT_INTERACTIVE=1`, `KUBE_MAX_DIFF_RATIO=0`, and
+`KUBE_PIXEL_DELTA_THRESHOLD=0`, then runs the same browser comparison against the
+public Kube page. This command is intentionally not part of `ci` or `verify`
+while the current implementation still fails exact pixel parity. It exists so
+the project has a real 1:1 target instead of silently redefining success around
+loose thresholds.
 
 Each row writes target, candidate, and diff PNG artifacts under
 `test-results/kube-reference/`. The diff image is generated from the same crop

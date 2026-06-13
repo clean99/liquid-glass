@@ -16,7 +16,16 @@ const globalMaxDiffRatio = process.env.KUBE_MAX_DIFF_RATIO
   ? Number(process.env.KUBE_MAX_DIFF_RATIO)
   : undefined;
 const exactPixelParity = process.env.KUBE_EXACT_PARITY === "1" || globalMaxDiffRatio === 0;
+const pixelDeltaThreshold = process.env.KUBE_PIXEL_DELTA_THRESHOLD
+  ? Number(process.env.KUBE_PIXEL_DELTA_THRESHOLD)
+  : exactPixelParity
+    ? 0
+    : 24;
 const strictInteractivePixels = process.env.KUBE_STRICT_INTERACTIVE === "1";
+
+if (!Number.isFinite(pixelDeltaThreshold) || pixelDeltaThreshold < 0) {
+  throw new Error(`Invalid KUBE_PIXEL_DELTA_THRESHOLD: ${process.env.KUBE_PIXEL_DELTA_THRESHOLD}`);
+}
 
 const references = [
   {
@@ -188,7 +197,8 @@ try {
       targetPath,
       candidatePath,
       reference.compareRegion,
-      diffPath
+      diffPath,
+      pixelDeltaThreshold
     );
     assertActionMetricParity(reference, targetAction?.metrics, candidateAction?.metrics);
     const reportOnly = Boolean(reference.reportOnly) && !strictInteractivePixels;
@@ -198,6 +208,7 @@ try {
       ...diff,
       candidateActionMetrics: candidateAction?.metrics,
       diffArtifact: path.relative(process.cwd(), diffPath),
+      pixelDeltaThreshold,
       maxDiffRatio: globalMaxDiffRatio ?? reference.maxDiffRatio,
       exactPixelParity,
       reportOnly,
@@ -228,6 +239,7 @@ console.table(
     meanDelta: result.meanDelta.toFixed(2),
     rmsDelta: result.rmsDelta.toFixed(2),
     maxDiffRatio: result.maxDiffRatio,
+    pixelDeltaThreshold: result.pixelDeltaThreshold,
     mode: result.reportOnly ? "report" : "gate"
   }))
 );
@@ -678,14 +690,21 @@ function assertFilterContractParity(reference, summary) {
   }
 }
 
-async function compareImagesInBrowser(browser, targetPath, candidatePath, compareRegion, diffPath) {
+async function compareImagesInBrowser(
+  browser,
+  targetPath,
+  candidatePath,
+  compareRegion,
+  diffPath,
+  threshold
+) {
   const [target, candidate] = await Promise.all([
     fs.readFile(targetPath),
     fs.readFile(candidatePath)
   ]);
   const page = await browser.newPage();
   const result = await page.evaluate(
-    async ({ targetBase64, candidateBase64, region }) => {
+    async ({ targetBase64, candidateBase64, pixelThreshold, region }) => {
       const targetImage = await loadImage(targetBase64);
       const candidateImage = await loadImage(candidateBase64);
       const source = region ?? {
@@ -719,8 +738,6 @@ async function compareImagesInBrowser(browser, targetPath, candidatePath, compar
       let different = 0;
       let totalDelta = 0;
       let totalSquaredDelta = 0;
-      const threshold = 24;
-
       for (let index = 0; index < targetPixels.length; index += 4) {
         const delta =
           Math.abs(targetPixels[index] - candidatePixels[index]) +
@@ -729,7 +746,7 @@ async function compareImagesInBrowser(browser, targetPath, candidatePath, compar
           Math.abs(targetPixels[index + 3] - candidatePixels[index + 3]);
         totalDelta += delta;
         totalSquaredDelta += delta * delta;
-        if (delta > threshold) {
+        if (delta > pixelThreshold) {
           different += 1;
         }
 
@@ -737,7 +754,7 @@ async function compareImagesInBrowser(browser, targetPath, candidatePath, compar
         diffImage.data[index] = 255;
         diffImage.data[index + 1] = Math.max(0, 255 - intensity);
         diffImage.data[index + 2] = Math.max(0, 255 - intensity);
-        diffImage.data[index + 3] = delta > threshold ? 255 : 96;
+        diffImage.data[index + 3] = delta > pixelThreshold ? 255 : 96;
       }
 
       context.putImageData(diffImage, 0, 0);
@@ -773,6 +790,7 @@ async function compareImagesInBrowser(browser, targetPath, candidatePath, compar
     },
     {
       candidateBase64: candidate.toString("base64"),
+      pixelThreshold: threshold,
       region: compareRegion,
       targetBase64: target.toString("base64")
     }
