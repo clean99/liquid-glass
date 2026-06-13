@@ -111,6 +111,9 @@ const categoryChecks = [
       fileIncludes(".github/PULL_REQUEST_TEMPLATE.md", "pnpm test:a11y"),
       fileIncludes(".github/ISSUE_TEMPLATE/config.yml", "Support routing"),
       exists(".github/ISSUE_TEMPLATE/bug_report.yml"),
+      exists(".github/ISSUE_TEMPLATE/docs_report.yml"),
+      fileIncludes(".github/ISSUE_TEMPLATE/docs_report.yml", "Documentation or Storybook issue"),
+      fileIncludes(".github/ISSUE_TEMPLATE/docs_report.yml", "docs/components/map.md"),
       exists(".github/ISSUE_TEMPLATE/feature_request.yml"),
       exists(".github/ISSUE_TEMPLATE/registry_report.yml"),
       exists(".github/CODEOWNERS")

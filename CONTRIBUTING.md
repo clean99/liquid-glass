@@ -7,8 +7,8 @@ release workflow changes, or optical model changes. Small documentation fixes an
 test-only corrections can go straight to a pull request.
 
 Use `SUPPORT.md` to choose the right path for usage questions, accessibility
-bugs, registry or package install issues, security reports, and release status
-questions.
+bugs, documentation issues, registry or package install issues, security
+reports, and release status questions.
 
 Maintainer triage and release operations live in `docs/maintainer-runbook.md`.
 

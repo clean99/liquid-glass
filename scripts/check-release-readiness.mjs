@@ -187,6 +187,7 @@ const standaloneRequiredFiles = [
   ".github/workflows/pages.yml",
   ".github/workflows/release.yml",
   ".github/ISSUE_TEMPLATE/bug_report.yml",
+  ".github/ISSUE_TEMPLATE/docs_report.yml",
   ".github/ISSUE_TEMPLATE/feature_request.yml",
   ".github/ISSUE_TEMPLATE/registry_report.yml",
   ".github/PULL_REQUEST_TEMPLATE.md",
@@ -218,6 +219,8 @@ if (isStandaloneRepository) {
   mustInclude(".github/PULL_REQUEST_TEMPLATE.md", "pnpm test:component-coverage");
   mustInclude(".github/PULL_REQUEST_TEMPLATE.md", "pnpm test:visual-docs");
   mustInclude(".github/PULL_REQUEST_TEMPLATE.md", "pnpm test:a11y");
+  mustInclude(".github/ISSUE_TEMPLATE/docs_report.yml", "Documentation or Storybook issue");
+  mustInclude(".github/ISSUE_TEMPLATE/docs_report.yml", "docs/components/map.md");
   mustInclude(
     ".github/PULL_REQUEST_TEMPLATE.md",
     "npm publish, Pages, and exact Kube parity are not claimed unless they have succeeded"

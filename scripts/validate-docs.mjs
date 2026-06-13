@@ -101,6 +101,7 @@ const standaloneRequiredFiles = [
   ".github/workflows/pages.yml",
   ".github/workflows/release.yml",
   ".github/ISSUE_TEMPLATE/bug_report.yml",
+  ".github/ISSUE_TEMPLATE/docs_report.yml",
   ".github/ISSUE_TEMPLATE/feature_request.yml",
   ".github/ISSUE_TEMPLATE/registry_report.yml",
   ".github/ISSUE_TEMPLATE/config.yml",
@@ -340,6 +341,22 @@ mustInclude("docs/components/map.md", [
   "Written Page Backlog",
   "not published to npm yet",
   "pnpm test:kube-reference:exact"
+]);
+
+mustInclude(".github/ISSUE_TEMPLATE/docs_report.yml", [
+  "Documentation or Storybook issue",
+  "README or docs landing page",
+  "Component map or component page",
+  "Storybook docs or visual state",
+  "docs/components/map.md",
+  "docs/component-documentation.md",
+  "npm publish, Pages, or exact Kube parity"
+]);
+
+mustInclude("SUPPORT.md", [
+  "Missing or stale documentation",
+  "Open a documentation issue",
+  "docs/maintainer-runbook.md"
 ]);
 
 mustInclude("docs/components/provider.md", [

@@ -1,0 +1,54 @@
+name: Documentation or Storybook issue
+description: Report missing, stale, unclear, or visually incomplete documentation.
+title: "[Docs]: "
+labels: ["documentation"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - README or docs landing page
+        - Component map or component page
+        - Storybook docs or visual state
+        - Registry documentation
+        - Accessibility documentation
+        - Release or governance documentation
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: page
+    attributes:
+      label: Page, story, or file
+      description: Link the docs page, Storybook story, source file, or registry item.
+      placeholder: docs/components/map.md or stories/LiquidButton.stories.tsx
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What is missing, stale, unclear, or visually incomplete?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected documentation
+      description: What should the docs say or show instead?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Attach screenshots, Storybook routes, failing commands, or source references.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I checked `docs/components/map.md` for the component status.
+        - label: I checked `docs/component-documentation.md` for the required page shape.
+        - label: I am not asking the project to claim npm publish, Pages, or exact Kube parity before those gates pass.

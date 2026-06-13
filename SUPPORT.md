@@ -28,6 +28,7 @@ has actually happened.
 | -------------------------------- | ---------------------------------------------------------------------------------------------- |
 | Broken component behavior        | Open a bug report with runtime, browser, liquid mode, reproduction, and screenshots if visual. |
 | Accessibility regression         | Open a bug report and include keyboard path, screen reader impact, and expected semantics.     |
+| Missing or stale documentation   | Open a documentation issue with page, story, expected content, and evidence.                   |
 | Package export or registry issue | Open a registry issue with the exact command, output, environment, and package version/commit. |
 | New component or public API idea | Open a feature request before implementation.                                                  |
 | Security vulnerability           | Open a private security advisory; do not disclose it publicly first.                           |
