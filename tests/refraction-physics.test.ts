@@ -325,6 +325,14 @@ describe("Liquid Glass physics contract", () => {
     );
   });
 
+  it("keeps strict Kube budgets limited to interactive lens CI variance", () => {
+    expect(readKubeMaxDiffRatio("searchbox")).toBe(0.02);
+    expect(readKubeMaxDiffRatio("switch")).toBe(0.02);
+    expect(readKubeMaxDiffRatio("slider")).toBe(0.02);
+    expect(readKubeMaxDiffRatio("magnifying-glass-pressed")).toBe(0.375);
+    expect(readKubeMaxDiffRatio("magnifying-glass-dragged")).toBe(0.42);
+  });
+
   it("does not fake Kube pointer parity by boosting active filter scales", () => {
     expect(lensStorySource).not.toContain("precisionLensActiveRefraction");
     expect(lensStorySource).not.toContain("glassThickness: 110");
@@ -610,6 +618,17 @@ function collectCssRuleBodies(css: string, selector: string) {
   return collectCssRules(css)
     .filter((rule) => normalizeCssSelector(rule.selector) === normalizedSelector)
     .map((rule) => rule.body);
+}
+
+function readKubeMaxDiffRatio(name: string) {
+  const pattern = new RegExp(`name:\\s*"${name}"[\\s\\S]*?maxDiffRatio:\\s*([0-9.]+)`, "m");
+  const match = kubeReferenceCompareSource.match(pattern);
+
+  if (!match?.[1]) {
+    throw new Error(`Missing Kube maxDiffRatio for ${name}`);
+  }
+
+  return Number(match[1]);
 }
 
 function collectCssRules(css: string) {

@@ -38,8 +38,8 @@ describe("draggable lens response", () => {
     expect(response.originY).toBeLessThan(0.5);
     expect(response.scaleX).toBeGreaterThan(1.1);
     expect(response.scaleX).toBeLessThan(1.125);
-    expect(response.scaleY).toBeGreaterThan(0.955);
-    expect(response.scaleY).toBeLessThan(0.965);
+    expect(response.scaleY).toBeGreaterThan(0.94);
+    expect(response.scaleY).toBeLessThan(0.95);
     expect(response.transform).toContain("scaleX");
   });
 
@@ -52,8 +52,8 @@ describe("draggable lens response", () => {
 
     expect(response.scaleX).toBeGreaterThan(1.111);
     expect(response.scaleX).toBeLessThan(1.113);
-    expect(response.scaleY).toBeGreaterThan(0.955);
-    expect(response.scaleY).toBeLessThan(0.957);
+    expect(response.scaleY).toBeGreaterThan(0.94);
+    expect(response.scaleY).toBeLessThan(0.943);
   });
 
   it("models dragging as the lower-width Kube water-drop response", () => {

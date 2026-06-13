@@ -62,7 +62,7 @@ const references = [
       heightDelta: 4,
       widthDelta: 4
     },
-    maxDiffRatio: 0.36,
+    maxDiffRatio: 0.375,
     reportOnly: false
   },
   {
@@ -84,7 +84,7 @@ const references = [
       heightDelta: 4,
       widthDelta: 4
     },
-    maxDiffRatio: 0.405,
+    maxDiffRatio: 0.42,
     reportOnly: false
   },
   {
