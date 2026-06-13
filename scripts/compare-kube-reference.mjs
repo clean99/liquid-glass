@@ -515,6 +515,12 @@ async function applyPointerAction(page, handle, action) {
   let lastRejection = null;
 
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    await page.mouse.up().catch(() => undefined);
+    await handle
+      .evaluate((node) => node.scrollIntoView({ block: "center", inline: "center" }))
+      .catch(() => undefined);
+    await page.waitForTimeout(120);
+
     const box = await handle.boundingBox();
 
     if (!box) {
@@ -535,11 +541,10 @@ async function applyPointerAction(page, handle, action) {
     const after = await waitForPointerActionEffect(handle, box, action);
     const metrics = summarizeActionMetrics(box, after, action);
     lastMetrics = metrics;
+    const hasEffect = hasPointerActionEffect(metrics, action);
+    const hasPlausibleMetrics = hasPlausiblePointerActionMetrics(metrics, action);
 
-    if (
-      hasPointerActionEffect(metrics, action) &&
-      hasPlausiblePointerActionMetrics(metrics, action)
-    ) {
+    if (hasEffect && hasPlausibleMetrics) {
       return {
         cleanup: async () => {
           await page.mouse.up().catch(() => undefined);
@@ -552,9 +557,10 @@ async function applyPointerAction(page, handle, action) {
       };
     }
 
-    lastRejection = hasPointerActionEffect(metrics, action)
-      ? describeImplausiblePointerAction(action, metrics)
-      : null;
+    if (hasEffect && !hasPlausibleMetrics) {
+      lastRejection = describeImplausiblePointerAction(action, metrics);
+    }
+
     await page.mouse.up().catch(() => undefined);
     await page.mouse.move(0, 0).catch(() => undefined);
     await page.waitForTimeout(220 * attempt);
@@ -588,7 +594,10 @@ async function waitForPointerActionEffect(handle, before, action) {
   while (Date.now() < deadline) {
     const metrics = summarizeActionMetrics(before, lastBox, action);
 
-    if (hasPointerActionEffect(metrics, action)) {
+    if (
+      hasPointerActionEffect(metrics, action) &&
+      hasPlausiblePointerActionMetrics(metrics, action)
+    ) {
       return lastBox;
     }
 
