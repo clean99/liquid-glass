@@ -78,7 +78,10 @@ function KubeSearchboxReferenceStory() {
               transform: "translate(-50%, -50%)"
             }}
           >
-            <LiquidSearchBox aria-label="Search docs" surfaceProps={{ style: imageBackgroundTextStyle }} />
+            <LiquidSearchBox
+              aria-label="Search docs"
+              surfaceProps={{ style: imageBackgroundTextStyle }}
+            />
           </div>
           <label
             style={{
