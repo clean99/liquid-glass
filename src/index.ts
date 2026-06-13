@@ -257,7 +257,6 @@ export {
   referenceLensDisplacementFalloff,
   referenceLensDisplacementRefraction,
   referenceLensGeometry,
-  referenceLensMagnificationGlassThickness,
   resolveLensReferencePipeline,
   type LensPipeline,
   type LensPipelineStage
