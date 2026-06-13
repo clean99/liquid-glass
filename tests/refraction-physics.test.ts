@@ -1043,10 +1043,9 @@ describe("Liquid Glass physics contract", () => {
       ".lg-surface--enhanced.lg-searchbox > .lg-surface__content"
     );
     const focusRule = collectCssRuleBodies(styles, ".lg-searchbox:focus-within").join("\n");
-    const searchboxPillRule = collectCssRuleBodies(
-      styles,
-      ".lg-surface--pill.lg-searchbox"
-    ).join("\n");
+    const searchboxPillRule = collectCssRuleBodies(styles, ".lg-surface--pill.lg-searchbox").join(
+      "\n"
+    );
     const reducedMotionRule = collectCssRuleBodies(
       styles,
       ".lg-searchbox[data-liquid-reduced-motion]"
