@@ -58,7 +58,7 @@ function suppressUseClientDirectiveWarnings(config: UserConfig): UserConfig {
 }
 
 const config: StorybookConfig = {
-  stories: ["../stories/**/*.stories.@(ts|tsx)"],
+  stories: ["../stories/**/*.mdx", "../stories/**/*.stories.@(ts|tsx)"],
   addons: ["@storybook/addon-docs", "@storybook/addon-a11y"],
   framework: {
     name: "@storybook/nextjs-vite",

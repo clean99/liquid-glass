@@ -63,6 +63,7 @@ const packageRequiredFiles = [
   "docs/visual-documentation.md",
   "docs/visual-state-coverage.json",
   "examples/README.md",
+  "stories/Introduction.mdx",
   "registry.json",
   "liquid-glass.json",
   "registry/liquid-glass.json",
@@ -147,6 +148,23 @@ mustInclude("docs/index.md", [
   "Visual Documentation",
   "Quality Gates",
   "Public Launch Checklist",
+  "not published to npm yet",
+  "Storybook Pages",
+  "shadcn-style Registry",
+  "test:kube-reference:exact",
+  "pnpm test:visual-docs",
+  "pnpm verify"
+]);
+
+mustInclude(".storybook/main.ts", ["../stories/**/*.mdx", "@storybook/addon-docs"]);
+
+mustInclude("stories/Introduction.mdx", [
+  "Liquid Glass UI",
+  "Current Status",
+  "Start Here",
+  "Component Map",
+  "Visual Documentation Contract",
+  "Release Gate",
   "not published to npm yet",
   "Storybook Pages",
   "shadcn-style Registry",
