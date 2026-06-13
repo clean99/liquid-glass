@@ -467,6 +467,15 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeScript).toContain('STORYBOOK_STATIC_DIR="$KUBE_STORYBOOK_STATIC_DIR"');
   });
 
+  it("keeps behavior Storybook builds isolated per command run", () => {
+    const e2eScript = packageJson.scripts["test:e2e"];
+
+    expect(e2eScript).toContain("E2E_STORYBOOK_STATIC_DIR");
+    expect(e2eScript).toContain("storybook-static-e2e-$$");
+    expect(e2eScript).toContain('--output-dir "$E2E_STORYBOOK_STATIC_DIR"');
+    expect(e2eScript).toContain('STORYBOOK_STATIC_DIR="$E2E_STORYBOOK_STATIC_DIR"');
+  });
+
   it("rejects impossible target-page drag samples before comparing parity", () => {
     expect(kubeReferenceCompareSource).toContain("hasPlausiblePointerActionMetrics");
     expect(kubeReferenceCompareSource).toContain("scrollActionPointIntoViewport");
