@@ -66,6 +66,12 @@ if (!packageJson.repository?.url?.includes("github.com/clean99/liquid-glass")) {
 if (packageJson.license !== "MIT") {
   errors.push("package.json license must be MIT");
 }
+if (packageJson.engines?.node !== ">=22.13.0") {
+  errors.push("package.json engines.node must stay aligned with pnpm 11: >=22.13.0");
+}
+if (packageJson.engines?.pnpm !== ">=11") {
+  errors.push("package.json engines.pnpm must stay >=11");
+}
 
 for (const script of [
   "build",
@@ -174,6 +180,14 @@ if (isStandaloneRepository) {
 }
 
 if (isStandaloneRepository) {
+  for (const workflow of [
+    ".github/workflows/ci.yml",
+    ".github/workflows/visual.yml",
+    ".github/workflows/pages.yml",
+    ".github/workflows/release.yml"
+  ]) {
+    mustInclude(workflow, 'node-version: "24"');
+  }
   mustInclude(".github/workflows/ci.yml", "pnpm test:release-readiness");
   mustInclude(".github/workflows/ci.yml", "pnpm test:research");
   mustInclude(".github/workflows/ci.yml", "pnpm test:component-coverage");

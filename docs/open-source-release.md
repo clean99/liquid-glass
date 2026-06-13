@@ -57,6 +57,9 @@ The shadcn-style registry distribution model is tracked in
 
 ## Release Flow
 
+GitHub Actions run Node 24. The package `engines.node` lower bound is
+`>=22.13.0` because pnpm 11 requires at least that Node line.
+
 1. Run `pnpm test:component-coverage` and `pnpm test:release-readiness` to
    validate component behavior coverage, package metadata, workflows, docs,
    registry files, Changesets, and strict release gates.

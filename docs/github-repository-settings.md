@@ -43,6 +43,8 @@ gh repo create clean99/liquid-glass \
 - Actions > General: allow GitHub Actions and reusable workflows.
 - Actions > Workflow permissions: read and write permissions, with pull request
   creation enabled for the release workflow.
+- Workflows: use Node 24 for CI, Pages, Visual Regression, and Release. pnpm 11
+  requires Node `>=22.13.0`, and Node 20 action runtime is deprecated.
 - Branches: protect `main` after the first successful CI run.
 - Tags and releases: publish from Changesets only.
 
