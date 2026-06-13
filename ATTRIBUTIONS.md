@@ -61,6 +61,12 @@ The visual direction is informed by Chris Feijoo's public Liquid Glass research 
   - Used only as Storybook/parity fixtures and exact-gate diagnostics for map dimensions, hashes, and optical gap classification.
   - Stored under `stories/assets/kube/maps/` and excluded from the published package. Runtime components still generate their own maps.
 
+- Kube Music Player album art fixtures
+  - Source: https://is1-ssl.mzstatic.com/image/thumb/
+  - Observed from the public Kube Music Player demo via Chrome pageAssets sampling.
+  - License/source terms: Apple Music/iTunes artwork URL terms.
+  - Stored under `stories/assets/kube/music/` as Storybook/parity fixtures and excluded from the published package.
+
 Open-source governance and visual documentation references:
 
 - `shadcn/ui`

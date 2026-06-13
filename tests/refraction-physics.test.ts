@@ -28,6 +28,10 @@ const searchboxStorySource = fs.readFileSync(
   path.resolve("stories/LiquidSearchBox.stories.tsx"),
   "utf8"
 );
+const musicPlayerStorySource = fs.readFileSync(
+  path.resolve("stories/LiquidMusicPlayerBar.stories.tsx"),
+  "utf8"
+);
 const storybookMainSource = fs.readFileSync(path.resolve(".storybook/main.ts"), "utf8");
 const switchStorySource = fs.readFileSync(path.resolve("stories/LiquidSwitch.stories.tsx"), "utf8");
 const sliderStorySource = fs.readFileSync(path.resolve("stories/LiquidSlider.stories.tsx"), "utf8");
@@ -68,6 +72,14 @@ type KubeReferenceAssetManifest = {
       width: number;
     }
   >;
+  musicAlbumArtAssets: Array<{
+    file: string;
+    height: number;
+    role: string;
+    sha256: string;
+    sourceUrl: string;
+    width: number;
+  }>;
   filterMapAssets: Record<
     string,
     {
@@ -337,6 +349,7 @@ describe("Liquid Glass physics contract", () => {
       "https://kube.io/blog/liquid-glass-css-svg/"
     );
     expect(kubeReferenceAssetManifest.captureMethod).toContain("Chrome DOM");
+    expect(kubeReferenceAssetManifest.captureMethod).toContain("CDP");
 
     for (const [name, asset] of Object.entries(kubeReferenceAssetManifest.assets)) {
       const localPath = path.resolve("stories/assets/kube", asset.file);
@@ -393,6 +406,30 @@ describe("Liquid Glass physics contract", () => {
     expect(searchboxStorySource).not.toContain("radial-gradient(ellipse at 18% 24%");
   });
 
+  it("uses the Kube Music Player album art grid instead of synthetic covers", () => {
+    const albumArtAssets = kubeReferenceAssetManifest.musicAlbumArtAssets;
+
+    expect(albumArtAssets).toHaveLength(8);
+    expect(kubeReferenceAssetsSource).toContain("kubeReferenceMusicAlbumAssets");
+    expect(musicPlayerStorySource).toContain("kubeReferenceMusicAlbumAssets");
+    expect(musicPlayerStorySource).toContain('gridTemplateColumns: "repeat(4, 154px)"');
+    expect(musicPlayerStorySource).toContain('objectFit: "cover"');
+    expect(musicPlayerStorySource).not.toContain("radial-gradient(circle");
+    expect(musicPlayerStorySource).not.toContain("linear-gradient(135deg, ${color}");
+
+    for (const asset of albumArtAssets) {
+      const localPath = path.resolve("stories/assets/kube", asset.file);
+      const bytes = fs.readFileSync(localPath);
+      const hash = crypto.createHash("sha256").update(bytes).digest("hex");
+
+      expect(asset.sourceUrl).toContain("https://is1-ssl.mzstatic.com/image/thumb/");
+      expect(kubeReferenceAssetsSource).toContain(`src: "/kube/${asset.file}"`);
+      expect(kubeReferenceAssetsSource).toContain(asset.sourceUrl);
+      expect(hash).toBe(asset.sha256);
+      expect(readRasterSize(bytes)).toEqual({ height: asset.height, width: asset.width });
+    }
+  });
+
   it("keeps Kube control reference frames at the measured target size", () => {
     const frameSources = [searchboxStorySource, switchStorySource, sliderStorySource];
 
@@ -428,11 +465,12 @@ describe("Liquid Glass physics contract", () => {
     expect(readKubeMaxDiffRatio("searchbox")).toBe(0.02);
     expect(readKubeMaxDiffRatio("switch")).toBe(0.02);
     expect(readKubeMaxDiffRatio("slider")).toBe(0.02);
+    expect(readKubeMaxDiffRatio("magnifying-glass")).toBe(0.24);
     expect(readKubeMaxDiffRatio("magnifying-glass-pressed")).toBe(0.405);
     expect(readKubeMaxDiffRatio("magnifying-glass-dragged")).toBe(0.455);
     expect(kubeReferenceCompareSource).toContain("heightDelta: 7");
     expect(kubeReferenceCompareSource).toContain("heightDelta: 8");
-    expect(kubeReferenceCompareSource).toContain("widthDelta: 9");
+    expect(kubeReferenceCompareSource).toContain("widthDelta: 10");
     expect(kubeReferenceCompareSource).toContain("emitGithubError(");
     expect(kubeReferenceCompareSource).toContain("Kube reference parity failed");
     expect(kubeReferenceCompareSource).toContain("Kube reference capture failed");

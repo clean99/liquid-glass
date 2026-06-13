@@ -3,6 +3,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
 
+/* global document, location */
+
 const staticDir = path.resolve(process.env.STORYBOOK_STATIC_DIR ?? "storybook-static-test");
 const dimensionTolerance = 2;
 
@@ -67,7 +69,11 @@ const stories = [
     width: 640,
     height: 63,
     radius: "31px",
-    opticalRadius: "31"
+    opticalRadius: "31",
+    requiredLoadedImages: {
+      count: 8,
+      pathnamePrefix: "/kube/music/album-art-"
+    }
   }
 ];
 
@@ -159,6 +165,41 @@ try {
 
     if (story.backgroundColor) {
       assertEqual(result.backgroundColor, story.backgroundColor, `${story.id} background`);
+    }
+
+    if (story.requiredLoadedImages) {
+      const imageResult = await page.evaluate((expected) => {
+        const images = Array.from(document.images)
+          .filter((image) => {
+            const src = image.currentSrc || image.src;
+            return src && new URL(src, location.href).pathname.startsWith(expected.pathnamePrefix);
+          })
+          .map((image) => ({
+            complete: image.complete,
+            height: image.naturalHeight,
+            src: image.currentSrc || image.src,
+            width: image.naturalWidth
+          }));
+
+        return {
+          broken: images.filter(
+            (image) => !image.complete || image.width <= 0 || image.height <= 0
+          ),
+          count: images.length
+        };
+      }, story.requiredLoadedImages);
+
+      assertEqual(
+        imageResult.count,
+        story.requiredLoadedImages.count,
+        `${story.id} loaded image count`
+      );
+
+      if (imageResult.broken.length > 0) {
+        throw new Error(
+          `${story.id} has unloaded reference images: ${JSON.stringify(imageResult.broken)}`
+        );
+      }
     }
 
     if (errors.length > 0) {

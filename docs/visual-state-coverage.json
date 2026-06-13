@@ -205,6 +205,14 @@
       "exportName": "DraggablePrecisionLens",
       "stateTags": ["dragged", "light", "material-mode", "Kube reference"],
       "evidence": ["Storybook visualState metadata", "pnpm test:e2e"]
+    },
+    {
+      "name": "Music Player Kube album-art reference",
+      "profile": "reference",
+      "story": "stories/LiquidMusicPlayerBar.stories.tsx",
+      "exportName": "KubeReference",
+      "stateTags": ["default", "light", "loaded media", "Kube reference"],
+      "evidence": ["Storybook visualState metadata", "Chrome pageAssets capture"]
     }
   ]
 }

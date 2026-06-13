@@ -71,8 +71,8 @@ metrics.
 | Reference                | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | ------------------------ | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass         |     0.2024 | `0,-1`     |     0.1861 |    0.2400 | gate |
-| magnifying-glass-pressed |     0.3683 | `-2,-2`    |     0.3554 |    0.4050 | gate |
-| magnifying-glass-dragged |     0.3981 | `-2,-1`    |     0.3804 |    0.4550 | gate |
+| magnifying-glass-pressed |     0.3880 | `0,-2`     |     0.3689 |    0.4050 | gate |
+| magnifying-glass-dragged |     0.3978 | `-4,0`     |     0.3769 |    0.4550 | gate |
 | searchbox                |     0.0180 | `0,0`      |     0.0169 |    0.0200 | gate |
 | switch                   |     0.0136 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                   |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
@@ -113,7 +113,7 @@ This measurement includes these verified geometry fixes:
   height-delta variance because the live Kube page has recently sampled between
   roughly `17px` and `21px` of width growth and `15px` and `21px` of height
   growth during press deformation; the screenshot gate remains unchanged.
-- the dragged action metric guard allows `8px` height-delta and `9px`
+- the dragged action metric guard allows `8px` height-delta and `10px`
   width-delta variance for the same live-page sampling reason; it is still only
   a capture sanity check before the screenshot gate runs.
 - pressed and dragged screenshots are captured from the post-action visual
@@ -125,10 +125,13 @@ This measurement includes these verified geometry fixes:
   just a bad screenshot crop.
 - Kube demo image assets are locked in `stories/kube-reference-assets.ts` after
   Chrome/CDP sampling of the public page. Storybook serves stable local fixture
-  paths from `stories/assets/kube/`, while the original Unsplash source URLs
-  remain recorded for attribution and provenance. `stories/assets/kube/manifest.json`
-  locks the fixture dimensions and sha256 hashes. Generated or synthetic
-  stand-ins are not accepted by the e2e/provenance gates.
+  paths from `stories/assets/kube/` for copied Kube demo images, filter maps,
+  and Music Player album-art fixtures, while the original source URLs remain
+  recorded for attribution and provenance. `stories/assets/kube/manifest.json`
+  locks local fixture dimensions and sha256 hashes. Generated or synthetic
+  stand-ins are not accepted by the e2e/provenance gates. This includes the
+  album-art grid captured from `is1-ssl.mzstatic.com`, so the Kube reference
+  story no longer uses fake gradient cover tiles.
 - Kube same-origin SVG filter map PNGs are also locked under
   `stories/assets/kube/maps/` and recorded in the same manifest. The maps are
   reference-only fixtures, not runtime shortcuts. They give the exact gate a
@@ -140,8 +143,8 @@ This proves five things:
 - The static searchbox, switch, and slider stories are already within the current
   screenshot budget, so their thresholds are ratcheted down to `0.0200`.
 - The static magnifying glass passes a loose gate, but it is still visually far
-  from pixel parity. Its threshold is ratcheted from `0.3000` to `0.2400`, which
-  is still not the final target.
+  from pixel parity. Its threshold remains `0.2400`, which is still not the
+  final target.
 - The pressed and dragged water-drop states now pass the current hard gate, but
   the thresholds are still loose while the fixture moves toward tighter pixel
   parity. Pressed is now gated at `0.4050`; dragged is gated at `0.4550`.
@@ -179,8 +182,8 @@ Recent sampled `pnpm test:kube-reference:exact` result on 2026-06-14:
 | Reference                | Exact diff ratio | Best phase | Phase diff |
 | ------------------------ | ---------------: | ---------- | ---------: |
 | magnifying-glass         |           0.5243 | `0,-1`     |     0.5133 |
-| magnifying-glass-pressed |           0.7185 | `1,1`      |     0.6836 |
-| magnifying-glass-dragged |           0.6487 | `0,0`      |     0.6494 |
+| magnifying-glass-pressed |           0.7156 | `1,0`      |     0.7054 |
+| magnifying-glass-dragged |           0.6417 | `-1,0`     |     0.6366 |
 | searchbox                |           0.1138 | `0,0`      |     0.1150 |
 | switch                   |           0.0904 | `0,0`      |     0.0934 |
 | slider                   |           0.0750 | `0,0`      |     0.0763 |

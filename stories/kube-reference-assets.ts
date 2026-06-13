@@ -13,6 +13,49 @@ export const kubeReferenceRemoteImageAssets = {
     "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop"
 } as const;
 
+export const kubeReferenceMusicAlbumAssets = [
+  {
+    src: "/kube/music/album-art-01.jpg",
+    sourceUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/00/67/45/006745f5-95d5-5a06-35ed-d515e9cfd7d8/dj.tbwlxwoh.jpg/600x600bb.jpg"
+  },
+  {
+    src: "/kube/music/album-art-02.jpg",
+    sourceUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a6/b8/45/a6b84589-6ff7-a462-9ff9-170b724980d5/dj.wjkdwlks.jpg/600x600bb.jpg"
+  },
+  {
+    src: "/kube/music/album-art-03.jpg",
+    sourceUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/93/5d/c5/935dc5d5-a985-333d-0825-879ddb36e461/884977526585.jpg/600x600bb.jpg"
+  },
+  {
+    src: "/kube/music/album-art-04.jpg",
+    sourceUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/53/e9/b9/53e9b9f0-97f4-aac7-ee5b-12c2f2007ad3/884977413878.jpg/600x600bb.jpg"
+  },
+  {
+    src: "/kube/music/album-art-05.jpg",
+    sourceUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/a1/32/02/a13202b9-ecbc-ca2f-9d4f-117f6b8f32a3/20UMGIM09664.rgb.jpg/600x600bb.jpg"
+  },
+  {
+    src: "/kube/music/album-art-06.jpg",
+    sourceUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/Music/42/46/64/mzi.iizkzlsy.jpg/600x600bb.jpg"
+  },
+  {
+    src: "/kube/music/album-art-07.jpg",
+    sourceUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/b0/90/17/b09017b9-1924-cd06-52b9-fed7e8dc8e96/886444746908.jpg/600x600bb.jpg"
+  },
+  {
+    src: "/kube/music/album-art-08.jpg",
+    sourceUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c2/e0/6d/c2e06da8-f46e-9809-8d8b-5e68a54426c3/mzi.xpgkygsu.jpg/600x600bb.jpg"
+  }
+] as const;
+
 export const kubeReferenceFilterMapAssets = {
   displacementMap76hifn: "/kube/maps/displacement-map-76hifn.png",
   displacementMapIvknpp: "/kube/maps/displacement-map-ivknpp.png",

@@ -46,6 +46,15 @@ background, `800x1200` for the magnifying-glass image layer, and `1400x1600`
 for the lens page background sample. The images are attributed and stored only
 as Storybook/parity fixtures. They are not copied into the published package.
 
+Chrome pageAssets sampling of the public Music Player demo also captured the
+rendered album-art grid from `https://is1-ssl.mzstatic.com/image/thumb/`. The
+Storybook Kube Music Player reference now uses the first two visible rows as
+local Storybook fixtures under `stories/assets/kube/music/` exported through
+`kubeReferenceMusicAlbumAssets`. The grid keeps the Kube-observed `154px` tile,
+`19px` gap, and `object-fit: cover` behavior instead of synthetic gradient cover
+stand-ins. The album covers are attributed, recorded in provenance, and excluded
+from the published package.
+
 Chrome pageAssets sampling also exposed Kube same-origin SVG filter map PNGs.
 Those maps are now stored under `stories/assets/kube/maps/` and exported from
 `stories/kube-reference-assets.ts` as reference-only fixtures. They are not used
@@ -154,7 +163,7 @@ Current measured interaction contract:
 - target press samples have recently measured around `+17px` to `+21px` width
   and `+15px` to `+21px` height across local Chromium and GitHub Actions,
 - target drag samples vary with the live page and have recently measured around
-  `+4px` to `+17px` width and `+22px` to `+27px` height.
+  `+2px` to `+17px` width and `+22px` to `+27px` height.
 
 The local `LiquidLensDropletPhase` model intentionally separates `pressed` and
 `dragging`. A boolean pressed state was not enough: it made the drag handle keep

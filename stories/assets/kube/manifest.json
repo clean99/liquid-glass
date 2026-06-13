@@ -1,7 +1,7 @@
 {
   "sourcePage": "https://kube.io/blog/liquid-glass-css-svg/",
-  "observedOn": "2026-06-13",
-  "captureMethod": "Chrome DOM and pageAssets sampling of rendered Kube demos",
+  "observedOn": "2026-06-14",
+  "captureMethod": "Chrome DOM, CDP, and pageAssets sampling of rendered Kube demos",
   "assets": {
     "lensDemoBackground": {
       "file": "lens-demo-background.jpg",
@@ -28,6 +28,72 @@
       "width": 1600
     }
   },
+  "musicAlbumArtAssets": [
+    {
+      "file": "music/album-art-01.jpg",
+      "height": 600,
+      "role": "Kube Music Player album art background tile 1",
+      "sha256": "a50039e36a7bf5449948ce73b15d3d4b516dc6b08358a4d17b4fee3ac95f38d7",
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/00/67/45/006745f5-95d5-5a06-35ed-d515e9cfd7d8/dj.tbwlxwoh.jpg/600x600bb.jpg",
+      "width": 600
+    },
+    {
+      "file": "music/album-art-02.jpg",
+      "height": 600,
+      "role": "Kube Music Player album art background tile 2",
+      "sha256": "ba4728b8fe486ff76e5c877d709baf8cbb11f28b6d3dff4e92655f5e7035944b",
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a6/b8/45/a6b84589-6ff7-a462-9ff9-170b724980d5/dj.wjkdwlks.jpg/600x600bb.jpg",
+      "width": 600
+    },
+    {
+      "file": "music/album-art-03.jpg",
+      "height": 600,
+      "role": "Kube Music Player album art background tile 3",
+      "sha256": "3b7a40b4237b4bd8cda8c891c63032193545a5d5356105e4bd41cd61cfee3d80",
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/93/5d/c5/935dc5d5-a985-333d-0825-879ddb36e461/884977526585.jpg/600x600bb.jpg",
+      "width": 600
+    },
+    {
+      "file": "music/album-art-04.jpg",
+      "height": 600,
+      "role": "Kube Music Player album art background tile 4",
+      "sha256": "0ec28151109de54f4fb73a41d09e0dd078f46d6b7a0bf3b292caa8cd6a2c7769",
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/53/e9/b9/53e9b9f0-97f4-aac7-ee5b-12c2f2007ad3/884977413878.jpg/600x600bb.jpg",
+      "width": 600
+    },
+    {
+      "file": "music/album-art-05.jpg",
+      "height": 600,
+      "role": "Kube Music Player album art background tile 5",
+      "sha256": "b60481ad1a9ba4ec8d0d38c61ead4cd21d8787d49382604af6cd83701eae9ef8",
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/a1/32/02/a13202b9-ecbc-ca2f-9d4f-117f6b8f32a3/20UMGIM09664.rgb.jpg/600x600bb.jpg",
+      "width": 600
+    },
+    {
+      "file": "music/album-art-06.jpg",
+      "height": 600,
+      "role": "Kube Music Player album art background tile 6",
+      "sha256": "e7489706d2e70af59aeb749f0b56e32bb01a4f5ef5dd1a82d1cd71826572343f",
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/42/46/64/mzi.iizkzlsy.jpg/600x600bb.jpg",
+      "width": 600
+    },
+    {
+      "file": "music/album-art-07.jpg",
+      "height": 596,
+      "role": "Kube Music Player album art background tile 7",
+      "sha256": "bfe9e0f946c32fe377b8c9c2d07928f3b4cce9ee2d69ee20905d564a01f43f26",
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/b0/90/17/b09017b9-1924-cd06-52b9-fed7e8dc8e96/886444746908.jpg/600x600bb.jpg",
+      "width": 600
+    },
+    {
+      "file": "music/album-art-08.jpg",
+      "height": 586,
+      "role": "Kube Music Player album art background tile 8",
+      "sha256": "8847682414aea6b8177c9998021ae84ad0c6e1c328ca32a261ddf2105801f3d3",
+      "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c2/e0/6d/c2e06da8-f46e-9809-8d8b-5e68a54426c3/mzi.xpgkygsu.jpg/600x600bb.jpg",
+      "width": 600
+    }
+  ],
   "filterMapAssets": {
     "displacementMap76hifn": {
       "file": "maps/displacement-map-76hifn.png",

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { LiquidMusicPlayerBar, LiquidProvider, LiquidSearchBox } from "../src";
+import { kubeReferenceMusicAlbumAssets } from "./kube-reference-assets";
 
 const meta = {
   title: "Liquid Glass/LiquidMusicPlayerBar",
@@ -10,7 +11,25 @@ const meta = {
 export default meta;
 type Story = StoryObj;
 
+const kubeMusicAlbumTitles = [
+  "Blues",
+  "Electric Ladyland",
+  "Are You Experienced",
+  "Band of Gypsys",
+  "People, Hell and Angels",
+  "Axis: Bold as Love",
+  "Live at Woodstock",
+  "The Cry of Love"
+] as const;
+
 export const KubeReference: Story = {
+  parameters: {
+    visualState: {
+      evidence: ["Chrome pageAssets capture", "pnpm test:storybook"],
+      profile: "reference",
+      states: ["default", "light", "loaded media", "Kube reference"]
+    }
+  },
   render: () => (
     <LiquidProvider defaultMode="enhanced" disableOnMobile={false} maxEnhancedSurfaces={6}>
       <div
@@ -21,7 +40,7 @@ export const KubeReference: Story = {
           width: 706,
           height: 420,
           overflow: "hidden",
-          padding: 22,
+          padding: 16,
           background: "#fff",
           border: "1px solid rgba(0,0,0,0.1)",
           borderRadius: 10,
@@ -58,22 +77,50 @@ export const KubeReference: Story = {
             }}
           />
         </div>
-        <h3 style={{ margin: "64px 0 18px", fontSize: 17, fontWeight: 500 }}>Top Results</h3>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20 }}>
-          {["#d9d313", "#c23b38", "#ef6d8a", "#191719"].map((color, index) => (
-            <div key={color}>
+        <h3 style={{ margin: "66px 0 18px", fontSize: 17, fontWeight: 500 }}>Top Results</h3>
+        <div
+          style={{
+            display: "grid",
+            gap: 19,
+            gridTemplateColumns: "repeat(4, 154px)"
+          }}
+        >
+          {kubeReferenceMusicAlbumAssets.map((album, index) => (
+            <div key={album.src}>
               <div
                 style={{
-                  aspectRatio: "1",
+                  height: 154,
+                  overflow: "hidden",
                   borderRadius: 7,
-                  background:
-                    index === 0
-                      ? `radial-gradient(circle at 52% 62%, #89d8ff 0 22%, transparent 23%), ${color}`
-                      : `linear-gradient(135deg, ${color}, #f6d365)`,
-                  boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.05)"
+                  width: 154
                 }}
-              />
-              <p style={{ margin: "8px 0 0", fontSize: 13 }}>Album Result</p>
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  src={album.src}
+                  style={{
+                    display: "block",
+                    height: "100%",
+                    objectFit: "cover",
+                    width: "100%"
+                  }}
+                />
+              </div>
+              <p
+                style={{
+                  color: "#111",
+                  fontSize: 13,
+                  lineHeight: 1.2,
+                  margin: "8px 0 0",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  width: 154
+                }}
+              >
+                {kubeMusicAlbumTitles[index] ?? "Album Result"}
+              </p>
             </div>
           ))}
         </div>

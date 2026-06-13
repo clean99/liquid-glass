@@ -103,6 +103,26 @@
       ]
     },
     {
+      "name": "Kube Music Player album art fixtures",
+      "kind": "visual-reference",
+      "url": "https://is1-ssl.mzstatic.com/image/thumb/",
+      "license": "Apple Music/iTunes artwork URL terms",
+      "commit": null,
+      "copiedSource": false,
+      "usedFor": [
+        "Music Player visual reference background",
+        "Kube album-art grid fixture",
+        "Storybook loaded-media reference"
+      ],
+      "requiredDocs": [
+        "ATTRIBUTIONS.md",
+        "docs/reference-research.md",
+        "stories/assets/kube/manifest.json",
+        "stories/kube-reference-assets.ts",
+        "stories/LiquidMusicPlayerBar.stories.tsx"
+      ]
+    },
+    {
       "name": "rdev/liquid-glass-react",
       "kind": "implementation-reference",
       "url": "https://github.com/rdev/liquid-glass-react",
