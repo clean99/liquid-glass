@@ -65,8 +65,8 @@ metrics.
 | Reference                | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | ------------------------ | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass         |     0.2007 | `0,-1`     |     0.1908 |    0.2400 | gate |
-| magnifying-glass-pressed |     0.3668 | `0,-2`     |     0.3519 |    0.4050 | gate |
-| magnifying-glass-dragged |     0.4214 | `-5,1`     |     0.3850 |    0.4550 | gate |
+| magnifying-glass-pressed |     0.3618 | `0,-1`     |     0.3552 |    0.4050 | gate |
+| magnifying-glass-dragged |     0.3981 | `-3,-1`    |     0.3794 |    0.4550 | gate |
 | searchbox                |     0.0180 | `0,0`      |     0.0169 |    0.0200 | gate |
 | switch                   |     0.0136 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                   |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
@@ -106,6 +106,9 @@ This measurement includes these verified geometry fixes:
 - the pressed action metric guard allows a `7px` height-delta variance because
   the live Kube page has recently sampled between roughly `15px` and `21px` of
   press deformation; the screenshot gate remains unchanged.
+- the dragged action metric guard allows `8px` height-delta and `6px`
+  width-delta variance for the same live-page sampling reason; it is still only
+  a capture sanity check before the screenshot gate runs.
 - pressed and dragged screenshots are captured from the post-action visual
   bounding box clip. This removed a false mismatch from `element.screenshot()`
   using different target and candidate transform boxes.
