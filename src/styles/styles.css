@@ -204,6 +204,13 @@
   width: 100%;
   gap: 0.65rem;
   justify-content: flex-start;
+  text-shadow: none;
+}
+
+.lg-surface--enhanced.lg-searchbox > .lg-surface__content,
+.lg-searchbox .lg-surface--enhanced > .lg-surface__content,
+.lg-searchbox .lg-surface__content {
+  text-shadow: none;
 }
 
 .lg-searchbox__icon {

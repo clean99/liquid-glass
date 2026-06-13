@@ -617,6 +617,12 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain("readCheckboxActionSample");
     expect(kubeReferenceCompareSource).toContain("readControlContract");
     expect(kubeReferenceCompareSource).toContain("summarizeControlContract");
+    expect(kubeReferenceCompareSource).toContain("assertControlContractIntegrity");
+    expect(kubeReferenceCompareSource).toContain("findSearchGlassLayer");
+    expect(kubeReferenceCompareSource).toContain("findSearchContentLayer");
+    expect(kubeReferenceCompareSource).toContain("glassLayerMaterial");
+    expect(kubeReferenceCompareSource).toContain("contentLayerMaterial");
+    expect(kubeReferenceCompareSource).toContain("content layer is filtered");
     expect(kubeReferenceCompareSource).toContain("-control-contract.json");
     expect(kubeReferenceCompareSource).toContain("photo-1497250681960-ef046c08a56e");
     expect(kubeReferenceCompareSource).toContain("searchbox-demo-background.jpg");
@@ -995,6 +1001,14 @@ describe("Liquid Glass physics contract", () => {
 
   it("models search focus as a frosted capsule growing from idle scale", () => {
     const searchboxRule = collectCssRuleBodies(styles, ".lg-searchbox").join("\n");
+    const searchboxContentRule = collectCssRuleBodies(
+      styles,
+      ".lg-searchbox > .lg-surface__content"
+    ).join("\n");
+    const enhancedSearchboxContentRule = collectCssRuleBodyForSelector(
+      styles,
+      ".lg-surface--enhanced.lg-searchbox > .lg-surface__content"
+    );
     const focusRule = collectCssRuleBodies(styles, ".lg-searchbox:focus-within").join("\n");
     const reducedMotionRule = collectCssRuleBodies(
       styles,
@@ -1007,6 +1021,8 @@ describe("Liquid Glass physics contract", () => {
     expect(searchboxRule).toContain("transform: scale(0.8)");
     expect(searchboxRule).toContain("transition:");
     expect(searchboxRule).toContain("transform 260ms");
+    expect(searchboxContentRule).toContain("text-shadow: none");
+    expect(enhancedSearchboxContentRule).toContain("text-shadow: none");
     expect(focusRule).toContain("background: var(--lg-control-focus-fill)");
     expect(focusRule).toContain("box-shadow: var(--lg-control-focus-shadow-deep)");
     expect(focusRule).toContain("transform: scale(1)");

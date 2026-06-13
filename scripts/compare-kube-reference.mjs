@@ -226,6 +226,7 @@ try {
         candidatePath
       );
       if (targetControlContract && candidateControlContract) {
+        assertControlContractIntegrity(reference, targetControlContract, candidateControlContract);
         await fs.writeFile(
           path.join(artifactDir, `${reference.name}-control-contract.json`),
           `${JSON.stringify(
@@ -1020,8 +1021,13 @@ async function readControlContract(element, label, kind) {
     (root, options) => {
       const rootRect = root.getBoundingClientRect();
       const searchInput = findSearchInput(root);
+      const contentLayer = searchInput ? findSearchContentLayer(root, searchInput) : null;
       const surface = searchInput ? findSearchSurface(root, searchInput) : null;
-      const icon = surface?.querySelector("svg, [class*='icon']") ?? null;
+      const glassLayer = surface ? findSearchGlassLayer(root, surface, searchInput) : null;
+      const icon =
+        contentLayer?.querySelector("svg, [class*='icon']") ??
+        surface?.querySelector("svg, [class*='icon']") ??
+        null;
       const credit = findTextElement(root, /unsplash/i, {
         maxHeight: 90,
         maxWidth: 260,
@@ -1043,6 +1049,8 @@ async function readControlContract(element, label, kind) {
           backgroundPosition: rootStyle.backgroundPosition,
           backgroundSize: rootStyle.backgroundSize
         },
+        glassLayer: glassLayer ? readElement(glassLayer, rootRect) : null,
+        contentLayer: contentLayer ? readElement(contentLayer, rootRect) : null,
         surface: surface ? readElement(surface, rootRect) : null,
         input: searchInput ? readElement(searchInput, rootRect) : null,
         icon: icon ? readElement(icon, rootRect) : null,
@@ -1058,6 +1066,38 @@ async function readControlContract(element, label, kind) {
             return type === "search" || placeholder.toLowerCase().includes("search");
           }) ?? null
         );
+      }
+
+      function findSearchContentLayer(base, input) {
+        let current = input.parentElement;
+
+        while (current && current !== base.parentElement) {
+          const rect = current.getBoundingClientRect();
+          const style = getComputedStyle(current);
+          const backdropFilter = style.backdropFilter || style.webkitBackdropFilter;
+          const looksLikeContentLayer =
+            current.contains(input) &&
+            rect.width >= 250 &&
+            rect.width <= 500 &&
+            rect.height >= 32 &&
+            rect.height <= 80 &&
+            (!backdropFilter || backdropFilter === "none") &&
+            style.filter === "none" &&
+            (style.display.includes("flex") ||
+              String(current.className).includes("lg-surface__content"));
+
+          if (looksLikeContentLayer) {
+            return current;
+          }
+
+          if (current === base) {
+            break;
+          }
+
+          current = current.parentElement;
+        }
+
+        return input.parentElement;
       }
 
       function findSearchSurface(base, input) {
@@ -1088,6 +1128,77 @@ async function readControlContract(element, label, kind) {
         }
 
         return null;
+      }
+
+      function findSearchGlassLayer(base, surface, input) {
+        const surfaceRect = surface.getBoundingClientRect();
+        const surfaceArea = surfaceRect.width * surfaceRect.height;
+        const candidates = Array.from(base.querySelectorAll("*"))
+          .map((node) => {
+            const rect = node.getBoundingClientRect();
+            const style = getComputedStyle(node);
+            const backdropFilter = style.backdropFilter || style.webkitBackdropFilter;
+            const overlap = overlapArea(rect, surfaceRect);
+            const hasSearchSize =
+              rect.width >= 250 &&
+              rect.width <= 500 &&
+              rect.height >= 32 &&
+              rect.height <= 80 &&
+              overlap >= Math.max(400, surfaceArea * 0.45);
+
+            return {
+              node,
+              overlap,
+              score:
+                (backdropFilter && backdropFilter !== "none" ? 8 : 0) +
+                (style.boxShadow && style.boxShadow !== "none" ? 3 : 0) +
+                (hasTransparentPaint(style.backgroundColor) ? 2 : 0) +
+                (node.contains(input) ? -2 : 1) +
+                overlap / Math.max(1, surfaceArea),
+              valid: hasSearchSize && hasVisibleGlassMaterial(style, backdropFilter)
+            };
+          })
+          .filter((candidate) => candidate.valid)
+          .sort((a, b) => b.score - a.score || b.overlap - a.overlap);
+
+        if (candidates.length > 0) {
+          return candidates[0].node;
+        }
+
+        const surfaceStyle = getComputedStyle(surface);
+        const surfaceBackdropFilter =
+          surfaceStyle.backdropFilter || surfaceStyle.webkitBackdropFilter;
+
+        return hasVisibleGlassMaterial(surfaceStyle, surfaceBackdropFilter) ? surface : null;
+      }
+
+      function hasVisibleGlassMaterial(style, backdropFilter) {
+        return (
+          (backdropFilter && backdropFilter !== "none") ||
+          (style.boxShadow && style.boxShadow !== "none") ||
+          hasTransparentPaint(style.backgroundColor)
+        );
+      }
+
+      function hasTransparentPaint(color) {
+        if (!color || color === "transparent") {
+          return false;
+        }
+
+        const alphaMatch = color.match(/\/\s*([0-9.]+)\s*\)$/) ?? color.match(/,\s*([0-9.]+)\)$/);
+        if (!alphaMatch) {
+          return false;
+        }
+
+        const alpha = Number(alphaMatch[1]);
+        return Number.isFinite(alpha) && alpha > 0 && alpha < 0.5;
+      }
+
+      function overlapArea(a, b) {
+        const width = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
+        const height = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+
+        return width * height;
       }
 
       function findTextElement(base, pattern, bounds) {
@@ -1188,7 +1299,9 @@ function summarizeControlContract(target, candidate) {
   return {
     kind: target.kind,
     rectDeltas: {
+      contentLayer: summarizeRectDelta(target.contentLayer?.rect, candidate.contentLayer?.rect),
       credit: summarizeRectDelta(target.credit?.rect, candidate.credit?.rect),
+      glassLayer: summarizeRectDelta(target.glassLayer?.rect, candidate.glassLayer?.rect),
       imageBackgroundLabel: summarizeRectDelta(
         target.imageBackgroundLabel?.rect,
         candidate.imageBackgroundLabel?.rect
@@ -1203,8 +1316,58 @@ function summarizeControlContract(target, candidate) {
     surfaceMaterial: {
       candidate: pickStyle(candidate.surface?.style),
       target: pickStyle(target.surface?.style)
+    },
+    glassLayerMaterial: {
+      candidate: pickStyle(candidate.glassLayer?.style),
+      target: pickStyle(target.glassLayer?.style)
+    },
+    contentLayerMaterial: {
+      candidate: pickStyle(candidate.contentLayer?.style),
+      target: pickStyle(target.contentLayer?.style)
     }
   };
+}
+
+function assertControlContractIntegrity(reference, target, candidate) {
+  if (reference.controlContract !== "searchbox") {
+    return;
+  }
+
+  const failures = [
+    assertSearchboxLayerContract("target", target),
+    assertSearchboxLayerContract("candidate", candidate)
+  ].filter(Boolean);
+
+  if (failures.length > 0) {
+    throw new Error(`Kube control contract diverged for ${reference.name}: ${failures.join("; ")}`);
+  }
+}
+
+function assertSearchboxLayerContract(label, contract) {
+  const glassFilter = contract.glassLayer?.style.backdropFilter ?? "";
+  const contentFilter = contract.contentLayer?.style.backdropFilter ?? "";
+  const contentTextShadow = contract.contentLayer?.style.textShadow ?? "";
+  const failures = [];
+
+  if (!contract.glassLayer) {
+    failures.push("missing glass layer");
+  } else if (!glassFilter || glassFilter === "none") {
+    failures.push(`glass layer missing backdrop filter: ${glassFilter || "empty"}`);
+  }
+
+  if (!contract.contentLayer) {
+    failures.push("missing content layer");
+  } else {
+    if (contentFilter && contentFilter !== "none") {
+      failures.push(`content layer is filtered: ${contentFilter}`);
+    }
+
+    if (contentTextShadow && contentTextShadow !== "none") {
+      failures.push(`content layer has text shadow: ${contentTextShadow}`);
+    }
+  }
+
+  return failures.length > 0 ? `${label} ${failures.join(", ")}` : null;
 }
 
 function summarizeRectDelta(target, candidate) {
