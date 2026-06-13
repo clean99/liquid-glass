@@ -143,11 +143,14 @@ This measurement includes these verified geometry fixes:
   paths from `stories/assets/kube/` for copied Kube demo images, filter maps,
   and Music Player album-art fixtures, while the original source URLs remain
   recorded for attribution and provenance. `stories/assets/kube/manifest.json`
-  locks local fixture dimensions and sha256 hashes. Generated or synthetic
-  stand-ins are not accepted by the e2e/provenance gates. This includes the
-  searchbox checked-state fern photo, the lens hero SVG inline crop, and the
-  album-art grid captured from `is1-ssl.mzstatic.com`, so the Kube reference
-  stories no longer use fake gradient cover tiles for loaded-media states.
+  locks local fixture dimensions and sha256 hashes, and `pnpm test:kube-assets`
+  re-reads the rendered public demo before the Kube parity gate so local
+  fixtures cannot drift away from the live Searchbox, Lens, and Music Player
+  assets. Generated or synthetic stand-ins are not accepted by the
+  e2e/provenance gates. This includes the searchbox checked-state fern photo,
+  the lens hero SVG inline crop, and the album-art grid captured from
+  `is1-ssl.mzstatic.com`, so the Kube reference stories no longer use fake
+  gradient cover tiles for loaded-media states.
 - Kube same-origin SVG filter map PNGs are also locked under
   `stories/assets/kube/maps/` and recorded in the same manifest. The maps are
   reference-only fixtures, not runtime shortcuts. They give the exact gate a

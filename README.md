@@ -220,6 +220,7 @@ pnpm test:visual-docs
 pnpm test:e2e
 pnpm test:a11y
 pnpm test:storybook
+pnpm test:kube-assets
 pnpm test:kube-reference
 pnpm test:kube-reference:strict
 pnpm test:kube-reference:exact

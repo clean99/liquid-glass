@@ -54,6 +54,10 @@ const kubeReferenceCompareSource = fs.readFileSync(
   path.resolve("scripts/compare-kube-reference.mjs"),
   "utf8"
 );
+const kubeDemoAssetVerifierSource = fs.readFileSync(
+  path.resolve("scripts/verify-kube-demo-assets.mjs"),
+  "utf8"
+);
 const verifyLiquidBehaviorSource = fs.readFileSync(
   path.resolve("scripts/verify-liquid-behavior.mjs"),
   "utf8"
@@ -413,6 +417,22 @@ describe("Liquid Glass physics contract", () => {
       expect(hash).toBe(asset.sha256);
       expect(readRasterSize(bytes)).toEqual({ height: asset.height, width: asset.width });
     }
+  });
+
+  it("verifies Kube demo asset URLs against the rendered public page before parity capture", () => {
+    expect(packageJson.scripts["test:kube-assets"]).toBe(
+      "node scripts/verify-kube-demo-assets.mjs"
+    );
+    expect(packageJson.scripts["test:kube-reference"]).toContain("pnpm test:kube-assets");
+    expect(kubeDemoAssetVerifierSource).toContain("https://kube.io/blog/liquid-glass-css-svg/");
+    expect(kubeDemoAssetVerifierSource).toContain('"Use image background"');
+    expect(kubeDemoAssetVerifierSource).toContain('document.querySelectorAll("svg image, image")');
+    expect(kubeDemoAssetVerifierSource).toContain("manifest.musicAlbumArtAssets");
+    expect(kubeDemoAssetVerifierSource).toContain("searchboxDemoBackground");
+    expect(kubeDemoAssetVerifierSource).toContain("lensDemoBackground");
+    expect(kubeDemoAssetVerifierSource).toContain("lensDemoInlineImage");
+    expect(kubeDemoAssetVerifierSource).toContain("lensDemoImage");
+    expect(kubeDemoAssetVerifierSource).toContain("observed-kube-demo-assets.json");
   });
 
   it("locks Kube same-origin filter maps for exact parity diagnostics", () => {

@@ -83,6 +83,7 @@ const packageRequiredFiles = [
   "registry/liquid-glass.json",
   "scripts/audit-open-source-governance.mjs",
   "scripts/build-component-registry.mjs",
+  "scripts/verify-kube-demo-assets.mjs",
   "scripts/validate-component-test-coverage.mjs",
   "scripts/validate-visual-state-coverage.mjs",
   "scripts/check-release-readiness.mjs",
@@ -132,6 +133,7 @@ mustInclude("README.md", [
   "test:research",
   "test:shadcn-parity",
   "test:release-readiness",
+  "test:kube-assets",
   "test:kube-reference",
   "test:kube-reference:strict",
   "test:kube-reference:exact",
@@ -175,6 +177,7 @@ mustInclude("llms.txt", [
   "docs/accessibility.md",
   "docs/components/index.md",
   "docs/maintainer-runbook.md",
+  "pnpm test:kube-assets",
   "pnpm test:release-readiness",
   "pnpm test:kube-reference:strict",
   "pnpm test:kube-reference:exact",
@@ -341,6 +344,13 @@ mustInclude("docs/components/map.md", [
   "Written Page Backlog",
   "not published to npm yet",
   "pnpm test:kube-reference:exact"
+]);
+
+mustInclude("docs/testing.md", [
+  "pnpm test:kube-assets",
+  "scripts/verify-kube-demo-assets.mjs",
+  "test-results/kube-assets/observed-kube-demo-assets.json",
+  "stories/assets/kube/manifest.json"
 ]);
 
 mustInclude(".github/ISSUE_TEMPLATE/docs_report.yml", [
@@ -748,6 +758,9 @@ if (fs.existsSync(path.join(root, "package.json"))) {
   if (!packageJson.scripts?.["test:kube-reference:strict"]) {
     errors.push("package.json must include test:kube-reference:strict");
   }
+  if (!packageJson.scripts?.["test:kube-assets"]) {
+    errors.push("package.json must include test:kube-assets");
+  }
   if (!packageJson.scripts?.["test:kube-reference:exact"]) {
     errors.push("package.json must include test:kube-reference:exact");
   }
@@ -771,6 +784,12 @@ if (fs.existsSync(path.join(root, "package.json"))) {
   }
   if (!packageJson.scripts?.["test:kube-reference:strict"]?.includes("KUBE_STRICT_INTERACTIVE=1")) {
     errors.push("package.json test:kube-reference:strict must enable strict Kube interactions");
+  }
+  if (!packageJson.scripts?.["test:kube-assets"]?.includes("scripts/verify-kube-demo-assets.mjs")) {
+    errors.push("package.json test:kube-assets must run the Kube demo asset verifier");
+  }
+  if (!packageJson.scripts?.["test:kube-reference"]?.includes("pnpm test:kube-assets")) {
+    errors.push("package.json test:kube-reference must run the Kube asset verifier first");
   }
   if (!packageJson.scripts?.["test:kube-reference:exact"]?.includes("KUBE_MAX_DIFF_RATIO=0")) {
     errors.push("package.json test:kube-reference:exact must set zero pixel diff tolerance");
@@ -864,6 +883,7 @@ for (const script of [
   "test:research",
   "test:shadcn-parity",
   "test:release-readiness",
+  "test:kube-assets",
   "test:kube-reference",
   "test:kube-reference:strict",
   "test:kube-reference:exact",

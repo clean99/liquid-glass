@@ -14,6 +14,7 @@ pnpm test:unit
 pnpm test:a11y
 pnpm test:e2e
 pnpm test:storybook
+pnpm test:kube-assets
 pnpm test:kube-reference:strict
 pnpm test:kube-reference:exact
 pnpm build
@@ -34,6 +35,7 @@ Optical checks:
 
 ```sh
 pnpm test:physics
+pnpm test:kube-assets
 pnpm test:kube-reference
 pnpm test:kube-reference:strict
 pnpm test:kube-reference:exact
@@ -73,8 +75,17 @@ violations, while unit tests, component tests, real Storybook interactions,
 visual-state coverage, and Kube reference checks cover behavior and material
 claims that axe cannot prove alone.
 
-`pnpm test:kube-reference` captures the public Kube reference page and matching
-Storybook stories. It includes static component screenshots plus
+`pnpm test:kube-assets` runs `scripts/verify-kube-demo-assets.mjs`, opens the
+rendered public Kube article, enables the Searchbox image-background state,
+reads CSS background URLs, `<img>` sources, and SVG `<image>` hrefs, then compares them against
+`stories/assets/kube/manifest.json`. It writes
+`test-results/kube-assets/observed-kube-demo-assets.json` for diagnostics. This
+is intentionally a networked provenance gate: if the public demo changes source
+assets, the local fixtures must be reviewed instead of silently drifting.
+
+`pnpm test:kube-reference` first runs `pnpm test:kube-assets`, then captures the
+public Kube reference page and matching Storybook stories. It includes static
+component screenshots plus
 `pressed and dragged magnifying-glass screenshots` produced by real pointer input.
 For every compared row, the script writes `*-target.png`, `*-candidate.png`, and
 `*-diff.png` under `test-results/kube-reference/`; the diff image is a red

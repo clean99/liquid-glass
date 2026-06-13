@@ -93,6 +93,7 @@ for (const script of [
   "test:e2e",
   "test:a11y",
   "test:visual",
+  "test:kube-assets",
   "test:kube-reference",
   "test:kube-reference:strict",
   "test:kube-reference:exact",
@@ -114,6 +115,8 @@ mustScript(packageJson, "test:component-coverage", [
   "scripts/validate-component-test-coverage.mjs"
 ]);
 mustScript(packageJson, "test:visual-docs", ["scripts/validate-visual-state-coverage.mjs"]);
+mustScript(packageJson, "test:kube-assets", ["scripts/verify-kube-demo-assets.mjs"]);
+mustScript(packageJson, "test:kube-reference", ["pnpm test:kube-assets"]);
 mustScript(packageJson, "test:kube-reference:strict", ["KUBE_STRICT_INTERACTIVE=1"]);
 mustScript(packageJson, "test:kube-reference:exact", [
   "KUBE_EXACT_PARITY=1",
@@ -178,6 +181,7 @@ const packageRequiredFiles = [
   "registry.json",
   "liquid-glass.json",
   "schema/visual-state-coverage.schema.json",
+  "scripts/verify-kube-demo-assets.mjs",
   "scripts/validate-visual-state-coverage.mjs"
 ];
 
@@ -262,6 +266,7 @@ mustInclude("docs/maintainer-runbook.md", "pnpm verify");
 mustInclude("docs/maintainer-runbook.md", "not published to npm yet");
 mustInclude("llms.txt", "Assistant Rules");
 mustInclude("llms.txt", "not published to npm yet");
+mustInclude("llms.txt", "pnpm test:kube-assets");
 mustInclude("llms.txt", "pnpm test:kube-reference:exact");
 mustInclude("llms.txt", "docs/components/map.md");
 mustInclude("docs/open-source-release.md", "pnpm test:governance");
@@ -287,6 +292,8 @@ mustInclude("docs/visual-state-coverage.json", "storyEvidence");
 mustInclude("docs/testing.md", "pnpm test:visual-docs");
 mustInclude("docs/github-repository-settings.md", "build_type=workflow");
 mustInclude("docs/open-source-release.md", "pnpm test:kube-reference:strict");
+mustInclude("docs/testing.md", "pnpm test:kube-assets");
+mustInclude("docs/testing.md", "observed-kube-demo-assets.json");
 mustInclude("docs/open-source-release.md", "pnpm pack --dry-run");
 mustInclude("docs/open-source-release.md", "NPM_CONFIG_PROVENANCE");
 mustInclude("docs/open-source-release.md", "id-token: write");

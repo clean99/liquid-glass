@@ -59,7 +59,7 @@ run has succeeded.
 - [Visual state coverage](docs/visual-state-coverage.json): machine-readable
   visual evidence map.
 - [Testing strategy](docs/testing.md): local gates, CI gates, Storybook,
-  accessibility, package, and Kube reference checks.
+  accessibility, package, Kube asset provenance, and Kube reference checks.
 - [Kube parity gate](docs/kube-parity-gate.md): strict and exact reference gate
   semantics.
 
@@ -89,12 +89,15 @@ run has succeeded.
 - Run `pnpm format`, `pnpm lint`, `pnpm typecheck`, `pnpm test:docs`,
   `pnpm test:release-readiness`, and `pnpm test:unit` after changes.
 - Run `pnpm test:registry` when registry or package metadata changes.
+- Run `pnpm test:kube-assets` before Kube reference comparisons when Kube demo
+  fixtures, manifests, or provenance change.
 - Do not copy third-party source. Add new references to `ATTRIBUTIONS.md` or
   `docs/reference-provenance.json`.
 - Do not claim npm publication, GitHub Pages deployment, or exact Kube parity
   without a successful public run.
 - Treat `pnpm test:kube-reference:strict` as the release-candidate visual gate.
-  `pnpm test:kube-reference:exact` is the separate final exact-parity target.
+  It runs `pnpm test:kube-assets` first. `pnpm test:kube-reference:exact` is the
+  separate final exact-parity target.
 
 ## Optional Deep Context
 
