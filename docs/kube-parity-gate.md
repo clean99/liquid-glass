@@ -55,15 +55,18 @@ are required for lens work: without them a pressed-state regression can be
 mistaken for a material problem when the real issue is a capture-size,
 background-phase, or crop mismatch.
 
-## Latest Measurement
+## Representative Strict Measurement
 
 Measured locally on 2026-06-13 against `https://kube.io/blog/liquid-glass-css-svg/`.
+Live-page interaction sampling can move a few pixels between runs, so this table
+is a representative strict gate sample rather than a promise of bit-stable
+metrics.
 
 | Reference                | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | ------------------------ | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass         |     0.2007 | `0,-1`     |     0.1908 |    0.2400 | gate |
-| magnifying-glass-pressed |     0.3320 | `-1,1`     |     0.3268 |    0.4050 | gate |
-| magnifying-glass-dragged |     0.4078 | `-5,0`     |     0.3715 |    0.4550 | gate |
+| magnifying-glass-pressed |     0.3668 | `0,-2`     |     0.3519 |    0.4050 | gate |
+| magnifying-glass-dragged |     0.4214 | `-5,1`     |     0.3850 |    0.4550 | gate |
 | searchbox                |     0.0180 | `0,0`      |     0.0169 |    0.0200 | gate |
 | switch                   |     0.0136 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                   |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
@@ -96,9 +99,13 @@ This measurement includes these verified geometry fixes:
   high-contrast text field under the active lens without faking the lens motion
   metrics. A larger vertical shift regressed pressed and dragged screenshots, so
   the current offset is intentionally small.
-- the pressed lens uses a flatter local droplet scale than the dragged state,
+- the pressed lens uses a flatter local droplet scale than the dragged state and
+  keeps its height growth near the middle of recent local and CI Kube samples,
   matching Kube's water-drop interaction shape without changing the idle lens
   contract.
+- the pressed action metric guard allows a `7px` height-delta variance because
+  the live Kube page has recently sampled between roughly `15px` and `21px` of
+  press deformation; the screenshot gate remains unchanged.
 - pressed and dragged screenshots are captured from the post-action visual
   bounding box clip. This removed a false mismatch from `element.screenshot()`
   using different target and candidate transform boxes.

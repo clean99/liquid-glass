@@ -59,7 +59,7 @@ const references = [
     metricTolerances: {
       deltaX: 4,
       deltaY: 4,
-      heightDelta: 4,
+      heightDelta: 7,
       widthDelta: 4
     },
     maxDiffRatio: 0.405,
