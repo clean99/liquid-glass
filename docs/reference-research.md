@@ -220,6 +220,14 @@ when the live page cannot scroll farther, reruns the scroll, and removes the
 spacer during cleanup. This is a capture reliability fix, not a visual parity
 budget change.
 
+A later 2026-06-13 GitHub Actions sample produced an implausible dragged metric
+with a large negative document-space `deltaY` after the page scroll position
+jumped while the pointer was held down. Pointer movement and screenshot clips are
+viewport-space operations, so the sampler now gates drag movement with viewport
+`deltaX` and `deltaY` while still recording `documentDelta*` and `scrollDelta*`
+fields for diagnosis. This removes the false rejection without changing any
+pixel-diff budget.
+
 `pnpm test:kube-reference:strict` sets `KUBE_STRICT_INTERACTIVE=1` and promotes
 the release-candidate path used by CI and manual reviews. The current measured
 status is documented in `docs/kube-parity-gate.md`. The command now passes, but

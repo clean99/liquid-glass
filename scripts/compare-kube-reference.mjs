@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import http from "node:http";
 import path from "node:path";
 import { chromium } from "playwright";
+import { summarizePointerActionMetrics } from "./kube-pointer-metrics.mjs";
 
 /* global FileReader, HTMLInputElement, OffscreenCanvas, createImageBitmap, document, getComputedStyle, window */
 
@@ -682,7 +683,7 @@ async function applyPointerAction(page, handle, action) {
     }
 
     const after = await waitForPointerActionEffect(page, handle, before, action);
-    const metrics = summarizeActionMetrics(before, after, action);
+    const metrics = summarizePointerActionMetrics(before, after, action);
     lastMetrics = metrics;
     const hasEffect = hasPointerActionEffect(metrics, action);
     const hasPlausibleMetrics = hasPlausiblePointerActionMetrics(metrics, action);
@@ -815,7 +816,7 @@ async function waitForPointerActionEffect(page, handle, before, action) {
   let lastSample = await readPointerActionSample(page, handle);
 
   while (Date.now() < deadline) {
-    const metrics = summarizeActionMetrics(before, lastSample, action);
+    const metrics = summarizePointerActionMetrics(before, lastSample, action);
 
     if (
       hasPointerActionEffect(metrics, action) &&
@@ -879,21 +880,6 @@ function actionPathBounds(sample, action) {
     maxY: Math.max(startY, endY),
     minX: Math.min(startX, endX),
     minY: Math.min(startY, endY)
-  };
-}
-
-function summarizeActionMetrics(before, after, action) {
-  const beforeBox = before.documentBox;
-  const afterBox = after.documentBox;
-
-  return {
-    deltaX: round(afterBox.x - beforeBox.x),
-    deltaY: round(afterBox.y - beforeBox.y),
-    height: round(after.box.height),
-    heightDelta: round(after.box.height - before.box.height),
-    kind: action.kind,
-    width: round(after.box.width),
-    widthDelta: round(after.box.width - before.box.width)
   };
 }
 

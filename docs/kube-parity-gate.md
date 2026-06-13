@@ -126,6 +126,9 @@ This measurement includes these verified geometry fixes:
 - pressed and dragged screenshots are captured from the post-action visual
   bounding box clip. This removed a false mismatch from `element.screenshot()`
   using different target and candidate transform boxes.
+- pointer-action metrics are gated in viewport space, matching Playwright
+  pointer input and screenshot clips. The report still records document-space
+  and scroll deltas so GitHub Actions scroll noise remains diagnosable.
 - the comparison now records a non-gating best phase offset. Searchbox, switch,
   and slider align at `0,0`; the lens interaction rows improve only modestly
   after tiny offsets, so the remaining gap is material and optical response, not
