@@ -27,6 +27,10 @@ for (const [index, asset] of manifest.musicAlbumArtAssets.entries()) {
   expectedUrls.set(`musicAlbumArtAssets[${index}]`, asset.sourceUrl);
 }
 
+for (const [name, asset] of Object.entries(manifest.filterMapAssets ?? {})) {
+  expectedUrls.set(`filterMapAssets.${name}`, asset.sourceUrl);
+}
+
 const missingManifestEntries = [...expectedUrls]
   .filter(([, url]) => typeof url !== "string" || url.length === 0)
   .map(([name]) => name);
@@ -114,7 +118,9 @@ try {
       }
     }
 
-    for (const image of Array.from(document.querySelectorAll("svg image, image"))) {
+    for (const image of Array.from(
+      document.querySelectorAll("svg image, image, svg feImage, feImage")
+    )) {
       const href = image.getAttribute("href") || image.getAttribute("xlink:href");
       if (href) {
         svgImageUrls.push({

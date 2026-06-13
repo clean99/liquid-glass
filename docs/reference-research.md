@@ -36,10 +36,12 @@ hashes live in `stories/assets/kube/manifest.json`. The local files live under
 
 `pnpm test:kube-assets` opens the rendered public page, clicks the Searchbox
 `Use image background` control, reads CSS backgrounds, `<img>` sources, and SVG
-`<image>` hrefs, then compares those live demo URLs against the manifest before
-`pnpm test:kube-reference` captures pixels. If Kube has no rendered source image
-for a future component state, the fallback must be a captured/generated
-reference fixture with provenance instead of a synthetic placeholder.
+`<image>`/`<feImage>` hrefs, then compares those live demo URLs against the
+manifest before `pnpm test:kube-reference` captures pixels. The URL gate covers
+the loaded demo photos, album-art fixtures, and Kube same-origin SVG filter maps.
+If Kube has no rendered source image for a future component state, the fallback
+must be a captured/generated reference fixture with provenance instead of a
+synthetic placeholder.
 
 - Searchbox image background:
   `photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop`,
