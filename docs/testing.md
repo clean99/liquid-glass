@@ -61,6 +61,9 @@ the only source of truth.
 `pnpm test:kube-reference` captures the public Kube reference page and matching
 Storybook stories. It includes static component screenshots plus
 `pressed and dragged magnifying-glass screenshots` produced by real pointer input.
+For every compared row, the script writes `*-target.png`, `*-candidate.png`, and
+`*-diff.png` under `test-results/kube-reference/`; the diff image is a red
+heatmap of the compared crop, not a hand-reviewed artifact.
 For the magnifying-glass target, the script also asserts the SVG filter contract:
 the candidate must expose the same two-pass displacement pipeline, image count,
 map count, and displacement scales before pixels are compared. This contract is

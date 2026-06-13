@@ -21,6 +21,7 @@ flowchart TD
   H --> J
   G --> K["Interactive pixel diff"]
   H --> K
+  K --> L["Diff PNG artifact"]
 ```
 
 `pnpm test:kube-reference` is the normal regression gate. It compares the static
@@ -30,6 +31,11 @@ hard-fails pressed and dragged lens screenshots produced by real pointer input.
 `pnpm test:kube-reference:strict` sets `KUBE_STRICT_INTERACTIVE=1` and preserves
 the release-candidate command used by CI and manual reviews. The interactive
 screenshots are hard gates in both commands.
+
+Each row writes target, candidate, and diff PNG artifacts under
+`test-results/kube-reference/`. The diff image is generated from the same crop
+used for the metric, so it is useful for diagnosing phase, material, and edge
+errors without changing the gate.
 
 ## Latest Measurement
 
