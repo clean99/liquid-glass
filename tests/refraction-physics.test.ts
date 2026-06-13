@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import crypto from "node:crypto";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
@@ -20,6 +21,9 @@ const kubeReferenceAssetsSource = fs.readFileSync(
   path.resolve("stories/kube-reference-assets.ts"),
   "utf8"
 );
+const kubeReferenceAssetManifest = JSON.parse(
+  fs.readFileSync(path.resolve("stories/assets/kube/manifest.json"), "utf8")
+) as KubeReferenceAssetManifest;
 const searchboxStorySource = fs.readFileSync(
   path.resolve("stories/LiquidSearchBox.stories.tsx"),
   "utf8"
@@ -52,6 +56,22 @@ const surfaceSource = fs.readFileSync(path.resolve("src/components/LiquidSurface
 
 const intensities: LiquidIntensity[] = ["subtle", "medium", "strong"];
 type DefaultRefractiveOptions = Omit<RefractiveOptions, "radius">;
+type KubeReferenceAssetManifest = {
+  assets: Record<
+    string,
+    {
+      file: string;
+      height: number;
+      role: string;
+      sha256: string;
+      sourceUrl: string;
+      width: number;
+    }
+  >;
+  captureMethod: string;
+  observedOn: string;
+  sourcePage: string;
+};
 
 describe("Liquid Glass physics contract", () => {
   it("keeps default optical parameters in a plausible glass range", () => {
@@ -295,8 +315,28 @@ describe("Liquid Glass physics contract", () => {
       "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=1400&h=1600&crop=focalpoint&fp-x=0.3&fp-y=0.5&fp-z=1"
     );
     expect(lensStorySource).toContain("kubeReferenceImageAssets.lensDemoImage");
+    expect(lensStorySource).toContain("kubeReferenceImageAssets.lensDemoBackground");
+    expect(lensStorySource).toContain('data-lg-reference-frame="lens-page-background"');
     expect(lensStorySource).toContain("Photo: Stephanie LeBlanc / Unsplash");
     expect(lensStorySource).not.toContain("src={localOpticsImage}");
+  });
+
+  it("locks Kube demo images to the captured source URLs, dimensions, and hashes", () => {
+    expect(kubeReferenceAssetManifest.sourcePage).toBe(
+      "https://kube.io/blog/liquid-glass-css-svg/"
+    );
+    expect(kubeReferenceAssetManifest.captureMethod).toContain("Chrome DOM");
+
+    for (const [name, asset] of Object.entries(kubeReferenceAssetManifest.assets)) {
+      const localPath = path.resolve("stories/assets/kube", asset.file);
+      const bytes = fs.readFileSync(localPath);
+      const hash = crypto.createHash("sha256").update(bytes).digest("hex");
+
+      expect(kubeReferenceAssetsSource).toContain(`${name}: "/kube/${asset.file}"`);
+      expect(kubeReferenceAssetsSource).toContain(asset.sourceUrl);
+      expect(hash).toBe(asset.sha256);
+      expect(readRasterSize(bytes)).toEqual({ height: asset.height, width: asset.width });
+    }
   });
 
   it("uses the Kube searchbox demo image instead of a synthetic photo fallback", () => {
@@ -690,6 +730,62 @@ function readKubeMaxDiffRatio(name: string) {
   }
 
   return Number(match[1]);
+}
+
+function readRasterSize(bytes: Buffer) {
+  if (bytes[0] === 0xff && bytes[1] === 0xd8) {
+    return readJpegSize(bytes);
+  }
+
+  if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47) {
+    return { height: bytes.readUInt32BE(20), width: bytes.readUInt32BE(16) };
+  }
+
+  throw new Error("Unsupported raster fixture format");
+}
+
+function readJpegSize(bytes: Buffer) {
+  let offset = 2;
+
+  while (offset < bytes.length - 1) {
+    if (bytes[offset] !== 0xff) {
+      offset += 1;
+      continue;
+    }
+
+    const marker = bytes[offset + 1];
+    offset += 2;
+
+    if (
+      marker === 0x01 ||
+      marker === 0xd8 ||
+      marker === 0xd9 ||
+      (marker >= 0xd0 && marker <= 0xd7)
+    ) {
+      continue;
+    }
+
+    if (offset + 2 > bytes.length) {
+      break;
+    }
+
+    const length = bytes.readUInt16BE(offset);
+
+    if (isJpegStartOfFrame(marker)) {
+      return {
+        height: bytes.readUInt16BE(offset + 3),
+        width: bytes.readUInt16BE(offset + 5)
+      };
+    }
+
+    offset += length;
+  }
+
+  throw new Error("Unable to read JPEG fixture dimensions");
+}
+
+function isJpegStartOfFrame(marker: number) {
+  return marker >= 0xc0 && marker <= 0xcf && marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc;
 }
 
 function collectCssRules(css: string) {

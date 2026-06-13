@@ -1,0 +1,31 @@
+{
+  "sourcePage": "https://kube.io/blog/liquid-glass-css-svg/",
+  "observedOn": "2026-06-13",
+  "captureMethod": "Chrome DOM and pageAssets sampling of rendered Kube demos",
+  "assets": {
+    "lensDemoBackground": {
+      "file": "lens-demo-background.jpg",
+      "height": 1600,
+      "role": "Kube page lens background sample",
+      "sha256": "d6cbbf784a71572043c733554ce3a446c4ef1a8946b492493f0f685f56d6a714",
+      "sourceUrl": "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=1400&h=1600&crop=focalpoint&fp-x=0.3&fp-y=0.5&fp-z=1",
+      "width": 1400
+    },
+    "lensDemoImage": {
+      "file": "lens-demo-image.jpg",
+      "height": 1200,
+      "role": "Kube magnifying-glass demo image layer",
+      "sha256": "6471edcd30d71eaa60509ef93ec6d47f4160e9a9928d12ee7666e96983c2ed25",
+      "sourceUrl": "https://images.unsplash.com/photo-1579380656108-f98e4df8ea62?q=80&w=800&auto=format&fit=crop",
+      "width": 800
+    },
+    "searchboxDemoBackground": {
+      "file": "searchbox-demo-background.jpg",
+      "height": 2399,
+      "role": "Kube searchbox checked image background",
+      "sha256": "892cde7d2041eb6ff2b07a535c0e73254209bbdc10998c4eefc50880178c6070",
+      "sourceUrl": "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop",
+      "width": 1600
+    }
+  }
+}

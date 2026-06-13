@@ -41,6 +41,7 @@
       ],
       "requiredDocs": [
         "ATTRIBUTIONS.md",
+        "stories/assets/kube/manifest.json",
         "stories/kube-reference-assets.ts",
         "stories/LiquidSearchBox.stories.tsx"
       ]
@@ -59,6 +60,7 @@
       ],
       "requiredDocs": [
         "ATTRIBUTIONS.md",
+        "stories/assets/kube/manifest.json",
         "stories/kube-reference-assets.ts",
         "stories/LiquidLens.stories.tsx"
       ]
@@ -77,6 +79,7 @@
       ],
       "requiredDocs": [
         "ATTRIBUTIONS.md",
+        "stories/assets/kube/manifest.json",
         "stories/kube-reference-assets.ts",
         "docs/reference-research.md"
       ]

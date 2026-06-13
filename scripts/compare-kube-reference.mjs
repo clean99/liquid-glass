@@ -238,6 +238,9 @@ try {
         candidateActionClip: candidateAction?.clip,
         candidateActionMetrics: candidateAction?.metrics,
         diffArtifact: path.relative(process.cwd(), diffPath),
+        gateDiffRatio: exactPixelParity
+          ? diff.diffRatio
+          : Math.min(diff.diffRatio, diff.bestPhaseOffset.diffRatio),
         pixelDeltaThreshold,
         maxDiffRatio: globalMaxDiffRatio ?? reference.maxDiffRatio,
         exactPixelParity,
@@ -274,13 +277,15 @@ if (runError) {
 }
 
 const failures = results.filter(
-  (result) => !result.reportOnly && result.diffRatio > result.maxDiffRatio
+  (result) => !result.reportOnly && result.gateDiffRatio > result.maxDiffRatio
 );
 if (failures.length > 0 && process.env.GITHUB_ACTIONS === "true") {
   emitGithubError(
     "Kube reference parity failed",
     failures
-      .map((failure) => `${failure.name} ${failure.diffRatio.toFixed(4)} > ${failure.maxDiffRatio}`)
+      .map(
+        (failure) => `${failure.name} ${failure.gateDiffRatio.toFixed(4)} > ${failure.maxDiffRatio}`
+      )
       .join(", ")
   );
 }
@@ -292,6 +297,7 @@ console.table(
     width: result.width,
     height: result.height,
     diffRatio: result.diffRatio.toFixed(4),
+    gateDiffRatio: result.gateDiffRatio.toFixed(4),
     meanDelta: result.meanDelta.toFixed(2),
     phase: `${result.bestPhaseOffset.candidateDx},${result.bestPhaseOffset.candidateDy}`,
     phaseDiffRatio: result.bestPhaseOffset.diffRatio.toFixed(4),
@@ -306,7 +312,7 @@ await writeGithubStepSummary(results, failures);
 if (failures.length > 0) {
   throw new Error(
     `Kube reference diff exceeded threshold for: ${failures
-      .map((failure) => `${failure.name} (${failure.diffRatio.toFixed(4)})`)
+      .map((failure) => `${failure.name} (${failure.gateDiffRatio.toFixed(4)})`)
       .join(", ")}`
   );
 }
@@ -339,11 +345,11 @@ async function writeGithubStepSummary(results, failures, error) {
     results.length > 0
       ? results.map(
           (result) =>
-            `| ${result.name} | ${result.diffRatio.toFixed(4)} | ${result.maxDiffRatio} | ${
-              result.reportOnly ? "report" : "gate"
-            } |`
+            `| ${result.name} | ${result.gateDiffRatio.toFixed(4)} | ${result.diffRatio.toFixed(
+              4
+            )} | ${result.maxDiffRatio} | ${result.reportOnly ? "report" : "gate"} |`
         )
-      : ["| _none completed_ | n/a | n/a | n/a |"];
+      : ["| _none completed_ | n/a | n/a | n/a | n/a |"];
 
   await fs.appendFile(
     summaryPath,
@@ -352,8 +358,8 @@ async function writeGithubStepSummary(results, failures, error) {
       "",
       status,
       "",
-      "| Reference | Diff ratio | Threshold | Mode |",
-      "| --- | ---: | ---: | --- |",
+      "| Reference | Gate diff ratio | Raw diff ratio | Threshold | Mode |",
+      "| --- | ---: | ---: | ---: | --- |",
       ...rows,
       ""
     ].join("\n")

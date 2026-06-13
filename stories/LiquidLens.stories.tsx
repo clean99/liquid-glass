@@ -90,6 +90,71 @@ export const DraggablePrecisionLens: Story = {
   )
 };
 
+export const KubePageBackgroundReference: Story = {
+  parameters: {
+    visualState: {
+      evidence: ["pnpm test:physics"],
+      profile: "reference",
+      states: ["default", "light", "loaded media", "Kube page background"]
+    }
+  },
+  render: () => (
+    <LiquidProvider defaultMode="enhanced" disableOnMobile={false} maxEnhancedSurfaces={4}>
+      <div
+        data-lg-theme="light"
+        style={{
+          minHeight: 360,
+          padding: 40,
+          background:
+            "linear-gradient(90deg, rgba(15,23,42,0.055) 0 1px, transparent 1px 48px), linear-gradient(180deg, rgba(15,23,42,0.045) 0 1px, transparent 1px 48px), linear-gradient(135deg, #fff, #f5f6f4)",
+          backgroundSize: "48px 48px, 48px 48px, auto",
+          fontFamily:
+            'InterVariable, Inter, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
+        }}
+      >
+        <div
+          data-lg-reference-frame="lens-page-background"
+          style={{
+            position: "relative",
+            boxSizing: "border-box",
+            width: 706,
+            height: 460,
+            overflow: "hidden",
+            border: "1px solid rgba(0, 0, 0, 0.1)",
+            borderRadius: 12,
+            background: `url("${kubeReferenceImageAssets.lensDemoBackground}")`,
+            backgroundPosition: "50% 50%",
+            backgroundSize: "cover"
+          }}
+        >
+          <LiquidLens
+            engine="reference"
+            refraction={precisionLensIdleRefraction}
+            style={{ position: "absolute", top: 170, left: 248, zIndex: 2 }}
+          />
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              left: 18,
+              bottom: 16,
+              color: "rgba(255, 255, 255, 0.7)",
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: 1.8,
+              lineHeight: 1.2,
+              textShadow: "0 1px 3px rgba(0, 0, 0, 0.7)",
+              textTransform: "uppercase"
+            }}
+          >
+            Unsplash reference background
+          </div>
+        </div>
+      </div>
+    </LiquidProvider>
+  )
+};
+
 export const DarkRefractionField: Story = {
   render: () => (
     <StoryFrame theme="dark" width={520} height={320}>

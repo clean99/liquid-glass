@@ -29,7 +29,8 @@ This is intentionally a regression gate, not a manual screenshot review.
 Chrome/CDP asset sampling on the public page confirmed the Storybook reference
 fixtures should use the same demo images as Kube rather than generated or
 synthetic stand-ins. The locked Storybook fixture paths and source URLs live in
-`stories/kube-reference-assets.ts`; the local files live under
+`stories/kube-reference-assets.ts`; the captured file dimensions and sha256
+hashes live in `stories/assets/kube/manifest.json`. The local files live under
 `stories/assets/kube/` and are excluded from the npm package by `package.json`
 `files`.
 
@@ -40,8 +41,10 @@ synthetic stand-ins. The locked Storybook fixture paths and source URLs live in
 - Lens page background sample:
   `photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=1400&h=1600&crop=focalpoint&fp-x=0.3&fp-y=0.5&fp-z=1`.
 
-The images are attributed and stored only as Storybook/parity fixtures. They are
-not copied into the published package.
+The current locked fixture dimensions are `1600x2399` for the searchbox
+background, `800x1200` for the magnifying-glass image layer, and `1400x1600`
+for the lens page background sample. The images are attributed and stored only
+as Storybook/parity fixtures. They are not copied into the published package.
 
 The magnifying-glass gate also reads the live SVG filter contract. The local
 reference lens must use the same observable two-pass structure as the target:
