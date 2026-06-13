@@ -261,6 +261,8 @@ describe("Liquid Glass physics contract", () => {
     expect(handleRule).toContain("box-sizing: border-box");
     expect(handleRule).toContain("padding: 0");
     expect(handleRule).toContain("scaleY(var(--lg-demo-droplet-scale-y, 0.8))");
+    expect(handleRule).toContain("scaleX(var(--lg-demo-focus-scale-x, 1))");
+    expect(handleRule).toContain("scaleY(var(--lg-demo-focus-scale-y, 1))");
     expect(handleRule).toContain("transform-origin: center");
     expect(handleLensRule).toContain("transform 260ms var(--lg-ease-apple)");
     expect(styles).not.toContain(".lg-precision-lens-demo__handle .lg-lens");
@@ -468,7 +470,11 @@ describe("Liquid Glass physics contract", () => {
         violations.push("missing frosted material");
       }
 
-      if (!growthBody.includes("transform:") && !growthBody.includes("--lg-demo-droplet-scale")) {
+      if (
+        !growthBody.includes("transform:") &&
+        !growthBody.includes("--lg-demo-droplet-scale") &&
+        !growthBody.includes("--lg-demo-focus-scale")
+      ) {
         violations.push("missing focus growth");
       }
 
@@ -476,6 +482,31 @@ describe("Liquid Glass physics contract", () => {
     });
 
     expect(missingContracts).toEqual([]);
+  });
+
+  it("keeps nav and toolbar focus growth after the generic surface focus cascade", () => {
+    const rules = collectCssRules(styles);
+    const genericFocusIndex = rules.findIndex((rule) => {
+      return (
+        normalizeCssSelector(rule.selector)
+          .split(", ")
+          .includes(".lg-surface--interactive:not(.lg-surface--disabled):focus-visible") &&
+        rule.body.includes("scale(1.025)")
+      );
+    });
+    const navFocusIndex = rules.findIndex((rule, index) => {
+      return (
+        index > genericFocusIndex &&
+        normalizeCssSelector(rule.selector)
+          .split(", ")
+          .includes(".lg-nav .lg-surface--button:focus-visible") &&
+        rule.body.includes("scale(1.05)") &&
+        rule.body.includes("text-shadow: none")
+      );
+    });
+
+    expect(genericFocusIndex).toBeGreaterThan(-1);
+    expect(navFocusIndex).toBeGreaterThan(genericFocusIndex);
   });
 
   it("keeps every focus rule in the transparent frosted material family", () => {

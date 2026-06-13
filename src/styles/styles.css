@@ -1679,7 +1679,6 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
     inset 0 -1px 0 rgba(0, 0, 0, 0.08),
     inset 0 0 28px var(--lg-control-focus-mist) !important;
-  transform: translateY(-2px) scale(1.05);
 }
 
 .lg-nav .lg-surface--button[aria-current="page"],
@@ -2060,6 +2059,14 @@
 
 .lg-surface--interactive:not(.lg-surface--disabled):focus-visible {
   transform: translateY(-1px) scale(1.025);
+}
+
+.lg-nav .lg-surface--button:focus-visible,
+.lg-nav .lg-surface--toggle:focus-visible,
+.lg-toolbar .lg-surface--button:focus-visible,
+.lg-toolbar .lg-surface--toggle:focus-visible {
+  transform: translateY(-2px) scale(1.05);
+  text-shadow: none;
 }
 
 .lg-surface--disabled,
@@ -3595,7 +3602,8 @@
   cursor: grab;
   touch-action: none;
   transform: translate3d(var(--lg-demo-lens-x, 0), var(--lg-demo-lens-y, 0), 0)
-    scaleX(var(--lg-demo-droplet-scale-x, 1)) scaleY(var(--lg-demo-droplet-scale-y, 0.8));
+    scaleX(var(--lg-demo-droplet-scale-x, 1)) scaleY(var(--lg-demo-droplet-scale-y, 0.8))
+    scaleX(var(--lg-demo-focus-scale-x, 1)) scaleY(var(--lg-demo-focus-scale-y, 1));
   transform-origin: center;
   transition: transform 260ms var(--lg-ease-apple);
   will-change: transform;
@@ -3613,8 +3621,8 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
     inset 0 0 28px var(--lg-control-focus-mist);
   filter: none;
-  --lg-demo-droplet-scale-x: 1.025;
-  --lg-demo-droplet-scale-y: 0.83;
+  --lg-demo-focus-scale-x: 1.025;
+  --lg-demo-focus-scale-y: 1.0375;
 }
 
 .lg-precision-lens-demo__handle[data-liquid-dragging="true"] {

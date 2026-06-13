@@ -45,6 +45,10 @@ const behaviorStories = {
     id: "liquid-glass-liquidtabs--light-mode",
     selector: ".lg-tabs__tab"
   },
+  nav: {
+    id: "liquid-glass-liquidnav--apple-like-tabs",
+    selector: '.lg-nav .lg-surface--button:not([aria-current="page"])'
+  },
   switch: {
     focusSelector: ".lg-switch",
     id: "liquid-glass-liquidswitch--kube-reference",
@@ -61,6 +65,10 @@ const behaviorStories = {
     selector: ".lg-searchbox"
   },
   draggableLens: {
+    id: "liquid-glass-liquidlens--draggable-precision-lens",
+    selector: "[data-lg-draggable-lens]"
+  },
+  lensFocus: {
     id: "liquid-glass-liquidlens--draggable-precision-lens",
     selector: "[data-lg-draggable-lens]"
   }
@@ -95,6 +103,10 @@ const browser = await chromium.launch({ headless: true });
 
 try {
   await verifyFocusMaterial("tabs", {
+    minimumFocusedScale: 1.04,
+    requireMaterialDeepening: true
+  });
+  await verifyFocusMaterial("nav", {
     minimumFocusedScale: 1.04,
     requireMaterialDeepening: true
   });
@@ -133,6 +145,12 @@ try {
     minimumFocusedScale: 0.67,
     requireMaterialDeepening: false
   });
+  await verifyFocusMaterial("lensFocus", {
+    minimumFocusedScale: 1.02,
+    requireMaterialDeepening: false,
+    requireShadowLayerGrowth: false,
+    requireShadowChange: true
+  });
   await verifyHoverAndActiveResponse();
   await verifyDraggableLensPlayground();
   await verifyReducedMotionRemovesElasticFocus();
@@ -169,7 +187,18 @@ async function verifyFocusMaterial(name, options) {
   if (options.minimumFocusedScale !== undefined) {
     assertGreaterOrEqual(focused.scale, options.minimumFocusedScale, `${name} focus scale`);
   }
-  assertGreaterThan(focused.shadowLayerCount, idle.shadowLayerCount, `${name} focus shadow layers`);
+  if (options.requireShadowChange) {
+    assertNotEqual(focused.boxShadow, idle.boxShadow, `${name} focus shadow`);
+  }
+  if (options.requireShadowLayerGrowth ?? true) {
+    assertGreaterThan(
+      focused.shadowLayerCount,
+      idle.shadowLayerCount,
+      `${name} focus shadow layers`
+    );
+  } else {
+    assertGreaterThan(focused.shadowLayerCount, 0, `${name} focus shadow layers`);
+  }
   assertIncludes(focused.transitionProperty, "transform", `${name} focus transition property`);
   assertGreaterThan(focused.maxTransitionDurationMs, 0, `${name} focus transition duration`);
   if (options.minimumFocusGrowthRatio !== undefined) {
@@ -780,6 +809,12 @@ function assertEqual(actual, expected, label) {
     throw new Error(
       `${label}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`
     );
+  }
+}
+
+function assertNotEqual(actual, expected, label) {
+  if (actual === expected) {
+    throw new Error(`${label}: expected ${JSON.stringify(actual)} to change`);
   }
 }
 
