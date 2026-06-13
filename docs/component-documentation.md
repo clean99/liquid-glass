@@ -29,6 +29,12 @@ component can use Storybook as the visual page, Markdown as the written page, or
 both, but the same facts must be present somewhere linked from
 `docs/component-inventory.md`.
 
+`docs/components/map.md` is the stopgap directory for implemented components
+that do not yet have full written pages. It must stay inventory-backed: each row
+points to the public export, source file, Storybook evidence, visual profile,
+registry item, and written page status. Do not maintain a separate component
+status list by hand.
+
 ## Required Page Sections
 
 | Section                    | Required content                                                                                  | Evidence source                                                                |
@@ -125,9 +131,9 @@ Do not publish or merge a component documentation page that:
 
 ## Current Gaps
 
-| Gap                                      | Risk                                                                                                      | Next action                                                                                                      |
-| ---------------------------------------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Per-component written pages are partial  | Users can read the first core pages, but most implemented components still rely on stories and inventory. | Extend `docs/components/` from Provider, Surface, Button, Card, Field, and Dialog to the rest of the public API. |
-| Public Storybook deploy is still skipped | Visual docs are build-proven but not publicly browseable.                                                 | Enable GitHub Pages with GitHub Actions as the source.                                                           |
-| npm package is not published             | Registry examples remain inspectable but not live installs.                                               | Publish with provenance only after `pnpm verify` and release workflow are configured.                            |
-| Exact Kube parity is not complete        | Reference docs must not claim 1:1 visual equivalence.                                                     | Keep strict and exact parity language separate until exact passes.                                               |
+| Gap                                      | Risk                                                                                                                                             | Next action                                                                                                      |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| Per-component written pages are partial  | Users can scan every implemented component in `docs/components/map.md`, but most components still rely on stories and inventory for full detail. | Extend `docs/components/` from Provider, Surface, Button, Card, Field, and Dialog to the rest of the public API. |
+| Public Storybook deploy is still skipped | Visual docs are build-proven but not publicly browseable.                                                                                        | Enable GitHub Pages with GitHub Actions as the source.                                                           |
+| npm package is not published             | Registry examples remain inspectable but not live installs.                                                                                      | Publish with provenance only after `pnpm verify` and release workflow are configured.                            |
+| Exact Kube parity is not complete        | Reference docs must not claim 1:1 visual equivalence.                                                                                            | Keep strict and exact parity language separate until exact passes.                                               |

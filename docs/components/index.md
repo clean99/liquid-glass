@@ -9,6 +9,10 @@ The docs are intentionally package-backed. They describe the public exports in
 `src/index.ts`; they do not copy component code from shadcn/ui, Radix UI,
 Chakra UI, HeroUI, or any other project.
 
+For a shadcn-style directory of every implemented component, see
+`docs/components/map.md`. That page is the discoverability bridge between the
+generated inventory and the smaller set of full written component pages.
+
 ## Status
 
 - npm package: not published to npm yet.
@@ -28,16 +32,31 @@ Chakra UI, HeroUI, or any other project.
 | `LiquidField`    | `docs/components/field.md`    | `src/components/LiquidField.tsx`   | `stories/LiquidField.stories.tsx`   | `registry/components/liquid-field.json`  |
 | `LiquidDialog`   | `docs/components/dialog.md`   | `src/components/LiquidDialog.tsx`  | `stories/LiquidDialog.stories.tsx`  | `registry/components/liquid-dialog.json` |
 
+## Full Directory
+
+`docs/components/map.md` lists all 60 implemented public components with their
+source file, Storybook evidence, visual profile, registry item, and written page
+status. It follows the same role as the shadcn/ui component directory: a user
+can scan the whole component surface from one place without guessing which
+Storybook file or registry item owns a component.
+
 ## Documentation Flow
 
 ```mermaid
 flowchart TD
   Inventory["docs/component-inventory.json"] --> ComponentPage["docs/components/*.md"]
+  Inventory --> ComponentMap["docs/components/map.md"]
   VisualState["docs/visual-state-coverage.json"] --> ComponentPage
+  VisualState --> ComponentMap
   Source["src public exports"] --> ComponentPage
+  Source --> ComponentMap
   Stories["Storybook stories"] --> ComponentPage
+  Stories --> ComponentMap
   Registry["registry/components/*.json"] --> ComponentPage
+  Registry --> ComponentMap
+  ComponentMap --> ComponentPage
   ComponentPage --> DocsGate["pnpm test:docs"]
+  ComponentMap --> DocsGate
   ComponentPage --> GovernanceGate["pnpm test:governance"]
 ```
 

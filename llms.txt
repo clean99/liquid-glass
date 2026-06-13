@@ -35,6 +35,9 @@ run has succeeded.
 
 - [Component inventory](docs/component-inventory.md): implemented and planned
   component inventory.
+- [Component map](docs/components/map.md): shadcn-style directory for every
+  implemented public component, including source, Storybook, visual profile,
+  registry, and written page status.
 - [Component documentation contract](docs/component-documentation.md):
   per-component page standard for status, install honesty, usage, anatomy, API,
   visual states, accessibility, registry entries, and verification evidence.

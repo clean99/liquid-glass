@@ -170,7 +170,10 @@ const packageRequiredFiles = [
   "docs/ui-library-benchmark.md",
   "docs/visual-documentation.md",
   "docs/visual-state-coverage.json",
+  "docs/component-documentation.md",
   "docs/component-inventory.md",
+  "docs/components/index.md",
+  "docs/components/map.md",
   "examples/README.md",
   "registry.json",
   "liquid-glass.json",
@@ -257,6 +260,7 @@ mustInclude("docs/maintainer-runbook.md", "not published to npm yet");
 mustInclude("llms.txt", "Assistant Rules");
 mustInclude("llms.txt", "not published to npm yet");
 mustInclude("llms.txt", "pnpm test:kube-reference:exact");
+mustInclude("llms.txt", "docs/components/map.md");
 mustInclude("docs/open-source-release.md", "pnpm test:governance");
 mustInclude("docs/open-source-release.md", "pnpm test:component-coverage");
 mustInclude("docs/open-source-release.md", "pnpm test:visual-docs");
@@ -264,6 +268,9 @@ mustInclude("docs/open-source-release.md", "pnpm test:e2e");
 mustInclude("docs/ui-library-benchmark.md", "Public Benchmark Surface");
 mustInclude("docs/ui-library-benchmark.md", "Public launch score");
 mustInclude("docs/ui-library-benchmark.md", "not published");
+mustInclude("docs/ui-library-benchmark.md", "docs/components/map.md");
+mustInclude("docs/components/map.md", "Implemented public components: 60");
+mustInclude("docs/components/map.md", "registry/components/liquid-accordion.json");
 mustInclude("docs/governance-scorecard.md", "CHECK_REMOTE_GOVERNANCE=1");
 mustInclude("docs/governance-scorecard.md", "pnpm --silent audit:governance:json");
 mustInclude("docs/governance-scorecard.md", "remoteStatus.checked");

@@ -48,6 +48,7 @@ const packageRequiredFiles = [
   "docs/browser-support.md",
   "docs/component-documentation.md",
   "docs/components/index.md",
+  "docs/components/map.md",
   "docs/components/provider.md",
   "docs/components/surface.md",
   "docs/components/button.md",
@@ -140,6 +141,7 @@ mustInclude("README.md", [
   "docs/adoption-guide.md",
   "docs/accessibility.md",
   "docs/component-documentation.md",
+  "docs/components/map.md",
   "docs/components/index.md"
 ]);
 
@@ -150,6 +152,7 @@ mustInclude("README.md", [
   "docs/index.md",
   "docs/accessibility.md",
   "docs/component-documentation.md",
+  "docs/components/map.md",
   "docs/components/index.md",
   "docs/maintainer-runbook.md",
   "llms.txt",
@@ -189,6 +192,7 @@ mustInclude("docs/index.md", [
   "```mermaid",
   "Component Navigation",
   "docs/component-documentation.md",
+  "docs/components/map.md",
   "docs/components/index.md",
   "docs/maintainer-runbook.md",
   "Visual Documentation",
@@ -305,6 +309,7 @@ mustInclude("docs/component-documentation.md", [
 mustInclude("docs/components/index.md", [
   "Component Docs",
   "docs/component-documentation.md",
+  "docs/components/map.md",
   "not published to npm yet",
   "Storybook Pages",
   "test:kube-reference:exact",
@@ -318,6 +323,23 @@ mustInclude("docs/components/index.md", [
   "pnpm test:docs",
   "pnpm test:release-readiness",
   "pnpm test:unit"
+]);
+
+mustInclude("docs/components/map.md", [
+  "Component Map",
+  "shadcn-style component directory",
+  "Implemented public components: 60",
+  "Storybook + inventory",
+  "docs/component-inventory.json",
+  "docs/visual-state-coverage.json",
+  "registry/components/",
+  "```mermaid",
+  "Coverage Flow",
+  "Category Count",
+  "Implemented Component Directory",
+  "Written Page Backlog",
+  "not published to npm yet",
+  "pnpm test:kube-reference:exact"
 ]);
 
 mustInclude("docs/components/provider.md", [
@@ -481,6 +503,7 @@ mustInclude("docs/ui-library-benchmark.md", [
   "Component page standard",
   "Maintainer operations",
   "docs/component-documentation.md",
+  "docs/components/map.md",
   "docs/components/index.md",
   "docs/maintainer-runbook.md",
   "Support routing",
@@ -843,8 +866,76 @@ if (!packageJson.files?.includes("llms.txt")) {
   errors.push("package.json files must include llms.txt");
 }
 
+validateComponentMap();
+
 if (errors.length > 0) {
   throw new Error(`Documentation gate failed:\n${errors.map((error) => `- ${error}`).join("\n")}`);
 }
 
 console.log(`Validated ${requiredFiles.length} open-source documentation and GitHub files.`);
+
+function validateComponentMap() {
+  if (!fs.existsSync(path.join(root, "docs/components/map.md"))) {
+    return;
+  }
+
+  const inventory = JSON.parse(read("docs/component-inventory.json"));
+  const coverage = JSON.parse(read("docs/visual-state-coverage.json"));
+  const componentMap = read("docs/components/map.md");
+  const implemented = inventory.components.filter(
+    (component) => component.status === "implemented"
+  );
+  const profileByName = new Map();
+  const categoryCounts = new Map();
+
+  for (const [profile, componentNames] of Object.entries(coverage.componentsByProfile ?? {})) {
+    for (const componentName of componentNames) {
+      profileByName.set(componentName, profile);
+    }
+  }
+
+  if (!componentMap.includes(`Implemented public components: ${implemented.length}`)) {
+    errors.push(
+      `docs/components/map.md must record ${implemented.length} implemented public components`
+    );
+  }
+
+  for (const component of implemented) {
+    categoryCounts.set(component.category, (categoryCounts.get(component.category) ?? 0) + 1);
+    const registryPath = `registry/components/liquid-${component.name}.json`;
+    const writtenPage = fs.existsSync(path.join(root, `docs/components/${component.name}.md`))
+      ? `docs/components/${component.name}.md`
+      : "Storybook + inventory";
+    const requiredSnippets = [
+      component.export,
+      component.name,
+      component.category,
+      profileByName.get(component.name) ?? component.category,
+      component.source,
+      component.story,
+      registryPath,
+      writtenPage
+    ];
+
+    for (const snippet of requiredSnippets) {
+      if (!componentMap.includes(snippet)) {
+        errors.push(`docs/components/map.md is missing ${component.name}: ${snippet}`);
+      }
+    }
+  }
+
+  for (const [category, count] of [...categoryCounts.entries()].sort(([a], [b]) =>
+    a.localeCompare(b)
+  )) {
+    const categoryCountPattern = new RegExp(
+      `\\| \`${escapeRegExp(category)}\`\\s+\\|\\s+${count} \\|`
+    );
+    if (!categoryCountPattern.test(componentMap)) {
+      errors.push(`docs/components/map.md is missing category count ${category}: ${count}`);
+    }
+  }
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}

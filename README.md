@@ -36,6 +36,7 @@ reference parity checks.
 - [API overview](docs/api-overview.md)
 - [Accessibility](docs/accessibility.md)
 - [Component inventory](docs/component-inventory.md)
+- [Component map](docs/components/map.md)
 - [Component documentation contract](docs/component-documentation.md)
 - [Component docs](docs/components/index.md)
 - [Design principles](docs/design-principles.md)
@@ -118,6 +119,9 @@ Primary docs:
 - `docs/accessibility.md`: accessibility contract, gates, known limits, and
   release rules.
 - `docs/component-inventory.md`: implemented and planned component inventory.
+- `docs/components/map.md`: shadcn-style directory for all implemented public
+  components, mapped to source, Storybook, visual profile, registry, and written
+  page status.
 - `docs/component-documentation.md`: per-component page standard for usage,
   anatomy, API, visual states, accessibility, and verification evidence.
 - `docs/components/index.md`: first package-backed component pages for Provider,
