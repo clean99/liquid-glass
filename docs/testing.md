@@ -47,7 +47,7 @@ pnpm test:visual:update
 ```
 
 `pnpm test:visual` runs deterministic Playwright screenshots for representative
-component states. The screenshot matcher allows a `0.01` max diff pixel ratio so
+component states. The screenshot matcher allows a `0.06` max diff pixel ratio so
 Linux and macOS font antialiasing do not fail otherwise identical states.
 Use `pnpm test:visual:update` only when the intended visual change is reviewed
 and the new snapshots are part of the same change.
