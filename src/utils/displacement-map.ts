@@ -171,7 +171,11 @@ export function createLensSpecularPixelMap({
   };
 }
 
-function sampleSpecularCoverage(distanceFromEdge: number, peakDistance: number, endDistance: number) {
+function sampleSpecularCoverage(
+  distanceFromEdge: number,
+  peakDistance: number,
+  endDistance: number
+) {
   if (distanceFromEdge <= 0 || distanceFromEdge >= endDistance) {
     return 0;
   }
