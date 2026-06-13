@@ -46,6 +46,18 @@ background, `800x1200` for the magnifying-glass image layer, and `1400x1600`
 for the lens page background sample. The images are attributed and stored only
 as Storybook/parity fixtures. They are not copied into the published package.
 
+Chrome pageAssets sampling also exposed Kube same-origin SVG filter map PNGs.
+Those maps are now stored under `stories/assets/kube/maps/` and exported from
+`stories/kube-reference-assets.ts` as reference-only fixtures. They are not used
+as runtime implementation shortcuts; they lock dimensions, source URLs, and
+sha256 hashes so exact-gate failures can be classified as map shape, material,
+background phase, or interaction geometry instead of subjective screenshot
+judgment. The core magnifying-glass triplet is:
+
+- `magnifying-map-q51ggw.png`: `210x150`,
+- `displacement-map-w2qrsb.png`: `420x300`,
+- `specular-map-w2qrsb.png`: `420x300`.
+
 The magnifying-glass gate also reads the live SVG filter contract. The local
 reference lens must use the same observable two-pass structure as the target:
 three `feImage` inputs, two `feDisplacementMap` stages, source magnification

@@ -56,6 +56,11 @@ The visual direction is informed by Chris Feijoo's public Liquid Glass research 
   - Credit/source terms: Unsplash.
   - Stored under `stories/assets/kube/` as a Storybook/parity fixture and excluded from the published package.
 
+- Kube same-origin SVG filter maps
+  - Source: https://kube.io/blog/liquid-glass-css-svg/
+  - Used only as Storybook/parity fixtures and exact-gate diagnostics for map dimensions, hashes, and optical gap classification.
+  - Stored under `stories/assets/kube/maps/` and excluded from the published package. Runtime components still generate their own maps.
+
 Open-source governance and visual documentation references:
 
 - `shadcn/ui`

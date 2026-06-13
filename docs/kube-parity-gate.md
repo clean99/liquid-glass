@@ -123,6 +123,11 @@ This measurement includes these verified geometry fixes:
   remain recorded for attribution and provenance. `stories/assets/kube/manifest.json`
   locks the fixture dimensions and sha256 hashes. Generated or synthetic
   stand-ins are not accepted by the e2e/provenance gates.
+- Kube same-origin SVG filter map PNGs are also locked under
+  `stories/assets/kube/maps/` and recorded in the same manifest. The maps are
+  reference-only fixtures, not runtime shortcuts. They give the exact gate a
+  concrete map contract for deciding whether the remaining diff is optical-map
+  shape, material/specular response, background phase, or interaction geometry.
 
 This proves five things:
 

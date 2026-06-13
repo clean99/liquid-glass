@@ -27,5 +27,143 @@
       "sourceUrl": "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop",
       "width": 1600
     }
+  },
+  "filterMapAssets": {
+    "displacementMap76hifn": {
+      "file": "maps/displacement-map-76hifn.png",
+      "height": 120,
+      "role": "Kube same-origin displacement map reference",
+      "sha256": "2acf2ceded32fe23cbf6ff5cfbec2ee515e6a7a5e7d18a9b1367ccd0d1aeaab4",
+      "sourceUrl": "https://kube.io/assets/displacement-map-76hifn.png",
+      "width": 180
+    },
+    "displacementMapIvknpp": {
+      "file": "maps/displacement-map-ivknpp.png",
+      "height": 108,
+      "role": "Kube same-origin displacement map reference",
+      "sha256": "40fbe5d37fdb95e4ecd9d78a5883bf4a019c61309e2e5c94aa49c302e50ba40e",
+      "sourceUrl": "https://kube.io/assets/displacement-map-ivknpp.png",
+      "width": 640
+    },
+    "displacementMapM6kvh9": {
+      "file": "maps/displacement-map-m6kvh9.png",
+      "height": 300,
+      "role": "Kube same-origin displacement map reference",
+      "sha256": "a34200e4280fbc772b3d991eced2248b09728fb604f4752f3498c2d526af2981",
+      "sourceUrl": "https://kube.io/assets/displacement-map-m6kvh9.png",
+      "width": 300
+    },
+    "displacementMapUihtky": {
+      "file": "maps/displacement-map-uihtky.png",
+      "height": 84,
+      "role": "Kube same-origin displacement map reference",
+      "sha256": "3e46f218dc54275e1c3660e0ca3794437a510160c41379411a2ee4657fe5fe45",
+      "sourceUrl": "https://kube.io/assets/displacement-map-uihtky.png",
+      "width": 640
+    },
+    "displacementMapW2qrsb": {
+      "file": "maps/displacement-map-w2qrsb.png",
+      "height": 300,
+      "role": "Kube same-origin displacement map reference",
+      "sha256": "4b65b346a2d5c50b3dae3e6436e4c9d6acb16104b317cdce256e090b9a4dfcff",
+      "sourceUrl": "https://kube.io/assets/displacement-map-w2qrsb.png",
+      "width": 420
+    },
+    "displacementMapYiydeb": {
+      "file": "maps/displacement-map-yiydeb.png",
+      "height": 112,
+      "role": "Kube same-origin displacement map reference",
+      "sha256": "c24546b51d51658a370a362c1301bd8c833d356dc5089efe04e9221018188dea",
+      "sourceUrl": "https://kube.io/assets/displacement-map-yiydeb.png",
+      "width": 840
+    },
+    "displacementMapYr2eh1": {
+      "file": "maps/displacement-map-yr2eh1.png",
+      "height": 126,
+      "role": "Kube same-origin displacement map reference",
+      "sha256": "177b1bfb991d2e39605ed1a0b3103dc3bc3bad9f61be3def682ab34f5e187fc1",
+      "sourceUrl": "https://kube.io/assets/displacement-map-yr2eh1.png",
+      "width": 1280
+    },
+    "displacementMapZ1p3yi": {
+      "file": "maps/displacement-map-z1p3yi.png",
+      "height": 184,
+      "role": "Kube same-origin displacement map reference",
+      "sha256": "296abcd29ffc68d496dfa27e8010739393edb15e1644e18c26896bc492faaa5e",
+      "sourceUrl": "https://kube.io/assets/displacement-map-z1p3yi.png",
+      "width": 292
+    },
+    "magnifyingMapQ51ggw": {
+      "file": "maps/magnifying-map-q51ggw.png",
+      "height": 150,
+      "role": "Kube same-origin magnification map reference",
+      "sha256": "991d5a0b7b8ce67a14e03e5ff4bea56d7432eaef87c8def94b8d4fbc5482e6b0",
+      "sourceUrl": "https://kube.io/assets/magnifying-map-q51ggw.png",
+      "width": 210
+    },
+    "specularMap76hifn": {
+      "file": "maps/specular-map-76hifn.png",
+      "height": 120,
+      "role": "Kube same-origin specular map reference",
+      "sha256": "39be256603bf1ea2d2fd5aff99a2b4b39b8b4dd39fb79bfc8c035f3f4150b601",
+      "sourceUrl": "https://kube.io/assets/specular-map-76hifn.png",
+      "width": 180
+    },
+    "specularMapIvknpp": {
+      "file": "maps/specular-map-ivknpp.png",
+      "height": 108,
+      "role": "Kube same-origin specular map reference",
+      "sha256": "987c2eac99d4237a44cbcc9f3f72f043be1ba2fe95e56e26ca50527e7a60f990",
+      "sourceUrl": "https://kube.io/assets/specular-map-ivknpp.png",
+      "width": 640
+    },
+    "specularMapM6kvh9": {
+      "file": "maps/specular-map-m6kvh9.png",
+      "height": 300,
+      "role": "Kube same-origin specular map reference",
+      "sha256": "f01246174128abd46e6dd44fc8382b1138e3eff21d8e7cf8a9aa5f28d1265151",
+      "sourceUrl": "https://kube.io/assets/specular-map-m6kvh9.png",
+      "width": 300
+    },
+    "specularMapUihtky": {
+      "file": "maps/specular-map-uihtky.png",
+      "height": 84,
+      "role": "Kube same-origin specular map reference",
+      "sha256": "81443b248a3d85feda02c28271428fb1137f52ce626949d6e0ca1c165247dfb3",
+      "sourceUrl": "https://kube.io/assets/specular-map-uihtky.png",
+      "width": 640
+    },
+    "specularMapW2qrsb": {
+      "file": "maps/specular-map-w2qrsb.png",
+      "height": 300,
+      "role": "Kube same-origin specular map reference",
+      "sha256": "f49768994e5f39532370c7c37d00487fbd8efd93046418ef10017cf1249b7d6a",
+      "sourceUrl": "https://kube.io/assets/specular-map-w2qrsb.png",
+      "width": 420
+    },
+    "specularMapYiydeb": {
+      "file": "maps/specular-map-yiydeb.png",
+      "height": 112,
+      "role": "Kube same-origin specular map reference",
+      "sha256": "00ef76711f4e7a440d57e02c45a83a6230c7d6944d667e761c6de7c2b167677e",
+      "sourceUrl": "https://kube.io/assets/specular-map-yiydeb.png",
+      "width": 840
+    },
+    "specularMapYr2eh1": {
+      "file": "maps/specular-map-yr2eh1.png",
+      "height": 126,
+      "role": "Kube same-origin specular map reference",
+      "sha256": "20e348b63982d75edc96bf191af884eb6baad5e27c03e4c1bb837e0010c0aee5",
+      "sourceUrl": "https://kube.io/assets/specular-map-yr2eh1.png",
+      "width": 1280
+    },
+    "specularMapZ1p3yi": {
+      "file": "maps/specular-map-z1p3yi.png",
+      "height": 184,
+      "role": "Kube same-origin specular map reference",
+      "sha256": "88b07772e6a736781f295da9ea4d36398491adb4fefeddbc929a4bfdf793811f",
+      "sourceUrl": "https://kube.io/assets/specular-map-z1p3yi.png",
+      "width": 292
+    }
   }
 }

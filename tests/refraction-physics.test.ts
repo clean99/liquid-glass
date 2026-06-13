@@ -68,6 +68,17 @@ type KubeReferenceAssetManifest = {
       width: number;
     }
   >;
+  filterMapAssets: Record<
+    string,
+    {
+      file: string;
+      height: number;
+      role: string;
+      sha256: string;
+      sourceUrl: string;
+      width: number;
+    }
+  >;
   captureMethod: string;
   observedOn: string;
   sourcePage: string;
@@ -337,6 +348,30 @@ describe("Liquid Glass physics contract", () => {
       expect(hash).toBe(asset.sha256);
       expect(readRasterSize(bytes)).toEqual({ height: asset.height, width: asset.width });
     }
+  });
+
+  it("locks Kube same-origin filter maps for exact parity diagnostics", () => {
+    const filterMapAssets = kubeReferenceAssetManifest.filterMapAssets;
+
+    expect(Object.keys(filterMapAssets)).toHaveLength(17);
+    expect(kubeReferenceAssetsSource).toContain("kubeReferenceFilterMapAssets");
+    expect(kubeReferenceAssetsSource).toContain("kubeReferenceRemoteFilterMapAssets");
+
+    for (const [name, asset] of Object.entries(filterMapAssets)) {
+      const localPath = path.resolve("stories/assets/kube", asset.file);
+      const bytes = fs.readFileSync(localPath);
+      const hash = crypto.createHash("sha256").update(bytes).digest("hex");
+
+      expect(asset.sourceUrl).toBe(`https://kube.io/assets/${path.basename(asset.file)}`);
+      expect(kubeReferenceAssetsSource).toContain(`${name}: "/kube/${asset.file}"`);
+      expect(kubeReferenceAssetsSource).toContain(`${name}: "${asset.sourceUrl}"`);
+      expect(hash).toBe(asset.sha256);
+      expect(readRasterSize(bytes)).toEqual({ height: asset.height, width: asset.width });
+    }
+
+    expect(filterMapAssets.magnifyingMapQ51ggw).toMatchObject({ height: 150, width: 210 });
+    expect(filterMapAssets.displacementMapW2qrsb).toMatchObject({ height: 300, width: 420 });
+    expect(filterMapAssets.specularMapW2qrsb).toMatchObject({ height: 300, width: 420 });
   });
 
   it("uses the Kube searchbox demo image instead of a synthetic photo fallback", () => {

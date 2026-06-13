@@ -85,6 +85,24 @@
       ]
     },
     {
+      "name": "Kube same-origin SVG filter maps",
+      "kind": "visual-reference",
+      "url": "https://kube.io/blog/liquid-glass-css-svg/",
+      "license": "article reference only",
+      "commit": null,
+      "copiedSource": false,
+      "usedFor": [
+        "SVG filter map parity diagnostics",
+        "magnification, displacement, and specular map dimensions",
+        "exact gate material and optical gap classification"
+      ],
+      "requiredDocs": [
+        "ATTRIBUTIONS.md",
+        "docs/reference-research.md",
+        "stories/assets/kube/manifest.json"
+      ]
+    },
+    {
       "name": "rdev/liquid-glass-react",
       "kind": "implementation-reference",
       "url": "https://github.com/rdev/liquid-glass-react",
