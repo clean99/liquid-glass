@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { useState } from "react";
 import { LiquidProvider, LiquidSearchBox } from "../src";
 import { StoryFrame } from "./story-fixtures";
+
+const kubeSearchboxImageBackground =
+  "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop";
 
 const meta = {
   title: "Liquid Glass/LiquidSearchBox",
@@ -12,7 +16,13 @@ export default meta;
 type Story = StoryObj;
 
 export const KubeReference: Story = {
-  render: () => (
+  render: () => <KubeSearchboxReferenceStory />
+};
+
+function KubeSearchboxReferenceStory() {
+  const [useImageBackground, setUseImageBackground] = useState(false);
+
+  return (
     <LiquidProvider defaultMode="enhanced" disableOnMobile={false} maxEnhancedSurfaces={4}>
       <div
         data-lg-theme="light"
@@ -35,12 +45,14 @@ export const KubeReference: Story = {
             overflow: "hidden",
             border: "1px solid rgba(0, 0, 0, 0.1)",
             borderRadius: 9.75,
-            background:
-              "linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), radial-gradient(120% 100% at 10% 0%, #f8fafc, #e7eeef)",
-            backgroundPosition: "12px 12px, 12px 12px, 0 0",
-            backgroundSize: "24px 24px, 24px 24px, 100% 100%"
+            background: useImageBackground
+              ? `url("${kubeSearchboxImageBackground}")`
+              : "linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), radial-gradient(120% 100% at 10% 0%, #f8fafc, #e7eeef)",
+            backgroundPosition: useImageBackground ? "50% 50%" : "12px 12px, 12px 12px, 0 0",
+            backgroundSize: useImageBackground ? "cover" : "24px 24px, 24px 24px, 100% 100%"
           }}
         >
+          {useImageBackground ? <KubeSearchboxPhotoCredit /> : null}
           <div
             style={{
               position: "absolute",
@@ -59,19 +71,25 @@ export const KubeReference: Story = {
               display: "inline-flex",
               alignItems: "center",
               gap: 6,
-              color: "#111",
+              color: useImageBackground ? "#fff" : "#111",
               fontSize: 10,
+              textShadow: useImageBackground ? "0 1px 3px rgba(0, 0, 0, 0.55)" : undefined,
               transform: "translateX(-50%)"
             }}
           >
-            <input style={{ width: 12, height: 12, margin: 0 }} type="checkbox" /> Use image
-            background
+            <input
+              checked={useImageBackground}
+              onChange={(event) => setUseImageBackground(event.currentTarget.checked)}
+              style={{ width: 12, height: 12, margin: 0 }}
+              type="checkbox"
+            />{" "}
+            Use image background
           </label>
         </div>
       </div>
     </LiquidProvider>
-  )
-};
+  );
+}
 
 export const FocusPhotoReference: Story = {
   render: () => (
@@ -94,12 +112,12 @@ export const FocusPhotoReference: Story = {
             height: 312,
             overflow: "hidden",
             borderRadius: 12,
-            background:
-              "radial-gradient(ellipse at 18% 24%, rgba(42, 220, 72, 0.95), transparent 16%), radial-gradient(ellipse at 35% 36%, rgba(9, 105, 29, 0.9), transparent 18%), radial-gradient(ellipse at 62% 28%, rgba(52, 238, 89, 0.88), transparent 17%), radial-gradient(ellipse at 78% 58%, rgba(15, 125, 35, 0.92), transparent 18%), radial-gradient(ellipse at 48% 72%, rgba(36, 205, 68, 0.82), transparent 15%), linear-gradient(135deg, #020802 0%, #05330c 34%, #020902 68%, #0a4213 100%)",
-            backgroundSize:
-              "210px 120px, 240px 150px, 220px 120px, 250px 150px, 230px 130px, 100% 100%"
+            background: `url("${kubeSearchboxImageBackground}")`,
+            backgroundPosition: "50% 50%",
+            backgroundSize: "cover"
           }}
         >
+          <KubeSearchboxPhotoCredit />
           <div
             style={{
               position: "absolute",
@@ -115,6 +133,29 @@ export const FocusPhotoReference: Story = {
     </LiquidProvider>
   )
 };
+
+function KubeSearchboxPhotoCredit() {
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        top: 22,
+        left: 22,
+        color: "rgba(255, 255, 255, 0.48)",
+        fontSize: 11,
+        fontWeight: 700,
+        letterSpacing: 2,
+        lineHeight: 1.15,
+        textShadow: "0 1px 3px rgba(0, 0, 0, 0.75)",
+        textTransform: "uppercase"
+      }}
+    >
+      <div>Photo by Teemu Paananen</div>
+      <div>on Unsplash</div>
+    </div>
+  );
+}
 
 export const DarkMode: Story = {
   render: () => (

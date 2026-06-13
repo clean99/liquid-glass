@@ -7,6 +7,7 @@ import { chromium } from "playwright";
 
 const staticDir = path.resolve(process.env.STORYBOOK_STATIC_DIR ?? "storybook-static-test");
 const behaviorArtifactDir = path.resolve("test-results/liquid-behavior");
+const kubeSearchboxImageId = "photo-1497250681960-ef046c08a56e";
 
 await fs.mkdir(behaviorArtifactDir, { recursive: true });
 
@@ -91,6 +92,7 @@ try {
     minimumFocusedScale: 0.999,
     requireMaterialDeepening: true
   });
+  await verifySearchboxKubeImageBackground();
   await verifyFocusMaterial("field", {
     minimumFocusedScale: 1.012,
     focusSelector: behaviorStories.field.focusSelector,
@@ -196,6 +198,56 @@ async function verifyHoverAndActiveResponse() {
   await page.mouse.up();
 
   await page.close();
+}
+
+async function verifySearchboxKubeImageBackground() {
+  const focusPage = await openStory(behaviorStories.searchbox.id);
+  const focusFrame = focusPage.locator('[data-lg-reference-frame="searchbox-focus"]').first();
+  await focusFrame.waitFor({ state: "visible", timeout: 10_000 });
+  const focusBackground = await readBackgroundImage(focusFrame);
+  assertIncludes(focusBackground, kubeSearchboxImageId, "searchbox focus photo background");
+  await waitForImageRequest(focusPage, kubeSearchboxImageId);
+  await focusFrame.screenshot({
+    path: path.join(behaviorArtifactDir, "searchbox-kube-photo-focus.png")
+  });
+  await focusPage.close();
+
+  const referencePage = await openStory("liquid-glass-liquidsearchbox--kube-reference");
+  const referenceFrame = referencePage.locator('[data-lg-reference-frame="searchbox"]').first();
+  await referenceFrame.waitFor({ state: "visible", timeout: 10_000 });
+  const idleBackground = await readBackgroundImage(referenceFrame);
+  if (idleBackground.includes(kubeSearchboxImageId)) {
+    throw new Error("searchbox Kube reference should keep the grid background before opt-in");
+  }
+
+  await referencePage.getByRole("checkbox", { name: /Use image background/i }).check();
+  await referencePage.waitForTimeout(240);
+  const checkedBackground = await readBackgroundImage(referenceFrame);
+  assertIncludes(
+    checkedBackground,
+    kubeSearchboxImageId,
+    "searchbox checked Kube image background"
+  );
+  await waitForImageRequest(referencePage, kubeSearchboxImageId);
+  await referenceFrame.screenshot({
+    path: path.join(behaviorArtifactDir, "searchbox-kube-photo-checked.png")
+  });
+  await referencePage.close();
+}
+
+async function readBackgroundImage(locator) {
+  return locator.evaluate((element) => getComputedStyle(element).backgroundImage);
+}
+
+async function waitForImageRequest(page, imageId) {
+  await page
+    .waitForFunction(
+      (resourceId) =>
+        performance.getEntriesByType("resource").some((entry) => entry.name.includes(resourceId)),
+      imageId,
+      { timeout: 5_000 }
+    )
+    .catch(() => undefined);
 }
 
 async function verifyDraggableLensPlayground() {

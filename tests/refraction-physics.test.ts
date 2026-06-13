@@ -16,6 +16,10 @@ import {
 const styles = fs.readFileSync(path.resolve("src/styles/styles.css"), "utf8");
 const storyFixture = fs.readFileSync(path.resolve("stories/story-fixtures.tsx"), "utf8");
 const lensStorySource = fs.readFileSync(path.resolve("stories/LiquidLens.stories.tsx"), "utf8");
+const searchboxStorySource = fs.readFileSync(
+  path.resolve("stories/LiquidSearchBox.stories.tsx"),
+  "utf8"
+);
 const lensSource = fs.readFileSync(path.resolve("src/components/LiquidLens.tsx"), "utf8");
 const lensReferenceEngineSource = fs.readFileSync(
   path.resolve("src/engines/lens-reference-engine.tsx"),
@@ -260,12 +264,22 @@ describe("Liquid Glass physics contract", () => {
     );
   });
 
+  it("uses the Kube searchbox demo image instead of a synthetic photo fallback", () => {
+    expect(searchboxStorySource).toContain(
+      "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop"
+    );
+    expect(searchboxStorySource).toContain("Photo by Teemu Paananen");
+    expect(searchboxStorySource).not.toContain("radial-gradient(ellipse at 18% 24%");
+  });
+
   it("rejects impossible target-page drag samples before comparing parity", () => {
     expect(kubeReferenceCompareSource).toContain("hasPlausiblePointerActionMetrics");
     expect(kubeReferenceCompareSource).toContain("Math.abs(action.delta.x) + Math.max(32");
     expect(kubeReferenceCompareSource).toContain("Math.abs(action.delta.y) + Math.max(32");
+    expect(kubeReferenceCompareSource).toContain("Math.abs(metrics.heightDelta) * 1.25");
+    expect(kubeReferenceCompareSource).toContain("Math.abs(action.delta.y) * 0.16");
     expect(kubeReferenceCompareSource).toContain(
-      "Drag action moved farther than the real pointer input allows"
+      "Drag action produced an implausible movement or deformation sample"
     );
   });
 

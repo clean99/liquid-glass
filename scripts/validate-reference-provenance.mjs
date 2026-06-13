@@ -13,6 +13,9 @@ if (!Array.isArray(provenance.references) || provenance.references.length === 0)
 }
 
 const seenNames = new Set();
+const provenanceUrls = new Set(
+  (provenance.references ?? []).map((reference) => normalizeReferenceUrl(reference.url))
+);
 
 for (const reference of provenance.references ?? []) {
   if (seenNames.has(reference.name)) {
@@ -80,6 +83,24 @@ if (!attribution.includes("no source code has been copied")) {
   errors.push("ATTRIBUTIONS.md must explicitly state that referenced source code was not copied");
 }
 
+for (const url of extractUnsplashImageUrls(attribution)) {
+  if (!provenanceUrls.has(normalizeReferenceUrl(url))) {
+    errors.push(`ATTRIBUTIONS.md mentions untracked Unsplash image ${url}`);
+  }
+}
+
+for (const file of collectFiles(path.join(root, "stories"), (filePath) =>
+  filePath.endsWith(".tsx")
+)) {
+  const source = fs.readFileSync(file, "utf8");
+  const relativePath = path.relative(root, file);
+  for (const url of extractUnsplashImageUrls(source)) {
+    if (!provenanceUrls.has(normalizeReferenceUrl(url))) {
+      errors.push(`${relativePath} uses untracked Unsplash image ${url}`);
+    }
+  }
+}
+
 if (errors.length > 0) {
   throw new Error(
     `Reference provenance is invalid:\n${errors.map((error) => `- ${error}`).join("\n")}`
@@ -110,4 +131,38 @@ function assertRemoteContainsCommit(reference) {
       `${reference.name}: remote ${reference.url} does not advertise ${reference.commit}`
     );
   }
+}
+
+function extractUnsplashImageUrls(source) {
+  return [...source.matchAll(/https:\/\/images\.unsplash\.com\/photo-[^"'\s)`]+/g)].map(([url]) =>
+    normalizeReferenceUrl(url)
+  );
+}
+
+function normalizeReferenceUrl(url) {
+  try {
+    const parsed = new URL(url);
+    parsed.search = "";
+    parsed.hash = "";
+    return parsed.toString().replace(/\/$/, "");
+  } catch {
+    return url;
+  }
+}
+
+function collectFiles(directory, predicate) {
+  if (!fs.existsSync(directory)) {
+    return [];
+  }
+
+  const files = [];
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const entryPath = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...collectFiles(entryPath, predicate));
+    } else if (predicate(entryPath)) {
+      files.push(entryPath);
+    }
+  }
+  return files;
 }

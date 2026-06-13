@@ -28,6 +28,20 @@
       "requiredDocs": ["ATTRIBUTIONS.md", "docs/reference-research.md", "docs/kube-parity-gate.md"]
     },
     {
+      "name": "Kube searchbox demo image",
+      "kind": "visual-reference",
+      "url": "https://images.unsplash.com/photo-1497250681960-ef046c08a56e",
+      "license": "Unsplash",
+      "commit": null,
+      "copiedSource": false,
+      "usedFor": [
+        "SearchBox visual reference background",
+        "Storybook focus photo reference",
+        "Kube-aligned visual documentation"
+      ],
+      "requiredDocs": ["ATTRIBUTIONS.md", "stories/LiquidSearchBox.stories.tsx"]
+    },
+    {
       "name": "rdev/liquid-glass-react",
       "kind": "implementation-reference",
       "url": "https://github.com/rdev/liquid-glass-react",

@@ -39,10 +39,11 @@ The visual direction is informed by Chris Feijoo's public Liquid Glass research 
   - License: MIT
   - Used as the row-model, sorting, filtering, and pagination engine for `LiquidDataTable`.
 
-- Storybook demo image
-  - Source: https://images.unsplash.com/photo-1579380656108-f98e4df8ea62
-  - Credit shown in the story: Stephanie LeBlanc / Unsplash.
-  - Loaded as a remote demo image; the image file is not copied into this package.
+- Kube searchbox demo image
+  - Source: https://images.unsplash.com/photo-1497250681960-ef046c08a56e
+  - Credit shown in the story: Teemu Paananen / Unsplash.
+  - License/source terms: Unsplash.
+  - Loaded as a remote demo image to match the Kube searchbox reference; the image file is not copied into this package.
 
 Open-source governance and visual documentation references:
 

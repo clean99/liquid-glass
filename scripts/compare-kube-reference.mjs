@@ -557,8 +557,13 @@ function hasPlausiblePointerActionMetrics(metrics, action) {
 
   const maxX = Math.abs(action.delta.x) + Math.max(32, Math.abs(action.delta.x) * 0.35);
   const maxY = Math.abs(action.delta.y) + Math.max(32, Math.abs(action.delta.y) * 0.35);
+  const maxWidthDelta = Math.max(24, Math.abs(metrics.heightDelta) * 1.25);
+  const minHeightDelta = Math.max(12, Math.abs(action.delta.y) * 0.16);
+  const plausibleMovement = Math.abs(metrics.deltaX) <= maxX && Math.abs(metrics.deltaY) <= maxY;
+  const plausibleDragShape =
+    metrics.heightDelta >= minHeightDelta && Math.abs(metrics.widthDelta) <= maxWidthDelta;
 
-  return Math.abs(metrics.deltaX) <= maxX && Math.abs(metrics.deltaY) <= maxY;
+  return plausibleMovement && plausibleDragShape;
 }
 
 function describeImplausiblePointerAction(action, metrics) {
@@ -566,7 +571,7 @@ function describeImplausiblePointerAction(action, metrics) {
     return describePointerActionFailure(action, metrics);
   }
 
-  return `Drag action moved farther than the real pointer input allows: ${JSON.stringify(metrics)}`;
+  return `Drag action produced an implausible movement or deformation sample: ${JSON.stringify(metrics)}`;
 }
 
 function describePointerActionFailure(action, metrics) {
