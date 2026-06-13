@@ -279,6 +279,7 @@ if (isStandaloneRepository) {
     "pnpm test:registry",
     "pnpm test:shadcn-parity",
     "pnpm test:component-coverage",
+    "pnpm test:governance",
     "pnpm test:release-readiness",
     "pnpm test:e2e",
     "pnpm test:a11y",

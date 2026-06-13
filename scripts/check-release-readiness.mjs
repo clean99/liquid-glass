@@ -196,6 +196,7 @@ if (isStandaloneRepository) {
     mustInclude(workflow, 'node-version: "24"');
   }
   mustInclude(".github/workflows/ci.yml", "pnpm test:release-readiness");
+  mustInclude(".github/workflows/ci.yml", "pnpm test:governance");
   mustInclude(".github/workflows/ci.yml", "pnpm test:research");
   mustInclude(".github/workflows/ci.yml", "pnpm test:component-coverage");
   mustInclude(".github/workflows/ci.yml", "pnpm test:a11y");

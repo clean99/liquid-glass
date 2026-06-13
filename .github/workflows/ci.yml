@@ -30,6 +30,7 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test:docs
+      - run: pnpm test:governance
       - run: pnpm test:research
       - run: pnpm test:inventory
       - run: pnpm test:component-coverage
