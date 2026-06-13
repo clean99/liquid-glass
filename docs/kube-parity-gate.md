@@ -55,6 +55,12 @@ are required for lens work: without them a pressed-state regression can be
 mistaken for a material problem when the real issue is a capture-size,
 background-phase, or crop mismatch.
 
+The results JSON also records `diffDiagnostics`: vertical bands, horizontal
+bands, radial center/rim regions, and the worst region by diff ratio. That keeps
+exact-parity work grounded in measurable failure classes such as bottom
+highlight, outer rim material, center background phase, or horizontal crop drift
+instead of subjective screenshot review.
+
 ## Representative Strict Measurement
 
 Measured locally on 2026-06-13 against `https://kube.io/blog/liquid-glass-css-svg/`.
@@ -107,7 +113,7 @@ This measurement includes these verified geometry fixes:
   height-delta variance because the live Kube page has recently sampled between
   roughly `17px` and `21px` of width growth and `15px` and `21px` of height
   growth during press deformation; the screenshot gate remains unchanged.
-- the dragged action metric guard allows `8px` height-delta and `7px`
+- the dragged action metric guard allows `8px` height-delta and `9px`
   width-delta variance for the same live-page sampling reason; it is still only
   a capture sanity check before the screenshot gate runs.
 - pressed and dragged screenshots are captured from the post-action visual

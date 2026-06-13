@@ -154,7 +154,7 @@ Current measured interaction contract:
 - target press samples have recently measured around `+17px` to `+21px` width
   and `+15px` to `+21px` height across local Chromium and GitHub Actions,
 - target drag samples vary with the live page and have recently measured around
-  `+6px` to `+17px` width and `+22px` to `+27px` height.
+  `+4px` to `+17px` width and `+22px` to `+27px` height.
 
 The local `LiquidLensDropletPhase` model intentionally separates `pressed` and
 `dragging`. A boolean pressed state was not enough: it made the drag handle keep

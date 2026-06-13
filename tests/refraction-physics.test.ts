@@ -432,12 +432,17 @@ describe("Liquid Glass physics contract", () => {
     expect(readKubeMaxDiffRatio("magnifying-glass-dragged")).toBe(0.455);
     expect(kubeReferenceCompareSource).toContain("heightDelta: 7");
     expect(kubeReferenceCompareSource).toContain("heightDelta: 8");
-    expect(kubeReferenceCompareSource).toContain("widthDelta: 7");
+    expect(kubeReferenceCompareSource).toContain("widthDelta: 9");
     expect(kubeReferenceCompareSource).toContain("emitGithubError(");
     expect(kubeReferenceCompareSource).toContain("Kube reference parity failed");
     expect(kubeReferenceCompareSource).toContain("Kube reference capture failed");
     expect(kubeReferenceCompareSource).toContain("GITHUB_STEP_SUMMARY");
     expect(kubeReferenceCompareSource).toContain("Run failed before all references completed");
+    expect(kubeReferenceCompareSource).toContain("diffDiagnostics");
+    expect(kubeReferenceCompareSource).toContain("verticalBands");
+    expect(kubeReferenceCompareSource).toContain("horizontalBands");
+    expect(kubeReferenceCompareSource).toContain("radialRegions");
+    expect(kubeReferenceCompareSource).toContain("worstRegion");
   });
 
   it("does not fake Kube pointer parity by boosting active filter scales", () => {

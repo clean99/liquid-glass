@@ -82,7 +82,7 @@ const references = [
       deltaX: 8,
       deltaY: 8,
       heightDelta: 8,
-      widthDelta: 7
+      widthDelta: 9
     },
     maxDiffRatio: 0.455,
     reportOnly: false
@@ -949,6 +949,13 @@ async function compareImagesInBrowser(
         maxOffset,
         sampleStride
       );
+      const diffDiagnostics = computeDiffDiagnostics(
+        targetPixels,
+        candidatePixels,
+        width,
+        height,
+        pixelThreshold
+      );
 
       context.putImageData(diffImage, 0, 0);
       const diffBlob = await canvas.convertToBlob({ type: "image/png" });
@@ -959,6 +966,7 @@ async function compareImagesInBrowser(
         bestPhaseOffset,
         candidateImageSize,
         compareRegion: source,
+        diffDiagnostics,
         diffRatio: different / pixelCount,
         diffPngBase64,
         height,
@@ -1054,6 +1062,113 @@ async function compareImagesInBrowser(
         }
 
         return best;
+      }
+
+      function computeDiffDiagnostics(
+        targetPixelsToCompare,
+        candidatePixelsToCompare,
+        imageWidth,
+        imageHeight,
+        differenceThreshold
+      ) {
+        const verticalBands = [
+          { name: "top", yMin: 0, yMax: 0.2 },
+          { name: "upperMid", yMin: 0.2, yMax: 0.4 },
+          { name: "center", yMin: 0.4, yMax: 0.6 },
+          { name: "lowerMid", yMin: 0.6, yMax: 0.8 },
+          { name: "bottom", yMin: 0.8, yMax: 1 }
+        ].map((band) =>
+          summarizeRegion(
+            imageWidth,
+            imageHeight,
+            (x, y) => {
+              const normalizedY = (y + 0.5) / imageHeight;
+              return normalizedY >= band.yMin && normalizedY < band.yMax;
+            },
+            band.name
+          )
+        );
+
+        const horizontalBands = [
+          { name: "left", xMin: 0, xMax: 1 / 3 },
+          { name: "middle", xMin: 1 / 3, xMax: 2 / 3 },
+          { name: "right", xMin: 2 / 3, xMax: 1 }
+        ].map((band) =>
+          summarizeRegion(
+            imageWidth,
+            imageHeight,
+            (x) => {
+              const normalizedX = (x + 0.5) / imageWidth;
+              return normalizedX >= band.xMin && normalizedX < band.xMax;
+            },
+            band.name
+          )
+        );
+
+        const radialRegions = [
+          { maxDistance: 0.45, minDistance: 0, name: "centerCore" },
+          { maxDistance: 0.8, minDistance: 0.45, name: "midGlass" },
+          { maxDistance: Number.POSITIVE_INFINITY, minDistance: 0.8, name: "outerRim" }
+        ].map((region) =>
+          summarizeRegion(
+            imageWidth,
+            imageHeight,
+            (x, y) => {
+              const normalizedX = ((x + 0.5) / imageWidth) * 2 - 1;
+              const normalizedY = ((y + 0.5) / imageHeight) * 2 - 1;
+              const distance = Math.sqrt(normalizedX * normalizedX + normalizedY * normalizedY);
+              return distance >= region.minDistance && distance < region.maxDistance;
+            },
+            region.name
+          )
+        );
+
+        return {
+          horizontalBands,
+          radialRegions,
+          verticalBands,
+          worstRegion: [...verticalBands, ...horizontalBands, ...radialRegions].reduce(
+            (worst, region) => (!worst || region.diffRatio > worst.diffRatio ? region : worst),
+            null
+          )
+        };
+
+        function summarizeRegion(imageWidthToCompare, imageHeightToCompare, includesPixel, name) {
+          let compared = 0;
+          let differentPixels = 0;
+          let totalRegionDelta = 0;
+          let totalRegionSquaredDelta = 0;
+
+          for (let y = 0; y < imageHeightToCompare; y += 1) {
+            for (let x = 0; x < imageWidthToCompare; x += 1) {
+              if (!includesPixel(x, y)) {
+                continue;
+              }
+
+              const index = (y * imageWidthToCompare + x) * 4;
+              const delta =
+                Math.abs(targetPixelsToCompare[index] - candidatePixelsToCompare[index]) +
+                Math.abs(targetPixelsToCompare[index + 1] - candidatePixelsToCompare[index + 1]) +
+                Math.abs(targetPixelsToCompare[index + 2] - candidatePixelsToCompare[index + 2]) +
+                Math.abs(targetPixelsToCompare[index + 3] - candidatePixelsToCompare[index + 3]);
+
+              compared += 1;
+              totalRegionDelta += delta;
+              totalRegionSquaredDelta += delta * delta;
+              if (delta > differenceThreshold) {
+                differentPixels += 1;
+              }
+            }
+          }
+
+          return {
+            diffRatio: compared > 0 ? differentPixels / compared : 0,
+            meanDelta: compared > 0 ? totalRegionDelta / compared : 0,
+            name,
+            pixelCount: compared,
+            rmsDelta: compared > 0 ? Math.sqrt(totalRegionSquaredDelta / compared) : 0
+          };
+        }
       }
 
       async function loadImage(base64) {
