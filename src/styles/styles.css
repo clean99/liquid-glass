@@ -4149,7 +4149,8 @@
   box-shadow:
     0 4px 14px var(--lg-control-focus-depth),
     inset 0 0 18px var(--lg-control-focus-mist),
-    inset 0 1px 0 color-mix(in srgb, var(--lg-glass-edge), transparent 24%);
+    inset 0 1px 0 color-mix(in srgb, var(--lg-glass-edge), transparent 24%),
+    var(--lg-glass-shadow);
 }
 
 .lg-calendar__day--range-middle {
