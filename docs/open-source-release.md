@@ -68,6 +68,8 @@ The shadcn-style registry distribution model is tracked in
 7. Run the release workflow manually after reviewing the generated version PR.
 8. The release workflow runs `pnpm verify`, then uses Changesets to either open
    a version PR or publish the already-versioned package with `pnpm release`.
+   The workflow sets `NPM_CONFIG_PROVENANCE=true` so npm receives a GitHub
+   Actions provenance statement for published artifacts.
 
 Publishing requires repository secrets:
 
@@ -76,6 +78,11 @@ Publishing requires repository secrets:
 
 `package.json` must keep `publishConfig.access` set to `public`; scoped packages
 default to private publishing on npm unless this is explicit.
+
+The release job keeps `id-token: write` and `NPM_CONFIG_PROVENANCE=true` together.
+Do not move provenance into `.npmrc`: local manual publishes do not have the
+GitHub Actions OIDC context and should not pretend they can generate the same
+attestation.
 
 ## GitHub Pages
 

@@ -168,12 +168,16 @@ if (isStandaloneRepository) {
   mustInclude(".github/workflows/visual.yml", "pnpm test:kube-reference:strict");
   mustInclude(".github/workflows/release.yml", "pnpm verify");
   mustInclude(".github/workflows/release.yml", "NPM_TOKEN");
+  mustInclude(".github/workflows/release.yml", "NPM_CONFIG_PROVENANCE");
+  mustInclude(".github/workflows/release.yml", "id-token: write");
   mustInclude(".github/workflows/pages.yml", "actions/deploy-pages");
 }
 mustInclude("docs/open-source-release.md", "pnpm test:release-readiness");
 mustInclude("docs/open-source-release.md", "pnpm test:component-coverage");
 mustInclude("docs/open-source-release.md", "pnpm test:kube-reference:strict");
 mustInclude("docs/open-source-release.md", "pnpm pack --dry-run");
+mustInclude("docs/open-source-release.md", "NPM_CONFIG_PROVENANCE");
+mustInclude("docs/open-source-release.md", "id-token: write");
 mustInclude("docs/github-repository-settings.md", "git push -u origin main");
 mustInclude("docs/github-repository-settings.md", "Branch Protection");
 mustInclude("docs/github-repository-settings.md", "NPM_TOKEN");

@@ -194,6 +194,8 @@ mustInclude("docs/open-source-release.md", [
   "pnpm test:kube-reference:strict",
   "pnpm release",
   "NPM_TOKEN",
+  "NPM_CONFIG_PROVENANCE",
+  "id-token: write",
   "publishConfig.access"
 ]);
 if (isStandaloneRepository) {
@@ -201,6 +203,8 @@ if (isStandaloneRepository) {
     "pnpm verify",
     "pnpm release",
     "NPM_TOKEN",
+    "NPM_CONFIG_PROVENANCE",
+    "id-token: write",
     "playwright install --with-deps chromium"
   ]);
   mustInclude(".github/workflows/ci.yml", [
