@@ -65,8 +65,8 @@ metrics.
 | Reference                | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | ------------------------ | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass         |     0.2007 | `0,-1`     |     0.1908 |    0.2400 | gate |
-| magnifying-glass-pressed |     0.3618 | `0,-1`     |     0.3552 |    0.4050 | gate |
-| magnifying-glass-dragged |     0.3981 | `-3,-1`    |     0.3794 |    0.4550 | gate |
+| magnifying-glass-pressed |     0.3818 | `0,-2`     |     0.3674 |    0.4050 | gate |
+| magnifying-glass-dragged |     0.3921 | `-2,-1`    |     0.3775 |    0.4550 | gate |
 | searchbox                |     0.0180 | `0,0`      |     0.0169 |    0.0200 | gate |
 | switch                   |     0.0136 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                   |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
@@ -119,7 +119,8 @@ This measurement includes these verified geometry fixes:
 - Kube demo image assets are locked in `stories/kube-reference-assets.ts` after
   Chrome/CDP sampling of the public page. Storybook serves stable local fixture
   paths from `stories/assets/kube/`, while the original Unsplash source URLs
-  remain recorded for attribution and provenance. Generated or synthetic
+  remain recorded for attribution and provenance. `stories/assets/kube/manifest.json`
+  locks the fixture dimensions and sha256 hashes. Generated or synthetic
   stand-ins are not accepted by the e2e/provenance gates.
 
 This proves five things:
@@ -166,8 +167,8 @@ Recent sampled `pnpm test:kube-reference:exact` result on 2026-06-13:
 | Reference                | Exact diff ratio | Best phase | Phase diff |
 | ------------------------ | ---------------: | ---------- | ---------: |
 | magnifying-glass         |           0.5240 | `0,-1`     |     0.5133 |
-| magnifying-glass-pressed |           0.7237 | `1,1`      |     0.7084 |
-| magnifying-glass-dragged |           0.6408 | `-1,0`     |     0.6442 |
+| magnifying-glass-pressed |           0.7153 | `-1,1`     |     0.6874 |
+| magnifying-glass-dragged |           0.6326 | `-1,0`     |     0.6342 |
 | searchbox                |           0.1138 | `0,0`      |     0.1150 |
 | switch                   |           0.0904 | `0,0`      |     0.0934 |
 | slider                   |           0.0750 | `0,0`      |     0.0763 |
