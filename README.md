@@ -27,6 +27,7 @@ The goal is not generic glassmorphism. The library treats Liquid Glass as an opt
 - [Release checklist](docs/open-source-release.md)
 - [Roadmap](ROADMAP.md)
 - [Security policy](SECURITY.md)
+- [Support](SUPPORT.md)
 
 ## Why This Exists
 

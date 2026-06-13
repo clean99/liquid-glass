@@ -53,6 +53,9 @@ const categoryChecks = [
     name: "contribution-workflow",
     checks: [
       exists("CONTRIBUTING.md"),
+      exists("SUPPORT.md"),
+      fileIncludes("SUPPORT.md", "Where To Go"),
+      fileIncludes("SUPPORT.md", "not published yet"),
       fileIncludes("CONTRIBUTING.md", "pnpm test:inventory"),
       fileIncludes("CONTRIBUTING.md", "pnpm verify"),
       exists(".github/PULL_REQUEST_TEMPLATE.md"),
@@ -61,6 +64,7 @@ const categoryChecks = [
       fileIncludes(".github/PULL_REQUEST_TEMPLATE.md", "pnpm test:component-coverage"),
       fileIncludes(".github/PULL_REQUEST_TEMPLATE.md", "pnpm test:visual-docs"),
       fileIncludes(".github/PULL_REQUEST_TEMPLATE.md", "pnpm test:a11y"),
+      fileIncludes(".github/ISSUE_TEMPLATE/config.yml", "Support routing"),
       exists(".github/ISSUE_TEMPLATE/bug_report.yml"),
       exists(".github/ISSUE_TEMPLATE/feature_request.yml"),
       exists(".github/ISSUE_TEMPLATE/registry_report.yml"),

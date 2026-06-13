@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Support routing
+    url: https://github.com/clean99/liquid-glass/blob/main/SUPPORT.md
+    about: Choose the right issue path for usage, registry, accessibility, visual, and release questions.
   - name: Security reports
     url: https://github.com/clean99/liquid-glass/security/advisories/new
     about: Report security issues privately before public disclosure.

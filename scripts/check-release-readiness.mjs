@@ -156,6 +156,7 @@ const packageRequiredFiles = [
   "CODE_OF_CONDUCT.md",
   "CHANGELOG.md",
   "ROADMAP.md",
+  "SUPPORT.md",
   "docs/github-repository-settings.md",
   "docs/governance-scorecard.md",
   "docs/open-source-governance.md",
@@ -252,6 +253,9 @@ mustInclude("docs/open-source-release.md", "NPM_CONFIG_PROVENANCE");
 mustInclude("docs/open-source-release.md", "id-token: write");
 mustInclude("docs/open-source-release.md", "not published to npm yet");
 mustInclude("docs/open-source-governance.md", "Release Flow");
+mustInclude("SUPPORT.md", "not published yet");
+mustInclude("SUPPORT.md", "private security advisory");
+mustInclude("SUPPORT.md", "pnpm test:kube-reference:exact");
 mustInclude("docs/github-repository-settings.md", "git push -u origin main");
 mustInclude("docs/github-repository-settings.md", "Branch Protection");
 mustInclude("docs/github-repository-settings.md", "NPM_TOKEN");

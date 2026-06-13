@@ -62,7 +62,8 @@
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.md",
     "ROADMAP.md",
-    "SECURITY.md"
+    "SECURITY.md",
+    "SUPPORT.md"
   ],
   "publishConfig": {
     "access": "public"

@@ -6,6 +6,10 @@ Open an issue first for new components, public API changes, registry behavior,
 release workflow changes, or optical model changes. Small documentation fixes and
 test-only corrections can go straight to a pull request.
 
+Use `SUPPORT.md` to choose the right path for usage questions, accessibility
+bugs, registry or package install issues, security reports, and release status
+questions.
+
 ## Local Setup
 
 ```sh

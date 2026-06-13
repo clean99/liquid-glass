@@ -38,6 +38,7 @@ const packageRequiredFiles = [
   "CODE_OF_CONDUCT.md",
   "CHANGELOG.md",
   "ROADMAP.md",
+  "SUPPORT.md",
   ".changeset/config.json",
   "docs/api-overview.md",
   "docs/browser-support.md",
@@ -128,7 +129,18 @@ mustInclude("README.md", [
   "not published yet",
   "Open-source governance",
   "UI library benchmark",
+  "Support",
   "ROADMAP.md"
+]);
+
+mustInclude("SUPPORT.md", [
+  "pre-1.0",
+  "not published yet",
+  "private security advisory",
+  "Accessibility regression",
+  "registry issue",
+  "pnpm test:kube-reference:exact",
+  "fallback or solid mode"
 ]);
 
 mustInclude("docs/github-repository-settings.md", [
@@ -183,6 +195,7 @@ mustInclude("docs/ui-library-benchmark.md", [
   "heroui-inc/heroui",
   "mermaid",
   "Public Benchmark Surface",
+  "Support routing",
   "Local governance gate",
   "Public launch score",
   "Visual Documentation Gaps",
@@ -310,7 +323,12 @@ mustInclude("docs/testing.md", [
   "tests/edge-mask.test.ts"
 ]);
 
-mustInclude("CONTRIBUTING.md", ["pnpm verify", "pnpm test:docs", "pnpm test:inventory"]);
+mustInclude("CONTRIBUTING.md", [
+  "SUPPORT.md",
+  "pnpm verify",
+  "pnpm test:docs",
+  "pnpm test:inventory"
+]);
 mustInclude("docs/open-source-release.md", [
   "pnpm verify",
   "pnpm test:release-readiness",
@@ -326,6 +344,11 @@ mustInclude("docs/open-source-release.md", [
   "not published to npm yet"
 ]);
 if (isStandaloneRepository) {
+  mustInclude(".github/ISSUE_TEMPLATE/config.yml", [
+    "Support routing",
+    "SUPPORT.md",
+    "Security reports"
+  ]);
   mustInclude(".github/PULL_REQUEST_TEMPLATE.md", [
     "pnpm test:governance",
     "pnpm test:research",
@@ -460,7 +483,8 @@ if (fs.existsSync(path.join(root, "package.json"))) {
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.md",
     "ROADMAP.md",
-    "SECURITY.md"
+    "SECURITY.md",
+    "SUPPORT.md"
   ]) {
     if (!packageJson.files?.includes(file)) {
       errors.push(`package.json files must include ${file}`);
