@@ -56,6 +56,7 @@ pnpm test:release-readiness
 pnpm test:unit
 pnpm test:e2e
 pnpm test:storybook
+pnpm test:kube-reference:exact
 pnpm build
 pnpm test:package
 pnpm run ci
@@ -368,6 +369,7 @@ pnpm test:a11y
 pnpm test:storybook
 pnpm test:kube-reference
 pnpm test:kube-reference:strict
+pnpm test:kube-reference:exact
 pnpm build
 pnpm test:package
 pnpm verify
@@ -389,6 +391,9 @@ and writes the JSON summary under `test-results/a11y`.
 stories. `test:kube-reference:strict` additionally turns pressed and dragged
 lens pixels into hard gates through `KUBE_STRICT_INTERACTIVE=1`; that command is
 the target for release-candidate visual parity.
+`test:kube-reference:exact` sets `KUBE_MAX_DIFF_RATIO=0` and is the final 1:1
+acceptance target. It is intentionally separate from `verify` until the local
+stories pass exact pixel parity against the public reference.
 
 `pnpm verify` is the release gate. It runs formatting, linting, typechecking,
 docs and inventory validation, unit/component/physics checks, Storybook

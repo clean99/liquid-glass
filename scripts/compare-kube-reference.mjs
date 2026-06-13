@@ -15,6 +15,7 @@ const targetNavigationTimeoutMs = Number(process.env.KUBE_NAVIGATION_TIMEOUT_MS 
 const globalMaxDiffRatio = process.env.KUBE_MAX_DIFF_RATIO
   ? Number(process.env.KUBE_MAX_DIFF_RATIO)
   : undefined;
+const exactPixelParity = process.env.KUBE_EXACT_PARITY === "1" || globalMaxDiffRatio === 0;
 const strictInteractivePixels = process.env.KUBE_STRICT_INTERACTIVE === "1";
 
 const references = [
@@ -198,6 +199,7 @@ try {
       candidateActionMetrics: candidateAction?.metrics,
       diffArtifact: path.relative(process.cwd(), diffPath),
       maxDiffRatio: globalMaxDiffRatio ?? reference.maxDiffRatio,
+      exactPixelParity,
       reportOnly,
       strictInteractivePixels,
       targetActionMetrics: targetAction?.metrics

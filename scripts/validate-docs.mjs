@@ -101,6 +101,7 @@ mustInclude("README.md", [
   "test:release-readiness",
   "test:kube-reference",
   "test:kube-reference:strict",
+  "test:kube-reference:exact",
   "test:a11y",
   "test:e2e",
   "@axe-core/playwright",
@@ -155,6 +156,14 @@ mustInclude("docs/reference-research.md", [
   "shadcn/ui Registry Pattern"
 ]);
 
+mustInclude("docs/kube-parity-gate.md", [
+  "test:kube-reference:exact",
+  "KUBE_EXACT_PARITY=1",
+  "KUBE_MAX_DIFF_RATIO=0",
+  "final acceptance target",
+  "not part of `ci` or `verify`"
+]);
+
 mustInclude("docs/rdev-liquid-glass-react.md", [
   "MIT licensed",
   "sampleLiquidEdgeMask",
@@ -173,6 +182,7 @@ mustInclude("docs/testing.md", [
   "requestAnimationFrame",
   "test:kube-reference",
   "test:kube-reference:strict",
+  "test:kube-reference:exact",
   "test:package",
   "test:a11y",
   "test:e2e",
@@ -239,11 +249,20 @@ if (fs.existsSync(path.join(root, "package.json"))) {
   if (!packageJson.scripts?.["test:kube-reference:strict"]) {
     errors.push("package.json must include test:kube-reference:strict");
   }
+  if (!packageJson.scripts?.["test:kube-reference:exact"]) {
+    errors.push("package.json must include test:kube-reference:exact");
+  }
   if (!packageJson.scripts?.["test:release-readiness"]) {
     errors.push("package.json must include test:release-readiness");
   }
   if (!packageJson.scripts?.["test:kube-reference:strict"]?.includes("KUBE_STRICT_INTERACTIVE=1")) {
     errors.push("package.json test:kube-reference:strict must enable strict Kube interactions");
+  }
+  if (!packageJson.scripts?.["test:kube-reference:exact"]?.includes("KUBE_MAX_DIFF_RATIO=0")) {
+    errors.push("package.json test:kube-reference:exact must set zero pixel diff tolerance");
+  }
+  if (!packageJson.scripts?.["test:kube-reference:exact"]?.includes("KUBE_EXACT_PARITY=1")) {
+    errors.push("package.json test:kube-reference:exact must mark exact parity mode");
   }
   if (
     !packageJson.scripts?.["test:release-readiness"]?.includes(
@@ -291,6 +310,7 @@ for (const script of [
   "test:release-readiness",
   "test:kube-reference",
   "test:kube-reference:strict",
+  "test:kube-reference:exact",
   "test:storybook",
   "test:package",
   "release"

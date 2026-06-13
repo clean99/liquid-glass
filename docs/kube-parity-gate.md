@@ -32,6 +32,13 @@ hard-fails pressed and dragged lens screenshots produced by real pointer input.
 the release-candidate command used by CI and manual reviews. The interactive
 screenshots are hard gates in both commands.
 
+`pnpm test:kube-reference:exact` is the final acceptance target. It sets
+`KUBE_EXACT_PARITY=1`, `KUBE_STRICT_INTERACTIVE=1`, and `KUBE_MAX_DIFF_RATIO=0`,
+then runs the same browser comparison against the public Kube page. This command
+is intentionally not part of `ci` or `verify` while the current implementation
+still fails exact pixel parity. It exists so the project has a real 1:1 target
+instead of silently redefining success around loose thresholds.
+
 Each row writes target, candidate, and diff PNG artifacts under
 `test-results/kube-reference/`. The diff image is generated from the same crop
 used for the metric, so it is useful for diagnosing phase, material, and edge
@@ -87,6 +94,9 @@ This proves three things:
   the thresholds are still loose while the fixture moves toward tighter pixel
   parity. Pressed is now gated at `0.4160`; dragged is now gated at `0.4180`.
   They must not be described as 100% complete.
+- The final acceptance command is `pnpm test:kube-reference:exact`. Until that
+  command passes, Kube parity remains incomplete regardless of the current
+  release-candidate gate.
 
 ## Remaining Gap
 
@@ -105,5 +115,7 @@ thresholds.
 1. Tighten the magnifying glass fixture so static diff can move below 0.10.
 2. Tighten the pressed and dragged thresholds now that they are hard gates.
 3. Reduce the threshold toward real parity after the fixture and material match.
-4. Keep action metrics and pixels separate. A component can move correctly while
+4. Promote `pnpm test:kube-reference:exact` into `verify` only after it passes
+   reliably on Chromium CI.
+5. Keep action metrics and pixels separate. A component can move correctly while
    still looking wrong.

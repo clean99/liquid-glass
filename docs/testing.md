@@ -13,6 +13,7 @@ pnpm test:a11y
 pnpm test:e2e
 pnpm test:storybook
 pnpm test:kube-reference:strict
+pnpm test:kube-reference:exact
 pnpm build
 pnpm test:package
 ```
@@ -33,6 +34,7 @@ Optical checks:
 pnpm test:physics
 pnpm test:kube-reference
 pnpm test:kube-reference:strict
+pnpm test:kube-reference:exact
 ```
 
 Visual checks:
@@ -73,6 +75,9 @@ assertions, so press and drag cannot silently stop working or drift visually.
 `pnpm test:kube-reference:strict` sets `KUBE_STRICT_INTERACTIVE=1` and preserves
 the release-candidate target for the Kube replica work. The current measured gaps
 and threshold-tightening plan are tracked in `docs/kube-parity-gate.md`.
+`pnpm test:kube-reference:exact` additionally sets `KUBE_MAX_DIFF_RATIO=0` and
+`KUBE_EXACT_PARITY=1`. It is the final acceptance target for 1:1 Kube parity,
+not a release gate while the measured diff remains above zero.
 Those hard metrics include the Kube-derived water-drop rule that press expands
 both axes, while drag is taller and narrower than press. The comparison script
 also compares candidate action metrics against the live Kube target with explicit

@@ -86,6 +86,7 @@ for (const script of [
   "test:visual",
   "test:kube-reference",
   "test:kube-reference:strict",
+  "test:kube-reference:exact",
   "test:release-readiness",
   "test:package",
   "ci",
@@ -100,6 +101,11 @@ mustScript(packageJson, "test:component-coverage", [
   "scripts/validate-component-test-coverage.mjs"
 ]);
 mustScript(packageJson, "test:kube-reference:strict", ["KUBE_STRICT_INTERACTIVE=1"]);
+mustScript(packageJson, "test:kube-reference:exact", [
+  "KUBE_EXACT_PARITY=1",
+  "KUBE_MAX_DIFF_RATIO=0",
+  "KUBE_STRICT_INTERACTIVE=1"
+]);
 mustScript(packageJson, "test:a11y", ["verify-storybook-a11y.mjs"]);
 mustScript(packageJson, "test:e2e", ["verify-liquid-behavior.mjs"]);
 mustScript(packageJson, "test:storybook", ["verify-enhanced-storybook.mjs"]);
