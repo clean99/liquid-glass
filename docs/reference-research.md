@@ -136,9 +136,10 @@ Current measured interaction contract:
   of flattening the capsule,
 - drag state becomes taller and narrower than press while preserving pointer
   travel,
-- target press sample is approximately `+21px` width and `+21px` height,
+- target press samples have recently measured around `+19px` to `+21px` width
+  and `+20px` height,
 - target drag samples vary with the live page and have recently measured around
-  `+6px` to `+11px` width and `+24px` height.
+  `+6px` to `+11px` width and `+25px` to `+27px` height.
 
 The local `LiquidLensDropletPhase` model intentionally separates `pressed` and
 `dragging`. A boolean pressed state was not enough: it made the drag handle keep

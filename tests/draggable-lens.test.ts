@@ -36,8 +36,8 @@ describe("draggable lens response", () => {
     expect(response.phase).toBe("pressed");
     expect(response.originX).toBeGreaterThan(0.5);
     expect(response.originY).toBeLessThan(0.5);
-    expect(response.scaleX).toBeGreaterThan(1.1);
-    expect(response.scaleX).toBeLessThan(1.125);
+    expect(response.scaleX).toBeGreaterThan(1.105);
+    expect(response.scaleX).toBeLessThan(1.112);
     expect(response.scaleY).toBeGreaterThan(0.94);
     expect(response.scaleY).toBeLessThan(0.95);
     expect(response.transform).toContain("scaleX");
@@ -50,8 +50,8 @@ describe("draggable lens response", () => {
       rect: { left: 100, top: 100, width: 210, height: 150 }
     });
 
-    expect(response.scaleX).toBeGreaterThan(1.111);
-    expect(response.scaleX).toBeLessThan(1.113);
+    expect(response.scaleX).toBeGreaterThan(1.102);
+    expect(response.scaleX).toBeLessThan(1.104);
     expect(response.scaleY).toBeGreaterThan(0.94);
     expect(response.scaleY).toBeLessThan(0.943);
   });
@@ -71,8 +71,8 @@ describe("draggable lens response", () => {
 
     expect(dragging.phase).toBe("dragging");
     expect(dragging.scaleX).toBeLessThan(pressed.scaleX);
-    expect(dragging.scaleX).toBeGreaterThan(1.046);
-    expect(dragging.scaleX).toBeLessThan(1.053);
+    expect(dragging.scaleX).toBeGreaterThan(1.04);
+    expect(dragging.scaleX).toBeLessThan(1.047);
     expect(dragging.scaleY).toBeGreaterThan(pressed.scaleY);
     expect(dragging.scaleY).toBeGreaterThan(0.965);
   });

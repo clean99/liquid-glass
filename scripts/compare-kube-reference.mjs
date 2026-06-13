@@ -136,6 +136,8 @@ const address = server.address();
 const port = typeof address === "object" && address ? address.port : 0;
 const browser = await chromium.launch({ headless: true });
 const results = [];
+let githubFailureAnnotated = false;
+let runError = null;
 
 try {
   const referencePage = await browser.newPage({ viewport: { width: 1100, height: 760 } });
@@ -143,105 +145,118 @@ try {
   await referencePage.waitForLoadState("load", { timeout: 20_000 }).catch(() => undefined);
 
   for (const reference of references) {
-    await referencePage.mouse.move(0, 0).catch(() => undefined);
-    const targetElement = await findTargetDemo(referencePage, reference.targetId);
-    const targetPath = path.join(artifactDir, `${reference.name}-target.png`);
-    const targetAction = reference.action
-      ? await applyTargetAction(referencePage, targetElement, reference.action)
-      : null;
-    const targetScreenshotSubject =
-      reference.capture === "handle" ? (targetAction?.subject ?? targetElement) : targetElement;
-    await captureReferenceScreenshot(
-      referencePage,
-      targetScreenshotSubject,
-      targetAction,
-      reference.capture,
-      targetPath
-    );
-    await targetAction?.cleanup();
+    let candidatePage = null;
 
-    const candidatePage = await browser.newPage({ viewport: { width: 900, height: 560 } });
-    await candidatePage.goto(
-      `http://127.0.0.1:${port}/iframe.html?id=${reference.storyId}&viewMode=story`,
-      { waitUntil: "networkidle", timeout: 20_000 }
-    );
-    await candidatePage.mouse.move(0, 0).catch(() => undefined);
-
-    const candidateElement = candidatePage.locator(
-      `[data-lg-reference-frame="${reference.candidateFrame ?? reference.name}"]`
-    );
-    await candidateElement.waitFor({ state: "visible", timeout: 10_000 });
-    if (reference.targetId === "magnifying-glass") {
-      await waitForFilterContract(candidateElement, 2);
-    }
-
-    const candidatePath = path.join(artifactDir, `${reference.name}-candidate.png`);
-    const candidateAction = reference.action
-      ? await applyCandidateAction(candidatePage, candidateElement, reference.action)
-      : null;
-    const candidateScreenshotSubject =
-      reference.capture === "handle"
-        ? (candidateAction?.subject ?? candidateElement)
-        : candidateElement;
-    await captureReferenceScreenshot(
-      candidatePage,
-      candidateScreenshotSubject,
-      candidateAction,
-      reference.capture,
-      candidatePath
-    );
-    await candidateAction?.cleanup();
-
-    if (reference.targetId === "magnifying-glass") {
-      const [targetContract, candidateContract] = await Promise.all([
-        readFilterContract(targetElement, "kube"),
-        readFilterContract(candidateElement, "local")
-      ]);
-      const filterSummary = summarizeFilterContract(targetContract, candidateContract);
-      await fs.writeFile(
-        path.join(artifactDir, `${reference.name}-filter-contract.json`),
-        `${JSON.stringify(
-          {
-            summary: filterSummary,
-            target: targetContract,
-            candidate: candidateContract
-          },
-          null,
-          2
-        )}\n`
+    try {
+      await referencePage.mouse.move(0, 0).catch(() => undefined);
+      const targetElement = await findTargetDemo(referencePage, reference.targetId);
+      const targetPath = path.join(artifactDir, `${reference.name}-target.png`);
+      const targetAction = reference.action
+        ? await applyTargetAction(referencePage, targetElement, reference.action)
+        : null;
+      const targetScreenshotSubject =
+        reference.capture === "handle" ? (targetAction?.subject ?? targetElement) : targetElement;
+      await captureReferenceScreenshot(
+        referencePage,
+        targetScreenshotSubject,
+        targetAction,
+        reference.capture,
+        targetPath
       );
-      assertFilterContractParity(reference, filterSummary);
+      await targetAction?.cleanup();
+
+      candidatePage = await browser.newPage({ viewport: { width: 900, height: 560 } });
+      await candidatePage.goto(
+        `http://127.0.0.1:${port}/iframe.html?id=${reference.storyId}&viewMode=story`,
+        { waitUntil: "networkidle", timeout: 20_000 }
+      );
+      await candidatePage.mouse.move(0, 0).catch(() => undefined);
+
+      const candidateElement = candidatePage.locator(
+        `[data-lg-reference-frame="${reference.candidateFrame ?? reference.name}"]`
+      );
+      await candidateElement.waitFor({ state: "visible", timeout: 10_000 });
+      if (reference.targetId === "magnifying-glass") {
+        await waitForFilterContract(candidateElement, 2);
+      }
+
+      const candidatePath = path.join(artifactDir, `${reference.name}-candidate.png`);
+      const candidateAction = reference.action
+        ? await applyCandidateAction(candidatePage, candidateElement, reference.action)
+        : null;
+      const candidateScreenshotSubject =
+        reference.capture === "handle"
+          ? (candidateAction?.subject ?? candidateElement)
+          : candidateElement;
+      await captureReferenceScreenshot(
+        candidatePage,
+        candidateScreenshotSubject,
+        candidateAction,
+        reference.capture,
+        candidatePath
+      );
+      await candidateAction?.cleanup();
+
+      if (reference.targetId === "magnifying-glass") {
+        const [targetContract, candidateContract] = await Promise.all([
+          readFilterContract(targetElement, "kube"),
+          readFilterContract(candidateElement, "local")
+        ]);
+        const filterSummary = summarizeFilterContract(targetContract, candidateContract);
+        await fs.writeFile(
+          path.join(artifactDir, `${reference.name}-filter-contract.json`),
+          `${JSON.stringify(
+            {
+              summary: filterSummary,
+              target: targetContract,
+              candidate: candidateContract
+            },
+            null,
+            2
+          )}\n`
+        );
+        assertFilterContractParity(reference, filterSummary);
+      }
+
+      const diffPath = path.join(artifactDir, `${reference.name}-diff.png`);
+      const diff = await compareImagesInBrowser(
+        browser,
+        targetPath,
+        candidatePath,
+        reference.compareRegion,
+        diffPath,
+        pixelDeltaThreshold,
+        phaseMaxOffset,
+        phaseSampleStride
+      );
+      assertActionMetricParity(reference, targetAction?.metrics, candidateAction?.metrics);
+      const reportOnly = Boolean(reference.reportOnly) && !strictInteractivePixels;
+
+      results.push({
+        ...reference,
+        ...diff,
+        candidateActionClip: candidateAction?.clip,
+        candidateActionMetrics: candidateAction?.metrics,
+        diffArtifact: path.relative(process.cwd(), diffPath),
+        pixelDeltaThreshold,
+        maxDiffRatio: globalMaxDiffRatio ?? reference.maxDiffRatio,
+        exactPixelParity,
+        reportOnly,
+        strictInteractivePixels,
+        targetActionClip: targetAction?.clip,
+        targetActionMetrics: targetAction?.metrics
+      });
+    } catch (error) {
+      emitGithubError("Kube reference capture failed", `${reference.name}: ${formatError(error)}`);
+      throw error;
+    } finally {
+      await candidatePage?.close().catch(() => undefined);
     }
-
-    const diffPath = path.join(artifactDir, `${reference.name}-diff.png`);
-    const diff = await compareImagesInBrowser(
-      browser,
-      targetPath,
-      candidatePath,
-      reference.compareRegion,
-      diffPath,
-      pixelDeltaThreshold,
-      phaseMaxOffset,
-      phaseSampleStride
-    );
-    assertActionMetricParity(reference, targetAction?.metrics, candidateAction?.metrics);
-    const reportOnly = Boolean(reference.reportOnly) && !strictInteractivePixels;
-
-    results.push({
-      ...reference,
-      ...diff,
-      candidateActionClip: candidateAction?.clip,
-      candidateActionMetrics: candidateAction?.metrics,
-      diffArtifact: path.relative(process.cwd(), diffPath),
-      pixelDeltaThreshold,
-      maxDiffRatio: globalMaxDiffRatio ?? reference.maxDiffRatio,
-      exactPixelParity,
-      reportOnly,
-      strictInteractivePixels,
-      targetActionClip: targetAction?.clip,
-      targetActionMetrics: targetAction?.metrics
-    });
-    await candidatePage.close();
+  }
+} catch (error) {
+  runError = error;
+  if (!githubFailureAnnotated) {
+    emitGithubError("Kube reference run failed", formatError(error));
   }
 } finally {
   await browser.close();
@@ -253,14 +268,20 @@ await fs.writeFile(
   `${JSON.stringify(results, null, 2)}\n`
 );
 
+if (runError) {
+  await writeGithubStepSummary(results, [], runError);
+  throw runError;
+}
+
 const failures = results.filter(
   (result) => !result.reportOnly && result.diffRatio > result.maxDiffRatio
 );
 if (failures.length > 0 && process.env.GITHUB_ACTIONS === "true") {
-  console.error(
-    `::error title=Kube reference parity failed::${failures
+  emitGithubError(
+    "Kube reference parity failed",
+    failures
       .map((failure) => `${failure.name} ${failure.diffRatio.toFixed(4)} > ${failure.maxDiffRatio}`)
-      .join(", ")}`
+      .join(", ")
   );
 }
 console.table(
@@ -280,12 +301,62 @@ console.table(
     mode: result.reportOnly ? "report" : "gate"
   }))
 );
+await writeGithubStepSummary(results, failures);
 
 if (failures.length > 0) {
   throw new Error(
     `Kube reference diff exceeded threshold for: ${failures
       .map((failure) => `${failure.name} (${failure.diffRatio.toFixed(4)})`)
       .join(", ")}`
+  );
+}
+
+function emitGithubError(title, message) {
+  githubFailureAnnotated = true;
+
+  if (process.env.GITHUB_ACTIONS === "true") {
+    console.error(`::error title=${title}::${message}`);
+  }
+}
+
+function formatError(error) {
+  return error instanceof Error ? error.message : String(error);
+}
+
+async function writeGithubStepSummary(results, failures, error) {
+  const summaryPath = process.env.GITHUB_STEP_SUMMARY;
+
+  if (!summaryPath) {
+    return;
+  }
+
+  const status = error
+    ? `Run failed before all references completed: ${formatError(error)}`
+    : failures.length > 0
+      ? `Failed rows: ${failures.map((failure) => failure.name).join(", ")}`
+      : "All gated rows passed.";
+  const rows =
+    results.length > 0
+      ? results.map(
+          (result) =>
+            `| ${result.name} | ${result.diffRatio.toFixed(4)} | ${result.maxDiffRatio} | ${
+              result.reportOnly ? "report" : "gate"
+            } |`
+        )
+      : ["| _none completed_ | n/a | n/a | n/a |"];
+
+  await fs.appendFile(
+    summaryPath,
+    [
+      "## Kube Reference Parity",
+      "",
+      status,
+      "",
+      "| Reference | Diff ratio | Threshold | Mode |",
+      "| --- | ---: | ---: | --- |",
+      ...rows,
+      ""
+    ].join("\n")
   );
 }
 

@@ -62,8 +62,8 @@ Measured locally on 2026-06-13 against `https://kube.io/blog/liquid-glass-css-sv
 | Reference                | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | ------------------------ | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass         |     0.2007 | `0,-1`     |     0.1908 |    0.2400 | gate |
-| magnifying-glass-pressed |     0.3640 | `-1,0`     |     0.3578 |    0.4050 | gate |
-| magnifying-glass-dragged |     0.3949 | `-3,-1`    |     0.3804 |    0.4550 | gate |
+| magnifying-glass-pressed |     0.3320 | `-1,1`     |     0.3268 |    0.4050 | gate |
+| magnifying-glass-dragged |     0.4078 | `-5,0`     |     0.3715 |    0.4550 | gate |
 | searchbox                |     0.0180 | `0,0`      |     0.0169 |    0.0200 | gate |
 | switch                   |     0.0136 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                   |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
@@ -125,9 +125,11 @@ This proves five things:
   This budget covers Chromium CI sampling variance for the interactive lens
   only; searchbox, switch, and slider remain ratcheted at `0.0200`. The lens
   rows must not be described as 100% complete.
-- GitHub Actions failures emit a `Kube reference parity failed` annotation with
-  the exact row, diff ratio, and threshold. That keeps future CI failures
-  diagnosable from the public run page even when full logs are unavailable.
+- GitHub Actions failures emit `Kube reference parity failed` for completed
+  threshold failures and `Kube reference capture failed` when an individual
+  reference crashes before comparison. The workflow also writes a step summary
+  with every completed row, so failures stay diagnosable from the public run page
+  even when full logs are unavailable.
 - The latest specular change improved the pressed screenshot but did not improve
   every lens state. That is acceptable only because the generated specular map
   is closer to the reference rim-light physics; it is still not enough for exact
@@ -149,16 +151,20 @@ fix should keep changing the optical model or material rendering. Threshold
 changes are acceptable only as documented CI variance budgets for interactive
 captures; they are not visual completion.
 
-Latest `pnpm test:kube-reference:exact` result on 2026-06-13:
+Recent sampled `pnpm test:kube-reference:exact` result on 2026-06-13:
 
 | Reference                | Exact diff ratio | Best phase | Phase diff |
 | ------------------------ | ---------------: | ---------- | ---------: |
 | magnifying-glass         |           0.5240 | `0,-1`     |     0.5133 |
-| magnifying-glass-pressed |           0.7101 | `0,1`      |     0.6786 |
-| magnifying-glass-dragged |           0.6551 | `0,0`      |     0.6544 |
+| magnifying-glass-pressed |           0.7348 | `3,2`      |     0.6868 |
+| magnifying-glass-dragged |           0.6887 | `-2,1`     |     0.6585 |
 | searchbox                |           0.1138 | `0,0`      |     0.1150 |
 | switch                   |           0.0904 | `0,0`      |     0.0934 |
 | slider                   |           0.0750 | `0,0`      |     0.0763 |
+
+The exact command is still non-gating and can also fail earlier when the live
+Kube page does not produce a valid interaction deformation sample. That is still
+a failed exact-parity run, not release readiness.
 
 That exact table is the acceptance blocker. Passing the normal gate only means
 the current regression budget is respected.
