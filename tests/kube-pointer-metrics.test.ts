@@ -3,6 +3,28 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 describe("Kube pointer metrics", () => {
+  it("builds pointer samples from viewport rects and scroll offsets", async () => {
+    const { createPointerActionSample } = (await import(
+      pathToFileURL(path.resolve("scripts/kube-pointer-metrics.mjs")).href
+    )) as {
+      createPointerActionSample: (
+        box: PointerActionRect,
+        viewport: PointerActionSample["viewport"]
+      ) => PointerActionSample;
+    };
+
+    expect(
+      createPointerActionSample(
+        { height: 120, width: 210, x: 180, y: 224.2 },
+        { height: 760, scrollX: 0, scrollY: 9366, width: 1100 }
+      )
+    ).toMatchObject({
+      box: { height: 120, width: 210, x: 180, y: 224.2 },
+      documentBox: { height: 120, width: 210, x: 180, y: 9590.2 },
+      viewport: { height: 760, scrollX: 0, scrollY: 9366, width: 1100 }
+    });
+  });
+
   it("measures dragged lens movement in viewport space when page scroll changes", async () => {
     const { summarizePointerActionMetrics } = (await import(
       pathToFileURL(path.resolve("scripts/kube-pointer-metrics.mjs")).href

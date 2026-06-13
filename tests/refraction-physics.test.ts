@@ -532,9 +532,12 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain("applyTargetActionWithPageRecovery");
     expect(kubeReferenceCompareSource).toContain("isRecoverableTargetActionError");
     expect(kubeReferenceCompareSource).toContain("resetTargetReferencePage");
-    expect(kubeReferenceCompareSource).toContain(
-      'import { summarizePointerActionMetrics } from "./kube-pointer-metrics.mjs"'
-    );
+    expect(kubeReferenceCompareSource).toContain("createPointerActionSample");
+    expect(kubeReferenceCompareSource).toContain("summarizePointerActionMetrics");
+    expect(kubeReferenceCompareSource).toContain('"./kube-pointer-metrics.mjs"');
+    expect(kubeReferenceCompareSource).toContain("node.getBoundingClientRect()");
+    expect(kubeReferenceCompareSource).not.toContain("handle.boundingBox()");
+    expect(kubeReferenceCompareSource).toContain("return createPointerActionSample(box, viewport)");
     expect(kubeReferenceCompareSource).toContain(
       'data-lg-transient", "pointer-action-scroll-slack"'
     );

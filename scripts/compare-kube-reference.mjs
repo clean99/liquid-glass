@@ -2,7 +2,10 @@ import fs from "node:fs/promises";
 import http from "node:http";
 import path from "node:path";
 import { chromium } from "playwright";
-import { summarizePointerActionMetrics } from "./kube-pointer-metrics.mjs";
+import {
+  createPointerActionSample,
+  summarizePointerActionMetrics
+} from "./kube-pointer-metrics.mjs";
 
 /* global FileReader, HTMLInputElement, OffscreenCanvas, createImageBitmap, document, getComputedStyle, window */
 
@@ -881,11 +884,16 @@ async function waitForPointerActionEffect(page, handle, before, action) {
 }
 
 async function readPointerActionSample(page, handle) {
-  const box = await handle.boundingBox();
+  const box = await handle.evaluate((node) => {
+    const rect = node.getBoundingClientRect();
 
-  if (!box) {
-    throw new Error("Missing pointer action bounding box");
-  }
+    return {
+      height: rect.height,
+      width: rect.width,
+      x: rect.x,
+      y: rect.y
+    };
+  });
 
   const viewport = await page.evaluate(() => ({
     height: window.innerHeight,
@@ -894,16 +902,7 @@ async function readPointerActionSample(page, handle) {
     width: window.innerWidth
   }));
 
-  return {
-    box,
-    documentBox: {
-      height: box.height,
-      width: box.width,
-      x: box.x + viewport.scrollX,
-      y: box.y + viewport.scrollY
-    },
-    viewport
-  };
+  return createPointerActionSample(box, viewport);
 }
 
 function isActionPointInViewport(sample, action) {

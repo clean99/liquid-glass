@@ -1,3 +1,26 @@
+export function createPointerActionSample(box, viewport) {
+  return {
+    box: {
+      height: round(box.height),
+      width: round(box.width),
+      x: round(box.x),
+      y: round(box.y)
+    },
+    documentBox: {
+      height: round(box.height),
+      width: round(box.width),
+      x: round(box.x + viewport.scrollX),
+      y: round(box.y + viewport.scrollY)
+    },
+    viewport: {
+      height: round(viewport.height),
+      scrollX: round(viewport.scrollX),
+      scrollY: round(viewport.scrollY),
+      width: round(viewport.width)
+    }
+  };
+}
+
 export function summarizePointerActionMetrics(before, after, action) {
   return {
     deltaX: round(after.box.x - before.box.x),
