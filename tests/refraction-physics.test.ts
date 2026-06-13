@@ -599,6 +599,11 @@ describe("Liquid Glass physics contract", () => {
     expect(searchboxStorySource).toContain("left: 10");
     expect(searchboxStorySource).toContain("fontSize: 9");
     expect(searchboxStorySource).toContain('backdropFilter: useImageBackground ? "blur(8px)"');
+    expect(searchboxStorySource).toContain("bottom: useImageBackground ? 8.5 : 12");
+    expect(searchboxStorySource).toContain('padding: useImageBackground ? "3.25px 5px"');
+    expect(searchboxStorySource).toContain("fontSize: useImageBackground ? 9.75 : 10");
+    expect(searchboxStorySource).toContain('lineHeight: useImageBackground ? "13px"');
+    expect(searchboxStorySource).toContain("borderRadius: useImageBackground ? 4.875");
   });
 
   it("does not fake Kube pointer parity by boosting active filter scales", () => {

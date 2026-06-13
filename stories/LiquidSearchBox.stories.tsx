@@ -78,24 +78,22 @@ function KubeSearchboxReferenceStory() {
               transform: "translate(-50%, -50%)"
             }}
           >
-            <LiquidSearchBox
-              aria-label="Search docs"
-              surfaceProps={{ style: imageBackgroundTextStyle }}
-            />
+            <LiquidSearchBox aria-label="Search docs" surfaceProps={{ style: imageBackgroundTextStyle }} />
           </div>
           <label
             style={{
               position: "absolute",
               left: "50%",
-              bottom: useImageBackground ? 8 : 12,
+              bottom: useImageBackground ? 8.5 : 12,
               display: "inline-flex",
               alignItems: "center",
               gap: 6,
-              padding: useImageBackground ? "3px 5px" : undefined,
+              padding: useImageBackground ? "3.25px 5px" : undefined,
               color: useImageBackground ? "#fff" : "#111",
-              fontSize: 10,
+              fontSize: useImageBackground ? 9.75 : 10,
+              lineHeight: useImageBackground ? "13px" : undefined,
               background: useImageBackground ? "rgba(0, 0, 0, 0.1)" : undefined,
-              borderRadius: useImageBackground ? 5 : undefined,
+              borderRadius: useImageBackground ? 4.875 : undefined,
               WebkitBackdropFilter: useImageBackground ? "blur(8px)" : undefined,
               backdropFilter: useImageBackground ? "blur(8px)" : undefined,
               textShadow: "none",
