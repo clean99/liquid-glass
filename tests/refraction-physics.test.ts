@@ -453,7 +453,15 @@ describe("Liquid Glass physics contract", () => {
   it("rejects impossible target-page drag samples before comparing parity", () => {
     expect(kubeReferenceCompareSource).toContain("hasPlausiblePointerActionMetrics");
     expect(kubeReferenceCompareSource).toContain("scrollActionPointIntoViewport");
+    expect(kubeReferenceCompareSource).toContain("actionPathBounds");
+    expect(kubeReferenceCompareSource).toContain("addPointerActionScrollSlack");
+    expect(kubeReferenceCompareSource).toContain("removePointerActionScrollSlack");
+    expect(kubeReferenceCompareSource).toContain(
+      'data-lg-transient", "pointer-action-scroll-slack"'
+    );
     expect(kubeReferenceCompareSource).toContain('behavior: "instant"');
+    expect(kubeReferenceCompareSource).toContain("bounds.maxY > sample.viewport.height - margin");
+    expect(kubeReferenceCompareSource).toContain("endY = startY + (action.delta?.y ?? 0)");
     expect(kubeReferenceCompareSource).toContain("Math.abs(action.delta.x) + Math.max(32");
     expect(kubeReferenceCompareSource).toContain("Math.abs(action.delta.y) + Math.max(32");
     expect(kubeReferenceCompareSource).toContain("Math.abs(metrics.heightDelta) * 1.25");

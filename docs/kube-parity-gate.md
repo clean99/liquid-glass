@@ -105,10 +105,12 @@ This measurement includes these verified geometry fixes:
   high-contrast text field under the active lens without faking the lens motion
   metrics. A larger vertical shift regressed pressed and dragged screenshots, so
   the current offset is intentionally small.
-- after `scrollIntoView`, the sampler nudges the page scroll again when the
-  intended press or drag point is too close to a viewport edge. This prevents
-  live Kube samples near the lower fold from failing before the visual gate
-  runs.
+- after `scrollIntoView`, the sampler computes the full press/drag path, not just
+  the starting point, and nudges the page scroll again when that path is too close
+  to a viewport edge. If the live Kube demo sits at the document bottom and the
+  browser cannot scroll farther, the sampler injects a temporary inert bottom
+  spacer, reruns the scroll, captures the action, then removes the spacer. This
+  keeps CI from failing before the visual gate runs.
 - the pressed lens uses a flatter local droplet scale than the dragged state and
   keeps its height growth near the middle of recent local and CI Kube samples,
   matching Kube's water-drop interaction shape without changing the idle lens

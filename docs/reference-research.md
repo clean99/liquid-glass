@@ -207,6 +207,15 @@ displacement scales, and pressed/dragged screenshots are pixel gates. Future
 visual tuning cannot silently regress the physical behavior or hide behind a
 different SVG pipeline.
 
+The strict interaction sampler also guards the whole pointer path. A 2026-06-13
+GitHub Actions sample placed Kube's dragged handle at the lower document edge
+after `scrollIntoView`, leaving the drag start/end path partially outside the
+`1100x760` viewport before screenshot comparison even began. The sampler now
+checks the complete press/drag path, injects a temporary inert bottom spacer only
+when the live page cannot scroll farther, reruns the scroll, and removes the
+spacer during cleanup. This is a capture reliability fix, not a visual parity
+budget change.
+
 `pnpm test:kube-reference:strict` sets `KUBE_STRICT_INTERACTIVE=1` and promotes
 the release-candidate path used by CI and manual reviews. The current measured
 status is documented in `docs/kube-parity-gate.md`. The command now passes, but

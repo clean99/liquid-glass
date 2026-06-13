@@ -24,6 +24,7 @@ const pixelDeltaThreshold = process.env.KUBE_PIXEL_DELTA_THRESHOLD
 const phaseMaxOffset = Number(process.env.KUBE_PHASE_MAX_OFFSET ?? 12);
 const phaseSampleStride = Number(process.env.KUBE_PHASE_SAMPLE_STRIDE ?? 2);
 const strictInteractivePixels = process.env.KUBE_STRICT_INTERACTIVE === "1";
+const pointerActionScrollSlackId = "lg-kube-pointer-action-scroll-slack";
 
 if (!Number.isFinite(pixelDeltaThreshold) || pixelDeltaThreshold < 0) {
   throw new Error(`Invalid KUBE_PIXEL_DELTA_THRESHOLD: ${process.env.KUBE_PIXEL_DELTA_THRESHOLD}`);
@@ -517,6 +518,7 @@ async function findTargetDragHandle(root) {
 
 async function applyPointerAction(page, handle, action) {
   const attempts = action.attempts ?? 3;
+  let addedScrollSlack = false;
   let lastMetrics = null;
   let lastRejection = null;
 
@@ -532,6 +534,17 @@ async function applyPointerAction(page, handle, action) {
       await page.waitForTimeout(120);
       before = await readPointerActionSample(page, handle);
     }
+
+    if (!isActionPointInViewport(before, action)) {
+      addedScrollSlack =
+        (await addPointerActionScrollSlack(page, before, action)) || addedScrollSlack;
+
+      if (addedScrollSlack && (await scrollActionPointIntoViewport(page, before, action))) {
+        await page.waitForTimeout(120);
+        before = await readPointerActionSample(page, handle);
+      }
+    }
+
     const box = before.box;
 
     if (!isActionPointInViewport(before, action)) {
@@ -564,6 +577,9 @@ async function applyPointerAction(page, handle, action) {
         cleanup: async () => {
           await page.mouse.up().catch(() => undefined);
           await page.mouse.move(0, 0).catch(() => undefined);
+          if (addedScrollSlack) {
+            await removePointerActionScrollSlack(page);
+          }
           await page.waitForTimeout(160);
         },
         clip: screenshotClipFromBox(after.box),
@@ -581,24 +597,27 @@ async function applyPointerAction(page, handle, action) {
     await page.waitForTimeout(220 * attempt);
   }
 
+  if (addedScrollSlack) {
+    await removePointerActionScrollSlack(page);
+  }
+
   throw new Error(lastRejection ?? describePointerActionFailure(action, lastMetrics));
 }
 
 async function scrollActionPointIntoViewport(page, sample, action) {
   const margin = 48;
-  const pointX = sample.box.x + sample.box.width * action.point.x;
-  const pointY = sample.box.y + sample.box.height * action.point.y;
+  const bounds = actionPathBounds(sample, action);
   const scrollX =
-    pointX < margin
-      ? pointX - margin
-      : pointX > sample.viewport.width - margin
-        ? pointX - (sample.viewport.width - margin)
+    bounds.minX < margin
+      ? bounds.minX - margin
+      : bounds.maxX > sample.viewport.width - margin
+        ? bounds.maxX - (sample.viewport.width - margin)
         : 0;
   const scrollY =
-    pointY < margin
-      ? pointY - margin
-      : pointY > sample.viewport.height - margin
-        ? pointY - (sample.viewport.height - margin)
+    bounds.minY < margin
+      ? bounds.minY - margin
+      : bounds.maxY > sample.viewport.height - margin
+        ? bounds.maxY - (sample.viewport.height - margin)
         : 0;
 
   if (scrollX === 0 && scrollY === 0) {
@@ -612,6 +631,50 @@ async function scrollActionPointIntoViewport(page, sample, action) {
     { left: scrollX, top: scrollY }
   );
   return true;
+}
+
+async function addPointerActionScrollSlack(page, sample, action) {
+  const bounds = actionPathBounds(sample, action);
+  const verticalOverflow = Math.max(0, bounds.maxY - sample.viewport.height, -bounds.minY);
+  const horizontalOverflow = Math.max(0, bounds.maxX - sample.viewport.width, -bounds.minX);
+
+  if (verticalOverflow === 0 && horizontalOverflow === 0) {
+    return false;
+  }
+
+  const height = Math.ceil(Math.max(160, verticalOverflow + Math.abs(action.delta?.y ?? 0) + 96));
+
+  await page.evaluate(
+    ({ height, id }) => {
+      let spacer = document.getElementById(id);
+
+      if (!spacer) {
+        spacer = document.createElement("div");
+        spacer.id = id;
+        spacer.setAttribute("aria-hidden", "true");
+        spacer.setAttribute("data-lg-transient", "pointer-action-scroll-slack");
+        document.body.append(spacer);
+      }
+
+      Object.assign(spacer.style, {
+        flex: "0 0 auto",
+        height: `${height}px`,
+        pointerEvents: "none",
+        width: "1px"
+      });
+    },
+    { height, id: pointerActionScrollSlackId }
+  );
+
+  return true;
+}
+
+async function removePointerActionScrollSlack(page) {
+  await page
+    .evaluate((id) => {
+      document.getElementById(id)?.remove();
+    }, pointerActionScrollSlackId)
+    .catch(() => undefined);
 }
 
 async function captureReferenceScreenshot(page, subject, action, captureMode, screenshotPath) {
@@ -680,15 +743,28 @@ async function readPointerActionSample(page, handle) {
 }
 
 function isActionPointInViewport(sample, action) {
-  const pointX = sample.box.x + sample.box.width * action.point.x;
-  const pointY = sample.box.y + sample.box.height * action.point.y;
+  const bounds = actionPathBounds(sample, action);
 
   return (
-    pointX >= 0 &&
-    pointY >= 0 &&
-    pointX <= sample.viewport.width &&
-    pointY <= sample.viewport.height
+    bounds.minX >= 0 &&
+    bounds.minY >= 0 &&
+    bounds.maxX <= sample.viewport.width &&
+    bounds.maxY <= sample.viewport.height
   );
+}
+
+function actionPathBounds(sample, action) {
+  const startX = sample.box.x + sample.box.width * action.point.x;
+  const startY = sample.box.y + sample.box.height * action.point.y;
+  const endX = startX + (action.delta?.x ?? 0);
+  const endY = startY + (action.delta?.y ?? 0);
+
+  return {
+    maxX: Math.max(startX, endX),
+    maxY: Math.max(startY, endY),
+    minX: Math.min(startX, endX),
+    minY: Math.min(startY, endY)
+  };
 }
 
 function summarizeActionMetrics(before, after, action) {
