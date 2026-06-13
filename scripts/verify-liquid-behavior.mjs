@@ -65,8 +65,7 @@ const browser = await chromium.launch({ headless: true });
 try {
   await verifyFocusMaterial("tabs", {
     minimumFocusedScale: 1.04,
-    requireMaterialDeepening: true,
-    requireTextShadow: true
+    requireMaterialDeepening: true
   });
   await verifyFocusMaterial("searchbox", {
     focusSelector: behaviorStories.searchbox.focusSelector,
@@ -132,9 +131,7 @@ async function verifyFocusMaterial(name, options) {
     assertGreaterThan(focused.width, idle.width, `${name} focus visual width`);
   }
 
-  if (options.requireTextShadow) {
-    assertNotEqual(focused.textShadow, "none", `${name} focused foreground text shadow`);
-  }
+  assertEqual(focused.foregroundTextShadowCount, 0, `${name} focused foreground text shadows`);
 
   await page.close();
 }
@@ -464,6 +461,7 @@ async function readState(locator) {
       borderLuma: lumaOf(style.borderColor),
       borderColor: style.borderColor,
       boxShadow: style.boxShadow,
+      foregroundTextShadowCount: countForegroundTextShadows(element),
       hardRingLayerCount: countCheapHardRingLayers(style.boxShadow),
       height: rect.height,
       outlineColor: style.outlineColor,
@@ -477,6 +475,17 @@ async function readState(locator) {
       transform: style.transform,
       width: rect.width
     };
+
+    function countForegroundTextShadows(root) {
+      return [root, ...root.querySelectorAll("*")].filter((node) => {
+        const text = node.textContent?.trim() ?? "";
+        if (text.length === 0) {
+          return false;
+        }
+
+        return view.getComputedStyle(node).textShadow !== "none";
+      }).length;
+    }
 
     function alphaOf(color) {
       const parsed = parseColor(color);
@@ -612,12 +621,6 @@ function assertEqual(actual, expected, label) {
     throw new Error(
       `${label}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`
     );
-  }
-}
-
-function assertNotEqual(actual, expected, label) {
-  if (actual === expected) {
-    throw new Error(`${label}: did not expect ${JSON.stringify(expected)}`);
   }
 }
 

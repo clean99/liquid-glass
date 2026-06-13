@@ -306,6 +306,47 @@ describe("Liquid Glass physics contract", () => {
     expect(focusRules).toContain("scale(");
   });
 
+  it("keeps every focus rule in the transparent frosted material family", () => {
+    const focusRules = collectCssRules(styles).filter(
+      ({ selector }) =>
+        selector.includes(":focus") ||
+        selector.includes("focus-within") ||
+        selector.includes("focus-visible")
+    );
+    const offenders = focusRules
+      .map(({ body, selector }) => {
+        const violations = [];
+
+        if (body.includes("var(--lg-accent)") || body.includes("#0a84ff")) {
+          violations.push("accent focus ring");
+        }
+
+        if (
+          body.includes("drop-shadow") ||
+          body.includes("rgba(33, 34, 34") ||
+          body.includes("rgba(34, 36, 36") ||
+          body.includes("rgba(34, 38, 39") ||
+          body.includes("rgba(40, 42, 44")
+        ) {
+          violations.push("darkened focus material");
+        }
+
+        if (/color:\s*(?:#fff|white|rgba\(255,\s*255,\s*255,\s*0\.9)/.test(body)) {
+          violations.push("forced white focus text");
+        }
+
+        const textShadow = body.match(/text-shadow:\s*([^;]+)/);
+        if (textShadow && textShadow[1]?.trim() !== "none") {
+          violations.push("focus text shadow");
+        }
+
+        return violations.length > 0 ? `${selector}: ${violations.join(", ")}` : null;
+      })
+      .filter(Boolean);
+
+    expect(offenders).toEqual([]);
+  });
+
   it("models search focus as a frosted capsule growing from idle scale", () => {
     const searchboxRule = collectCssRuleBodies(styles, ".lg-searchbox").join("\n");
     const focusRule = collectCssRuleBodies(styles, ".lg-searchbox:focus-within").join("\n");
@@ -320,7 +361,8 @@ describe("Liquid Glass physics contract", () => {
     expect(searchboxRule).toContain("transform: scale(0.8)");
     expect(searchboxRule).toContain("transition:");
     expect(searchboxRule).toContain("transform 260ms");
-    expect(focusRule).toContain("rgba(33, 34, 34, 0.52)");
+    expect(focusRule).toContain("background: var(--lg-control-focus-fill)");
+    expect(focusRule).toContain("0 4px 16px var(--lg-control-focus-depth)");
     expect(focusRule).toContain("transform: scale(1)");
     expect(reducedMotionRule).toContain("transform: none");
   });
@@ -340,4 +382,13 @@ function collectCssRuleBodies(css: string, selector: string) {
   const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const matcher = new RegExp(`${escapedSelector}[^{}]*\\{([^}]*)\\}`, "g");
   return Array.from(css.matchAll(matcher), (match) => match[1] ?? "");
+}
+
+function collectCssRules(css: string) {
+  const matcher = /([^{}]+)\{([^{}]*)\}/g;
+
+  return Array.from(css.matchAll(matcher), (match) => ({
+    body: (match[2] ?? "").trim(),
+    selector: (match[1] ?? "").trim().replace(/\s+/g, " ")
+  }));
 }

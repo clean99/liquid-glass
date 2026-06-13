@@ -16,10 +16,10 @@
   --lg-surface-padding-y: 0.62rem;
   --lg-surface-padding-x: 0.9rem;
   --lg-control-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.42);
-  --lg-control-focus-fill: rgba(35, 39, 39, 0.32);
-  --lg-control-focus-edge: rgba(255, 255, 255, 0.18);
-  --lg-control-focus-depth: rgba(0, 0, 0, 0.24);
-  --lg-control-focus-mist: rgba(255, 255, 255, 0.08);
+  --lg-control-focus-fill: rgba(255, 255, 255, 0.2);
+  --lg-control-focus-edge: rgba(255, 255, 255, 0.22);
+  --lg-control-focus-depth: rgba(0, 0, 0, 0.16);
+  --lg-control-focus-mist: rgba(255, 255, 255, 0.12);
   position: relative;
   isolation: isolate;
   display: inline-flex;
@@ -247,33 +247,24 @@
 }
 
 .lg-searchbox:focus-within {
-  border-color: rgba(255, 255, 255, 0.1);
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.16),
-      rgba(255, 255, 255, 0.035) 46%,
-      rgba(0, 0, 0, 0.14)
-    ),
-    rgba(33, 34, 34, 0.52);
+  border-color: var(--lg-control-focus-edge);
+  background: var(--lg-control-focus-fill);
   box-shadow:
-    0 22px 58px rgba(0, 0, 0, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.13),
-    inset 0 -20px 36px rgba(0, 0, 0, 0.28),
-    inset 0 0 42px rgba(255, 255, 255, 0.055);
+    0 4px 16px var(--lg-control-focus-depth),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+    inset 0 0 28px var(--lg-control-focus-mist);
   transform: scale(1);
 }
 
 .lg-searchbox:focus-within .lg-searchbox__icon,
 .lg-searchbox:focus-within .lg-searchbox__input {
-  color: rgba(255, 255, 255, 0.72);
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.72),
-    0 0 10px rgba(0, 0, 0, 0.28);
+  color: color-mix(in srgb, var(--lg-text), transparent 18%);
+  text-shadow: none;
 }
 
 .lg-searchbox:focus-within .lg-searchbox__input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: color-mix(in srgb, var(--lg-text), transparent 46%);
 }
 
 .lg-field {
@@ -323,20 +314,13 @@
 }
 
 .lg-field-control:focus-within {
-  border-color: rgba(255, 255, 255, 0.1);
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.14),
-      rgba(255, 255, 255, 0.035) 48%,
-      rgba(0, 0, 0, 0.12)
-    ),
-    rgba(34, 36, 36, 0.42);
+  border-color: var(--lg-control-focus-edge);
+  background: var(--lg-control-focus-fill);
   box-shadow:
-    0 18px 44px var(--lg-control-focus-depth),
-    inset 0 1px 0 rgba(255, 255, 255, 0.13),
-    inset 0 -16px 28px rgba(0, 0, 0, 0.22),
-    inset 0 0 32px var(--lg-control-focus-mist),
+    0 4px 16px var(--lg-control-focus-depth),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+    inset 0 0 28px var(--lg-control-focus-mist),
     var(--lg-surface-shadow);
   transform: translateY(-1px) scale(1.018);
 }
@@ -344,15 +328,13 @@
 .lg-field-control:focus-within .lg-input,
 .lg-field-control:focus-within .lg-textarea,
 .lg-field-control:focus-within .lg-field-control__adornment {
-  color: rgba(255, 255, 255, 0.84);
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.7),
-    0 0 10px rgba(0, 0, 0, 0.24);
+  color: color-mix(in srgb, var(--lg-text), transparent 12%);
+  text-shadow: none;
 }
 
 .lg-field-control:focus-within .lg-input::placeholder,
 .lg-field-control:focus-within .lg-textarea::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: color-mix(in srgb, var(--lg-text-muted), transparent 12%);
 }
 
 .lg-field-control[data-invalid] {
@@ -493,18 +475,14 @@
 }
 
 .lg-input-otp__field:focus-visible {
-  color: rgba(255, 255, 255, 0.9);
-  background:
-    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.4), transparent 42%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0.12)), rgba(40, 42, 44, 0.44);
+  color: color-mix(in srgb, var(--lg-text), transparent 10%);
+  background: var(--lg-control-focus-fill);
   box-shadow:
-    0 18px 42px var(--lg-control-focus-depth),
-    inset 0 1px 0 rgba(255, 255, 255, 0.26),
-    inset 0 -14px 24px rgba(0, 0, 0, 0.22),
-    inset 0 0 30px var(--lg-control-focus-mist);
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.72),
-    0 0 10px rgba(0, 0, 0, 0.28);
+    0 4px 16px var(--lg-control-focus-depth),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+    inset 0 0 28px var(--lg-control-focus-mist);
+  text-shadow: none;
   transform: translateY(-1px) scale(1.055);
 }
 
@@ -632,8 +610,9 @@
 
 .lg-radio-group__input:focus-visible + .lg-radio-group__control {
   box-shadow:
-    0 0 0 0.26rem color-mix(in srgb, var(--lg-accent), transparent 74%),
-    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    0 4px 14px var(--lg-control-focus-depth),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    inset 0 0 18px var(--lg-control-focus-mist);
 }
 
 .lg-radio-group__item:has(.lg-radio-group__input:focus-visible) {
@@ -780,46 +759,28 @@
 
 .lg-tabs__tab:focus-visible {
   outline: 0;
-  color: rgba(255, 255, 255, 0.94);
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.15),
-      rgba(255, 255, 255, 0.04) 48%,
-      rgba(0, 0, 0, 0.14)
-    ),
-    rgba(34, 38, 39, 0.42);
-  border-color: rgba(255, 255, 255, 0.1);
+  color: color-mix(in srgb, var(--lg-text), transparent 6%);
+  background: var(--lg-control-focus-fill);
+  border-color: var(--lg-control-focus-edge);
   box-shadow:
-    0 18px 42px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.13),
-    inset 0 -14px 24px rgba(0, 0, 0, 0.25),
-    inset 0 0 32px rgba(255, 255, 255, 0.055);
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.82),
-    0 0 10px rgba(0, 0, 0, 0.36);
+    0 4px 16px var(--lg-control-focus-depth),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+    inset 0 0 28px var(--lg-control-focus-mist);
+  text-shadow: none;
   transform: translateY(-2px) scale(1.06);
 }
 
 [data-lg-theme="dark"] .lg-tabs__tab:focus-visible {
-  color: #fff;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.14),
-      rgba(255, 255, 255, 0.035) 48%,
-      rgba(0, 0, 0, 0.15)
-    ),
-    rgba(34, 38, 39, 0.44);
-  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--lg-text);
+  background: var(--lg-control-focus-fill);
+  border-color: var(--lg-control-focus-edge);
   box-shadow:
-    0 18px 42px rgba(0, 0, 0, 0.32),
-    inset 0 1px 0 rgba(255, 255, 255, 0.13),
-    inset 0 -14px 24px rgba(0, 0, 0, 0.27),
-    inset 0 0 32px rgba(255, 255, 255, 0.055);
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.88),
-    0 0 12px rgba(0, 0, 0, 0.42);
+    0 4px 16px var(--lg-control-focus-depth),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+    inset 0 0 28px var(--lg-control-focus-mist);
+  text-shadow: none;
 }
 
 .lg-tabs__tab:disabled {
@@ -837,9 +798,11 @@
 }
 
 .lg-tabs__panel:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--lg-accent), white 12%);
-  outline-offset: 4px;
+  outline: 0;
   border-radius: var(--lg-radius-md);
+  box-shadow:
+    0 4px 16px var(--lg-control-focus-depth),
+    inset 0 0 0 0.16rem var(--lg-control-focus-mist);
 }
 
 .lg-accordion {
@@ -903,9 +866,14 @@
 }
 
 .lg-accordion__trigger:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--lg-accent), white 12%);
-  outline-offset: -5px;
-  box-shadow: inset 0 0 0 5px color-mix(in srgb, var(--lg-accent), transparent 80%);
+  outline: 0;
+  background: var(--lg-control-focus-fill);
+  box-shadow:
+    0 4px 16px var(--lg-control-focus-depth),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+    inset 0 0 28px var(--lg-control-focus-mist);
+  transform: translateY(-1px) scale(1.012);
 }
 
 .lg-accordion__trigger:disabled {
@@ -1049,14 +1017,10 @@
 
 .lg-menu__item:hover,
 .lg-menu__item:focus-visible {
-  color: rgba(255, 255, 255, 0.92);
-  background:
-    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.24), transparent 48%),
-    rgba(28, 30, 33, 0.34);
+  color: color-mix(in srgb, var(--lg-text), transparent 6%);
+  background: var(--lg-control-focus-fill);
   outline: 0;
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.74),
-    0 0 10px rgba(0, 0, 0, 0.28);
+  text-shadow: none;
   transform: scale(1.012);
 }
 
@@ -1277,8 +1241,8 @@
 .lg-context-menu__trigger:focus-visible {
   border-radius: var(--lg-radius-lg);
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--lg-accent), transparent 25%),
-    0 0 0 5px color-mix(in srgb, var(--lg-accent), transparent 84%);
+    0 4px 16px var(--lg-control-focus-depth),
+    inset 0 0 0 0.16rem var(--lg-control-focus-mist);
 }
 
 .lg-menubar {
@@ -1316,14 +1280,10 @@
 .lg-menubar__trigger:hover,
 .lg-menubar__trigger:focus-visible,
 .lg-menubar__trigger[data-state="open"] {
-  color: rgba(255, 255, 255, 0.92);
-  background:
-    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.26), transparent 50%),
-    rgba(34, 36, 38, 0.36);
+  color: color-mix(in srgb, var(--lg-text), transparent 6%);
+  background: var(--lg-control-focus-fill);
   outline: 0;
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.72),
-    0 0 10px rgba(0, 0, 0, 0.28);
+  text-shadow: none;
   transform: scale(1.018);
 }
 
@@ -1365,7 +1325,11 @@
 .lg-tooltip__trigger:focus-visible,
 .lg-hover-card__trigger:focus-visible {
   outline: 0;
-  text-shadow: 0 0 0.85rem color-mix(in srgb, var(--lg-accent), transparent 32%);
+  border-radius: 0.35rem;
+  box-shadow:
+    0 4px 14px var(--lg-control-focus-depth),
+    inset 0 0 0 0.12rem var(--lg-control-focus-mist);
+  text-shadow: none;
 }
 
 .lg-dialog {
@@ -1665,14 +1629,13 @@
 .lg-nav .lg-surface--toggle:focus-visible,
 .lg-toolbar .lg-surface--button:focus-visible,
 .lg-toolbar .lg-surface--toggle:focus-visible {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.13), transparent 70%), rgba(34, 38, 39, 0.3) !important;
-  border-color: rgba(255, 255, 255, 0.16) !important;
+  background: var(--lg-control-focus-fill) !important;
+  border-color: var(--lg-control-focus-edge) !important;
   box-shadow:
-    0 14px 32px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    inset 0 -12px 22px rgba(0, 0, 0, 0.18),
-    inset 0 0 26px rgba(255, 255, 255, 0.055) !important;
+    0 4px 16px var(--lg-control-focus-depth),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+    inset 0 0 28px var(--lg-control-focus-mist) !important;
   transform: translateY(-2px) scale(1.05);
 }
 
@@ -1967,21 +1930,18 @@
 
 .lg-surface:focus-visible {
   outline: 0;
-  border-color: rgba(255, 255, 255, 0.1);
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.14),
-      rgba(255, 255, 255, 0.035) 48%,
-      rgba(0, 0, 0, 0.12)
-    ),
-    var(--lg-control-focus-fill);
+  border-color: var(--lg-control-focus-edge);
+  background: var(--lg-control-focus-fill);
   box-shadow:
-    0 16px 36px var(--lg-control-focus-depth),
-    inset 0 1px 0 rgba(255, 255, 255, 0.13),
-    inset 0 -12px 24px rgba(0, 0, 0, 0.2),
-    inset 0 0 30px var(--lg-control-focus-mist),
+    0 4px 16px var(--lg-control-focus-depth),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+    inset 0 0 28px var(--lg-control-focus-mist),
     var(--lg-surface-shadow);
+}
+
+.lg-surface:focus-visible > .lg-surface__content {
+  text-shadow: none;
 }
 
 .lg-surface--interactive:not(.lg-surface--disabled):focus-visible {
@@ -2453,7 +2413,11 @@
 .lg-breadcrumb__link:focus-visible {
   outline: none;
   color: var(--lg-text);
-  text-shadow: 0 0 1rem color-mix(in srgb, var(--lg-accent), transparent 24%);
+  border-radius: 0.35rem;
+  box-shadow:
+    0 4px 14px var(--lg-control-focus-depth),
+    inset 0 0 0 0.12rem var(--lg-control-focus-mist);
+  text-shadow: none;
 }
 
 .lg-breadcrumb__page {
@@ -2587,7 +2551,11 @@
 
 .lg-checkbox__input:focus-visible + .lg-checkbox__surface {
   transform: scale(1.018);
-  filter: drop-shadow(0 0.55rem 1.4rem rgba(0, 0, 0, 0.16));
+  filter: none;
+  box-shadow:
+    0 4px 14px var(--lg-control-focus-depth),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 0 18px var(--lg-control-focus-mist);
 }
 
 .lg-checkbox__body {
@@ -2800,8 +2768,8 @@
 .lg-data-table__sort:focus-visible {
   outline: 0;
   box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--lg-accent), transparent 72%),
-    0 0 0 1px color-mix(in srgb, var(--lg-accent), transparent 18%);
+    0 4px 14px var(--lg-control-focus-depth),
+    inset 0 0 0 0.12rem var(--lg-control-focus-mist);
 }
 
 .lg-data-table__sort-indicator {
@@ -3033,8 +3001,8 @@
 .lg-sidebar-rail:focus-visible {
   outline: 0;
   box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--lg-accent), transparent 72%),
-    0 0 0 1px color-mix(in srgb, var(--lg-accent), transparent 20%);
+    0 4px 14px var(--lg-control-focus-depth),
+    inset 0 0 0 0.12rem var(--lg-control-focus-mist);
   transform: scale(1.015);
 }
 
@@ -3239,9 +3207,9 @@
 .lg-pagination__link:focus-visible {
   outline: 0;
   box-shadow:
-    0 0 0 0.25rem color-mix(in srgb, var(--lg-accent), transparent 76%),
+    0 4px 14px var(--lg-control-focus-depth),
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    0 0.45rem 1.2rem rgba(15, 23, 42, 0.12);
+    inset 0 0 18px var(--lg-control-focus-mist);
   transform: translateY(-1px) scale(1.025);
 }
 
@@ -3309,7 +3277,9 @@
 }
 
 .lg-scroll-area__viewport:focus-visible {
-  box-shadow: inset 0 0 0 0.25rem color-mix(in srgb, var(--lg-accent), transparent 78%);
+  box-shadow:
+    0 4px 14px var(--lg-control-focus-depth),
+    inset 0 0 0 0.16rem var(--lg-control-focus-mist);
 }
 
 .lg-resizable {
@@ -3360,12 +3330,11 @@
 .lg-resizable__handle:hover,
 .lg-resizable__handle:focus-visible,
 .lg-resizable__handle[data-resize-handle-state="drag"] {
-  background:
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.24), transparent 62%),
-    color-mix(in srgb, var(--lg-glass-fill-strong), transparent 32%);
+  background: var(--lg-control-focus-fill);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    0 0 0 1px color-mix(in srgb, var(--lg-accent), transparent 46%);
+    0 4px 14px var(--lg-control-focus-depth),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 0 18px var(--lg-control-focus-mist);
 }
 
 .lg-resizable__handle-grip {
@@ -3491,8 +3460,11 @@
 }
 
 .lg-precision-lens-demo__handle:focus-visible {
-  filter: drop-shadow(0 1rem 2.5rem rgba(0, 0, 0, 0.22))
-    drop-shadow(0 0 0.8rem rgba(255, 255, 255, 0.22));
+  box-shadow:
+    0 4px 16px var(--lg-control-focus-depth),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 0 28px var(--lg-control-focus-mist);
+  filter: none;
 }
 
 .lg-precision-lens-demo__handle[data-liquid-dragging="true"] {
@@ -3874,9 +3846,9 @@
   outline: none;
   transform: scale(1.08);
   box-shadow:
+    0 4px 14px var(--lg-control-focus-depth),
     inset 0 1px 0 color-mix(in srgb, var(--lg-glass-edge), transparent 12%),
-    0 0.85rem 1.9rem rgba(0, 0, 0, 0.14),
-    0 0 0 0.35rem color-mix(in srgb, var(--lg-accent), transparent 78%);
+    inset 0 0 18px var(--lg-control-focus-mist);
 }
 
 .lg-calendar__nav-button:disabled {
@@ -3969,7 +3941,8 @@
   outline: none;
   transform: scale(1.08);
   box-shadow:
-    0 0 0 0.32rem color-mix(in srgb, var(--lg-accent), transparent 78%),
+    0 4px 14px var(--lg-control-focus-depth),
+    inset 0 0 18px var(--lg-control-focus-mist),
     inset 0 1px 0 color-mix(in srgb, var(--lg-glass-edge), transparent 24%);
 }
 
