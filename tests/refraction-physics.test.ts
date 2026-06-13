@@ -615,6 +615,10 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain('kind: "checkbox"');
     expect(kubeReferenceCompareSource).toContain("applyCheckboxAction");
     expect(kubeReferenceCompareSource).toContain("readCheckboxActionSample");
+    expect(kubeReferenceCompareSource).toContain("waitForCssBackgroundImages");
+    expect(kubeReferenceCompareSource).toContain("readCssBackgroundImageStatus");
+    expect(kubeReferenceCompareSource).toContain("Checkbox background image failed to render");
+    expect(kubeReferenceCompareSource).toContain("naturalWidth");
     expect(kubeReferenceCompareSource).toContain("readControlContract");
     expect(kubeReferenceCompareSource).toContain("summarizeControlContract");
     expect(kubeReferenceCompareSource).toContain("assertControlContractIntegrity");
@@ -623,6 +627,7 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain("glassLayerMaterial");
     expect(kubeReferenceCompareSource).toContain("contentLayerMaterial");
     expect(kubeReferenceCompareSource).toContain("content layer is filtered");
+    expect(kubeReferenceCompareSource).toContain("glass layer has inset rim");
     expect(kubeReferenceCompareSource).toContain("-control-contract.json");
     expect(kubeReferenceCompareSource).toContain("photo-1497250681960-ef046c08a56e");
     expect(kubeReferenceCompareSource).toContain("searchbox-demo-background.jpg");
@@ -1018,6 +1023,7 @@ describe("Liquid Glass physics contract", () => {
     expect(searchboxRule).toContain("width: 26.25rem");
     expect(searchboxRule).toContain("max-width: 100%");
     expect(searchboxRule).toContain("height: 3.5rem");
+    expect(searchboxRule).not.toContain("inset");
     expect(searchboxRule).toContain("transform: scale(0.8)");
     expect(searchboxRule).toContain("transition:");
     expect(searchboxRule).toContain("transform 260ms");

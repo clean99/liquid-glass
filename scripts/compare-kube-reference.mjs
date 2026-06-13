@@ -7,7 +7,7 @@ import {
   summarizePointerActionMetrics
 } from "./kube-pointer-metrics.mjs";
 
-/* global FileReader, HTMLInputElement, OffscreenCanvas, createImageBitmap, document, getComputedStyle, window */
+/* global FileReader, HTMLInputElement, Image, OffscreenCanvas, createImageBitmap, document, getComputedStyle, window */
 
 process.env.PW_TEST_SCREENSHOT_NO_FONTS_READY = "1";
 
@@ -107,7 +107,9 @@ const references = [
     controlContract: "searchbox",
     action: {
       backgroundIncludes: ["photo-1497250681960-ef046c08a56e", "searchbox-demo-background.jpg"],
+      backgroundLoadTimeoutMs: 8_000,
       checked: true,
+      effectTimeoutMs: 8_000,
       kind: "checkbox",
       selector: 'input[type="checkbox"]',
       settleMs: 300
@@ -600,8 +602,9 @@ async function applyCheckboxAction(page, root, action) {
       sample.box.y + sample.box.height / 2
     );
     await page.waitForTimeout(action.settleMs ?? 180);
-    sample = await waitForCheckboxActionEffect(root, selector, action);
   }
+
+  sample = await waitForCheckboxActionEffect(root, selector, action);
 
   if (sample.checked !== action.checked) {
     throw new Error(
@@ -609,15 +612,27 @@ async function applyCheckboxAction(page, root, action) {
     );
   }
 
+  if (action.backgroundIncludes && !sample.backgroundImages?.ready) {
+    throw new Error(
+      `Checkbox background image failed to render for ${selector}: ${JSON.stringify(
+        sample.backgroundImages
+      )}`
+    );
+  }
+
   return {
     cleanup: async () => undefined,
-    metrics: { checked: sample.checked ? 1 : 0 },
+    metrics: {
+      backgroundReady: sample.backgroundImages?.ready ? 1 : 0,
+      checked: sample.checked ? 1 : 0
+    },
     subject: root
   };
 }
 
 async function waitForCheckboxActionEffect(root, selector, action) {
-  const deadline = Date.now() + (action.effectTimeoutMs ?? 2_000);
+  const deadline =
+    Date.now() + (action.effectTimeoutMs ?? (action.backgroundIncludes ? 8_000 : 2_000));
   let sample = await readCheckboxActionSample(root, selector);
 
   while (Date.now() < deadline) {
@@ -626,7 +641,17 @@ async function waitForCheckboxActionEffect(root, selector, action) {
       (!action.backgroundIncludes ||
         action.backgroundIncludes.some((needle) => sample.rootBackgroundImage.includes(needle)))
     ) {
-      return sample;
+      const backgroundImages = await waitForCssBackgroundImages(
+        root,
+        action,
+        deadline - Date.now()
+      );
+
+      sample = { ...sample, backgroundImages };
+
+      if (!action.backgroundIncludes || backgroundImages.ready) {
+        return sample;
+      }
     }
 
     await delay(50);
@@ -634,6 +659,109 @@ async function waitForCheckboxActionEffect(root, selector, action) {
   }
 
   return sample;
+}
+
+async function waitForCssBackgroundImages(root, action, remainingMs) {
+  if (!action.backgroundIncludes) {
+    return { ready: true, requiredUrls: [], statuses: [] };
+  }
+
+  const deadline = Date.now() + Math.max(0, remainingMs);
+  const timeoutMs = Math.min(action.backgroundLoadTimeoutMs ?? 4_000, Math.max(250, remainingMs));
+  let lastStatus = null;
+
+  while (Date.now() < deadline) {
+    lastStatus = await readCssBackgroundImageStatus(root, action.backgroundIncludes, timeoutMs);
+
+    if (lastStatus.ready) {
+      return lastStatus;
+    }
+
+    await delay(50);
+  }
+
+  return lastStatus ?? { ready: false, requiredUrls: [], statuses: [] };
+}
+
+async function readCssBackgroundImageStatus(root, backgroundIncludes, timeoutMs) {
+  return root.evaluate(
+    async (base, options) => {
+      const backgroundImage = getComputedStyle(base).backgroundImage;
+      const urls = extractCssUrls(backgroundImage);
+      const requiredUrls = urls.filter(
+        (url) =>
+          options.backgroundIncludes.some((needle) => url.includes(needle)) ||
+          options.backgroundIncludes.some((needle) => backgroundImage.includes(needle))
+      );
+      const statuses = await Promise.all(
+        requiredUrls.map((url) => loadImageStatus(url, options.timeoutMs))
+      );
+
+      return {
+        backgroundImage,
+        ready:
+          requiredUrls.length > 0 &&
+          statuses.every((status) => status.loaded && status.width > 0 && status.height > 0),
+        requiredUrls,
+        statuses
+      };
+
+      function extractCssUrls(value) {
+        const matches = [];
+        const pattern = /url\((?:"([^"]+)"|'([^']+)'|([^)]*))\)/g;
+        let match = pattern.exec(value);
+
+        while (match) {
+          const rawUrl = (match[1] ?? match[2] ?? match[3] ?? "").trim();
+
+          if (rawUrl) {
+            try {
+              matches.push(new URL(rawUrl, document.baseURI).href);
+            } catch {
+              matches.push(rawUrl);
+            }
+          }
+
+          match = pattern.exec(value);
+        }
+
+        return matches;
+      }
+
+      function loadImageStatus(url, imageTimeoutMs) {
+        return new Promise((resolve) => {
+          const image = new Image();
+          let settled = false;
+          const timer = window.setTimeout(() => finish(false, "timeout"), imageTimeoutMs);
+
+          image.onload = () => finish(true);
+          image.onerror = () => finish(false, "error");
+          image.src = url;
+
+          if (image.complete) {
+            finish(image.naturalWidth > 0 && image.naturalHeight > 0, "complete-empty");
+          }
+
+          function finish(loaded, reason) {
+            if (settled) {
+              return;
+            }
+
+            settled = true;
+            window.clearTimeout(timer);
+            resolve({
+              height: image.naturalHeight,
+              loaded,
+              reason: loaded ? undefined : reason,
+              url,
+              width: image.naturalWidth
+            });
+          }
+        });
+      }
+    },
+    { backgroundIncludes, timeoutMs }
+  );
 }
 
 async function readCheckboxActionSample(root, selector) {
@@ -1345,6 +1473,7 @@ function assertControlContractIntegrity(reference, target, candidate) {
 
 function assertSearchboxLayerContract(label, contract) {
   const glassFilter = contract.glassLayer?.style.backdropFilter ?? "";
+  const glassBoxShadow = contract.glassLayer?.style.boxShadow ?? "";
   const contentFilter = contract.contentLayer?.style.backdropFilter ?? "";
   const contentTextShadow = contract.contentLayer?.style.textShadow ?? "";
   const failures = [];
@@ -1353,6 +1482,8 @@ function assertSearchboxLayerContract(label, contract) {
     failures.push("missing glass layer");
   } else if (!glassFilter || glassFilter === "none") {
     failures.push(`glass layer missing backdrop filter: ${glassFilter || "empty"}`);
+  } else if (/\binset\b/i.test(glassBoxShadow)) {
+    failures.push(`glass layer has inset rim: ${glassBoxShadow}`);
   }
 
   if (!contract.contentLayer) {
