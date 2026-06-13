@@ -433,6 +433,11 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeDemoAssetVerifierSource).toContain("lensDemoInlineImage");
     expect(kubeDemoAssetVerifierSource).toContain("lensDemoImage");
     expect(kubeDemoAssetVerifierSource).toContain("observed-kube-demo-assets.json");
+    expect(kubeDemoAssetVerifierSource).toContain("validateLocalAsset");
+    expect(kubeDemoAssetVerifierSource).toContain("crypto.createHash");
+    expect(kubeDemoAssetVerifierSource).toContain("readRasterSize(bytes)");
+    expect(kubeDemoAssetVerifierSource).toContain("localAssets: localAssetChecks");
+    expect(kubeDemoAssetVerifierSource).toContain("filterMapAssets");
   });
 
   it("locks Kube same-origin filter maps for exact parity diagnostics", () => {

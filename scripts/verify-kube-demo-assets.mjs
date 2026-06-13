@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import crypto from "node:crypto";
 import path from "node:path";
 import { chromium } from "playwright";
 
@@ -35,6 +36,21 @@ if (missingManifestEntries.length > 0) {
     `Kube asset manifest is missing source URLs for ${missingManifestEntries.join(", ")}`
   );
 }
+
+const localAssetChecks = [
+  ...Object.entries(manifest.assets ?? {}).map(([name, asset]) => ({
+    asset,
+    name: `assets.${name}`
+  })),
+  ...(manifest.musicAlbumArtAssets ?? []).map((asset, index) => ({
+    asset,
+    name: `musicAlbumArtAssets[${index}]`
+  })),
+  ...Object.entries(manifest.filterMapAssets ?? {}).map(([name, asset]) => ({
+    asset,
+    name: `filterMapAssets.${name}`
+  }))
+].map(validateLocalAsset);
 
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({
@@ -132,6 +148,7 @@ try {
       {
         expected: Object.fromEntries(expectedUrls),
         missing: missing.map(([name, url]) => ({ name, url })),
+        localAssets: localAssetChecks,
         observed,
         observedAt: new Date().toISOString(),
         sourcePage: targetUrl
@@ -149,7 +166,98 @@ try {
     );
   }
 
-  console.log(`Verified ${expectedUrls.size} Kube demo asset URLs from the rendered public page.`);
+  console.log(
+    `Verified ${expectedUrls.size} Kube demo asset URLs from the rendered public page and ${localAssetChecks.length} local fixture locks.`
+  );
 } finally {
   await browser.close();
+}
+
+function validateLocalAsset({ asset, name }) {
+  const localPath = path.join(root, "stories/assets/kube", asset.file);
+  const bytes = fs.readFileSync(localPath);
+  const sha256 = crypto.createHash("sha256").update(bytes).digest("hex");
+  const dimensions = readRasterSize(bytes);
+  const errors = [];
+
+  if (sha256 !== asset.sha256) {
+    errors.push(`sha256 ${sha256} !== ${asset.sha256}`);
+  }
+
+  if (dimensions.width !== asset.width || dimensions.height !== asset.height) {
+    errors.push(
+      `dimensions ${dimensions.width}x${dimensions.height} !== ${asset.width}x${asset.height}`
+    );
+  }
+
+  if (errors.length > 0) {
+    throw new Error(
+      `Kube local asset verification failed for ${name} (${asset.file}): ${errors.join(", ")}`
+    );
+  }
+
+  return {
+    file: asset.file,
+    height: dimensions.height,
+    name,
+    sha256,
+    sourceUrl: asset.sourceUrl,
+    width: dimensions.width
+  };
+}
+
+function readRasterSize(bytes) {
+  if (bytes[0] === 0xff && bytes[1] === 0xd8) {
+    return readJpegSize(bytes);
+  }
+
+  if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47) {
+    return { height: bytes.readUInt32BE(20), width: bytes.readUInt32BE(16) };
+  }
+
+  throw new Error("Unsupported Kube reference raster format");
+}
+
+function readJpegSize(bytes) {
+  let offset = 2;
+
+  while (offset < bytes.length - 1) {
+    if (bytes[offset] !== 0xff) {
+      offset += 1;
+      continue;
+    }
+
+    const marker = bytes[offset + 1];
+    offset += 2;
+
+    if (
+      marker === 0x01 ||
+      marker === 0xd8 ||
+      marker === 0xd9 ||
+      (marker >= 0xd0 && marker <= 0xd7)
+    ) {
+      continue;
+    }
+
+    if (offset + 2 > bytes.length) {
+      break;
+    }
+
+    const length = bytes.readUInt16BE(offset);
+
+    if (isJpegStartOfFrame(marker)) {
+      return {
+        height: bytes.readUInt16BE(offset + 3),
+        width: bytes.readUInt16BE(offset + 5)
+      };
+    }
+
+    offset += length;
+  }
+
+  throw new Error("Unable to read Kube reference JPEG dimensions");
+}
+
+function isJpegStartOfFrame(marker) {
+  return marker >= 0xc0 && marker <= 0xcf && marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc;
 }
