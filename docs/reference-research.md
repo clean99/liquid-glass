@@ -113,6 +113,25 @@ same element. This moved the pressed diff from `0.4580` to `0.4163` and the
 dragged diff from `0.4939` to `0.4224`, enough for the current hard interaction
 gate.
 
+One tempting follow-up was to mirror the live page DOM more literally: an outer
+draggable shell owns transform geometry, while an inner absolutely positioned
+surface owns the SVG `backdrop-filter` and shadow. The live Kube target does use
+that shape. In this package, with generated data-url displacement maps inside
+Storybook, that change regressed the strict pixel gate badly:
+
+- idle magnifying glass diff: `0.2000 -> 0.6977`,
+- pressed magnifying glass diff: `0.4163 -> 0.7928`,
+- dragged magnifying glass diff: `0.4224 -> 0.9294`.
+
+So the current implementation intentionally keeps the filter on the root lens
+host. That is not claimed as final DOM parity with the reference page. It is the
+current working sampling path in Chromium for this package. Any future attempt
+to split transform ownership and filter ownership must first explain the browser
+sampling delta and prove improvement through `pnpm test:kube-reference:strict`.
+Likely variables to isolate are transformed-parent backdrop-filter sampling,
+SVG `filterUnits`/region behavior, local `<defs>` placement, and data-url maps
+versus network-loaded PNG maps.
+
 `scripts/compare-kube-reference.mjs` now treats these interaction metrics and
 the magnifying-glass filter contract as hard contracts. Candidate press and drag
 metrics must stay within the configured tolerances of the live Kube target, every
