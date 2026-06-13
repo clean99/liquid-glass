@@ -71,10 +71,10 @@ metrics.
 | Reference                  | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | -------------------------- | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass           |     0.1954 | `0,-1`     |     0.1807 |    0.2400 | gate |
-| magnifying-glass-pressed   |     0.3669 | `1,1`      |     0.3618 |    0.4050 | gate |
-| magnifying-glass-dragged   |     0.4028 | `-3,0`     |     0.3743 |    0.4550 | gate |
+| magnifying-glass-pressed   |     0.3899 | `0,-2`     |     0.3766 |    0.4050 | gate |
+| magnifying-glass-dragged   |     0.3898 | `-3,-1`    |     0.3759 |    0.4550 | gate |
 | searchbox                  |     0.0180 | `0,0`      |     0.0169 |    0.0200 | gate |
-| searchbox-image-background |     0.1218 | `0,1`      |     0.1183 |    0.1300 | gate |
+| searchbox-image-background |     0.1118 | `0,1`      |     0.1084 |    0.1200 | gate |
 | switch                     |     0.0137 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                     |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
 
@@ -151,7 +151,7 @@ This proves six things:
 - The static searchbox, switch, and slider stories are already within the current
   screenshot budget, so their thresholds are ratcheted down to `0.0200`.
 - The checked-state searchbox image background is now measured through real
-  checkbox input. Its current threshold is `0.1300`, which is a loaded-media
+  checkbox input. Its current threshold is `0.1200`, which is a loaded-media
   release-candidate budget, not an exact-parity claim.
 - The static magnifying glass passes a loose gate, but it is still visually far
   from pixel parity. Its threshold remains `0.2400`, which is still not the

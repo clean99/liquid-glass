@@ -107,7 +107,7 @@ const references = [
       selector: 'input[type="checkbox"]',
       settleMs: 300
     },
-    maxDiffRatio: 0.13
+    maxDiffRatio: 0.12
   },
   {
     name: "switch",
@@ -984,7 +984,7 @@ async function readControlContract(element, label, kind) {
       const searchInput = findSearchInput(root);
       const surface = searchInput ? findSearchSurface(root, searchInput) : null;
       const icon = surface?.querySelector("svg, [class*='icon']") ?? null;
-      const credit = findTextElement(root, /photo|teemu|unsplash/i, {
+      const credit = findTextElement(root, /unsplash/i, {
         maxHeight: 90,
         maxWidth: 260,
         maxY: 96

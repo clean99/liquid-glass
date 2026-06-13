@@ -512,7 +512,7 @@ describe("Liquid Glass physics contract", () => {
 
   it("keeps strict Kube budgets honest about loaded media and lens CI variance", () => {
     expect(readKubeMaxDiffRatio("searchbox")).toBe(0.02);
-    expect(readKubeMaxDiffRatio("searchbox-image-background")).toBe(0.13);
+    expect(readKubeMaxDiffRatio("searchbox-image-background")).toBe(0.12);
     expect(readKubeMaxDiffRatio("switch")).toBe(0.02);
     expect(readKubeMaxDiffRatio("slider")).toBe(0.02);
     expect(readKubeMaxDiffRatio("magnifying-glass")).toBe(0.24);
@@ -548,7 +548,7 @@ describe("Liquid Glass physics contract", () => {
     expect(searchboxStorySource).toContain("top: 10");
     expect(searchboxStorySource).toContain("left: 10");
     expect(searchboxStorySource).toContain("fontSize: 9");
-    expect(searchboxStorySource).toContain("backdropFilter: useImageBackground ? \"blur(8px)\"");
+    expect(searchboxStorySource).toContain('backdropFilter: useImageBackground ? "blur(8px)"');
   });
 
   it("does not fake Kube pointer parity by boosting active filter scales", () => {
