@@ -137,15 +137,50 @@ export const KubePageBackgroundReference: Story = {
             border: "1px solid rgba(0, 0, 0, 0.1)",
             borderRadius: 12,
             background: `url("${kubeReferenceImageAssets.lensDemoBackground}")`,
-            backgroundPosition: "50% 50%",
-            backgroundSize: "cover"
+            backgroundPosition: "center -60px",
+            backgroundSize: "700px auto"
           }}
         >
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: 200,
+              height: 200,
+              overflow: "hidden",
+              borderRadius: 100,
+              transform: "translate(-50%, -50%)",
+              zIndex: 1
+            }}
+          >
+            <img
+              alt=""
+              src={kubeReferenceImageAssets.lensDemoInlineImage}
+              style={{
+                display: "block",
+                width: 200,
+                height: 350,
+                objectFit: "cover",
+                transform: "translate(-29px, 13px)"
+              }}
+            />
+          </div>
           <LiquidLens
             engine="reference"
             refraction={precisionLensIdleRefraction}
             referenceFilterMaps={precisionLensReferenceFilterMaps}
-            style={{ position: "absolute", top: 170, left: 248, zIndex: 2 }}
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: 200,
+              height: 200,
+              borderRadius: 100,
+              transform: "translate(-50%, -50%)",
+              zIndex: 2
+            }}
           />
           <div
             aria-hidden="true"

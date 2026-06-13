@@ -330,16 +330,28 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceAssetsSource).toContain(
       'lensDemoBackground: "/kube/lens-demo-background.jpg"'
     );
+    expect(kubeReferenceAssetsSource).toContain(
+      'lensDemoInlineImage: "/kube/lens-demo-inline-image.jpg"'
+    );
     expect(fs.existsSync(path.resolve("stories/assets/kube/lens-demo-image.jpg"))).toBe(true);
     expect(fs.existsSync(path.resolve("stories/assets/kube/lens-demo-background.jpg"))).toBe(true);
+    expect(fs.existsSync(path.resolve("stories/assets/kube/lens-demo-inline-image.jpg"))).toBe(
+      true
+    );
     expect(kubeReferenceAssetsSource).toContain(
       "https://images.unsplash.com/photo-1579380656108-f98e4df8ea62?q=80&w=800&auto=format&fit=crop"
     );
     expect(kubeReferenceAssetsSource).toContain(
       "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=1400&h=1600&crop=focalpoint&fp-x=0.3&fp-y=0.5&fp-z=1"
     );
+    expect(kubeReferenceAssetsSource).toContain(
+      "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=400&h=700&crop=focalpoint&fp-x=0.3&fp-y=0.6&fp-z=1.9"
+    );
     expect(lensStorySource).toContain("kubeReferenceImageAssets.lensDemoImage");
     expect(lensStorySource).toContain("kubeReferenceImageAssets.lensDemoBackground");
+    expect(lensStorySource).toContain("kubeReferenceImageAssets.lensDemoInlineImage");
+    expect(lensStorySource).toContain('backgroundPosition: "center -60px"');
+    expect(lensStorySource).toContain('backgroundSize: "700px auto"');
     expect(lensStorySource).toContain('data-lg-reference-frame="lens-page-background"');
     expect(lensStorySource).toContain("Photo: Stephanie LeBlanc / Unsplash");
     expect(lensStorySource).not.toContain("src={localOpticsImage}");
@@ -415,6 +427,7 @@ describe("Liquid Glass physics contract", () => {
       "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop"
     );
     expect(searchboxStorySource).toContain("kubeReferenceImageAssets.searchboxDemoBackground");
+    expect(searchboxStorySource).toContain('"--lg-text": "#fff"');
     expect(verifyLiquidBehaviorSource).toContain(
       'const kubeSearchboxImageId = "searchbox-demo-background.jpg"'
     );
@@ -497,8 +510,9 @@ describe("Liquid Glass physics contract", () => {
     );
   });
 
-  it("keeps strict Kube budgets limited to interactive lens CI variance", () => {
+  it("keeps strict Kube budgets honest about loaded media and lens CI variance", () => {
     expect(readKubeMaxDiffRatio("searchbox")).toBe(0.02);
+    expect(readKubeMaxDiffRatio("searchbox-image-background")).toBe(0.13);
     expect(readKubeMaxDiffRatio("switch")).toBe(0.02);
     expect(readKubeMaxDiffRatio("slider")).toBe(0.02);
     expect(readKubeMaxDiffRatio("magnifying-glass")).toBe(0.24);
@@ -518,6 +532,15 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain("horizontalBands");
     expect(kubeReferenceCompareSource).toContain("radialRegions");
     expect(kubeReferenceCompareSource).toContain("worstRegion");
+  });
+
+  it("checks the Kube searchbox image background through real checkbox input", () => {
+    expect(kubeReferenceCompareSource).toContain('name: "searchbox-image-background"');
+    expect(kubeReferenceCompareSource).toContain('kind: "checkbox"');
+    expect(kubeReferenceCompareSource).toContain("applyCheckboxAction");
+    expect(kubeReferenceCompareSource).toContain("readCheckboxActionSample");
+    expect(kubeReferenceCompareSource).toContain("photo-1497250681960-ef046c08a56e");
+    expect(kubeReferenceCompareSource).toContain("searchbox-demo-background.jpg");
   });
 
   it("does not fake Kube pointer parity by boosting active filter scales", () => {

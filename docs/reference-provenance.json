@@ -74,6 +74,7 @@
       "copiedSource": false,
       "usedFor": [
         "Lens page background sample",
+        "Lens hero inline SVG image crop",
         "Storybook lens background fixture",
         "Kube-aligned visual documentation"
       ],

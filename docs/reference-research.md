@@ -40,11 +40,15 @@ hashes live in `stories/assets/kube/manifest.json`. The local files live under
   `photo-1579380656108-f98e4df8ea62?q=80&w=800&auto=format&fit=crop`,
 - Lens page background sample:
   `photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=1400&h=1600&crop=focalpoint&fp-x=0.3&fp-y=0.5&fp-z=1`.
+- Lens hero inline SVG image crop:
+  `photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=400&h=700&crop=focalpoint&fp-x=0.3&fp-y=0.6&fp-z=1.9`.
 
 The current locked fixture dimensions are `1600x2399` for the searchbox
 background, `800x1200` for the magnifying-glass image layer, and `1400x1600`
-for the lens page background sample. The images are attributed and stored only
-as Storybook/parity fixtures. They are not copied into the published package.
+for the lens page background sample. The hero inline crop is locked separately
+at `400x700`, matching the live SVG `<image>` reference rather than a generated
+stand-in. The images are attributed and stored only as Storybook/parity
+fixtures. They are not copied into the published package.
 
 Chrome pageAssets sampling of the public Music Player demo also captured the
 rendered album-art grid from `https://is1-ssl.mzstatic.com/image/thumb/`. The

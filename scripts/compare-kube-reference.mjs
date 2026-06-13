@@ -3,7 +3,7 @@ import http from "node:http";
 import path from "node:path";
 import { chromium } from "playwright";
 
-/* global FileReader, OffscreenCanvas, createImageBitmap, document, getComputedStyle, window */
+/* global FileReader, HTMLInputElement, OffscreenCanvas, createImageBitmap, document, getComputedStyle, window */
 
 process.env.PW_TEST_SCREENSHOT_NO_FONTS_READY = "1";
 
@@ -93,6 +93,20 @@ const references = [
     storyId: "liquid-glass-liquidsearchbox--kube-reference",
     targetId: "searchbox",
     maxDiffRatio: 0.02
+  },
+  {
+    name: "searchbox-image-background",
+    storyId: "liquid-glass-liquidsearchbox--kube-reference",
+    targetId: "searchbox",
+    candidateFrame: "searchbox",
+    action: {
+      backgroundIncludes: ["photo-1497250681960-ef046c08a56e", "searchbox-demo-background.jpg"],
+      checked: true,
+      kind: "checkbox",
+      selector: 'input[type="checkbox"]',
+      settleMs: 300
+    },
+    maxDiffRatio: 0.13
   },
   {
     name: "switch",
@@ -477,16 +491,96 @@ function delay(ms) {
 }
 
 async function applyTargetAction(page, targetElement, action) {
+  if (action.kind === "checkbox") {
+    return applyCheckboxAction(page, targetElement, action);
+  }
+
   const handle = await findTargetDragHandle(targetElement);
 
   return applyPointerAction(page, handle, action);
 }
 
 async function applyCandidateAction(page, candidateElement, action) {
+  if (action.kind === "checkbox") {
+    return applyCheckboxAction(page, candidateElement, action);
+  }
+
   const handle = candidateElement.locator("[data-lg-draggable-lens]").first();
   await handle.waitFor({ state: "visible", timeout: 10_000 });
 
   return applyPointerAction(page, handle, action);
+}
+
+async function applyCheckboxAction(page, root, action) {
+  const selector = action.selector ?? 'input[type="checkbox"]';
+  let sample = await readCheckboxActionSample(root, selector);
+
+  if (sample.checked !== action.checked) {
+    await page.mouse.click(
+      sample.box.x + sample.box.width / 2,
+      sample.box.y + sample.box.height / 2
+    );
+    await page.waitForTimeout(action.settleMs ?? 180);
+    sample = await waitForCheckboxActionEffect(root, selector, action);
+  }
+
+  if (sample.checked !== action.checked) {
+    throw new Error(
+      `Checkbox action failed for ${selector}: expected checked=${action.checked}, got ${sample.checked}`
+    );
+  }
+
+  return {
+    cleanup: async () => undefined,
+    metrics: { checked: sample.checked ? 1 : 0 },
+    subject: root
+  };
+}
+
+async function waitForCheckboxActionEffect(root, selector, action) {
+  const deadline = Date.now() + (action.effectTimeoutMs ?? 2_000);
+  let sample = await readCheckboxActionSample(root, selector);
+
+  while (Date.now() < deadline) {
+    if (
+      sample.checked === action.checked &&
+      (!action.backgroundIncludes ||
+        action.backgroundIncludes.some((needle) => sample.rootBackgroundImage.includes(needle)))
+    ) {
+      return sample;
+    }
+
+    await delay(50);
+    sample = await readCheckboxActionSample(root, selector);
+  }
+
+  return sample;
+}
+
+async function readCheckboxActionSample(root, selector) {
+  return root.evaluate((base, checkboxSelector) => {
+    const input = base.querySelector(checkboxSelector);
+
+    if (!(input instanceof HTMLInputElement)) {
+      throw new Error(`Missing checkbox action target: ${checkboxSelector}`);
+    }
+
+    input.scrollIntoView({ behavior: "instant", block: "center", inline: "center" });
+
+    const rect = input.getBoundingClientRect();
+    const rootStyle = getComputedStyle(base);
+
+    return {
+      box: {
+        height: rect.height,
+        width: rect.width,
+        x: rect.x,
+        y: rect.y
+      },
+      checked: input.checked,
+      rootBackgroundImage: rootStyle.backgroundImage
+    };
+  }, selector);
 }
 
 async function findTargetDragHandle(root) {

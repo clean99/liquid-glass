@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { LiquidProvider, LiquidSearchBox } from "../src";
 import { kubeReferenceImageAssets } from "./kube-reference-assets";
 import { storyVisualState, StoryFrame } from "./story-fixtures";
@@ -34,6 +34,9 @@ export const KubeReference: Story = {
 
 function KubeSearchboxReferenceStory() {
   const [useImageBackground, setUseImageBackground] = useState(false);
+  const imageBackgroundTextStyle = useImageBackground
+    ? ({ "--lg-text": "#fff" } as CSSProperties)
+    : undefined;
 
   return (
     <LiquidProvider defaultMode="enhanced" disableOnMobile={false} maxEnhancedSurfaces={4}>
@@ -75,7 +78,10 @@ function KubeSearchboxReferenceStory() {
               transform: "translate(-50%, -50%)"
             }}
           >
-            <LiquidSearchBox aria-label="Search docs" />
+            <LiquidSearchBox
+              aria-label="Search docs"
+              surfaceProps={{ style: imageBackgroundTextStyle }}
+            />
           </div>
           <label
             style={{
@@ -148,7 +154,10 @@ export const FocusPhotoReference: Story = {
               transform: "translate(-50%, -50%)"
             }}
           >
-            <LiquidSearchBox aria-label="Search docs" />
+            <LiquidSearchBox
+              aria-label="Search docs"
+              surfaceProps={{ style: { "--lg-text": "#fff" } as CSSProperties }}
+            />
           </div>
         </div>
       </div>

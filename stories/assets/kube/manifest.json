@@ -11,6 +11,14 @@
       "sourceUrl": "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=1400&h=1600&crop=focalpoint&fp-x=0.3&fp-y=0.5&fp-z=1",
       "width": 1400
     },
+    "lensDemoInlineImage": {
+      "file": "lens-demo-inline-image.jpg",
+      "height": 700,
+      "role": "Kube hero SVG lens inline image crop",
+      "sha256": "5804c190d7ba81d4e747ae27b43270123b7246aeac315fae69cbeb950ea6aaae",
+      "sourceUrl": "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=400&h=700&crop=focalpoint&fp-x=0.3&fp-y=0.6&fp-z=1.9",
+      "width": 400
+    },
     "lensDemoImage": {
       "file": "lens-demo-image.jpg",
       "height": 1200,

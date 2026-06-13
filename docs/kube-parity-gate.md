@@ -68,14 +68,15 @@ Live-page interaction sampling can move a few pixels between runs, so this table
 is a representative strict gate sample rather than a promise of bit-stable
 metrics.
 
-| Reference                | Diff ratio | Best phase | Phase diff | Threshold | Mode |
-| ------------------------ | ---------: | ---------- | ---------: | --------: | ---- |
-| magnifying-glass         |     0.2024 | `0,-1`     |     0.1861 |    0.2400 | gate |
-| magnifying-glass-pressed |     0.3880 | `0,-2`     |     0.3689 |    0.4050 | gate |
-| magnifying-glass-dragged |     0.3978 | `-4,0`     |     0.3769 |    0.4550 | gate |
-| searchbox                |     0.0180 | `0,0`      |     0.0169 |    0.0200 | gate |
-| switch                   |     0.0136 | `0,0`      |     0.0132 |    0.0200 | gate |
-| slider                   |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
+| Reference                  | Diff ratio | Best phase | Phase diff | Threshold | Mode |
+| -------------------------- | ---------: | ---------- | ---------: | --------: | ---- |
+| magnifying-glass           |     0.1954 | `0,-1`     |     0.1807 |    0.2400 | gate |
+| magnifying-glass-pressed   |     0.3643 | `-1,-1`    |     0.3609 |    0.4050 | gate |
+| magnifying-glass-dragged   |     0.4007 | `-4,1`     |     0.3732 |    0.4550 | gate |
+| searchbox                  |     0.0180 | `0,0`      |     0.0169 |    0.0200 | gate |
+| searchbox-image-background |     0.1213 | `0,1`      |     0.1177 |    0.1300 | gate |
+| switch                     |     0.0137 | `0,0`      |     0.0132 |    0.0200 | gate |
+| slider                     |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
 
 This measurement includes these verified geometry fixes:
 
@@ -136,18 +137,22 @@ This measurement includes these verified geometry fixes:
   recorded for attribution and provenance. `stories/assets/kube/manifest.json`
   locks local fixture dimensions and sha256 hashes. Generated or synthetic
   stand-ins are not accepted by the e2e/provenance gates. This includes the
+  searchbox checked-state fern photo, the lens hero SVG inline crop, and the
   album-art grid captured from `is1-ssl.mzstatic.com`, so the Kube reference
-  story no longer uses fake gradient cover tiles.
+  stories no longer use fake gradient cover tiles for loaded-media states.
 - Kube same-origin SVG filter map PNGs are also locked under
   `stories/assets/kube/maps/` and recorded in the same manifest. The maps are
   reference-only fixtures, not runtime shortcuts. They give the exact gate a
   concrete map contract for deciding whether the remaining diff is optical-map
   shape, material/specular response, background phase, or interaction geometry.
 
-This proves five things:
+This proves six things:
 
 - The static searchbox, switch, and slider stories are already within the current
   screenshot budget, so their thresholds are ratcheted down to `0.0200`.
+- The checked-state searchbox image background is now measured through real
+  checkbox input. Its current threshold is `0.1300`, which is a loaded-media
+  release-candidate budget, not an exact-parity claim.
 - The static magnifying glass passes a loose gate, but it is still visually far
   from pixel parity. Its threshold remains `0.2400`, which is still not the
   final target.
@@ -155,8 +160,9 @@ This proves five things:
   the thresholds are still loose while the fixture moves toward tighter pixel
   parity. Pressed is now gated at `0.4050`; dragged is gated at `0.4550`.
   This budget covers Chromium CI sampling variance for the interactive lens
-  only; searchbox, switch, and slider remain ratcheted at `0.0200`. The lens
-  rows must not be described as 100% complete.
+  only; searchbox, switch, and slider remain ratcheted at `0.0200`, and the
+  checked-state image background remains a separate loaded-media budget. The
+  lens rows must not be described as 100% complete.
 - GitHub Actions failures emit `Kube reference parity failed` for completed
   threshold failures and `Kube reference capture failed` when an individual
   reference crashes before comparison. The workflow also writes a step summary
