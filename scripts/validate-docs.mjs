@@ -51,10 +51,15 @@ const packageRequiredFiles = [
   "docs/components/map.md",
   "docs/components/provider.md",
   "docs/components/surface.md",
+  "docs/components/accordion.md",
   "docs/components/button.md",
   "docs/components/card.md",
   "docs/components/field.md",
   "docs/components/dialog.md",
+  "docs/components/searchbox.md",
+  "docs/components/slider.md",
+  "docs/components/switch.md",
+  "docs/components/tabs.md",
   "docs/component-inventory.json",
   "docs/component-inventory.md",
   "docs/design-principles.md",
@@ -400,6 +405,18 @@ mustInclude("docs/components/surface.md", [
   "pnpm test:kube-reference:strict"
 ]);
 
+mustInclude("docs/components/accordion.md", [
+  "LiquidAccordion",
+  "src/components/LiquidAccordion.tsx",
+  "LiquidAccordionItem",
+  'type="multiple"',
+  "aria-expanded",
+  'role="region"',
+  "stories/LiquidAccordion.stories.tsx",
+  "registry/components/liquid-accordion.json",
+  "pnpm test:registry"
+]);
+
 mustInclude("docs/components/button.md", [
   "LiquidButton",
   "src/components/LiquidButton.tsx",
@@ -443,6 +460,53 @@ mustInclude("docs/components/dialog.md", [
   "native `dialog`",
   "registry/components/liquid-dialog.json",
   "pnpm test:a11y"
+]);
+
+mustInclude("docs/components/searchbox.md", [
+  "LiquidSearchBox",
+  "src/components/LiquidSearchBox.tsx",
+  "LiquidSearchBoxProps",
+  "input[type=search]",
+  "lg-surface__content",
+  "Kube reference contract",
+  "stories/LiquidSearchBox.stories.tsx",
+  "registry/components/liquid-searchbox.json",
+  "pnpm test:kube-reference"
+]);
+
+mustInclude("docs/components/slider.md", [
+  "LiquidSlider",
+  "src/components/LiquidSlider.tsx",
+  "LiquidSliderProps",
+  "input[type=range]",
+  "native range input",
+  "stories/LiquidSlider.stories.tsx",
+  "registry/components/liquid-slider.json",
+  "pnpm test:kube-reference"
+]);
+
+mustInclude("docs/components/switch.md", [
+  "LiquidSwitch",
+  "src/components/LiquidSwitch.tsx",
+  "LiquidSwitchProps",
+  'role="switch"',
+  "aria-checked",
+  "onCheckedChange",
+  "stories/LiquidSwitch.stories.tsx",
+  "registry/components/liquid-switch.json",
+  "pnpm test:kube-reference"
+]);
+
+mustInclude("docs/components/tabs.md", [
+  "LiquidTabs",
+  "src/components/LiquidTabs.tsx",
+  "LiquidTabsItem",
+  'role="tablist"',
+  'role="tabpanel"',
+  "activationMode",
+  "stories/LiquidTabs.stories.tsx",
+  "registry/components/liquid-tabs.json",
+  "pnpm test:registry"
 ]);
 
 mustInclude(".storybook/main.ts", ["../stories/**/*.mdx", "@storybook/addon-docs"]);

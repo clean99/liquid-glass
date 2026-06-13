@@ -21,16 +21,21 @@ generated inventory and the smaller set of full written component pages.
   settings.
 - Kube exact parity: not claimed until `pnpm test:kube-reference:exact` passes.
 
-## First Component Pages
+## Written Component Pages
 
-| Component        | Page                          | Source                             | Story                               | Registry                                 |
-| ---------------- | ----------------------------- | ---------------------------------- | ----------------------------------- | ---------------------------------------- |
-| `LiquidProvider` | `docs/components/provider.md` | `src/providers/LiquidProvider.tsx` | `stories/LiquidSurface.stories.tsx` | Not a registry item                      |
-| `LiquidSurface`  | `docs/components/surface.md`  | `src/components/LiquidSurface.tsx` | `stories/LiquidSurface.stories.tsx` | Not a registry item                      |
-| `LiquidButton`   | `docs/components/button.md`   | `src/components/LiquidButton.tsx`  | `stories/LiquidButton.stories.tsx`  | `registry/components/liquid-button.json` |
-| `LiquidCard`     | `docs/components/card.md`     | `src/components/LiquidCard.tsx`    | `stories/LiquidCard.stories.tsx`    | `registry/components/liquid-card.json`   |
-| `LiquidField`    | `docs/components/field.md`    | `src/components/LiquidField.tsx`   | `stories/LiquidField.stories.tsx`   | `registry/components/liquid-field.json`  |
-| `LiquidDialog`   | `docs/components/dialog.md`   | `src/components/LiquidDialog.tsx`  | `stories/LiquidDialog.stories.tsx`  | `registry/components/liquid-dialog.json` |
+| Component         | Page                           | Source                               | Story                                 | Registry                                    |
+| ----------------- | ------------------------------ | ------------------------------------ | ------------------------------------- | ------------------------------------------- |
+| `LiquidProvider`  | `docs/components/provider.md`  | `src/providers/LiquidProvider.tsx`   | `stories/LiquidSurface.stories.tsx`   | Not a registry item                         |
+| `LiquidSurface`   | `docs/components/surface.md`   | `src/components/LiquidSurface.tsx`   | `stories/LiquidSurface.stories.tsx`   | Not a registry item                         |
+| `LiquidAccordion` | `docs/components/accordion.md` | `src/components/LiquidAccordion.tsx` | `stories/LiquidAccordion.stories.tsx` | `registry/components/liquid-accordion.json` |
+| `LiquidButton`    | `docs/components/button.md`    | `src/components/LiquidButton.tsx`    | `stories/LiquidButton.stories.tsx`    | `registry/components/liquid-button.json`    |
+| `LiquidCard`      | `docs/components/card.md`      | `src/components/LiquidCard.tsx`      | `stories/LiquidCard.stories.tsx`      | `registry/components/liquid-card.json`      |
+| `LiquidDialog`    | `docs/components/dialog.md`    | `src/components/LiquidDialog.tsx`    | `stories/LiquidDialog.stories.tsx`    | `registry/components/liquid-dialog.json`    |
+| `LiquidField`     | `docs/components/field.md`     | `src/components/LiquidField.tsx`     | `stories/LiquidField.stories.tsx`     | `registry/components/liquid-field.json`     |
+| `LiquidSearchBox` | `docs/components/searchbox.md` | `src/components/LiquidSearchBox.tsx` | `stories/LiquidSearchBox.stories.tsx` | `registry/components/liquid-searchbox.json` |
+| `LiquidSlider`    | `docs/components/slider.md`    | `src/components/LiquidSlider.tsx`    | `stories/LiquidSlider.stories.tsx`    | `registry/components/liquid-slider.json`    |
+| `LiquidSwitch`    | `docs/components/switch.md`    | `src/components/LiquidSwitch.tsx`    | `stories/LiquidSwitch.stories.tsx`    | `registry/components/liquid-switch.json`    |
+| `LiquidTabs`      | `docs/components/tabs.md`      | `src/components/LiquidTabs.tsx`      | `stories/LiquidTabs.stories.tsx`      | `registry/components/liquid-tabs.json`      |
 
 ## Full Directory
 
@@ -38,7 +43,10 @@ generated inventory and the smaller set of full written component pages.
 source file, Storybook evidence, visual profile, registry item, and written page
 status. It follows the same role as the shadcn/ui component directory: a user
 can scan the whole component surface from one place without guessing which
-Storybook file or registry item owns a component.
+Storybook file or registry item owns a component. The written page set now
+covers the provider and surface base, the first layout/action/form/overlay
+pages, and high-frequency disclosure, control, navigation, and Kube reference
+controls.
 
 ## Documentation Flow
 
