@@ -73,6 +73,8 @@ run has succeeded.
   readiness audit commands.
 - [Repository settings](docs/github-repository-settings.md): GitHub Pages,
   branch protection, secrets, topics, and maintainer commands.
+- [Release evidence dashboard](docs/release-evidence.md): visual proof map for
+  publish, Pages, registry, accessibility, provenance, and Kube exact claims.
 - [Release checklist](docs/open-source-release.md): npm, provenance, Pages,
   rollback, and release readiness checklist.
 - [Roadmap](ROADMAP.md): staged public launch plan.

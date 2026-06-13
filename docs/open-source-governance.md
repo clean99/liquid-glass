@@ -63,6 +63,18 @@ flowchart TD
 Visual Regression runs on pull requests and every main push so the default
 branch has a public visual gate signal, not only local evidence.
 
+Workflow jobs use explicit `timeout-minutes` values. A hung runner should fail
+as a visible infrastructure problem instead of leaving release evidence
+ambiguous.
+
+## Release Evidence
+
+The public-claim proof map lives in `docs/release-evidence.md`. It connects
+local gates, CI, Visual Regression, Storybook Pages, npm provenance, registry
+distribution, accessibility, reference provenance, and Kube exact parity into
+one dashboard so maintainers can see which claims are proven and which are only
+prepared.
+
 ## Visual Documentation
 
 The visual documentation contract lives in `docs/visual-documentation.md`. It

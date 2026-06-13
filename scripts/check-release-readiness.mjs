@@ -168,6 +168,7 @@ const packageRequiredFiles = [
   "docs/maintainer-runbook.md",
   "docs/open-source-governance.md",
   "docs/open-source-release.md",
+  "docs/release-evidence.md",
   "docs/shadcn-registry.md",
   "docs/testing.md",
   "docs/ui-library-benchmark.md",
@@ -237,18 +238,23 @@ if (isStandaloneRepository) {
   mustInclude(".github/workflows/ci.yml", "pnpm test:a11y");
   mustInclude(".github/workflows/ci.yml", "pnpm test:e2e");
   mustInclude(".github/workflows/ci.yml", "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24");
+  mustInclude(".github/workflows/ci.yml", "timeout-minutes: 60");
   mustInclude(".github/workflows/visual.yml", "branches:");
   mustInclude(".github/workflows/visual.yml", "- main");
   mustInclude(".github/workflows/visual.yml", "pnpm test:visual");
   mustInclude(".github/workflows/visual.yml", "pnpm test:kube-reference:strict");
+  mustInclude(".github/workflows/visual.yml", "timeout-minutes: 45");
   mustInclude(".github/workflows/release.yml", "pnpm verify");
   mustInclude(".github/workflows/release.yml", "NPM_TOKEN");
   mustInclude(".github/workflows/release.yml", "NPM_CONFIG_PROVENANCE");
   mustInclude(".github/workflows/release.yml", "id-token: write");
+  mustInclude(".github/workflows/release.yml", "timeout-minutes: 75");
   mustInclude(".github/workflows/pages.yml", "actions/deploy-pages");
   mustInclude(".github/workflows/pages.yml", "pages-settings");
   mustInclude(".github/workflows/pages.yml", "Storybook deploy is skipped");
   mustInclude(".github/workflows/pages.yml", "needs.build.outputs.pages-enabled");
+  mustInclude(".github/workflows/pages.yml", "timeout-minutes: 35");
+  mustInclude(".github/workflows/pages.yml", "timeout-minutes: 10");
 }
 mustInclude("docs/open-source-release.md", "pnpm test:release-readiness");
 mustInclude("docs/open-source-release.md", "docs/accessibility.md");
@@ -257,6 +263,7 @@ mustInclude("docs/accessibility.md", "pnpm test:a11y");
 mustInclude("docs/accessibility.md", "WCAG certification");
 mustInclude("docs/open-source-release.md", "llms.txt");
 mustInclude("docs/open-source-release.md", "docs/maintainer-runbook.md");
+mustInclude("docs/open-source-release.md", "docs/release-evidence.md");
 mustInclude("MAINTAINERS.md", "docs/maintainer-runbook.md");
 mustInclude("MAINTAINERS.md", "pnpm test:kube-reference:exact");
 mustInclude("docs/maintainer-runbook.md", "Release Procedure");
@@ -277,6 +284,14 @@ mustInclude("docs/ui-library-benchmark.md", "Public Benchmark Surface");
 mustInclude("docs/ui-library-benchmark.md", "Public launch score");
 mustInclude("docs/ui-library-benchmark.md", "not published");
 mustInclude("docs/ui-library-benchmark.md", "docs/components/map.md");
+mustInclude("docs/ui-library-benchmark.md", "docs/release-evidence.md");
+mustInclude("docs/release-evidence.md", "Release Evidence Dashboard");
+mustInclude("docs/release-evidence.md", "Do Not Claim Until Proven");
+mustInclude("docs/release-evidence.md", "pnpm test:kube-reference:exact");
+mustInclude(
+  "docs/release-evidence.md",
+  "CHECK_REMOTE_GOVERNANCE=1 pnpm --silent audit:governance:json"
+);
 mustInclude("docs/components/map.md", "Implemented public components: 60");
 mustInclude("docs/components/map.md", "registry/components/liquid-accordion.json");
 mustInclude("docs/governance-scorecard.md", "CHECK_REMOTE_GOVERNANCE=1");

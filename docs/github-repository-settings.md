@@ -47,6 +47,8 @@ gh repo create clean99/liquid-glass \
   creation enabled for the release workflow.
 - Workflows: use Node 24 for CI, Pages, Visual Regression, and Release. pnpm 11
   requires Node `>=22.13.0`, and Node 20 action runtime is deprecated.
+- Workflows: keep explicit `timeout-minutes` on CI, Pages, Visual Regression,
+  and Release jobs so stuck browser or network work becomes a failed check.
 - Branches: protect `main` after the first successful CI run.
 - Tags and releases: publish from Changesets only.
 
@@ -97,6 +99,12 @@ Check the scorecard after changing repository settings:
 
 ```sh
 CHECK_REMOTE_GOVERNANCE=1 pnpm audit:governance
+```
+
+Check the release evidence dashboard before publishing:
+
+```sh
+CHECK_REMOTE_GOVERNANCE=1 pnpm --silent audit:governance:json
 ```
 
 ## Branch Protection

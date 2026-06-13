@@ -66,6 +66,7 @@ const packageRequiredFiles = [
   "docs/maintainer-runbook.md",
   "docs/open-source-governance.md",
   "docs/open-source-release.md",
+  "docs/release-evidence.md",
   "docs/optics-architecture.md",
   "docs/reference-provenance.json",
   "docs/reference-research.md",
@@ -145,7 +146,8 @@ mustInclude("README.md", [
   "docs/accessibility.md",
   "docs/component-documentation.md",
   "docs/components/map.md",
-  "docs/components/index.md"
+  "docs/components/index.md",
+  "docs/release-evidence.md"
 ]);
 
 mustInclude("README.md", [
@@ -161,6 +163,7 @@ mustInclude("README.md", [
   "llms.txt",
   "Open-source governance",
   "UI library benchmark",
+  "Release evidence dashboard",
   "Support",
   "ROADMAP.md"
 ]);
@@ -176,6 +179,7 @@ mustInclude("llms.txt", [
   "Assistant Rules",
   "docs/accessibility.md",
   "docs/components/index.md",
+  "docs/release-evidence.md",
   "docs/maintainer-runbook.md",
   "pnpm test:kube-assets",
   "pnpm test:release-readiness",
@@ -502,6 +506,7 @@ mustInclude("docs/open-source-governance.md", [
   "docs/accessibility.md",
   "docs/components/index.md",
   "docs/maintainer-runbook.md",
+  "docs/release-evidence.md",
   "main push",
   "Current Gaps",
   "Release Flow"
@@ -535,11 +540,32 @@ mustInclude("docs/ui-library-benchmark.md", [
   "docs/maintainer-runbook.md",
   "Support routing",
   "Visual regression signal",
+  "Release evidence",
   "Local governance gate",
   "Public launch score",
   "Visual Documentation Gaps",
   "GitHub Pages",
   "not published"
+]);
+
+mustInclude("docs/release-evidence.md", [
+  "Release Evidence Dashboard",
+  "```mermaid",
+  "Evidence Flow",
+  "Current Evidence Table",
+  "Maintainer Scoreboard",
+  "Do Not Claim Until Proven",
+  "CHECK_REMOTE_GOVERNANCE=1 pnpm --silent audit:governance:json",
+  "Storybook Pages",
+  "npm publish",
+  "shadcn registry",
+  "pnpm test:kube-reference:exact",
+  "ATTRIBUTIONS.md",
+  "docs/reference-provenance.json",
+  "shadcn/ui",
+  "Radix UI",
+  "Chakra UI",
+  "HeroUI"
 ]);
 
 mustInclude("docs/visual-documentation.md", [
@@ -692,6 +718,7 @@ mustInclude("docs/open-source-release.md", [
   "pnpm test:e2e",
   "docs/accessibility.md",
   "docs/maintainer-runbook.md",
+  "docs/release-evidence.md",
   "pnpm test:kube-reference:strict",
   "pnpm release",
   "NPM_TOKEN",
@@ -720,6 +747,7 @@ if (isStandaloneRepository) {
     "NPM_TOKEN",
     "NPM_CONFIG_PROVENANCE",
     "id-token: write",
+    "timeout-minutes: 75",
     "playwright install --with-deps chromium"
   ]);
   mustInclude(".github/workflows/ci.yml", [
@@ -733,12 +761,20 @@ if (isStandaloneRepository) {
     "pnpm test:release-readiness",
     "pnpm test:e2e",
     "pnpm test:a11y",
+    "timeout-minutes: 60",
     "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24"
   ]);
   mustInclude(".github/workflows/pages.yml", [
     "playwright install --with-deps chromium",
     "pnpm test:a11y",
+    "timeout-minutes: 35",
+    "timeout-minutes: 10",
     "actions/deploy-pages"
+  ]);
+  mustInclude(".github/workflows/visual.yml", [
+    "pnpm test:visual",
+    "pnpm test:kube-reference:strict",
+    "timeout-minutes: 45"
   ]);
 }
 mustInclude(".changeset/config.json", [

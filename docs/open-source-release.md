@@ -42,6 +42,7 @@ those files already live in this repository.
 - `ROADMAP.md`
 - `docs/accessibility.md`
 - `docs/open-source-governance.md`
+- `docs/release-evidence.md`
 - `docs/reference-provenance.json`
 - `.github/workflows/ci.yml`
 - `.github/workflows/visual.yml`
@@ -59,7 +60,8 @@ the accessibility contract.
 Repository-level settings are tracked in `docs/github-repository-settings.md`.
 The shadcn-style registry distribution model is tracked in
 `docs/shadcn-registry.md`. Maintainer triage and incident procedures are tracked
-in `docs/maintainer-runbook.md`.
+in `docs/maintainer-runbook.md`. Public-claim evidence is tracked in
+`docs/release-evidence.md`.
 
 ## Publication Status
 
@@ -80,6 +82,8 @@ GitHub Actions run Node 24. The package `engines.node` lower bound is
 2. Run `pnpm test:governance` to validate the local open-source readiness
    scorecard. Run `CHECK_REMOTE_GOVERNANCE=1 pnpm audit:governance` during
    maintainer release review to include GitHub Pages and repository metadata.
+   Use `docs/release-evidence.md` to separate proven public claims from prepared
+   but unpublished work.
 3. Run `pnpm test:research` to validate external reference provenance, licenses,
    inspected commits, and the no-copied-source policy.
 4. For manual release review, run

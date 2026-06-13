@@ -21,6 +21,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 35
     outputs:
       pages-enabled: ${{ steps.pages-settings.outputs.enabled }}
     steps:
@@ -70,6 +71,7 @@ jobs:
     needs: build
     if: needs.build.outputs.pages-enabled == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

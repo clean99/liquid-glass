@@ -34,6 +34,7 @@ flowchart TD
 
   A --> H["Governance"]
   H --> I["Release checklist"]
+  H --> M["Release evidence"]
   H --> J["Support and security"]
   A --> L["AI/agent index"]
 ```
@@ -57,6 +58,7 @@ flowchart TD
 | Registry             | `docs/shadcn-registry.md`         | shadcn-compatible registry files and install path after npm publish.              |
 | Governance           | `docs/open-source-governance.md`  | Benchmark against shadcn/ui, Radix UI, Chakra UI, and HeroUI.                     |
 | Maintainers          | `docs/maintainer-runbook.md`      | Triage, CI failure, Pages, release, security, registry, and rollback procedures.  |
+| Release evidence     | `docs/release-evidence.md`        | Visual proof map for local gates, remote settings, Pages, npm, and Kube exact.    |
 | Release              | `docs/open-source-release.md`     | npm, provenance, Pages, rollback, and release readiness checklist.                |
 | Roadmap              | `ROADMAP.md`                      | Staged project plan.                                                              |
 

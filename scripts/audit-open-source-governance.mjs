@@ -75,6 +75,7 @@ const categoryChecks = [
       exists("docs/governance-scorecard.md"),
       exists("docs/maintainer-runbook.md"),
       exists("docs/ui-library-benchmark.md"),
+      exists("docs/release-evidence.md"),
       exists("docs/visual-documentation.md"),
       exists("docs/visual-state-coverage.json"),
       exists("docs/open-source-release.md"),
@@ -83,6 +84,9 @@ const categoryChecks = [
       fileIncludes("docs/ui-library-benchmark.md", "```mermaid"),
       fileIncludes("docs/ui-library-benchmark.md", "Public Benchmark Surface"),
       fileIncludes("docs/ui-library-benchmark.md", "Public launch score"),
+      fileIncludes("docs/release-evidence.md", "```mermaid"),
+      fileIncludes("docs/release-evidence.md", "Current Evidence Table"),
+      fileIncludes("docs/release-evidence.md", "Do Not Claim Until Proven"),
       fileIncludes("docs/visual-documentation.md", "```mermaid"),
       fileIncludes("docs/maintainer-runbook.md", "```mermaid"),
       fileIncludes("docs/maintainer-runbook.md", "Release Procedure"),
@@ -127,13 +131,18 @@ const categoryChecks = [
       scriptIncludes("verify", "pnpm test:kube-reference:strict"),
       workflowIncludes("ci.yml", 'node-version: "24"'),
       workflowIncludes("ci.yml", "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24"),
+      workflowIncludes("ci.yml", "timeout-minutes: 60"),
       workflowIncludes("visual.yml", "branches:"),
       workflowIncludes("visual.yml", "- main"),
       workflowIncludes("visual.yml", "pnpm test:visual"),
       workflowIncludes("visual.yml", "pnpm test:kube-reference:strict"),
+      workflowIncludes("visual.yml", "timeout-minutes: 45"),
       workflowIncludes("release.yml", "pnpm verify"),
       workflowIncludes("release.yml", "NPM_CONFIG_PROVENANCE"),
-      workflowIncludes("release.yml", "id-token: write")
+      workflowIncludes("release.yml", "id-token: write"),
+      workflowIncludes("release.yml", "timeout-minutes: 75"),
+      workflowIncludes("pages.yml", "timeout-minutes: 35"),
+      workflowIncludes("pages.yml", "timeout-minutes: 10")
     ]
   },
   {
