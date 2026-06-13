@@ -155,9 +155,20 @@ export function createLensSpecularPixelMap({
         continue;
       }
 
+      const verticalRim = Math.abs(sample.normalY);
+      const horizontalRim = Math.abs(sample.normalX);
+      const bottomRim = Math.max(0, sample.normalY);
+      const rightRim = Math.max(0, sample.normalX);
       const lightAlignment = Math.abs(sample.normalX * lightX + sample.normalY * lightY);
-      const rimLight = Math.pow(lightAlignment, rimPower);
-      const alpha = coverage * rimLight * 255;
+      const directionalLight = Math.pow(lightAlignment, rimPower);
+      const referenceRimLight =
+        0.42 * horizontalRim +
+        0.08 * rightRim * horizontalRim +
+        (0.75 + 0.11 * bottomRim) * verticalRim;
+      const rimLight = clamp01(Math.max(directionalLight, referenceRimLight));
+      const alphaScale =
+        0.62 + 0.4 * verticalRim + 0.18 * bottomRim * verticalRim + 0.08 * rightRim * horizontalRim;
+      const alpha = coverage * rimLight * alphaScale * 255;
       const gray = rimLight * 255;
 
       writeRgba(data, index, gray, gray, gray, alpha);

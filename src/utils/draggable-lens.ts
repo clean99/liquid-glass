@@ -130,7 +130,7 @@ export function resolveLensDropletResponse({
   const scaleY =
     phase === "dragging"
       ? 0.962 + verticalPull * 0.018 + horizontalPull * 0.006
-      : 0.952 + verticalPull * 0.02 + horizontalPull * 0.01;
+      : 0.928 + verticalPull * 0.018 + horizontalPull * 0.008;
 
   return {
     active: true,

@@ -38,8 +38,8 @@ describe("draggable lens response", () => {
     expect(response.originY).toBeLessThan(0.5);
     expect(response.scaleX).toBeGreaterThan(1.1);
     expect(response.scaleX).toBeLessThan(1.12);
-    expect(response.scaleY).toBeGreaterThan(0.95);
-    expect(response.scaleY).toBeLessThan(0.97);
+    expect(response.scaleY).toBeGreaterThan(0.92);
+    expect(response.scaleY).toBeLessThan(0.94);
     expect(response.transform).toContain("scaleX");
   });
 
