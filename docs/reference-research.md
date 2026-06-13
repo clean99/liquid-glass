@@ -52,6 +52,14 @@ transparent, pixels a few CSS pixels inside the capsule are transparent again,
 and diagonal cap normals are deliberately darker. This is the difference between
 a physical edge glint and a plastic outline.
 
+Chrome/CDP sampling of the public Searchbox demo shows the focus state is a
+material and scale change, not a hard ring. In the measured viewport, the
+search capsule starts at `336x44.8` with `scale(0.8)`. Real click focus and text
+entry expand the same wrapper to `420x56` with `scale(1)`, a `1.25x` visual
+growth that preserves `outline-style: none`. Local focus states should therefore
+grow and deepen frosted material while keeping readable content outside the
+displacement layer; black slabs, white rings, and text shadows are regressions.
+
 `bezelWidth`, capsule radius, and displacement falloff are separate inputs. The
 capsule radius is `75px`, but the observed bevel displacement returns to neutral
 within roughly `25px` from the edge. Treating the full radius as the falloff was
