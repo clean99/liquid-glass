@@ -68,6 +68,18 @@ const behaviorStories = {
     id: "liquid-glass-liquidresizable--horizontal",
     selector: ".lg-resizable__handle"
   },
+  toggle: {
+    id: "liquid-glass-liquidtoggle--interactive",
+    selector: ".lg-surface--toggle"
+  },
+  segmentedControl: {
+    id: "liquid-glass-liquidsegmentedcontrol--modes",
+    selector: ".lg-segmented-control__item"
+  },
+  toolbar: {
+    id: "liquid-glass-liquidtoolbar--article-toolbar",
+    selector: ".lg-toolbar .lg-surface--button"
+  },
   button: {
     id: "liquid-glass-liquidbutton--focus-visible",
     selector: ".lg-surface--button"
@@ -213,6 +225,18 @@ const focusAuditTargets = [
   {
     name: "resizableHandle",
     options: { minimumFocusedScale: 1.03, requireMaterialDeepening: true }
+  },
+  {
+    name: "toggle",
+    options: { minimumFocusedScale: 1.02, requireMaterialDeepening: true }
+  },
+  {
+    name: "segmentedControl",
+    options: { minimumFocusedScale: 1.02, requireMaterialDeepening: true }
+  },
+  {
+    name: "toolbar",
+    options: { minimumFocusedScale: 1.04, requireMaterialDeepening: true }
   },
   {
     name: "tabs",

@@ -913,7 +913,10 @@ describe("Liquid Glass physics contract", () => {
       "sidebarRail",
       "calendarNav",
       "calendarDay",
-      "resizableHandle"
+      "resizableHandle",
+      "toggle",
+      "segmentedControl",
+      "toolbar"
     ];
 
     for (const target of auditedFocusTargets) {
