@@ -12,7 +12,7 @@ available, the bootstrap command is:
 ```sh
 gh repo create clean99/liquid-glass \
   --public \
-  --description "Refractive Liquid Glass components for React, built on @hashintel/refractive with accessible fallbacks." \
+  --description "Beautiful, accessible Liquid Glass components for React with real SVG/CSS refraction and production-ready fallbacks." \
   --source . \
   --remote origin \
   --push

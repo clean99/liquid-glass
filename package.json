@@ -1,7 +1,7 @@
 {
   "name": "@clean99/liquid-glass",
   "version": "0.1.0",
-  "description": "Refractive Liquid Glass components for React, built on @hashintel/refractive with accessible fallbacks.",
+  "description": "Beautiful, accessible Liquid Glass components for React with real SVG/CSS refraction and production-ready fallbacks.",
   "type": "module",
   "license": "MIT",
   "author": "Koh Hom",
@@ -18,8 +18,12 @@
     "components",
     "design-system",
     "liquid-glass",
+    "apple-liquid-glass",
+    "css-refraction",
+    "svg-filter",
     "glassmorphism",
     "refractive",
+    "shadcn-ui",
     "storybook",
     "accessibility"
   ],

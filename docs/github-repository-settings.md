@@ -11,7 +11,8 @@ Create the repository in GitHub with:
 - visibility: public
 - name: `liquid-glass`
 - owner: `clean99`
-- description: `Refractive Liquid Glass components for React, built on @hashintel/refractive with accessible fallbacks.`
+- description:
+  `Beautiful, accessible Liquid Glass components for React with real SVG/CSS refraction and production-ready fallbacks.`
 - README: disabled
 - `.gitignore`: disabled
 - license: disabled
@@ -28,7 +29,7 @@ If GitHub CLI is installed and authenticated, the equivalent bootstrap is:
 ```sh
 gh repo create clean99/liquid-glass \
   --public \
-  --description "Refractive Liquid Glass components for React, built on @hashintel/refractive with accessible fallbacks." \
+  --description "Beautiful, accessible Liquid Glass components for React with real SVG/CSS refraction and production-ready fallbacks." \
   --source . \
   --remote origin \
   --push
@@ -77,11 +78,14 @@ Use repository topics that reflect the public package surface:
 - `react`
 - `typescript`
 - `design-system`
+- `liquid-glass`
+- `apple-liquid-glass`
+- `css-refraction`
+- `svg-filter`
+- `refractive`
+- `shadcn-ui`
 - `storybook`
 - `accessibility`
-- `liquid-glass`
-- `shadcn-ui`
-- `refractive`
 
 ## Public Site
 

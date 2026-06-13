@@ -1,10 +1,20 @@
 # @clean99/liquid-glass
 
-Refractive Liquid Glass components for React, built on `@hashintel/refractive` with accessible fallbacks.
+Beautiful, accessible Liquid Glass components for React with real SVG/CSS refraction and production-ready fallbacks.
 
-`@clean99/liquid-glass` is a small open-source design system for building Apple-inspired Liquid Glass interfaces on the web. It provides typed React components, CSS tokens, Storybook demos, browser behavior checks, package tests, and conservative fallback materials. The refraction engine is delegated to `@hashintel/refractive`; this project owns the component API, accessibility contract, design tokens, fallback strategy, and integration tests.
+`@clean99/liquid-glass` is an open-source component system for building Apple-inspired Liquid Glass interfaces on the web. It provides typed React components, CSS tokens, Storybook demos, shadcn-style registry metadata, browser behavior checks, package tests, and conservative fallback materials. The refraction engine is delegated to `@hashintel/refractive`; this project owns the component API, accessibility contract, design tokens, fallback strategy, and integration tests.
 
-The goal is not generic glassmorphism. The library treats Liquid Glass as an optical material with clear foreground content, capped enhanced surfaces, reduced-motion and reduced-transparency support, and browser-specific fallback behavior.
+The goal is not generic glassmorphism. The library treats Liquid Glass as an optical material: clear foreground content, capped enhanced surfaces, reduced-motion and reduced-transparency support, browser-specific fallback behavior, and automated parity gates against public Liquid Glass references.
+
+## Why This Exists
+
+Most glass UI libraries stop at blur, transparency, and shadows. This package is built around a stricter contract:
+
+- real refraction is isolated behind `LiquidSurface`;
+- foreground text stays outside the displacement layer;
+- fallback and solid modes are first-class, not afterthoughts;
+- keyboard, screen-reader, reduced-motion, and high-contrast states are tested;
+- Storybook, package exports, documentation, registry metadata, and visual parity gates ship with the library.
 
 ## Installation
 

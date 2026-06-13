@@ -21,7 +21,7 @@ for (const file of requiredDistFiles) {
 expectEqual(packageJson.name, "@clean99/liquid-glass", "package name");
 expectEqual(
   packageJson.description,
-  "Refractive Liquid Glass components for React, built on @hashintel/refractive with accessible fallbacks.",
+  "Beautiful, accessible Liquid Glass components for React with real SVG/CSS refraction and production-ready fallbacks.",
   "package description"
 );
 expectEqual(packageJson.license, "MIT", "license");
