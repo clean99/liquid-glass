@@ -384,7 +384,7 @@ async function verifyDraggableLensPlayground() {
     assertGreaterThan(dragged.lensY, idle.lensY + 56, "draggable lens y movement");
     assertGreaterThan(dragged.left, idle.left + 80, "draggable lens visual x movement");
     assertGreaterThan(dragged.top, idle.top + 40, "draggable lens visual y movement");
-    assertLessThanOrEqual(dragged.scaleX, pressed.scaleX - 0.015, "dragged lens narrows vs press");
+    assertLessThanOrEqual(dragged.scaleX, pressed.scaleX - 0.025, "dragged lens narrows vs press");
     assertGreaterThan(dragged.scaleY, pressed.scaleY + 0.005, "dragged lens grows taller vs press");
 
     await page.mouse.up();
