@@ -26,6 +26,7 @@ const phaseMaxOffset = Number(process.env.KUBE_PHASE_MAX_OFFSET ?? 12);
 const phaseSampleStride = Number(process.env.KUBE_PHASE_SAMPLE_STRIDE ?? 2);
 const strictInteractivePixels = process.env.KUBE_STRICT_INTERACTIVE === "1";
 const pointerActionScrollSlackId = "lg-kube-pointer-action-scroll-slack";
+const diffDiagnosticThresholds = Object.freeze([0, 1, 2, 4, 8, 16, 24, 32, 48, 64]);
 
 if (!Number.isFinite(pixelDeltaThreshold) || pixelDeltaThreshold < 0) {
   throw new Error(`Invalid KUBE_PIXEL_DELTA_THRESHOLD: ${process.env.KUBE_PIXEL_DELTA_THRESHOLD}`);
@@ -264,7 +265,8 @@ try {
         diffPath,
         pixelDeltaThreshold,
         phaseMaxOffset,
-        phaseSampleStride
+        phaseSampleStride,
+        diffDiagnosticThresholds
       );
       assertActionMetricParity(reference, targetAction?.metrics, candidateAction?.metrics);
       const reportOnly = Boolean(reference.reportOnly) && !strictInteractivePixels;
@@ -1354,7 +1356,8 @@ async function compareImagesInBrowser(
   diffPath,
   threshold,
   maxPhaseOffset,
-  phaseStride
+  phaseStride,
+  diagnosticThresholds
 ) {
   const [target, candidate] = await Promise.all([
     fs.readFile(targetPath),
@@ -1362,7 +1365,15 @@ async function compareImagesInBrowser(
   ]);
   const page = await browser.newPage();
   const result = await page.evaluate(
-    async ({ targetBase64, candidateBase64, maxOffset, pixelThreshold, region, sampleStride }) => {
+    async ({
+      targetBase64,
+      candidateBase64,
+      diagnosticPixelThresholds,
+      maxOffset,
+      pixelThreshold,
+      region,
+      sampleStride
+    }) => {
       const targetImage = await loadImage(targetBase64);
       const candidateImage = await loadImage(candidateBase64);
       const targetImageSize = { height: targetImage.height, width: targetImage.width };
@@ -1395,6 +1406,11 @@ async function compareImagesInBrowser(
       context.drawImage(candidateImage, source.x, source.y, width, height, 0, 0, width, height);
       const candidatePixels = context.getImageData(0, 0, width, height).data;
       const diffImage = context.createImageData(width, height);
+      const thresholdSweep = diagnosticPixelThresholds.map((diagnosticThreshold) => ({
+        differentPixels: 0,
+        diffRatio: 0,
+        threshold: diagnosticThreshold
+      }));
       let different = 0;
       let totalDelta = 0;
       let totalSquaredDelta = 0;
@@ -1408,6 +1424,11 @@ async function compareImagesInBrowser(
         totalSquaredDelta += delta * delta;
         if (delta > pixelThreshold) {
           different += 1;
+        }
+        for (const bucket of thresholdSweep) {
+          if (delta > bucket.threshold) {
+            bucket.differentPixels += 1;
+          }
         }
 
         const intensity = Math.min(255, Math.round(delta / 3));
@@ -1439,6 +1460,10 @@ async function compareImagesInBrowser(
       const diffPngBase64 = await blobToBase64(diffBlob);
 
       const pixelCount = width * height;
+      for (const bucket of thresholdSweep) {
+        bucket.diffRatio = bucket.differentPixels / pixelCount;
+      }
+
       return {
         bestPhaseOffset,
         candidateImageSize,
@@ -1450,6 +1475,7 @@ async function compareImagesInBrowser(
         meanDelta: totalDelta / pixelCount,
         rmsDelta: Math.sqrt(totalSquaredDelta / pixelCount),
         targetImageSize,
+        thresholdSweep,
         width
       };
 
@@ -1667,6 +1693,7 @@ async function compareImagesInBrowser(
     },
     {
       candidateBase64: candidate.toString("base64"),
+      diagnosticPixelThresholds: [...diagnosticThresholds],
       maxOffset: maxPhaseOffset,
       pixelThreshold: threshold,
       region: compareRegion,

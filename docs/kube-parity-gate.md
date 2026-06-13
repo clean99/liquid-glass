@@ -61,6 +61,11 @@ exact-parity work grounded in measurable failure classes such as bottom
 highlight, outer rim material, center background phase, or horizontal crop drift
 instead of subjective screenshot review.
 
+`thresholdSweep` records the same crop at thresholds `0`, `1`, `2`, `4`, `8`,
+`16`, `24`, `32`, `48`, and `64`. Exact parity still fails at threshold `0`
+until every pixel matches, but the sweep distinguishes a nearly global low-delta
+material mismatch from a small region with large geometry or refraction error.
+
 ## Representative Strict Measurement
 
 Measured locally on 2026-06-14 against `https://kube.io/blog/liquid-glass-css-svg/`.

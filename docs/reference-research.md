@@ -234,6 +234,11 @@ status is documented in `docs/kube-parity-gate.md`. The command now passes, but
 the remaining work is to lower thresholds toward true pixel parity rather than
 claiming that the current loose gate is final quality.
 
+Exact-parity runs also record a `thresholdSweep` for each crop. The zero
+threshold remains the final acceptance target, but the sweep shows whether a
+failed row is dominated by low-amplitude material/color drift or by large
+localized geometry, phase, or refraction errors.
+
 ## rdev/liquid-glass-react
 
 The repository `rdev/liquid-glass-react` was inspected at commit

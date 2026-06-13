@@ -35,6 +35,9 @@ run has succeeded.
 
 - [Component inventory](docs/component-inventory.md): implemented and planned
   component inventory.
+- [Component documentation contract](docs/component-documentation.md):
+  per-component page standard for status, install honesty, usage, anatomy, API,
+  visual states, accessibility, registry entries, and verification evidence.
 - [Component inventory data](docs/component-inventory.json): machine-readable
   component status.
 - [shadcn-style Registry](docs/shadcn-registry.md): registry files and

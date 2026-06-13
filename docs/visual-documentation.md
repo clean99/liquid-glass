@@ -48,6 +48,7 @@ the repository without running a private demo:
 | -------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- |
 | README first screen  | Project status, Start Here links, install honesty, registry honesty, Kube parity honesty.    | Present                         |
 | Storybook examples   | `stories/*.stories.tsx` plus `.storybook` docs and a11y addon configuration.                 | Present locally                 |
+| Component page shape | `docs/component-documentation.md` defines required status, anatomy, API, states, and gates.  | Present                         |
 | Storybook Pages      | `.github/workflows/pages.yml` builds Storybook and runs a11y before deploy.                  | Blocked until Pages is enabled  |
 | Visual regression    | `tests/visual/liquid-components-visual.spec.ts` and checked-in Playwright snapshots.         | Present                         |
 | Visual state audit   | `docs/visual-state-coverage.json` assigns every implemented component to a state profile.    | Present                         |
@@ -61,6 +62,9 @@ the repository without running a private demo:
 Every public component page or Storybook story should cover the states that make
 sense for that component. Static display components can mark inapplicable states
 as not applicable, but interactive components should not silently skip them.
+`docs/component-documentation.md` defines the required per-component page
+sections so visual states, accessibility notes, registry entries, and
+verification commands do not drift into separate claims.
 
 | State group        | Examples                                                                | Gate or location                                  |
 | ------------------ | ----------------------------------------------------------------------- | ------------------------------------------------- |

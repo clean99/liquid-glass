@@ -532,6 +532,9 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain("GITHUB_STEP_SUMMARY");
     expect(kubeReferenceCompareSource).toContain("Run failed before all references completed");
     expect(kubeReferenceCompareSource).toContain("diffDiagnostics");
+    expect(kubeReferenceCompareSource).toContain("diffDiagnosticThresholds");
+    expect(kubeReferenceCompareSource).toContain("thresholdSweep");
+    expect(kubeReferenceCompareSource).toContain("[0, 1, 2, 4, 8, 16, 24, 32, 48, 64]");
     expect(kubeReferenceCompareSource).toContain("verticalBands");
     expect(kubeReferenceCompareSource).toContain("horizontalBands");
     expect(kubeReferenceCompareSource).toContain("radialRegions");

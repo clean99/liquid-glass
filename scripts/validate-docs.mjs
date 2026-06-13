@@ -45,6 +45,7 @@ const packageRequiredFiles = [
   "docs/adoption-guide.md",
   "docs/api-overview.md",
   "docs/browser-support.md",
+  "docs/component-documentation.md",
   "docs/component-inventory.json",
   "docs/component-inventory.md",
   "docs/design-principles.md",
@@ -128,7 +129,8 @@ mustInclude("README.md", [
   "@axe-core/playwright",
   "shadcn-style Registry",
   "docs/adoption-guide.md",
-  "docs/accessibility.md"
+  "docs/accessibility.md",
+  "docs/component-documentation.md"
 ]);
 
 mustInclude("README.md", [
@@ -137,6 +139,7 @@ mustInclude("README.md", [
   "not published to npm yet",
   "docs/index.md",
   "docs/accessibility.md",
+  "docs/component-documentation.md",
   "llms.txt",
   "Open-source governance",
   "UI library benchmark",
@@ -171,6 +174,7 @@ mustInclude("docs/index.md", [
   "HeroUI",
   "```mermaid",
   "Component Navigation",
+  "docs/component-documentation.md",
   "Visual Documentation",
   "Quality Gates",
   "docs/accessibility.md",
@@ -224,6 +228,32 @@ mustInclude("docs/accessibility.md", [
   "not exact 1:1",
   "ATTRIBUTIONS.md",
   "docs/reference-provenance.json"
+]);
+
+mustInclude("docs/component-documentation.md", [
+  "Component Documentation Contract",
+  "shadcn/ui",
+  "Radix UI",
+  "Chakra UI",
+  "HeroUI",
+  "ATTRIBUTIONS.md",
+  "docs/reference-provenance.json",
+  "```mermaid",
+  "Page Flow",
+  "Required Page Sections",
+  "Anatomy Model",
+  "Component Page Template",
+  "Release Rules",
+  "Current Gaps",
+  "docs/component-inventory.json",
+  "docs/visual-state-coverage.json",
+  "parameters.visualState",
+  "pnpm test:a11y",
+  "pnpm test:e2e",
+  "pnpm test:visual-docs",
+  "pnpm test:release-readiness",
+  "pnpm test:kube-reference:exact",
+  "not published"
 ]);
 
 mustInclude(".storybook/main.ts", ["../stories/**/*.mdx", "@storybook/addon-docs"]);
@@ -307,6 +337,8 @@ mustInclude("docs/ui-library-benchmark.md", [
   "heroui-inc/heroui",
   "mermaid",
   "Public Benchmark Surface",
+  "Component page standard",
+  "docs/component-documentation.md",
   "Support routing",
   "Visual regression signal",
   "Local governance gate",
@@ -324,6 +356,7 @@ mustInclude("docs/visual-documentation.md", [
   "Chakra UI",
   "HeroUI",
   "Storybook Pages",
+  "docs/component-documentation.md",
   "Light and dark",
   "Reduced motion",
   "High contrast",

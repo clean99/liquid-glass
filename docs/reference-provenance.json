@@ -168,6 +168,7 @@
       ],
       "requiredDocs": [
         "ATTRIBUTIONS.md",
+        "docs/component-documentation.md",
         "docs/open-source-governance.md",
         "docs/ui-library-benchmark.md",
         "docs/visual-documentation.md",
@@ -191,6 +192,7 @@
       ],
       "requiredDocs": [
         "ATTRIBUTIONS.md",
+        "docs/component-documentation.md",
         "docs/open-source-governance.md",
         "docs/ui-library-benchmark.md",
         "docs/visual-documentation.md"
@@ -211,6 +213,7 @@
       ],
       "requiredDocs": [
         "ATTRIBUTIONS.md",
+        "docs/component-documentation.md",
         "docs/open-source-governance.md",
         "docs/ui-library-benchmark.md",
         "docs/visual-documentation.md"
@@ -231,6 +234,7 @@
       ],
       "requiredDocs": [
         "ATTRIBUTIONS.md",
+        "docs/component-documentation.md",
         "docs/open-source-governance.md",
         "docs/ui-library-benchmark.md",
         "docs/visual-documentation.md"

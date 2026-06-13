@@ -12,6 +12,11 @@ copying their monorepo complexity or source code.
 | Chakra UI           | Contributor guidance separates user questions, styling issues, accessibility, and release work.                          | Use issue forms and contributor docs to route bug, feature, registry, accessibility, and release concerns.                    |
 | HeroUI              | Full component library governance with templates, CODEOWNERS, docs, release automation, and AI-oriented discoverability. | Keep a small single-package governance layer: templates, CODEOWNERS, Changesets, CI gates, Pages, Dependabot, and `llms.txt`. |
 
+Component pages follow `docs/component-documentation.md`: status, install
+honesty, usage, anatomy, API, visual states, accessibility behavior, registry
+distribution, and verification evidence must be reviewable before a component is
+described as public-ready.
+
 Tracked repository identifiers: `shadcn-ui/ui`, `radix-ui/primitives`,
 `chakra-ui/chakra-ui`, and `heroui-inc/heroui`.
 

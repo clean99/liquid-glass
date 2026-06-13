@@ -38,23 +38,24 @@ flowchart TD
   A --> L["AI/agent index"]
 ```
 
-| Section              | File                             | Purpose                                                                     |
-| -------------------- | -------------------------------- | --------------------------------------------------------------------------- |
-| Introduction         | `docs/index.md`                  | Public docs landing page and status.                                        |
-| AI/agent context     | `llms.txt`                       | Machine-readable map for docs, governance, release blockers, and gates.     |
-| Adoption             | `docs/adoption-guide.md`         | Who should adopt now, who should wait, and which proof is required.         |
-| Installation         | `docs/installation.md`           | Package install, peer dependencies, CSS imports, and Next.js usage.         |
-| Components           | `docs/component-inventory.md`    | Implemented and planned component inventory.                                |
-| API                  | `docs/api-overview.md`           | Provider, modes, component API groups, and export shape.                    |
-| Accessibility        | `docs/accessibility.md`          | Native-first semantics, ARIA patterns, a11y gates, and release limits.      |
-| Theming              | `docs/design-principles.md`      | Material rules, mode policy, tokens, and fallback behavior.                 |
-| Browser Support      | `docs/browser-support.md`        | Enhanced, fallback, solid, and unsupported browser behavior.                |
-| Visual Documentation | `docs/visual-documentation.md`   | Storybook Pages coverage, visual states, and screenshot evidence contract.  |
-| Testing              | `docs/testing.md`                | Local gates, CI gates, Storybook, accessibility, and Kube reference checks. |
-| Registry             | `docs/shadcn-registry.md`        | shadcn-compatible registry files and install path after npm publish.        |
-| Governance           | `docs/open-source-governance.md` | Benchmark against shadcn/ui, Radix UI, Chakra UI, and HeroUI.               |
-| Release              | `docs/open-source-release.md`    | npm, provenance, Pages, rollback, and release readiness checklist.          |
-| Roadmap              | `ROADMAP.md`                     | Staged project plan.                                                        |
+| Section              | File                              | Purpose                                                                           |
+| -------------------- | --------------------------------- | --------------------------------------------------------------------------------- |
+| Introduction         | `docs/index.md`                   | Public docs landing page and status.                                              |
+| AI/agent context     | `llms.txt`                        | Machine-readable map for docs, governance, release blockers, and gates.           |
+| Adoption             | `docs/adoption-guide.md`          | Who should adopt now, who should wait, and which proof is required.               |
+| Installation         | `docs/installation.md`            | Package install, peer dependencies, CSS imports, and Next.js usage.               |
+| Components           | `docs/component-inventory.md`     | Implemented and planned component inventory.                                      |
+| Component docs       | `docs/component-documentation.md` | Per-component page standard for usage, anatomy, API, visual states, and evidence. |
+| API                  | `docs/api-overview.md`            | Provider, modes, component API groups, and export shape.                          |
+| Accessibility        | `docs/accessibility.md`           | Native-first semantics, ARIA patterns, a11y gates, and release limits.            |
+| Theming              | `docs/design-principles.md`       | Material rules, mode policy, tokens, and fallback behavior.                       |
+| Browser Support      | `docs/browser-support.md`         | Enhanced, fallback, solid, and unsupported browser behavior.                      |
+| Visual Documentation | `docs/visual-documentation.md`    | Storybook Pages coverage, visual states, and screenshot evidence contract.        |
+| Testing              | `docs/testing.md`                 | Local gates, CI gates, Storybook, accessibility, and Kube reference checks.       |
+| Registry             | `docs/shadcn-registry.md`         | shadcn-compatible registry files and install path after npm publish.              |
+| Governance           | `docs/open-source-governance.md`  | Benchmark against shadcn/ui, Radix UI, Chakra UI, and HeroUI.                     |
+| Release              | `docs/open-source-release.md`     | npm, provenance, Pages, rollback, and release readiness checklist.                |
+| Roadmap              | `ROADMAP.md`                      | Staged project plan.                                                              |
 
 ## Component Navigation
 
@@ -68,6 +69,11 @@ flowchart TD
 | Feedback               | Alert, progress, spinner, toast, sonner.                                                                                                 |
 | Layout and interaction | Accordion, collapsible, carousel, resizable panels, scroll area, toggle, toggle group, button group.                                     |
 | Liquid reference       | Lens, search box, switch, slider, and music player bar reference states.                                                                 |
+
+Use `docs/component-documentation.md` when adding or reviewing per-component
+pages. It keeps component status, install honesty, anatomy, API, visual states,
+accessibility notes, registry entries, and verification commands in one
+repeatable shape.
 
 ## Visual Documentation
 
