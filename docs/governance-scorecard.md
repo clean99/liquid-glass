@@ -33,6 +33,9 @@ CHECK_REMOTE_GOVERNANCE=1 pnpm --silent audit:governance:json
 The remote-aware audit checks public GitHub state such as Pages, homepage,
 topics, wiki state, and repository visibility. It is not part of CI because
 repository settings can be unavailable to forks and local contributors.
+When GitHub's public API is unavailable or rate-limited, the JSON report keeps
+the local score and marks `remoteStatus.checked` as `false` instead of failing
+the automation.
 
 ## Score Areas
 
@@ -44,6 +47,7 @@ repository settings can be unavailable to forks and local contributors.
 | Release CI               | CI, release, visual, and Pages workflows use the expected gates.                    |
 | Registry distribution    | shadcn-style registry files are generated, tested, and honest about npm dependency. |
 | Storybook Pages          | The workflow can build and deploy Storybook after Pages is enabled.                 |
+| Visual documentation     | Storybook, screenshots, a11y, and reference gates describe the visual contract.     |
 | Dependency governance    | Dependabot updates are grouped so dependency noise stays manageable.                |
 | Security and attribution | Security policy, license, attributions, and reference provenance are present.       |
 | Publish readiness        | Changesets, package files, public publish config, and release docs are aligned.     |

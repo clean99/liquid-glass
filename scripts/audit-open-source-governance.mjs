@@ -36,9 +36,11 @@ const categoryChecks = [
       exists("docs/testing.md"),
       exists("docs/open-source-governance.md"),
       exists("docs/governance-scorecard.md"),
+      exists("docs/visual-documentation.md"),
       exists("docs/open-source-release.md"),
       exists("ROADMAP.md"),
       fileIncludes("docs/open-source-governance.md", "```mermaid"),
+      fileIncludes("docs/visual-documentation.md", "```mermaid"),
       fileIncludes("ROADMAP.md", "```mermaid")
     ]
   },
@@ -87,6 +89,20 @@ const categoryChecks = [
       workflowIncludes("pages.yml", "pnpm test:a11y"),
       scriptIncludes("storybook:build", "storybook build"),
       fileIncludes("docs/github-repository-settings.md", "Pages source")
+    ]
+  },
+  {
+    name: "visual-documentation",
+    checks: [
+      fileIncludes("README.md", "Visual documentation"),
+      fileIncludes("docs/visual-documentation.md", "Visual Documentation Contract"),
+      fileIncludes("docs/visual-documentation.md", "Storybook Pages"),
+      fileIncludes("docs/visual-documentation.md", "Light and dark"),
+      fileIncludes("docs/visual-documentation.md", "Reduced motion"),
+      fileIncludes("docs/visual-documentation.md", "High contrast"),
+      fileIncludes("docs/visual-documentation.md", "Mobile"),
+      fileIncludes("docs/visual-documentation.md", "Kube reference"),
+      fileIncludes("docs/open-source-governance.md", "Visual Documentation")
     ]
   },
   {
@@ -144,26 +160,37 @@ const categoryChecks = [
   }
 ];
 
-if (checkRemote) {
-  const repository = await fetchJson("https://api.github.com/repos/clean99/liquid-glass");
-  const pages = await fetchJson("https://api.github.com/repos/clean99/liquid-glass/pages", {
-    tolerateNotFound: true
-  });
+const remoteStatus = {
+  checked: false,
+  error: null,
+  requested: checkRemote
+};
 
-  categoryChecks.push({
-    name: "remote-repository-state",
-    checks: [
-      valueEquals(repository.private, false, "repository is public"),
-      valueEquals(repository.default_branch, "main", "default branch is main"),
-      valueEquals(repository.has_pages, true, "GitHub Pages is enabled"),
-      valueIncludes(repository.homepage, "http", "repository homepage is set"),
-      valueEquals(repository.has_wiki, false, "wiki is disabled when docs are canonical"),
-      arrayIncludes(repository.topics, "react", "topic react"),
-      arrayIncludes(repository.topics, "liquid-glass", "topic liquid-glass"),
-      arrayIncludes(repository.topics, "accessibility", "topic accessibility"),
-      valueIncludes(pages.html_url, "github.io", "Pages URL exists")
-    ]
-  });
+if (checkRemote) {
+  const remoteState = await fetchRemoteState();
+  remoteStatus.checked = remoteState.checked;
+  remoteStatus.error = remoteState.error;
+
+  if (remoteState.repository) {
+    categoryChecks.push({
+      name: "remote-repository-state",
+      checks: [
+        valueEquals(remoteState.repository.private, false, "repository is public"),
+        valueEquals(remoteState.repository.default_branch, "main", "default branch is main"),
+        valueEquals(remoteState.repository.has_pages, true, "GitHub Pages is enabled"),
+        valueIncludes(remoteState.repository.homepage, "http", "repository homepage is set"),
+        valueEquals(
+          remoteState.repository.has_wiki,
+          false,
+          "wiki is disabled when docs are canonical"
+        ),
+        arrayIncludes(remoteState.repository.topics, "react", "topic react"),
+        arrayIncludes(remoteState.repository.topics, "liquid-glass", "topic liquid-glass"),
+        arrayIncludes(remoteState.repository.topics, "accessibility", "topic accessibility"),
+        valueIncludes(remoteState.pages.html_url, "github.io", "Pages URL exists")
+      ]
+    });
+  }
 }
 
 const results = categoryChecks.map((category) => {
@@ -184,12 +211,16 @@ const report = {
   })),
   minScore: minScore > 0 ? minScore / 10 : null,
   overall,
-  remote: checkRemote
+  remote: checkRemote,
+  remoteStatus
 };
 
 if (jsonOutput) {
   console.log(JSON.stringify(report, null, 2));
 } else {
+  if (checkRemote && !remoteStatus.checked) {
+    console.log(`remote-repository-state: skipped (${remoteStatus.error})`);
+  }
   for (const result of results) {
     console.log(`${result.name}: ${result.score}/10 (${result.passed}/${result.total})`);
     for (const check of result.checks.filter((item) => !item.passed)) {
@@ -270,4 +301,27 @@ async function fetchJson(url, options = {}) {
   }
 
   return response.json();
+}
+
+async function fetchRemoteState() {
+  try {
+    const repository = await fetchJson("https://api.github.com/repos/clean99/liquid-glass");
+    const pages = await fetchJson("https://api.github.com/repos/clean99/liquid-glass/pages", {
+      tolerateNotFound: true
+    });
+
+    return {
+      checked: true,
+      error: null,
+      pages,
+      repository
+    };
+  } catch (error) {
+    return {
+      checked: false,
+      error: error instanceof Error ? error.message : String(error),
+      pages: {},
+      repository: null
+    };
+  }
 }

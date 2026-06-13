@@ -19,6 +19,7 @@ The goal is not generic glassmorphism. The library treats Liquid Glass as an opt
 - [API overview](docs/api-overview.md)
 - [Design principles](docs/design-principles.md)
 - [Governance scorecard](docs/governance-scorecard.md)
+- [Visual documentation](docs/visual-documentation.md)
 - [Testing strategy](docs/testing.md)
 - [shadcn-style registry](docs/shadcn-registry.md)
 - [Open-source governance](docs/open-source-governance.md)

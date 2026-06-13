@@ -67,11 +67,13 @@
         "component inventory parity",
         "registry distribution model",
         "source-readable component documentation",
-        "open-source governance benchmark"
+        "open-source governance benchmark",
+        "visual documentation benchmark"
       ],
       "requiredDocs": [
         "ATTRIBUTIONS.md",
         "docs/open-source-governance.md",
+        "docs/visual-documentation.md",
         "docs/shadcn-parity.json",
         "docs/shadcn-registry.md",
         "docs/component-inventory.json"
@@ -87,9 +89,14 @@
       "usedFor": [
         "accessibility-first primitives benchmark",
         "component boundary governance",
-        "public documentation benchmark"
+        "public documentation benchmark",
+        "visual documentation benchmark"
       ],
-      "requiredDocs": ["ATTRIBUTIONS.md", "docs/open-source-governance.md"]
+      "requiredDocs": [
+        "ATTRIBUTIONS.md",
+        "docs/open-source-governance.md",
+        "docs/visual-documentation.md"
+      ]
     },
     {
       "name": "chakra-ui/chakra-ui",
@@ -101,9 +108,14 @@
       "usedFor": [
         "contribution workflow benchmark",
         "issue routing benchmark",
-        "accessible component library governance"
+        "accessible component library governance",
+        "visual documentation benchmark"
       ],
-      "requiredDocs": ["ATTRIBUTIONS.md", "docs/open-source-governance.md"]
+      "requiredDocs": [
+        "ATTRIBUTIONS.md",
+        "docs/open-source-governance.md",
+        "docs/visual-documentation.md"
+      ]
     },
     {
       "name": "heroui-inc/heroui",
@@ -115,9 +127,14 @@
       "usedFor": [
         "component library governance benchmark",
         "template and CODEOWNERS benchmark",
-        "release workflow benchmark"
+        "release workflow benchmark",
+        "visual documentation benchmark"
       ],
-      "requiredDocs": ["ATTRIBUTIONS.md", "docs/open-source-governance.md"]
+      "requiredDocs": [
+        "ATTRIBUTIONS.md",
+        "docs/open-source-governance.md",
+        "docs/visual-documentation.md"
+      ]
     }
   ]
 }

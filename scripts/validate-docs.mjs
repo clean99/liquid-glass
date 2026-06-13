@@ -57,6 +57,7 @@ const packageRequiredFiles = [
   "docs/shadcn-registry.md",
   "docs/shadcn-parity.json",
   "docs/testing.md",
+  "docs/visual-documentation.md",
   "examples/README.md",
   "registry.json",
   "liquid-glass.json",
@@ -160,8 +161,24 @@ mustInclude("docs/governance-scorecard.md", [
   "pnpm test:governance",
   "pnpm --silent audit:governance:json",
   "CHECK_REMOTE_GOVERNANCE=1",
+  "remoteStatus.checked",
   "GitHub Pages",
   "not part of CI"
+]);
+
+mustInclude("docs/visual-documentation.md", [
+  "Visual Documentation Contract",
+  "shadcn/ui",
+  "Radix UI",
+  "Chakra UI",
+  "HeroUI",
+  "Storybook Pages",
+  "Light and dark",
+  "Reduced motion",
+  "High contrast",
+  "Mobile",
+  "Kube reference",
+  "Current Gaps"
 ]);
 
 mustInclude("docs/github-repository-settings.md", [

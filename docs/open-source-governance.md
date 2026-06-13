@@ -44,6 +44,12 @@ flowchart TD
 | `pnpm test:unit`              | Pure logic and component behavior stay covered.                                      |
 | `pnpm verify`                 | Release-candidate gate including visual, strict Kube reference, and package dry run. |
 
+## Visual Documentation
+
+The visual documentation contract lives in `docs/visual-documentation.md`. It
+keeps Storybook examples, visual snapshots, a11y checks, Pages deployment, and
+Kube reference claims tied to one standard instead of scattered prose.
+
 ## Current Gaps
 
 | Gap                              | Risk                                                                   | Next action                                                                 |

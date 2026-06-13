@@ -159,6 +159,7 @@ const packageRequiredFiles = [
   "docs/open-source-release.md",
   "docs/shadcn-registry.md",
   "docs/testing.md",
+  "docs/visual-documentation.md",
   "docs/component-inventory.md",
   "examples/README.md",
   "registry.json",
@@ -216,6 +217,10 @@ mustInclude("docs/open-source-release.md", "pnpm test:governance");
 mustInclude("docs/open-source-release.md", "pnpm test:component-coverage");
 mustInclude("docs/governance-scorecard.md", "CHECK_REMOTE_GOVERNANCE=1");
 mustInclude("docs/governance-scorecard.md", "pnpm --silent audit:governance:json");
+mustInclude("docs/governance-scorecard.md", "remoteStatus.checked");
+mustInclude("docs/visual-documentation.md", "Visual Documentation Contract");
+mustInclude("docs/visual-documentation.md", "Storybook Pages");
+mustInclude("docs/visual-documentation.md", "Kube reference");
 mustInclude("docs/github-repository-settings.md", "build_type=workflow");
 mustInclude("docs/open-source-release.md", "pnpm test:kube-reference:strict");
 mustInclude("docs/open-source-release.md", "pnpm pack --dry-run");
