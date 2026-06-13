@@ -2,10 +2,17 @@ name: Visual Regression
 
 on:
   pull_request:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+concurrency:
+  group: visual-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   visual:

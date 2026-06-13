@@ -173,6 +173,7 @@ mustInclude("docs/open-source-governance.md", [
   "pnpm test:component-coverage",
   "pnpm test:visual-docs",
   "pnpm test:a11y",
+  "main push",
   "Current Gaps",
   "Release Flow"
 ]);
@@ -196,6 +197,7 @@ mustInclude("docs/ui-library-benchmark.md", [
   "mermaid",
   "Public Benchmark Surface",
   "Support routing",
+  "Visual regression signal",
   "Local governance gate",
   "Public launch score",
   "Visual Documentation Gaps",
@@ -233,6 +235,7 @@ mustInclude("docs/github-repository-settings.md", [
   "Maintainer Commands",
   "gh api",
   "build_type=workflow",
+  "deploy is skipped",
   "has_wiki=false",
   "CHECK_REMOTE_GOVERNANCE=1 pnpm audit:governance"
 ]);

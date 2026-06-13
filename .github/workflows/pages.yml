@@ -21,6 +21,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      pages-enabled: ${{ steps.pages-settings.outputs.enabled }}
     steps:
       - uses: actions/checkout@v6
 
@@ -39,14 +41,34 @@ jobs:
       - run: pnpm test:a11y
       - run: pnpm storybook:build
 
+      - id: pages-settings
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          status="$(
+            curl -sS -o /dev/null -w "%{http_code}" \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages"
+          )"
+          if [ "${status}" = "200" ]; then
+            echo "enabled=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "enabled=false" >> "${GITHUB_OUTPUT}"
+            echo "::notice::GitHub Pages is not enabled for this repository; Storybook deploy is skipped."
+          fi
+
       - uses: actions/configure-pages@v5
+        if: steps.pages-settings.outputs.enabled == 'true'
 
       - uses: actions/upload-pages-artifact@v5
+        if: steps.pages-settings.outputs.enabled == 'true'
         with:
           path: storybook-static
 
   deploy:
     needs: build
+    if: needs.build.outputs.pages-enabled == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

@@ -223,12 +223,18 @@ if (isStandaloneRepository) {
   mustInclude(".github/workflows/ci.yml", "pnpm test:a11y");
   mustInclude(".github/workflows/ci.yml", "pnpm test:e2e");
   mustInclude(".github/workflows/ci.yml", "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24");
+  mustInclude(".github/workflows/visual.yml", "branches:");
+  mustInclude(".github/workflows/visual.yml", "- main");
+  mustInclude(".github/workflows/visual.yml", "pnpm test:visual");
   mustInclude(".github/workflows/visual.yml", "pnpm test:kube-reference:strict");
   mustInclude(".github/workflows/release.yml", "pnpm verify");
   mustInclude(".github/workflows/release.yml", "NPM_TOKEN");
   mustInclude(".github/workflows/release.yml", "NPM_CONFIG_PROVENANCE");
   mustInclude(".github/workflows/release.yml", "id-token: write");
   mustInclude(".github/workflows/pages.yml", "actions/deploy-pages");
+  mustInclude(".github/workflows/pages.yml", "pages-settings");
+  mustInclude(".github/workflows/pages.yml", "Storybook deploy is skipped");
+  mustInclude(".github/workflows/pages.yml", "needs.build.outputs.pages-enabled");
 }
 mustInclude("docs/open-source-release.md", "pnpm test:release-readiness");
 mustInclude("docs/open-source-release.md", "pnpm test:governance");

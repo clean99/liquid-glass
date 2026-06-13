@@ -50,6 +50,9 @@ flowchart TD
 | `pnpm test:a11y`               | Storybook examples stay free of critical and serious axe violations.                 |
 | `pnpm verify`                  | Release-candidate gate including visual, strict Kube reference, and package dry run. |
 
+Visual Regression runs on pull requests and every main push so the default
+branch has a public visual gate signal, not only local evidence.
+
 ## Visual Documentation
 
 The visual documentation contract lives in `docs/visual-documentation.md`. It
@@ -61,7 +64,7 @@ Kube reference claims tied to one standard instead of scattered prose.
 | Gap                              | Risk                                                                   | Next action                                                                 |
 | -------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | npm package is not published     | Consumers cannot install package or package-backed registry items yet. | Keep docs explicit until the first successful release.                      |
-| GitHub Pages is not enabled      | Storybook build can pass while deploy setup fails.                     | Set Pages source to GitHub Actions in repository settings.                  |
+| GitHub Pages is not enabled      | Storybook deploy is skipped while the public docs URL is unavailable.  | Set Pages source to GitHub Actions in repository settings.                  |
 | `main` is not protected yet      | Broken commits can land after the first green run.                     | Require `ci` and `visual` once both are stable.                             |
 | Dependabot can open too many PRs | Dependency noise hides real release work.                              | Group actions, Storybook, test tooling, runtime engines, and React updates. |
 | Exact Kube parity is incomplete  | Overclaiming 1:1 parity would mislead users.                           | Keep exact parity separate from release readiness until it passes.          |

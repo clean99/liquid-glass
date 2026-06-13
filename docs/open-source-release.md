@@ -110,16 +110,18 @@ attestation.
 
 The `pages.yml` workflow installs Chromium, runs `pnpm test:a11y`, builds
 Storybook, and deploys it through GitHub Pages Actions. Repository settings must
-use "GitHub Actions" as the Pages source. If `actions/configure-pages` fails
-after Storybook builds successfully, check the repository Pages setting before
-changing application code.
+use "GitHub Actions" as the Pages source. If Pages is not enabled yet, the
+workflow skips deploy after Storybook and a11y succeed; check the repository
+Pages setting before changing application code.
 
 ## Visual Regression
 
 The `visual.yml` workflow runs deterministic Playwright visual snapshots and
 `pnpm test:kube-reference:strict`. The strict Kube gate captures the public
 reference and local Storybook with real pointer input for idle, pressed, and
-dragged states. Do not replace it with the looser command for pull requests.
+dragged states. It runs for pull requests and every `main` push so maintainers
+can require a public visual regression signal before a release. Do not replace
+it with the looser command for pull requests.
 
 ## Rollback
 

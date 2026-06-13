@@ -61,8 +61,8 @@ the automation.
 
 As of June 13, 2026, the known remote gaps are:
 
-- GitHub Pages is not enabled, so `actions/configure-pages` fails after
-  Storybook builds successfully.
+- GitHub Pages is not enabled, so Storybook deploy is skipped after the local
+  build and a11y gate.
 - The repository homepage is empty until Pages succeeds.
 - Wiki is enabled even though repository docs are the canonical source.
 - Discussions are disabled, so issue template contact links should not point

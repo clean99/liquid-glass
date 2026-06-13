@@ -79,6 +79,10 @@ const categoryChecks = [
       scriptIncludes("verify", "pnpm test:kube-reference:strict"),
       workflowIncludes("ci.yml", 'node-version: "24"'),
       workflowIncludes("ci.yml", "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24"),
+      workflowIncludes("visual.yml", "branches:"),
+      workflowIncludes("visual.yml", "- main"),
+      workflowIncludes("visual.yml", "pnpm test:visual"),
+      workflowIncludes("visual.yml", "pnpm test:kube-reference:strict"),
       workflowIncludes("release.yml", "pnpm verify"),
       workflowIncludes("release.yml", "NPM_CONFIG_PROVENANCE"),
       workflowIncludes("release.yml", "id-token: write")
@@ -100,6 +104,8 @@ const categoryChecks = [
     checks: [
       workflowIncludes("pages.yml", "actions/configure-pages"),
       workflowIncludes("pages.yml", "actions/deploy-pages"),
+      workflowIncludes("pages.yml", "pages-settings"),
+      workflowIncludes("pages.yml", "Storybook deploy is skipped"),
       workflowIncludes("pages.yml", "pnpm test:a11y"),
       scriptIncludes("storybook:build", "storybook build"),
       fileIncludes("docs/github-repository-settings.md", "Pages source")

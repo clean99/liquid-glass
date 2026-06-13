@@ -54,9 +54,12 @@ gh repo create clean99/liquid-glass \
 
 As of June 13, 2026, the public repository exists and has the expected
 description, topics, license, and default branch. The GitHub API reports no
-Pages site yet, so a Pages workflow failure at `actions/configure-pages` should
-be treated as a repository-setting issue until Pages is enabled with GitHub
-Actions as the source.
+Pages site yet, so deployment remains a repository-setting issue until Pages is
+enabled with GitHub Actions as the source.
+
+The Pages workflow still builds Storybook and runs the a11y gate. If the
+repository Pages API reports that Pages is not enabled yet, deploy is skipped
+with a workflow notice instead of making the docs build look broken.
 
 Discussions are currently disabled. Keep the issue template contact link pointed
 at Discussions only after that feature is enabled, or use Issues for structured
