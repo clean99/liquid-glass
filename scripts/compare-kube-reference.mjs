@@ -527,7 +527,11 @@ async function applyPointerAction(page, handle, action) {
       .catch(() => undefined);
     await page.waitForTimeout(120);
 
-    const before = await readPointerActionSample(page, handle);
+    let before = await readPointerActionSample(page, handle);
+    if (await scrollActionPointIntoViewport(page, before, action)) {
+      await page.waitForTimeout(120);
+      before = await readPointerActionSample(page, handle);
+    }
     const box = before.box;
 
     if (!isActionPointInViewport(before, action)) {
@@ -578,6 +582,36 @@ async function applyPointerAction(page, handle, action) {
   }
 
   throw new Error(lastRejection ?? describePointerActionFailure(action, lastMetrics));
+}
+
+async function scrollActionPointIntoViewport(page, sample, action) {
+  const margin = 48;
+  const pointX = sample.box.x + sample.box.width * action.point.x;
+  const pointY = sample.box.y + sample.box.height * action.point.y;
+  const scrollX =
+    pointX < margin
+      ? pointX - margin
+      : pointX > sample.viewport.width - margin
+        ? pointX - (sample.viewport.width - margin)
+        : 0;
+  const scrollY =
+    pointY < margin
+      ? pointY - margin
+      : pointY > sample.viewport.height - margin
+        ? pointY - (sample.viewport.height - margin)
+        : 0;
+
+  if (scrollX === 0 && scrollY === 0) {
+    return false;
+  }
+
+  await page.evaluate(
+    ({ left, top }) => {
+      window.scrollBy({ behavior: "instant", left, top });
+    },
+    { left: scrollX, top: scrollY }
+  );
+  return true;
 }
 
 async function captureReferenceScreenshot(page, subject, action, captureMode, screenshotPath) {
