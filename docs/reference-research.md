@@ -3,7 +3,14 @@
 This project studies public Liquid Glass implementations, but it does not copy
 third-party source into the package.
 
+All external research sources are tracked in `docs/reference-provenance.json` and
+checked by `pnpm test:research`. That file is the source of truth for inspected
+commits, licenses, attribution docs, and whether any third-party source was
+copied. The allowed copied-source state is `false`.
+
 ## Kube Liquid Glass Article
+
+Reference URL: `https://kube.io/blog/liquid-glass-css-svg/`.
 
 Chris Feijoo's Liquid Glass article is the visual and behavioral reference for
 the component demos. The observable target is:
@@ -174,6 +181,8 @@ Useful implementation patterns:
 This research is expanded in `docs/rdev-liquid-glass-react.md`. The concrete
 takeaway is now represented by `sampleLiquidEdgeMask()` and
 `resolveLiquidElasticResponse()` instead of copied implementation code.
+The pinned research commit and MIT license are also recorded in
+`docs/reference-provenance.json`.
 
 Rejected patterns:
 

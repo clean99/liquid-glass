@@ -48,6 +48,7 @@ const packageRequiredFiles = [
   "docs/kube-parity-gate.md",
   "docs/open-source-release.md",
   "docs/optics-architecture.md",
+  "docs/reference-provenance.json",
   "docs/reference-research.md",
   "docs/rdev-liquid-glass-react.md",
   "docs/shadcn-registry.md",
@@ -61,8 +62,10 @@ const packageRequiredFiles = [
   "scripts/validate-component-test-coverage.mjs",
   "scripts/check-release-readiness.mjs",
   "scripts/check-shadcn-parity.mjs",
+  "scripts/validate-reference-provenance.mjs",
   "scripts/verify-storybook-a11y.mjs",
   "schema/component-inventory.schema.json",
+  "schema/reference-provenance.schema.json",
   "schema/shadcn-parity.schema.json"
 ];
 
@@ -97,6 +100,7 @@ mustInclude("README.md", [
   "test:inventory",
   "test:component-coverage",
   "test:registry",
+  "test:research",
   "test:shadcn-parity",
   "test:release-readiness",
   "test:kube-reference",
@@ -121,6 +125,7 @@ mustInclude("docs/shadcn-registry.md", [
   "raw.githubusercontent.com/clean99/liquid-glass/main/liquid-glass.json",
   "registry/components",
   "test:registry",
+  "test:research",
   "test:shadcn-parity",
   "ui.shadcn.com/docs/registry"
 ]);
@@ -154,6 +159,15 @@ mustInclude("docs/reference-research.md", [
   "Pressed and dragged lens screenshots",
   "test:kube-reference:strict",
   "shadcn/ui Registry Pattern"
+]);
+
+mustInclude("docs/reference-provenance.json", [
+  "rdev/liquid-glass-react",
+  "ac48eab18d1f7f444ae30002d240cae29c863a21",
+  "copiedSource",
+  "false",
+  "Kube Liquid Glass CSS SVG article",
+  "shadcn/ui"
 ]);
 
 mustInclude("docs/kube-parity-gate.md", [
@@ -256,6 +270,9 @@ if (fs.existsSync(path.join(root, "package.json"))) {
   if (!packageJson.scripts?.["test:release-readiness"]) {
     errors.push("package.json must include test:release-readiness");
   }
+  if (!packageJson.scripts?.["test:research"]) {
+    errors.push("package.json must include test:research");
+  }
   if (!packageJson.scripts?.["test:kube-reference:strict"]?.includes("KUBE_STRICT_INTERACTIVE=1")) {
     errors.push("package.json test:kube-reference:strict must enable strict Kube interactions");
   }
@@ -276,6 +293,11 @@ if (fs.existsSync(path.join(root, "package.json"))) {
     )
   ) {
     errors.push("package.json test:release-readiness must run the release readiness gate");
+  }
+  if (
+    !packageJson.scripts?.["test:research"]?.includes("scripts/validate-reference-provenance.mjs")
+  ) {
+    errors.push("package.json test:research must run the reference provenance gate");
   }
   if (!packageJson.scripts?.["test:e2e"]?.includes("verify-liquid-behavior.mjs")) {
     errors.push("package.json test:e2e must run the real Storybook interaction gate");
@@ -312,6 +334,7 @@ for (const script of [
   "test:inventory",
   "test:component-coverage",
   "test:registry",
+  "test:research",
   "test:shadcn-parity",
   "test:release-readiness",
   "test:kube-reference",

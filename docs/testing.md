@@ -8,6 +8,7 @@ pnpm typecheck
 pnpm test:docs
 pnpm test:inventory
 pnpm test:component-coverage
+pnpm test:research
 pnpm test:unit
 pnpm test:a11y
 pnpm test:e2e
@@ -97,6 +98,13 @@ box as if the interaction had failed.
 
 `pnpm test:docs` verifies the open-source repository contract: required GitHub
 templates, registry files, docs, attributions, testing notes, and package scripts.
+
+`pnpm test:research` verifies the structured external-reference provenance in
+`docs/reference-provenance.json`. It keeps implementation references, visual
+references, licenses, inspected commits, required docs, and the "no copied
+third-party source" constraint reviewable. By default it is local and stable for
+CI. Run `CHECK_REMOTE_REFS=1 pnpm test:research` during manual release review to
+verify pinned commits against public remotes.
 
 `pnpm test:component-coverage` verifies that every implemented component in
 `docs/component-inventory.json` is imported and exercised in

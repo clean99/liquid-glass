@@ -38,6 +38,7 @@ those files already live in this repository.
 - `SECURITY.md`
 - `CODE_OF_CONDUCT.md`
 - `CHANGELOG.md`
+- `docs/reference-provenance.json`
 - `.github/workflows/ci.yml`
 - `.github/workflows/visual.yml`
 - `.github/workflows/pages.yml`
@@ -59,17 +60,22 @@ The shadcn-style registry distribution model is tracked in
 1. Run `pnpm test:component-coverage` and `pnpm test:release-readiness` to
    validate component behavior coverage, package metadata, workflows, docs,
    registry files, Changesets, and strict release gates.
-2. Run `pnpm verify`.
-3. Run `pnpm test:kube-reference:strict` for release-candidate visual parity.
-4. Confirm `pnpm pack --dry-run` includes only package, docs, examples, registry,
+2. Run `pnpm test:research` to validate external reference provenance, licenses,
+   inspected commits, and the no-copied-source policy.
+3. For manual release review, run
+   `CHECK_REMOTE_REFS=1 pnpm test:research` to verify pinned research commits
+   against public remotes.
+4. Run `pnpm verify`.
+5. Run `pnpm test:kube-reference:strict` for release-candidate visual parity.
+6. Confirm `pnpm pack --dry-run` includes only package, docs, examples, registry,
    schema, license, README, and attribution files.
-5. Add a changeset for user-visible changes.
-6. Merge to `main`.
-7. Run the release workflow manually after reviewing the generated version PR.
-8. The release workflow runs `pnpm verify`, then uses Changesets to either open
-   a version PR or publish the already-versioned package with `pnpm release`.
-   The workflow sets `NPM_CONFIG_PROVENANCE=true` so npm receives a GitHub
-   Actions provenance statement for published artifacts.
+7. Add a changeset for user-visible changes.
+8. Merge to `main`.
+9. Run the release workflow manually after reviewing the generated version PR.
+10. The release workflow runs `pnpm verify`, then uses Changesets to either open
+    a version PR or publish the already-versioned package with `pnpm release`.
+    The workflow sets `NPM_CONFIG_PROVENANCE=true` so npm receives a GitHub
+    Actions provenance statement for published artifacts.
 
 Publishing requires repository secrets:
 

@@ -51,6 +51,7 @@ pnpm test:docs
 pnpm test:inventory
 pnpm test:component-coverage
 pnpm test:registry
+pnpm test:research
 pnpm test:shadcn-parity
 pnpm test:release-readiness
 pnpm test:unit
@@ -400,6 +401,14 @@ parity against the public reference.
 docs and inventory validation, unit/component/physics checks, Storybook
 behavior checks, build/package checks, visual regression, Kube reference
 strict comparison, and `pnpm pack --dry-run`.
+
+`pnpm test:research` validates the structured reference provenance file used for
+external research, licensing, and attribution. It confirms that Kube, HASH
+Refractive, rdev/liquid-glass-react, shuding/liquid-glass, and shadcn/ui are
+documented as references only and that no third-party source code is marked as
+copied. For a stronger manual audit, run
+`CHECK_REMOTE_REFS=1 pnpm test:research` to verify pinned Git commits that are
+advertised by their public remotes.
 
 ## shadcn-style Registry
 

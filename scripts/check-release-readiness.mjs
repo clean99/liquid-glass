@@ -76,6 +76,7 @@ for (const script of [
   "test:inventory",
   "test:component-coverage",
   "test:registry",
+  "test:research",
   "test:shadcn-parity",
   "test:unit",
   "test:components",
@@ -97,6 +98,7 @@ for (const script of [
 }
 
 mustScript(packageJson, "test:release-readiness", ["scripts/check-release-readiness.mjs"]);
+mustScript(packageJson, "test:research", ["scripts/validate-reference-provenance.mjs"]);
 mustScript(packageJson, "test:component-coverage", [
   "scripts/validate-component-test-coverage.mjs"
 ]);
@@ -111,7 +113,11 @@ mustScript(packageJson, "test:a11y", ["verify-storybook-a11y.mjs"]);
 mustScript(packageJson, "test:e2e", ["verify-liquid-behavior.mjs"]);
 mustScript(packageJson, "test:storybook", ["verify-enhanced-storybook.mjs"]);
 mustScript(packageJson, "test:package", ["tests/package-exports.mjs"]);
-mustScript(packageJson, "ci", ["pnpm test:component-coverage", "pnpm test:release-readiness"]);
+mustScript(packageJson, "ci", [
+  "pnpm test:research",
+  "pnpm test:component-coverage",
+  "pnpm test:release-readiness"
+]);
 mustScript(packageJson, "verify", [
   "pnpm run ci",
   "pnpm test:visual",
@@ -169,6 +175,7 @@ if (isStandaloneRepository) {
 
 if (isStandaloneRepository) {
   mustInclude(".github/workflows/ci.yml", "pnpm test:release-readiness");
+  mustInclude(".github/workflows/ci.yml", "pnpm test:research");
   mustInclude(".github/workflows/ci.yml", "pnpm test:component-coverage");
   mustInclude(".github/workflows/ci.yml", "pnpm test:a11y");
   mustInclude(".github/workflows/ci.yml", "pnpm test:e2e");

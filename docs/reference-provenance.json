@@ -1,0 +1,78 @@
+{
+  "$schema": "../schema/reference-provenance.schema.json",
+  "description": "External references used for Liquid Glass research, attribution, and parity gates. This file is validated by scripts/validate-reference-provenance.mjs.",
+  "references": [
+    {
+      "name": "@hashintel/refractive",
+      "kind": "dependency",
+      "url": "https://github.com/hashintel/hash/tree/main/libs/@hashintel/refractive",
+      "license": "MIT OR Apache-2.0",
+      "commit": null,
+      "copiedSource": false,
+      "usedFor": ["enhanced refraction engine", "React engine boundary", "progressive enhancement"],
+      "requiredDocs": ["ATTRIBUTIONS.md", "README.md", "docs/optics-architecture.md"]
+    },
+    {
+      "name": "Kube Liquid Glass CSS SVG article",
+      "kind": "visual-reference",
+      "url": "https://kube.io/blog/liquid-glass-css-svg/",
+      "license": "article reference only",
+      "commit": null,
+      "copiedSource": false,
+      "usedFor": [
+        "visual target",
+        "two-pass SVG filter contract",
+        "pointer press and drag behavior",
+        "pixel parity gate"
+      ],
+      "requiredDocs": ["ATTRIBUTIONS.md", "docs/reference-research.md", "docs/kube-parity-gate.md"]
+    },
+    {
+      "name": "rdev/liquid-glass-react",
+      "kind": "implementation-reference",
+      "url": "https://github.com/rdev/liquid-glass-react",
+      "license": "MIT",
+      "commit": "ac48eab18d1f7f444ae30002d240cae29c863a21",
+      "copiedSource": false,
+      "usedFor": [
+        "edge-only refraction model",
+        "bounded pointer elasticity",
+        "chromatic aberration research",
+        "mode and pointer API comparison"
+      ],
+      "requiredDocs": [
+        "ATTRIBUTIONS.md",
+        "docs/reference-research.md",
+        "docs/rdev-liquid-glass-react.md"
+      ]
+    },
+    {
+      "name": "shuding/liquid-glass",
+      "kind": "research-trail",
+      "url": "https://github.com/shuding/liquid-glass",
+      "license": "MIT",
+      "commit": null,
+      "copiedSource": false,
+      "usedFor": ["attribution trail from rdev/liquid-glass-react"],
+      "requiredDocs": ["ATTRIBUTIONS.md"]
+    },
+    {
+      "name": "shadcn/ui",
+      "kind": "api-and-registry-reference",
+      "url": "https://ui.shadcn.com/docs/components",
+      "license": "MIT",
+      "commit": null,
+      "copiedSource": false,
+      "usedFor": [
+        "component inventory parity",
+        "registry distribution model",
+        "source-readable component documentation"
+      ],
+      "requiredDocs": [
+        "docs/shadcn-parity.json",
+        "docs/shadcn-registry.md",
+        "docs/component-inventory.json"
+      ]
+    }
+  ]
+}

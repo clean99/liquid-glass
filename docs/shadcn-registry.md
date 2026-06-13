@@ -52,6 +52,7 @@ not vendor the component implementation into the consumer app.
 pnpm test:inventory
 pnpm registry:build
 pnpm test:registry
+pnpm test:research
 pnpm test:shadcn-parity
 ```
 
@@ -59,6 +60,10 @@ pnpm test:shadcn-parity
 `registry/components/*.json` from `docs/component-inventory.json`.
 
 `pnpm test:registry` fails if the generated registry drifts from the inventory.
+
+`pnpm test:research` verifies that shadcn/ui is tracked as an external registry
+reference in `docs/reference-provenance.json`, alongside license and
+no-copied-source constraints.
 
 `pnpm test:shadcn-parity` checks the local shadcn baseline against the current
 public shadcn/ui component index. Use `pnpm shadcn:sync` only after deciding how
