@@ -552,6 +552,8 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain(
       "Drag action produced an implausible movement or deformation sample"
     );
+    expect(kubeReferenceCompareSource).toContain("Drag action did not move the lens enough");
+    expect(kubeReferenceCompareSource).toContain("Press action did not deform the lens enough");
     expect(kubeReferenceCompareSource).toContain("currentTargetElement = await findTargetDemo");
   });
 

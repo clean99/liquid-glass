@@ -559,10 +559,15 @@ async function applyTargetActionWithPageRecovery(page, reference, targetElement)
 }
 
 function isRecoverableTargetActionError(error, action) {
+  if (!action || !(error instanceof Error)) {
+    return false;
+  }
+
   return (
-    action?.kind === "drag" &&
-    error instanceof Error &&
-    error.message.includes("implausible movement or deformation sample")
+    (action.kind === "drag" &&
+      error.message.includes("implausible movement or deformation sample")) ||
+    error.message.includes("Drag action did not move the lens enough") ||
+    error.message.includes("Press action did not deform the lens enough")
   );
 }
 

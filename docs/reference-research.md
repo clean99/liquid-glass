@@ -234,7 +234,10 @@ That is not a parity signal: it means the live reference handle jumped outside
 the capture coordinate system before a screenshot could be taken. The target
 action wrapper now treats that exact implausible drag failure as recoverable,
 reloads the Kube page, reacquires the demo and handle, and reruns the real
-pointer path before failing the gate.
+pointer path before failing the gate. The same target-page recovery covers
+transient public-reference samples where press produces no deformation or drag
+produces no movement after the internal pointer retries. Candidate Storybook
+failures are not recovered this way; they still fail the gate.
 
 `pnpm test:kube-reference:strict` sets `KUBE_STRICT_INTERACTIVE=1` and promotes
 the release-candidate path used by CI and manual reviews. The current measured
