@@ -10,7 +10,7 @@ import {
   LiquidTypography,
   type LiquidChartConfig
 } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const chartData = [
   { month: "Jan", desktop: 186, mobile: 80 },
@@ -40,7 +40,15 @@ const chartConfig = {
 
 const meta = {
   title: "Liquid Glass/Chart",
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["chart"],
+      evidence: ["Storybook states", "component unit test", "visual snapshot"],
+      profiles: ["data"],
+      stateTags: ["default", "dense content", "long labels", "responsive"]
+    })
+  }
 } satisfies Meta;
 
 export default meta;

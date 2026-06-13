@@ -1,11 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { LiquidCard, LiquidPill } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidCard",
   component: LiquidCard,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["card"],
+      evidence: ["Storybook states", "component unit test", "visual snapshot"],
+      profiles: ["layout"],
+      stateTags: ["default", "nested surface", "dense content", "responsive"]
+    })
+  }
 } satisfies Meta<typeof LiquidCard>;
 
 export default meta;

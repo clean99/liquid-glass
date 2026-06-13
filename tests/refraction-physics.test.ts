@@ -693,6 +693,37 @@ describe("Liquid Glass physics contract", () => {
     expect(body).not.toContain("0 1px 2px rgba(0, 0, 0");
   });
 
+  it("runs real browser focus audits for foundation, navigation, calendar, data, and layout primitives", () => {
+    const auditedFocusTargets = [
+      "breadcrumb",
+      "checkbox",
+      "radioGroup",
+      "pagination",
+      "scrollArea",
+      "dataTableSort",
+      "sidebarMenuButton",
+      "sidebarMenuAction",
+      "sidebarRail",
+      "calendarNav",
+      "calendarDay",
+      "resizableHandle"
+    ];
+
+    for (const target of auditedFocusTargets) {
+      expect(verifyLiquidBehaviorSource).toContain(`name: "${target}"`);
+    }
+
+    expect(verifyLiquidBehaviorSource).toContain("const focusAuditTargets = [");
+    expect(verifyLiquidBehaviorSource).toContain(
+      "verifyFocusMaterial(target.name, target.options)"
+    );
+    expect(verifyLiquidBehaviorSource).toContain("focusAuditResults.push");
+    expect(verifyLiquidBehaviorSource).toContain("focus-material-audit.json");
+    expect(verifyLiquidBehaviorSource).toContain(
+      "const minimumFocusAuditCount = focusAuditTargets.length"
+    );
+  });
+
   it("removes elastic focus transforms for every frosted focus target in reduced motion", () => {
     const reducedMotionBlock = Array.from(
       styles.matchAll(/@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n\}/g),

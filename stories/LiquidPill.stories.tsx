@@ -1,11 +1,25 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { LiquidPill } from "../src";
-import { longChineseText, longEnglishText, mixedText, StoryFrame } from "./story-fixtures";
+import {
+  longChineseText,
+  longEnglishText,
+  mixedText,
+  storyVisualState,
+  StoryFrame
+} from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidPill",
   component: LiquidPill,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["pill"],
+      evidence: ["Storybook states", "visual snapshot"],
+      profiles: ["display"],
+      stateTags: ["default", "variant", "long content"]
+    })
+  }
 } satisfies Meta<typeof LiquidPill>;
 
 export default meta;

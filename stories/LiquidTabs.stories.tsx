@@ -1,12 +1,26 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { LiquidTabs } from "../src";
-import { longChineseText, longEnglishText, mixedText, StoryFrame } from "./story-fixtures";
+import {
+  longChineseText,
+  longEnglishText,
+  mixedText,
+  storyVisualState,
+  StoryFrame
+} from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidTabs",
   component: LiquidTabs,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["tabs"],
+      evidence: ["Storybook states", "component unit test", "visual snapshot"],
+      profiles: ["navigation"],
+      stateTags: ["default", "focus-visible", "selected", "long labels"]
+    })
+  }
 } satisfies Meta<typeof LiquidTabs>;
 
 export default meta;

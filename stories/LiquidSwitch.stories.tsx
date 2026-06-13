@@ -1,11 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { LiquidProvider, LiquidSwitch } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidSwitch",
   component: LiquidSwitch,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["switch"],
+      evidence: ["Storybook states", "Kube reference gate", "visual snapshot"],
+      profiles: ["control"],
+      stateTags: ["default", "selected", "disabled", "Kube reference"]
+    })
+  }
 } satisfies Meta<typeof LiquidSwitch>;
 
 export default meta;

@@ -1,11 +1,20 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { LiquidMusicPlayerBar, LiquidProvider, LiquidSearchBox } from "../src";
 import { kubeReferenceMusicAlbumAssets } from "./kube-reference-assets";
+import { storyVisualState } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidMusicPlayerBar",
   component: LiquidMusicPlayerBar,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["music-player-bar"],
+      evidence: ["Storybook states", "Chrome pageAssets capture", "visual snapshot"],
+      profiles: ["reference"],
+      stateTags: ["default", "loaded media", "Kube reference"]
+    })
+  }
 } satisfies Meta<typeof LiquidMusicPlayerBar>;
 
 export default meta;

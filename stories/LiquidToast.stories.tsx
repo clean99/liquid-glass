@@ -1,11 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { LiquidButton, LiquidToast, LiquidToaster, liquidToast } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidToast",
   component: LiquidToast,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["sonner", "toast"],
+      evidence: ["Storybook states", "component unit test", "a11y scan"],
+      profiles: ["feedback"],
+      stateTags: ["default", "dismissible", "live region", "loading"]
+    })
+  }
 } satisfies Meta<typeof LiquidToast>;
 
 export default meta;

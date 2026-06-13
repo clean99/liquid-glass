@@ -5,7 +5,7 @@ import {
   LiquidProvider,
   LiquidTypography
 } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 type ReleaseRow = {
   component: string;
@@ -76,7 +76,15 @@ const columns: LiquidDataTableColumnDef<ReleaseRow>[] = [
 
 const meta = {
   title: "Liquid Glass/Data Table",
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["data-table"],
+      evidence: ["Storybook states", "component unit test", "visual snapshot"],
+      profiles: ["data"],
+      stateTags: ["default", "sorted", "filtered", "dense content", "overflow"]
+    })
+  }
 } satisfies Meta;
 
 export default meta;

@@ -82,6 +82,7 @@ for (const component of implemented) {
 }
 
 validateStoryEvidence(coverage.storyEvidence ?? []);
+validateComponentStoryMetadata();
 
 if (errors.length > 0) {
   throw new Error(
@@ -162,6 +163,56 @@ function validateStoryEvidence(entries) {
     for (const stateTag of entry.stateTags ?? []) {
       if (!storySource.includes(`"${stateTag}"`)) {
         errors.push(`${entry.name}: visualState metadata must include state tag ${stateTag}`);
+      }
+    }
+  }
+}
+
+function validateComponentStoryMetadata() {
+  const componentsByStory = new Map();
+
+  for (const component of implemented) {
+    if (!component.story) {
+      continue;
+    }
+
+    const storyCoverage = componentsByStory.get(component.story) ?? {
+      components: [],
+      profiles: new Set()
+    };
+
+    storyCoverage.components.push(component.name);
+    storyCoverage.profiles.add(component.category);
+    componentsByStory.set(component.story, storyCoverage);
+  }
+
+  for (const [story, storyCoverage] of componentsByStory.entries()) {
+    const storyPath = path.join(root, story);
+
+    if (!fs.existsSync(storyPath)) {
+      errors.push(`${story}: component story file is missing`);
+      continue;
+    }
+
+    const storySource = fs.readFileSync(storyPath, "utf8");
+
+    if (!storySource.includes("visualState")) {
+      errors.push(`${story}: missing component-wide visualState metadata`);
+    }
+
+    if (!storySource.includes("storyVisualState")) {
+      errors.push(`${story}: visualState metadata must use storyVisualState`);
+    }
+
+    for (const componentName of storyCoverage.components) {
+      if (!storySource.includes(`"${componentName}"`)) {
+        errors.push(`${story}: visualState metadata must list component ${componentName}`);
+      }
+    }
+
+    for (const profileName of storyCoverage.profiles) {
+      if (!storySource.includes(`"${profileName}"`)) {
+        errors.push(`${story}: visualState metadata must list profile ${profileName}`);
       }
     }
   }

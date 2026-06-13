@@ -1,6 +1,13 @@
 import type { ReactNode } from "react";
 import { LiquidProvider, type LiquidMode } from "../src";
 
+export type StoryVisualStateMetadata = {
+  components: string[];
+  evidence: string[];
+  profiles: string[];
+  stateTags: string[];
+};
+
 const fontStack =
   '-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif';
 
@@ -177,3 +184,10 @@ export function StoryFrame({
 export const longChineseText = "长期笔记：性能、架构、Agent、学习方法与清晰思考";
 export const longEnglishText = "Reliable frontend systems and AI-assisted engineering workflows";
 export const mixedText = "许峰 / Koh Hom · Frontend Systems · AI Agents";
+
+export function storyVisualState(metadata: StoryVisualStateMetadata) {
+  return {
+    profile: metadata.profiles[0],
+    ...metadata
+  };
+}

@@ -18,12 +18,20 @@ import {
   type LiquidLensPoint
 } from "../src";
 import { kubeReferenceImageAssets } from "./kube-reference-assets";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidLens",
   component: LiquidLens,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["lens"],
+      evidence: ["Storybook states", "Kube reference gate", "visual snapshot"],
+      profiles: ["reference"],
+      stateTags: ["default", "focus-visible", "pressed", "dragged", "Kube reference"]
+    })
+  }
 } satisfies Meta<typeof LiquidLens>;
 
 export default meta;

@@ -1,12 +1,20 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { LiquidToggle } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidToggle",
   component: LiquidToggle,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["toggle"],
+      evidence: ["Storybook states", "component unit test", "visual snapshot"],
+      profiles: ["control"],
+      stateTags: ["default", "selected", "disabled", "focus-visible"]
+    })
+  }
 } satisfies Meta<typeof LiquidToggle>;
 
 export default meta;

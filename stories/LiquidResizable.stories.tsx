@@ -5,12 +5,20 @@ import {
   LiquidResizablePanelGroup,
   LiquidTypography
 } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidResizable",
   component: LiquidResizablePanelGroup,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["resizable"],
+      evidence: ["Storybook states", "component unit test", "visual snapshot"],
+      profiles: ["layout"],
+      stateTags: ["default", "dense content", "overflow", "responsive"]
+    })
+  }
 } satisfies Meta<typeof LiquidResizablePanelGroup>;
 
 export default meta;

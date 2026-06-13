@@ -1,12 +1,20 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { LiquidSegmentedControl } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidSegmentedControl",
   component: LiquidSegmentedControl,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["toggle-group"],
+      evidence: ["Storybook states", "component unit test", "visual snapshot"],
+      profiles: ["control"],
+      stateTags: ["default", "selected", "focus-visible", "disabled"]
+    })
+  }
 } satisfies Meta<typeof LiquidSegmentedControl>;
 
 export default meta;

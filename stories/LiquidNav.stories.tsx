@@ -1,11 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { LiquidButton, LiquidLink, LiquidNav, LiquidToggle } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidNav",
   component: LiquidNav,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["navigation-menu"],
+      evidence: ["Storybook states", "component unit test", "visual snapshot"],
+      profiles: ["navigation"],
+      stateTags: ["default", "hover", "focus-visible", "current item", "overflow"]
+    })
+  }
 } satisfies Meta<typeof LiquidNav>;
 
 export default meta;

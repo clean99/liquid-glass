@@ -1,11 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { LiquidButton, LiquidIconButton, LiquidToolbar } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidToolbar",
   component: LiquidToolbar,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["toolbar"],
+      evidence: ["Storybook states", "visual snapshot"],
+      profiles: ["control"],
+      stateTags: ["default", "focus-visible", "keyboard navigation"]
+    })
+  }
 } satisfies Meta<typeof LiquidToolbar>;
 
 export default meta;

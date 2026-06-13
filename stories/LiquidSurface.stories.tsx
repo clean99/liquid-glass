@@ -5,13 +5,22 @@ import {
   longChineseText,
   longEnglishText,
   mixedText,
+  storyVisualState,
   StoryFrame
 } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidSurface",
   component: LiquidSurface,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["surface"],
+      evidence: ["Storybook states", "visual snapshot"],
+      profiles: ["display"],
+      stateTags: ["default", "enhanced", "fallback", "solid", "off"]
+    })
+  }
 } satisfies Meta<typeof LiquidSurface>;
 
 export default meta;

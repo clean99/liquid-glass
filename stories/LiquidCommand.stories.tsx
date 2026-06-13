@@ -11,12 +11,26 @@ import {
   LiquidCommandSeparator,
   LiquidTypography
 } from "../src";
-import { StoryFrame, longChineseText, longEnglishText, mixedText } from "./story-fixtures";
+import {
+  StoryFrame,
+  longChineseText,
+  longEnglishText,
+  mixedText,
+  storyVisualState
+} from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidCommand",
   component: LiquidCommand,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["combobox", "command"],
+      evidence: ["Storybook states", "component unit test", "a11y scan"],
+      profiles: ["control", "command"],
+      stateTags: ["default", "active item", "empty", "keyboard navigation", "long labels"]
+    })
+  }
 } satisfies Meta<typeof LiquidCommand>;
 
 export default meta;

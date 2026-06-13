@@ -19,6 +19,55 @@ const kubeSearchboxDemoBackground = readKubeReferenceAsset("searchboxDemoBackgro
 await fs.mkdir(behaviorArtifactDir, { recursive: true });
 
 const behaviorStories = {
+  breadcrumb: {
+    id: "liquid-glass-foundation-primitives--component-set",
+    selector: ".lg-breadcrumb__link"
+  },
+  checkbox: {
+    id: "liquid-glass-foundation-primitives--component-set",
+    selector: ".lg-checkbox__surface"
+  },
+  radioGroup: {
+    focusSelector: ".lg-radio-group__input",
+    id: "liquid-glass-foundation-primitives--component-set",
+    selector: ".lg-radio-group__item:not([data-disabled])"
+  },
+  pagination: {
+    id: "liquid-glass-foundation-primitives--component-set",
+    selector: ".lg-pagination__link:not([data-disabled]):not([data-active])"
+  },
+  scrollArea: {
+    id: "liquid-glass-foundation-primitives--component-set",
+    selector: ".lg-scroll-area__viewport"
+  },
+  dataTableSort: {
+    id: "liquid-glass-data-table--product-release-table",
+    selector: ".lg-data-table__sort"
+  },
+  sidebarMenuButton: {
+    id: "liquid-glass-sidebar--app-shell",
+    selector: ".lg-sidebar-menu__button:not([data-active])"
+  },
+  sidebarMenuAction: {
+    id: "liquid-glass-sidebar--app-shell",
+    selector: ".lg-sidebar-menu__action"
+  },
+  sidebarRail: {
+    id: "liquid-glass-sidebar--app-shell",
+    selector: ".lg-sidebar-rail"
+  },
+  calendarNav: {
+    id: "liquid-glass-liquidcalendar--single-selection",
+    selector: ".lg-calendar__nav-button"
+  },
+  calendarDay: {
+    id: "liquid-glass-liquidcalendar--single-selection",
+    selector: '.lg-calendar__day-button[tabindex="0"]'
+  },
+  resizableHandle: {
+    id: "liquid-glass-liquidresizable--horizontal",
+    selector: ".lg-resizable__handle"
+  },
   button: {
     id: "liquid-glass-liquidbutton--focus-visible",
     selector: ".lg-surface--button"
@@ -100,60 +149,145 @@ await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
 const address = server.address();
 const port = typeof address === "object" && address ? address.port : 0;
 const browser = await chromium.launch({ headless: true });
+const focusAuditResults = [];
+const focusAuditTargets = [
+  {
+    name: "breadcrumb",
+    options: { minimumFocusedScale: 1.01, requireMaterialDeepening: true }
+  },
+  {
+    name: "checkbox",
+    options: {
+      focusSelector: ".lg-checkbox__input",
+      minimumFocusedScale: 1.01,
+      requireMaterialDeepening: true
+    }
+  },
+  {
+    name: "radioGroup",
+    options: {
+      focusSelector: behaviorStories.radioGroup.focusSelector,
+      minimumFocusedScale: 1.01,
+      requireMaterialDeepening: true
+    }
+  },
+  {
+    name: "pagination",
+    options: { minimumFocusedScale: 1.02, requireMaterialDeepening: true }
+  },
+  {
+    name: "scrollArea",
+    options: { minimumFocusedScale: 1.008, requireMaterialDeepening: true }
+  },
+  {
+    name: "dataTableSort",
+    options: { minimumFocusedScale: 1.01, requireMaterialDeepening: true }
+  },
+  {
+    name: "sidebarMenuButton",
+    options: { minimumFocusedScale: 1.01, requireMaterialDeepening: true }
+  },
+  {
+    name: "sidebarMenuAction",
+    options: { minimumFocusedScale: 1.01, requireMaterialDeepening: true }
+  },
+  {
+    name: "sidebarRail",
+    options: { minimumFocusedScale: 1.01, requireMaterialDeepening: true }
+  },
+  {
+    name: "calendarNav",
+    options: { minimumFocusedScale: 1.05, requireMaterialDeepening: true }
+  },
+  {
+    name: "calendarDay",
+    options: {
+      afterFocus: async (page) => {
+        await page.keyboard.press("ArrowRight");
+      },
+      minimumFocusedScale: 1.05,
+      requireMaterialDeepening: true
+    }
+  },
+  {
+    name: "resizableHandle",
+    options: { minimumFocusedScale: 1.03, requireMaterialDeepening: true }
+  },
+  {
+    name: "tabs",
+    options: { minimumFocusedScale: 1.04, requireMaterialDeepening: true }
+  },
+  {
+    name: "nav",
+    options: { minimumFocusedScale: 1.04, requireMaterialDeepening: true }
+  },
+  {
+    name: "searchbox",
+    options: {
+      focusSelector: behaviorStories.searchbox.focusSelector,
+      minimumFocusGrowthRatio: 1.2,
+      minimumFocusedScale: 0.999,
+      requireMaterialDeepening: true
+    }
+  },
+  {
+    name: "field",
+    options: {
+      focusSelector: behaviorStories.field.focusSelector,
+      minimumFocusedScale: 1.012,
+      requireMaterialDeepening: true
+    }
+  },
+  {
+    name: "accordion",
+    options: { minimumFocusedScale: 1.01, requireMaterialDeepening: true }
+  },
+  {
+    name: "otp",
+    options: { minimumFocusedScale: 1.05, requireMaterialDeepening: true }
+  },
+  {
+    name: "button",
+    options: { minimumFocusedScale: 1.018, requireMaterialDeepening: true }
+  },
+  {
+    name: "switch",
+    options: {
+      focusSelector: behaviorStories.switch.focusSelector,
+      minimumFocusedScale: 0.7,
+      requireMaterialDeepening: false
+    }
+  },
+  {
+    name: "slider",
+    options: {
+      focusSelector: behaviorStories.slider.focusSelector,
+      minimumFocusedScale: 0.67,
+      requireMaterialDeepening: false
+    }
+  },
+  {
+    name: "lensFocus",
+    options: {
+      minimumFocusedScale: 1.02,
+      requireMaterialDeepening: false,
+      requireShadowChange: true,
+      requireShadowLayerGrowth: false
+    }
+  }
+];
 
 try {
-  await verifyFocusMaterial("tabs", {
-    minimumFocusedScale: 1.04,
-    requireMaterialDeepening: true
-  });
-  await verifyFocusMaterial("nav", {
-    minimumFocusedScale: 1.04,
-    requireMaterialDeepening: true
-  });
-  await verifyFocusMaterial("searchbox", {
-    focusSelector: behaviorStories.searchbox.focusSelector,
-    minimumFocusGrowthRatio: 1.2,
-    minimumFocusedScale: 0.999,
-    requireMaterialDeepening: true
-  });
+  for (const target of focusAuditTargets) {
+    await verifyFocusMaterial(target.name, target.options);
+  }
+
   await verifySearchboxKubeImageBackground();
-  await verifyFocusMaterial("field", {
-    minimumFocusedScale: 1.012,
-    focusSelector: behaviorStories.field.focusSelector,
-    requireMaterialDeepening: true
-  });
-  await verifyFocusMaterial("accordion", {
-    minimumFocusedScale: 1.01,
-    requireMaterialDeepening: true
-  });
-  await verifyFocusMaterial("otp", {
-    minimumFocusedScale: 1.05,
-    requireMaterialDeepening: true
-  });
-  await verifyFocusMaterial("button", {
-    minimumFocusedScale: 1.018,
-    requireMaterialDeepening: true
-  });
   await verifyCommandRovingFocusMaterial();
-  await verifyFocusMaterial("switch", {
-    focusSelector: behaviorStories.switch.focusSelector,
-    minimumFocusedScale: 0.7,
-    requireMaterialDeepening: false
-  });
-  await verifyFocusMaterial("slider", {
-    focusSelector: behaviorStories.slider.focusSelector,
-    minimumFocusedScale: 0.67,
-    requireMaterialDeepening: false
-  });
-  await verifyFocusMaterial("lensFocus", {
-    minimumFocusedScale: 1.02,
-    requireMaterialDeepening: false,
-    requireShadowLayerGrowth: false,
-    requireShadowChange: true
-  });
   await verifyHoverAndActiveResponse();
   await verifyDraggableLensPlayground();
   await verifyReducedMotionRemovesElasticFocus();
+  await writeFocusAuditResults();
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));
@@ -172,8 +306,10 @@ async function verifyFocusMaterial(name, options) {
   } else {
     await keyboardFocusVisible(page, focusSelector);
   }
+  await options.afterFocus?.(page);
   await page.waitForTimeout(240);
-  const focused = await readState(locator);
+  const focusedLocator = page.locator(`${story.selector}:focus-visible`).first();
+  const focused = await readState((await focusedLocator.count()) > 0 ? focusedLocator : locator);
 
   assertEqual(focused.outlineStyle, "none", `${name} focus outline style`);
   assertNoPlasticFocusChrome(focused, `${name} focus`);
@@ -199,7 +335,18 @@ async function verifyFocusMaterial(name, options) {
   } else {
     assertGreaterThan(focused.shadowLayerCount, 0, `${name} focus shadow layers`);
   }
-  assertIncludes(focused.transitionProperty, "transform", `${name} focus transition property`);
+  if (
+    !focused.transitionProperty.split(",").some((property) => {
+      const normalized = property.trim();
+      return normalized === "all" || normalized === "transform";
+    })
+  ) {
+    throw new Error(
+      `${name} focus transition property: expected ${JSON.stringify(
+        focused.transitionProperty
+      )} to include transform or all`
+    );
+  }
   assertGreaterThan(focused.maxTransitionDurationMs, 0, `${name} focus transition duration`);
   if (options.minimumFocusGrowthRatio !== undefined) {
     assertGreaterOrEqual(
@@ -213,7 +360,34 @@ async function verifyFocusMaterial(name, options) {
 
   assertEqual(focused.foregroundTextShadowCount, 0, `${name} focused foreground text shadows`);
 
+  focusAuditResults.push({
+    backgroundAlphaDelta: round(focused.backgroundAlpha - idle.backgroundAlpha),
+    focusedScale: round(focused.scale),
+    focusedShadowLayerCount: focused.shadowLayerCount,
+    idleScale: round(idle.scale),
+    name,
+    selector: story.selector,
+    storyId: story.id,
+    transitionDurationMs: focused.maxTransitionDurationMs,
+    widthDelta: round(focused.width - idle.width)
+  });
+
   await page.close();
+}
+
+async function writeFocusAuditResults() {
+  const minimumFocusAuditCount = focusAuditTargets.length;
+
+  if (focusAuditResults.length < minimumFocusAuditCount) {
+    throw new Error(
+      `focus audit coverage regressed: expected at least ${minimumFocusAuditCount} targets, got ${focusAuditResults.length}`
+    );
+  }
+
+  await fs.writeFile(
+    path.join(behaviorArtifactDir, "focus-material-audit.json"),
+    `${JSON.stringify({ count: focusAuditResults.length, targets: focusAuditResults }, null, 2)}\n`
+  );
 }
 
 async function verifyHoverAndActiveResponse() {
@@ -544,14 +718,14 @@ async function verifyReducedMotionRemovesElasticFocus() {
 }
 
 async function keyboardFocusVisible(page, selector) {
-  for (let attempt = 0; attempt < 8; attempt += 1) {
+  for (let attempt = 0; attempt < 32; attempt += 1) {
     await page.keyboard.press("Tab");
-    const isFocused = await page
-      .locator(selector)
-      .first()
-      .evaluate((element) => {
-        return element === element.ownerDocument.activeElement && element.matches(":focus-visible");
-      });
+    const isFocused = await page.evaluate((focusSelector) => {
+      const activeElement = document.activeElement;
+      return Boolean(
+        activeElement?.matches(focusSelector) && activeElement.matches(":focus-visible")
+      );
+    }, selector);
 
     if (isFocused) {
       return;
@@ -852,6 +1026,10 @@ function assertApproxEqual(actual, expected, tolerance, label) {
   if (Math.abs(actual - expected) > tolerance) {
     throw new Error(`${label}: expected ${actual} ~= ${expected} within ${tolerance}`);
   }
+}
+
+function round(value) {
+  return Math.round(value * 1000) / 1000;
 }
 
 function contentType(filePath) {

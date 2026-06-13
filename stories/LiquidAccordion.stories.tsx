@@ -1,12 +1,26 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { LiquidAccordion, type LiquidAccordionValue } from "../src";
-import { longChineseText, longEnglishText, mixedText, StoryFrame } from "./story-fixtures";
+import {
+  longChineseText,
+  longEnglishText,
+  mixedText,
+  storyVisualState,
+  StoryFrame
+} from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidAccordion",
   component: LiquidAccordion,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["accordion"],
+      evidence: ["Storybook states", "component unit test", "visual snapshot"],
+      profiles: ["disclosure"],
+      stateTags: ["default", "expanded", "collapsed", "disabled", "long content"]
+    })
+  }
 } satisfies Meta<typeof LiquidAccordion>;
 
 export default meta;

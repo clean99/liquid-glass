@@ -9,12 +9,20 @@ import {
   LiquidLabel,
   LiquidTypography
 } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidDatePicker",
   component: LiquidDatePicker,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["date-picker"],
+      evidence: ["Storybook states", "component unit test", "a11y scan"],
+      profiles: ["date-time"],
+      stateTags: ["default", "selected", "disabled", "popover open", "keyboard navigation"]
+    })
+  }
 } satisfies Meta<typeof LiquidDatePicker>;
 
 export default meta;

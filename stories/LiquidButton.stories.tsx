@@ -1,11 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { LiquidButton } from "../src";
-import { longChineseText, longEnglishText, StoryFrame } from "./story-fixtures";
+import { longChineseText, longEnglishText, storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidButton",
   component: LiquidButton,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["button"],
+      evidence: ["Storybook states", "component unit test", "visual snapshot"],
+      profiles: ["control"],
+      stateTags: ["default", "dark", "disabled", "focus-visible", "long labels"]
+    })
+  }
 } satisfies Meta<typeof LiquidButton>;
 
 export default meta;

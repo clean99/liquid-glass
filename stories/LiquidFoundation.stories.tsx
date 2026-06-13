@@ -52,11 +52,53 @@ import {
   LiquidTableRow,
   LiquidTypography
 } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/Foundation Primitives",
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: [
+        "alert",
+        "aspect-ratio",
+        "avatar",
+        "badge",
+        "breadcrumb",
+        "button-group",
+        "checkbox",
+        "direction",
+        "empty",
+        "input-group",
+        "item",
+        "kbd",
+        "native-select",
+        "pagination",
+        "progress",
+        "radio-group",
+        "scroll-area",
+        "separator",
+        "skeleton",
+        "spinner",
+        "table",
+        "typography"
+      ],
+      evidence: ["Storybook states", "component inventory", "visual snapshot"],
+      profiles: [
+        "feedback",
+        "layout",
+        "media",
+        "display",
+        "navigation",
+        "control",
+        "utility",
+        "form",
+        "data",
+        "typography"
+      ],
+      stateTags: ["default", "variant", "loading", "empty", "ltr", "rtl", "nested surface"]
+    })
+  }
 } satisfies Meta;
 
 export default meta;

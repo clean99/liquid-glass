@@ -9,12 +9,20 @@ import {
   LiquidSelect,
   LiquidTextarea
 } from "../src";
-import { longChineseText, longEnglishText, StoryFrame } from "./story-fixtures";
+import { longChineseText, longEnglishText, storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidField",
   component: LiquidField,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["field", "input", "input-otp", "label", "select", "textarea"],
+      evidence: ["Storybook states", "component unit test", "a11y scan"],
+      profiles: ["form", "control"],
+      stateTags: ["default", "focus-visible", "disabled", "invalid", "description", "long value"]
+    })
+  }
 } satisfies Meta<typeof LiquidField>;
 
 export default meta;

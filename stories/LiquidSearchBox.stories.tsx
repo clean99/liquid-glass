@@ -2,12 +2,20 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { useState } from "react";
 import { LiquidProvider, LiquidSearchBox } from "../src";
 import { kubeReferenceImageAssets } from "./kube-reference-assets";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidSearchBox",
   component: LiquidSearchBox,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["searchbox"],
+      evidence: ["Storybook states", "Kube reference gate", "a11y scan"],
+      profiles: ["form"],
+      stateTags: ["default", "focus-visible", "loaded media", "Kube reference"]
+    })
+  }
 } satisfies Meta<typeof LiquidSearchBox>;
 
 export default meta;

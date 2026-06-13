@@ -8,12 +8,20 @@ import {
   LiquidCard,
   LiquidTypography
 } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidCarousel",
   component: LiquidCarousel,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["carousel"],
+      evidence: ["Storybook states", "component unit test", "visual snapshot"],
+      profiles: ["media"],
+      stateTags: ["default", "keyboard navigation", "loaded media", "reduced motion"]
+    })
+  }
 } satisfies Meta<typeof LiquidCarousel>;
 
 export default meta;

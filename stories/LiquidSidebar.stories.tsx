@@ -20,11 +20,19 @@ import {
   LiquidSidebarTrigger,
   LiquidTypography
 } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/Sidebar",
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["sidebar"],
+      evidence: ["Storybook states", "component unit test", "visual snapshot"],
+      profiles: ["navigation"],
+      stateTags: ["default", "collapsed", "current item", "overflow", "responsive"]
+    })
+  }
 } satisfies Meta;
 
 export default meta;

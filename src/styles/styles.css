@@ -612,8 +612,9 @@
 }
 
 .lg-radio-group__input:focus-visible + .lg-radio-group__control {
-  background: var(--lg-control-focus-fill);
+  background: color-mix(in srgb, var(--lg-glass-fill-strong), var(--lg-surface-strong) 32%);
   box-shadow:
+    var(--lg-glass-shadow),
     0 4px 14px var(--lg-control-focus-depth),
     inset 0 1px 0 rgba(255, 255, 255, 0.24),
     inset 0 0 18px var(--lg-control-focus-mist);
@@ -621,8 +622,9 @@
 
 .lg-radio-group__item:has(.lg-radio-group__input:focus-visible) {
   border-color: var(--lg-control-focus-edge);
-  background: var(--lg-control-focus-fill);
+  background: color-mix(in srgb, var(--lg-glass-fill-strong), var(--lg-surface-strong) 32%);
   box-shadow:
+    var(--lg-glass-shadow),
     0 4px 14px var(--lg-control-focus-depth),
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
     inset 0 0 18px var(--lg-control-focus-mist);
@@ -2681,13 +2683,14 @@
 
 .lg-checkbox__input:focus-visible + .lg-checkbox__surface {
   border-color: var(--lg-control-focus-edge);
-  background: var(--lg-control-focus-fill);
+  background: color-mix(in srgb, var(--lg-control-focus-fill), var(--lg-glass-fill-strong) 95%);
   transform: scale(1.018);
   filter: none;
   box-shadow:
     0 4px 14px var(--lg-control-focus-depth),
     inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    inset 0 0 18px var(--lg-control-focus-mist);
+    inset 0 0 18px var(--lg-control-focus-mist),
+    var(--lg-glass-shadow);
 }
 
 .lg-checkbox__body {
@@ -3075,6 +3078,11 @@
   color: inherit;
   cursor: pointer;
   font: inherit;
+  transition:
+    background 170ms var(--lg-ease-apple),
+    box-shadow 190ms var(--lg-ease-apple),
+    color 160ms var(--lg-ease-apple),
+    transform 210ms var(--lg-ease-apple);
 }
 
 .lg-sidebar-menu {
@@ -3140,11 +3148,12 @@
 .lg-sidebar-menu__action:focus-visible,
 .lg-sidebar-rail:focus-visible {
   outline: 0;
-  background: var(--lg-control-focus-fill);
+  background: color-mix(in srgb, var(--lg-glass-fill-strong), var(--lg-surface-strong) 24%);
   box-shadow:
     0 4px 14px var(--lg-control-focus-depth),
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    inset 0 0 18px var(--lg-control-focus-mist);
+    inset 0 0 18px var(--lg-control-focus-mist),
+    var(--lg-glass-shadow);
   transform: scale(1.015);
 }
 
@@ -3348,12 +3357,13 @@
 
 .lg-pagination__link:focus-visible {
   outline: 0;
-  background: var(--lg-control-focus-fill);
+  background: color-mix(in srgb, var(--lg-control-focus-fill), var(--lg-glass-fill-strong) 95%);
   border-color: var(--lg-control-focus-edge);
   box-shadow:
     0 4px 14px var(--lg-control-focus-depth),
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    inset 0 0 18px var(--lg-control-focus-mist);
+    inset 0 0 18px var(--lg-control-focus-mist),
+    var(--lg-glass-shadow);
   transform: translateY(-1px) scale(1.025);
 }
 
@@ -3482,11 +3492,12 @@
 .lg-resizable__handle:hover,
 .lg-resizable__handle:focus-visible,
 .lg-resizable__handle[data-resize-handle-state="drag"] {
-  background: var(--lg-control-focus-fill);
+  background: color-mix(in srgb, var(--lg-control-focus-fill), var(--lg-glass-fill-strong) 95%);
   box-shadow:
     0 4px 14px var(--lg-control-focus-depth),
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    inset 0 0 18px var(--lg-control-focus-mist);
+    inset 0 0 18px var(--lg-control-focus-mist),
+    var(--lg-glass-shadow);
   transform: scale(1.035);
 }
 
@@ -4001,13 +4012,14 @@
 
 .lg-calendar__nav-button:focus-visible {
   color: var(--lg-text);
-  background: var(--lg-control-focus-fill);
+  background: color-mix(in srgb, var(--lg-glass-fill-strong), var(--lg-surface-strong) 24%);
   outline: none;
   transform: scale(1.08);
   box-shadow:
     0 4px 14px var(--lg-control-focus-depth),
     inset 0 1px 0 color-mix(in srgb, var(--lg-glass-edge), transparent 12%),
-    inset 0 0 18px var(--lg-control-focus-mist);
+    inset 0 0 18px var(--lg-control-focus-mist),
+    var(--lg-glass-shadow);
 }
 
 .lg-calendar__nav-button:disabled {
@@ -4097,13 +4109,14 @@
 }
 
 .lg-calendar__day-button:focus-visible {
-  background: var(--lg-control-focus-fill);
+  background: color-mix(in srgb, var(--lg-control-focus-fill), var(--lg-glass-fill-strong) 95%);
   outline: none;
   transform: scale(1.08);
   box-shadow:
     0 4px 14px var(--lg-control-focus-depth),
     inset 0 0 18px var(--lg-control-focus-mist),
-    inset 0 1px 0 color-mix(in srgb, var(--lg-glass-edge), transparent 24%);
+    inset 0 1px 0 color-mix(in srgb, var(--lg-glass-edge), transparent 24%),
+    var(--lg-glass-shadow);
 }
 
 .lg-calendar__day--today .lg-calendar__day-button {
@@ -4125,6 +4138,18 @@
 .lg-calendar__day--range-end .lg-calendar__day-button {
   color: white;
   background: linear-gradient(135deg, var(--lg-accent), var(--lg-accent-2));
+}
+
+.lg-calendar__day--selected .lg-calendar__day-button:focus-visible,
+.lg-calendar__day[aria-selected="true"] .lg-calendar__day-button:focus-visible,
+.lg-calendar__day--range-start .lg-calendar__day-button:focus-visible,
+.lg-calendar__day--range-end .lg-calendar__day-button:focus-visible {
+  color: var(--lg-text);
+  background: var(--lg-surface-strong);
+  box-shadow:
+    0 4px 14px var(--lg-control-focus-depth),
+    inset 0 0 18px var(--lg-control-focus-mist),
+    inset 0 1px 0 color-mix(in srgb, var(--lg-glass-edge), transparent 24%);
 }
 
 .lg-calendar__day--range-middle {

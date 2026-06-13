@@ -14,12 +14,20 @@ import {
   LiquidInput,
   LiquidLabel
 } from "../src";
-import { longChineseText, longEnglishText, StoryFrame } from "./story-fixtures";
+import { longChineseText, longEnglishText, storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/LiquidDialog",
   component: LiquidDialog,
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: ["dialog"],
+      evidence: ["Storybook states", "component unit test", "a11y scan"],
+      profiles: ["overlay"],
+      stateTags: ["closed", "open", "focus trap", "escape", "long content"]
+    })
+  }
 } satisfies Meta<typeof LiquidDialog>;
 
 export default meta;

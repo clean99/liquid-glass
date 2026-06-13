@@ -53,11 +53,30 @@ import {
   LiquidTooltipTrigger,
   LiquidTypography
 } from "../src";
-import { StoryFrame } from "./story-fixtures";
+import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
   title: "Liquid Glass/Overlay Primitives",
-  parameters: { a11y: { test: "error" } }
+  parameters: {
+    a11y: { test: "error" },
+    visualState: storyVisualState({
+      components: [
+        "alert-dialog",
+        "collapsible",
+        "context-menu",
+        "drawer",
+        "dropdown-menu",
+        "hover-card",
+        "menubar",
+        "popover",
+        "sheet",
+        "tooltip"
+      ],
+      evidence: ["Storybook states", "component unit test", "a11y scan"],
+      profiles: ["overlay", "disclosure", "navigation"],
+      stateTags: ["closed", "open", "focus trap", "outside click", "long content"]
+    })
+  }
 } satisfies Meta;
 
 export default meta;
