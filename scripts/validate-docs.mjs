@@ -58,6 +58,7 @@ const packageRequiredFiles = [
   "docs/components/badge.md",
   "docs/components/breadcrumb.md",
   "docs/components/button.md",
+  "docs/components/button-group.md",
   "docs/components/calendar.md",
   "docs/components/card.md",
   "docs/components/checkbox.md",
@@ -67,11 +68,20 @@ const packageRequiredFiles = [
   "docs/components/dialog.md",
   "docs/components/dropdown-menu.md",
   "docs/components/searchbox.md",
+  "docs/components/input.md",
+  "docs/components/input-group.md",
+  "docs/components/input-otp.md",
+  "docs/components/label.md",
+  "docs/components/native-select.md",
+  "docs/components/radio-group.md",
   "docs/components/select.md",
   "docs/components/slider.md",
   "docs/components/sidebar.md",
   "docs/components/switch.md",
   "docs/components/tabs.md",
+  "docs/components/textarea.md",
+  "docs/components/toggle.md",
+  "docs/components/toggle-group.md",
   "docs/component-inventory.json",
   "docs/component-inventory.md",
   "docs/design-principles.md",
@@ -495,6 +505,17 @@ mustInclude("docs/components/button.md", [
   "pnpm test:registry"
 ]);
 
+mustInclude("docs/components/button-group.md", [
+  "LiquidButtonGroup",
+  "src/components/LiquidButtonGroup.tsx",
+  "LiquidButtonGroupProps",
+  'role="group"',
+  "data-orientation",
+  "stories/LiquidFoundation.stories.tsx",
+  "registry/components/liquid-button-group.json",
+  "pnpm test:registry"
+]);
+
 mustInclude("docs/components/calendar.md", [
   "LiquidCalendar",
   "src/components/LiquidCalendar.tsx",
@@ -559,6 +580,73 @@ mustInclude("docs/components/field.md", [
   "aria-invalid",
   "registry items",
   "stories/LiquidField.stories.tsx",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/input.md", [
+  "LiquidInput",
+  "src/components/LiquidField.tsx",
+  "LiquidInputProps",
+  "LiquidInputSurfaceProps",
+  "startAdornment",
+  "aria-invalid",
+  "stories/LiquidField.stories.tsx",
+  "registry/components/liquid-input.json",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/input-group.md", [
+  "LiquidInputGroup",
+  "src/components/LiquidInputGroup.tsx",
+  "LiquidInputGroupProps",
+  "lg-input-group__inner",
+  "surfaceProps",
+  "stories/LiquidFoundation.stories.tsx",
+  "registry/components/liquid-input-group.json",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/input-otp.md", [
+  "LiquidInputOtp",
+  "src/components/LiquidInputOtp.tsx",
+  "LiquidInputOtpProps",
+  "one-time-code",
+  "onValueChange",
+  "stories/LiquidField.stories.tsx",
+  "registry/components/liquid-input-otp.json",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/label.md", [
+  "LiquidLabel",
+  "src/components/LiquidField.tsx",
+  "LiquidLabelProps",
+  "LabelHTMLAttributes",
+  "htmlFor",
+  "stories/LiquidField.stories.tsx",
+  "registry/components/liquid-label.json",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/native-select.md", [
+  "LiquidNativeSelect",
+  "src/components/LiquidNativeSelect.tsx",
+  "LiquidNativeSelectProps",
+  "SelectHTMLAttributes",
+  "lg-native-select__chevron",
+  "stories/LiquidFoundation.stories.tsx",
+  "registry/components/liquid-native-select.json",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/radio-group.md", [
+  "LiquidRadioGroup",
+  "src/components/LiquidRadioGroup.tsx",
+  "LiquidRadioGroupOption",
+  'role="radiogroup"',
+  "input[type=radio]",
+  "stories/LiquidFoundation.stories.tsx",
+  "registry/components/liquid-radio-group.json",
   "pnpm test:registry"
 ]);
 
@@ -639,6 +727,39 @@ mustInclude("docs/components/switch.md", [
   "stories/LiquidSwitch.stories.tsx",
   "registry/components/liquid-switch.json",
   "pnpm test:kube-reference"
+]);
+
+mustInclude("docs/components/textarea.md", [
+  "LiquidTextarea",
+  "src/components/LiquidField.tsx",
+  "LiquidTextareaProps",
+  "LiquidInputSurfaceProps",
+  "aria-invalid",
+  "stories/LiquidField.stories.tsx",
+  "registry/components/liquid-textarea.json",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/toggle.md", [
+  "LiquidToggle",
+  "src/components/LiquidToggle.tsx",
+  "LiquidToggleProps",
+  "aria-pressed",
+  "onPressedChange",
+  "stories/LiquidToggle.stories.tsx",
+  "registry/components/liquid-toggle.json",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/toggle-group.md", [
+  "LiquidSegmentedControl",
+  "src/components/LiquidSegmentedControl.tsx",
+  "LiquidSegmentedControlProps",
+  'role="radiogroup"',
+  "aria-checked",
+  "stories/LiquidSegmentedControl.stories.tsx",
+  "registry/components/liquid-toggle-group.json",
+  "pnpm test:registry"
 ]);
 
 mustInclude("docs/components/tabs.md", [

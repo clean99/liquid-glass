@@ -80,9 +80,11 @@ pages. It keeps component status, install honesty, anatomy, API, visual states,
 accessibility notes, registry entries, and verification commands in one
 repeatable shape. `docs/components/map.md` lists every implemented public
 component, while the written pages under `docs/components/` now cover the
-provider, surface, button, card, field, dialog, accordion, alert, alert dialog,
-avatar, badge, breadcrumb, calendar, checkbox, combobox, date picker, dropdown
-menu, searchbox, select, sidebar, slider, switch, and tabs paths.
+provider, surface, button, button group, card, field, dialog, accordion, alert,
+alert dialog, avatar, badge, breadcrumb, calendar, checkbox, combobox, date
+picker, dropdown menu, input, input group, input OTP, label, native select,
+radio group, searchbox, select, sidebar, slider, switch, tabs, textarea, toggle,
+and toggle group paths.
 
 ## Visual Documentation
 

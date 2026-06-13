@@ -126,9 +126,11 @@ Primary docs:
 - `docs/component-documentation.md`: per-component page standard for usage,
   anatomy, API, visual states, accessibility, and verification evidence.
 - `docs/components/index.md`: package-backed component pages for Provider,
-  Surface, Button, Card, Field, Dialog, Accordion, Alert, AlertDialog, Avatar,
-  Badge, Breadcrumb, Calendar, Checkbox, Combobox, DatePicker, DropdownMenu,
-  SearchBox, Select, Sidebar, Slider, Switch, and Tabs.
+  Surface, Button, ButtonGroup, Card, Field, Dialog, Accordion, Alert,
+  AlertDialog, Avatar, Badge, Breadcrumb, Calendar, Checkbox, Combobox,
+  DatePicker, DropdownMenu, Input, InputGroup, InputOtp, Label, NativeSelect,
+  RadioGroup, SearchBox, Select, Sidebar, Slider, Switch, Tabs, Textarea,
+  Toggle, and ToggleGroup.
 - `docs/visual-documentation.md`: Storybook Pages, light and dark states,
   reduced motion, high contrast, mobile, and Kube reference evidence.
 - `docs/testing.md`: local and CI validation strategy.

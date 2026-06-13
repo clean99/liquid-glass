@@ -16,9 +16,10 @@ written page shape from `docs/component-documentation.md`.
 
 - Implemented public components: 60.
 - Full written component pages: Provider, Surface, Accordion, Alert,
-  AlertDialog, Avatar, Badge, Breadcrumb, Button, Calendar, Card, Checkbox,
-  Combobox, DatePicker, Dialog, DropdownMenu, Field, SearchBox, Select,
-  Sidebar, Slider, Switch, Tabs.
+  AlertDialog, Avatar, Badge, Breadcrumb, Button, ButtonGroup, Calendar, Card,
+  Checkbox, Combobox, DatePicker, Dialog, DropdownMenu, Field, Input,
+  InputGroup, InputOtp, Label, NativeSelect, RadioGroup, SearchBox, Select,
+  Sidebar, Slider, Switch, Tabs, Textarea, Toggle, ToggleGroup.
 - npm package: not published to npm yet.
 - shadcn-style registry: generated and testable, but live install commands wait
   for npm publish.
@@ -70,7 +71,7 @@ flowchart TD
 | `LiquidBadge`            | `badge`           | `display`    | `display`      | `src/components/LiquidBadge.tsx`            | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-badge.json`           | `docs/components/badge.md`         |
 | `LiquidBreadcrumb`       | `breadcrumb`      | `navigation` | `navigation`   | `src/components/LiquidBreadcrumb.tsx`       | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-breadcrumb.json`      | `docs/components/breadcrumb.md`    |
 | `LiquidButton`           | `button`          | `control`    | `control`      | `src/components/LiquidButton.tsx`           | `stories/LiquidButton.stories.tsx`           | `registry/components/liquid-button.json`          | `docs/components/button.md`        |
-| `LiquidButtonGroup`      | `button-group`    | `control`    | `control`      | `src/components/LiquidButtonGroup.tsx`      | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-button-group.json`    | Storybook + inventory              |
+| `LiquidButtonGroup`      | `button-group`    | `control`    | `control`      | `src/components/LiquidButtonGroup.tsx`      | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-button-group.json`    | `docs/components/button-group.md`  |
 | `LiquidCalendar`         | `calendar`        | `date-time`  | `date-time`    | `src/components/LiquidCalendar.tsx`         | `stories/LiquidCalendar.stories.tsx`         | `registry/components/liquid-calendar.json`        | `docs/components/calendar.md`      |
 | `LiquidCard`             | `card`            | `layout`     | `layout`       | `src/components/LiquidCard.tsx`             | `stories/LiquidCard.stories.tsx`             | `registry/components/liquid-card.json`            | `docs/components/card.md`          |
 | `LiquidCarousel`         | `carousel`        | `media`      | `media`        | `src/components/LiquidCarousel.tsx`         | `stories/LiquidCarousel.stories.tsx`         | `registry/components/liquid-carousel.json`        | Storybook + inventory              |
@@ -89,19 +90,19 @@ flowchart TD
 | `LiquidEmpty`            | `empty`           | `feedback`   | `feedback`     | `src/components/LiquidEmpty.tsx`            | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-empty.json`           | Storybook + inventory              |
 | `LiquidField`            | `field`           | `form`       | `form`         | `src/components/LiquidField.tsx`            | `stories/LiquidField.stories.tsx`            | `registry/components/liquid-field.json`           | `docs/components/field.md`         |
 | `LiquidHoverCard`        | `hover-card`      | `overlay`    | `overlay`      | `src/components/LiquidHoverCard.tsx`        | `stories/LiquidOverlay.stories.tsx`          | `registry/components/liquid-hover-card.json`      | Storybook + inventory              |
-| `LiquidInput`            | `input`           | `form`       | `form`         | `src/components/LiquidField.tsx`            | `stories/LiquidField.stories.tsx`            | `registry/components/liquid-input.json`           | Storybook + inventory              |
-| `LiquidInputGroup`       | `input-group`     | `form`       | `form`         | `src/components/LiquidInputGroup.tsx`       | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-input-group.json`     | Storybook + inventory              |
-| `LiquidInputOtp`         | `input-otp`       | `form`       | `form`         | `src/components/LiquidInputOtp.tsx`         | `stories/LiquidField.stories.tsx`            | `registry/components/liquid-input-otp.json`       | Storybook + inventory              |
+| `LiquidInput`            | `input`           | `form`       | `form`         | `src/components/LiquidField.tsx`            | `stories/LiquidField.stories.tsx`            | `registry/components/liquid-input.json`           | `docs/components/input.md`         |
+| `LiquidInputGroup`       | `input-group`     | `form`       | `form`         | `src/components/LiquidInputGroup.tsx`       | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-input-group.json`     | `docs/components/input-group.md`   |
+| `LiquidInputOtp`         | `input-otp`       | `form`       | `form`         | `src/components/LiquidInputOtp.tsx`         | `stories/LiquidField.stories.tsx`            | `registry/components/liquid-input-otp.json`       | `docs/components/input-otp.md`     |
 | `LiquidItem`             | `item`            | `display`    | `display`      | `src/components/LiquidItem.tsx`             | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-item.json`            | Storybook + inventory              |
 | `LiquidKbd`              | `kbd`             | `display`    | `display`      | `src/components/LiquidKbd.tsx`              | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-kbd.json`             | Storybook + inventory              |
-| `LiquidLabel`            | `label`           | `form`       | `form`         | `src/components/LiquidField.tsx`            | `stories/LiquidField.stories.tsx`            | `registry/components/liquid-label.json`           | Storybook + inventory              |
+| `LiquidLabel`            | `label`           | `form`       | `form`         | `src/components/LiquidField.tsx`            | `stories/LiquidField.stories.tsx`            | `registry/components/liquid-label.json`           | `docs/components/label.md`         |
 | `LiquidMenubar`          | `menubar`         | `navigation` | `navigation`   | `src/components/LiquidMenubar.tsx`          | `stories/LiquidOverlay.stories.tsx`          | `registry/components/liquid-menubar.json`         | Storybook + inventory              |
-| `LiquidNativeSelect`     | `native-select`   | `form`       | `form`         | `src/components/LiquidNativeSelect.tsx`     | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-native-select.json`   | Storybook + inventory              |
+| `LiquidNativeSelect`     | `native-select`   | `form`       | `form`         | `src/components/LiquidNativeSelect.tsx`     | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-native-select.json`   | `docs/components/native-select.md` |
 | `LiquidNav`              | `navigation-menu` | `navigation` | `navigation`   | `src/components/LiquidNav.tsx`              | `stories/LiquidNav.stories.tsx`              | `registry/components/liquid-navigation-menu.json` | Storybook + inventory              |
 | `LiquidPagination`       | `pagination`      | `navigation` | `navigation`   | `src/components/LiquidPagination.tsx`       | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-pagination.json`      | Storybook + inventory              |
 | `LiquidPopover`          | `popover`         | `overlay`    | `overlay`      | `src/components/LiquidPopover.tsx`          | `stories/LiquidOverlay.stories.tsx`          | `registry/components/liquid-popover.json`         | Storybook + inventory              |
 | `LiquidProgress`         | `progress`        | `feedback`   | `feedback`     | `src/components/LiquidProgress.tsx`         | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-progress.json`        | Storybook + inventory              |
-| `LiquidRadioGroup`       | `radio-group`     | `control`    | `control`      | `src/components/LiquidRadioGroup.tsx`       | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-radio-group.json`     | Storybook + inventory              |
+| `LiquidRadioGroup`       | `radio-group`     | `control`    | `control`      | `src/components/LiquidRadioGroup.tsx`       | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-radio-group.json`     | `docs/components/radio-group.md`   |
 | `LiquidResizable`        | `resizable`       | `layout`     | `layout`       | `src/components/LiquidResizable.tsx`        | `stories/LiquidResizable.stories.tsx`        | `registry/components/liquid-resizable.json`       | Storybook + inventory              |
 | `LiquidScrollArea`       | `scroll-area`     | `layout`     | `layout`       | `src/components/LiquidScrollArea.tsx`       | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-scroll-area.json`     | Storybook + inventory              |
 | `LiquidSearchBox`        | `searchbox`       | `form`       | `form`         | `src/components/LiquidSearchBox.tsx`        | `stories/LiquidSearchBox.stories.tsx`        | `registry/components/liquid-searchbox.json`       | `docs/components/searchbox.md`     |
@@ -116,10 +117,10 @@ flowchart TD
 | `LiquidSwitch`           | `switch`          | `control`    | `control`      | `src/components/LiquidSwitch.tsx`           | `stories/LiquidSwitch.stories.tsx`           | `registry/components/liquid-switch.json`          | `docs/components/switch.md`        |
 | `LiquidTable`            | `table`           | `data`       | `data`         | `src/components/LiquidTable.tsx`            | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-table.json`           | Storybook + inventory              |
 | `LiquidTabs`             | `tabs`            | `navigation` | `navigation`   | `src/components/LiquidTabs.tsx`             | `stories/LiquidTabs.stories.tsx`             | `registry/components/liquid-tabs.json`            | `docs/components/tabs.md`          |
-| `LiquidTextarea`         | `textarea`        | `form`       | `form`         | `src/components/LiquidField.tsx`            | `stories/LiquidField.stories.tsx`            | `registry/components/liquid-textarea.json`        | Storybook + inventory              |
+| `LiquidTextarea`         | `textarea`        | `form`       | `form`         | `src/components/LiquidField.tsx`            | `stories/LiquidField.stories.tsx`            | `registry/components/liquid-textarea.json`        | `docs/components/textarea.md`      |
 | `LiquidToast`            | `toast`           | `feedback`   | `feedback`     | `src/components/LiquidToast.tsx`            | `stories/LiquidToast.stories.tsx`            | `registry/components/liquid-toast.json`           | Storybook + inventory              |
-| `LiquidToggle`           | `toggle`          | `control`    | `control`      | `src/components/LiquidToggle.tsx`           | `stories/LiquidToggle.stories.tsx`           | `registry/components/liquid-toggle.json`          | Storybook + inventory              |
-| `LiquidSegmentedControl` | `toggle-group`    | `control`    | `control`      | `src/components/LiquidSegmentedControl.tsx` | `stories/LiquidSegmentedControl.stories.tsx` | `registry/components/liquid-toggle-group.json`    | Storybook + inventory              |
+| `LiquidToggle`           | `toggle`          | `control`    | `control`      | `src/components/LiquidToggle.tsx`           | `stories/LiquidToggle.stories.tsx`           | `registry/components/liquid-toggle.json`          | `docs/components/toggle.md`        |
+| `LiquidSegmentedControl` | `toggle-group`    | `control`    | `control`      | `src/components/LiquidSegmentedControl.tsx` | `stories/LiquidSegmentedControl.stories.tsx` | `registry/components/liquid-toggle-group.json`    | `docs/components/toggle-group.md`  |
 | `LiquidTooltip`          | `tooltip`         | `overlay`    | `overlay`      | `src/components/LiquidTooltip.tsx`          | `stories/LiquidOverlay.stories.tsx`          | `registry/components/liquid-tooltip.json`         | Storybook + inventory              |
 | `LiquidTypography`       | `typography`      | `typography` | `typography`   | `src/components/LiquidTypography.tsx`       | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-typography.json`      | Storybook + inventory              |
 
@@ -127,13 +128,11 @@ flowchart TD
 
 The backlog is not a mystery queue. Prioritize it by user-facing risk:
 
-1. Form and control components: inputs, toggle, radio group, native select, OTP,
-   and remaining date controls.
-2. Overlay and navigation components: dialog-adjacent primitives, context menu,
+1. Overlay and navigation components: dialog-adjacent primitives, context menu,
    menubar, navigation menu, pagination, popover, sheet, tooltip, and drawer.
-3. Data and layout components: table, data table, chart, resizable, scroll area,
+2. Data and layout components: table, data table, chart, resizable, scroll area,
    carousel, and display helpers.
-4. Feedback and utility components: alert, toast, sonner, spinner, progress,
+3. Feedback and utility components: toast, sonner, spinner, progress,
    typography, kbd, item, and direction.
 
 Each new written page must follow `docs/component-documentation.md` and keep the
