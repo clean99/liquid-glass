@@ -26,6 +26,10 @@ const displacementMapSource = fs.readFileSync(
   "utf8"
 );
 const lensPipelineSource = fs.readFileSync(path.resolve("src/utils/lens-pipeline.ts"), "utf8");
+const kubeReferenceCompareSource = fs.readFileSync(
+  path.resolve("scripts/compare-kube-reference.mjs"),
+  "utf8"
+);
 const surfaceSource = fs.readFileSync(path.resolve("src/components/LiquidSurface.tsx"), "utf8");
 
 const intensities: LiquidIntensity[] = ["subtle", "medium", "strong"];
@@ -253,6 +257,15 @@ describe("Liquid Glass physics contract", () => {
     expect(lensStorySource).toContain("const precisionLensInitialPosition = { x: 19.5, y: 19.5 }");
     expect(lensStorySource).toContain(
       'style={{ position: "absolute", top: 34.5, left: 19.5, zIndex: 3 }}'
+    );
+  });
+
+  it("rejects impossible target-page drag samples before comparing parity", () => {
+    expect(kubeReferenceCompareSource).toContain("hasPlausiblePointerActionMetrics");
+    expect(kubeReferenceCompareSource).toContain("Math.abs(action.delta.x) + Math.max(32");
+    expect(kubeReferenceCompareSource).toContain("Math.abs(action.delta.y) + Math.max(32");
+    expect(kubeReferenceCompareSource).toContain(
+      "Drag action moved farther than the real pointer input allows"
     );
   });
 

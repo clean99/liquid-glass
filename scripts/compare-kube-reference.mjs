@@ -434,6 +434,7 @@ async function findTargetDragHandle(root) {
 async function applyPointerAction(page, handle, action) {
   const attempts = action.attempts ?? 3;
   let lastMetrics = null;
+  let lastRejection = null;
 
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
     const box = await handle.boundingBox();
@@ -457,7 +458,10 @@ async function applyPointerAction(page, handle, action) {
     const metrics = summarizeActionMetrics(box, after, action);
     lastMetrics = metrics;
 
-    if (hasPointerActionEffect(metrics, action)) {
+    if (
+      hasPointerActionEffect(metrics, action) &&
+      hasPlausiblePointerActionMetrics(metrics, action)
+    ) {
       return {
         cleanup: async () => {
           await page.mouse.up().catch(() => undefined);
@@ -470,12 +474,15 @@ async function applyPointerAction(page, handle, action) {
       };
     }
 
+    lastRejection = hasPointerActionEffect(metrics, action)
+      ? describeImplausiblePointerAction(action, metrics)
+      : null;
     await page.mouse.up().catch(() => undefined);
     await page.mouse.move(0, 0).catch(() => undefined);
     await page.waitForTimeout(220 * attempt);
   }
 
-  throw new Error(describePointerActionFailure(action, lastMetrics));
+  throw new Error(lastRejection ?? describePointerActionFailure(action, lastMetrics));
 }
 
 async function captureReferenceScreenshot(page, subject, action, captureMode, screenshotPath) {
@@ -541,6 +548,25 @@ function hasPointerActionEffect(metrics, action) {
     Math.abs(metrics.deltaX) >= Math.abs(action.delta.x) * 0.45 &&
     Math.abs(metrics.deltaY) >= Math.abs(action.delta.y) * 0.45
   );
+}
+
+function hasPlausiblePointerActionMetrics(metrics, action) {
+  if (action.kind !== "drag") {
+    return true;
+  }
+
+  const maxX = Math.abs(action.delta.x) + Math.max(32, Math.abs(action.delta.x) * 0.35);
+  const maxY = Math.abs(action.delta.y) + Math.max(32, Math.abs(action.delta.y) * 0.35);
+
+  return Math.abs(metrics.deltaX) <= maxX && Math.abs(metrics.deltaY) <= maxY;
+}
+
+function describeImplausiblePointerAction(action, metrics) {
+  if (action.kind !== "drag") {
+    return describePointerActionFailure(action, metrics);
+  }
+
+  return `Drag action moved farther than the real pointer input allows: ${JSON.stringify(metrics)}`;
 }
 
 function describePointerActionFailure(action, metrics) {
