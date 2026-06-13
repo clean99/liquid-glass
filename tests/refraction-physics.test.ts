@@ -725,6 +725,7 @@ describe("Liquid Glass physics contract", () => {
       { growth: ".lg-context-menu__trigger:focus-visible" },
       { growth: ".lg-menubar__trigger:focus-visible" },
       { growth: ".lg-tooltip__trigger:focus-visible" },
+      { growth: ".lg-hover-card__trigger:focus-visible" },
       { growth: ".lg-nav .lg-surface--button:focus-visible" },
       {
         growth: ".lg-surface--interactive:not(.lg-surface--disabled):focus-visible",
@@ -779,6 +780,15 @@ describe("Liquid Glass physics contract", () => {
     });
 
     expect(missingContracts).toEqual([]);
+
+    const tooltipTriggerBody = [
+      collectCssRuleBodyForSelector(styles, ".lg-tooltip__trigger"),
+      collectCssRuleBodyForSelector(styles, ".lg-hover-card__trigger")
+    ].join("\n");
+
+    expect(tooltipTriggerBody).toContain("background: transparent");
+    expect(tooltipTriggerBody).toContain("border: 0");
+    expect(tooltipTriggerBody).toContain("font: inherit");
   });
 
   it("shares focus shadow material tokens across component-specific focus states", () => {
@@ -927,7 +937,11 @@ describe("Liquid Glass physics contract", () => {
       "resizableHandle",
       "toggle",
       "segmentedControl",
-      "toolbar"
+      "toolbar",
+      "contextMenuTrigger",
+      "hoverCardTrigger",
+      "menubarTrigger",
+      "tooltipTrigger"
     ];
 
     for (const target of auditedFocusTargets) {

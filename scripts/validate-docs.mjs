@@ -54,10 +54,16 @@ const packageRequiredFiles = [
   "docs/components/accordion.md",
   "docs/components/button.md",
   "docs/components/card.md",
+  "docs/components/checkbox.md",
+  "docs/components/combobox.md",
+  "docs/components/date-picker.md",
   "docs/components/field.md",
   "docs/components/dialog.md",
+  "docs/components/dropdown-menu.md",
   "docs/components/searchbox.md",
+  "docs/components/select.md",
   "docs/components/slider.md",
+  "docs/components/sidebar.md",
   "docs/components/switch.md",
   "docs/components/tabs.md",
   "docs/component-inventory.json",
@@ -439,6 +445,39 @@ mustInclude("docs/components/card.md", [
   "pnpm test:registry"
 ]);
 
+mustInclude("docs/components/checkbox.md", [
+  "LiquidCheckbox",
+  "src/components/LiquidCheckbox.tsx",
+  "LiquidCheckboxProps",
+  "input[type=checkbox]",
+  "lg-checkbox__description",
+  "stories/LiquidFoundation.stories.tsx",
+  "registry/components/liquid-checkbox.json",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/combobox.md", [
+  "LiquidCombobox",
+  "src/components/LiquidCombobox.tsx",
+  "LiquidComboboxOption",
+  'role="combobox"',
+  "LiquidCommandInput",
+  "stories/LiquidCommand.stories.tsx",
+  "registry/components/liquid-combobox.json",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/date-picker.md", [
+  "LiquidDatePicker",
+  "src/components/LiquidDatePicker.tsx",
+  "LiquidDatePickerSingleProps",
+  "LiquidDatePickerRangeProps",
+  "LiquidCalendar",
+  "stories/LiquidDatePicker.stories.tsx",
+  "registry/components/liquid-date-picker.json",
+  "pnpm test:registry"
+]);
+
 mustInclude("docs/components/field.md", [
   "LiquidField",
   "LiquidInput",
@@ -462,6 +501,17 @@ mustInclude("docs/components/dialog.md", [
   "pnpm test:a11y"
 ]);
 
+mustInclude("docs/components/dropdown-menu.md", [
+  "LiquidDropdownMenu",
+  "src/components/LiquidDropdownMenu.tsx",
+  "src/components/LiquidMenuPrimitives.tsx",
+  'role="menu"',
+  'role="menuitem"',
+  "stories/LiquidOverlay.stories.tsx",
+  "registry/components/liquid-dropdown-menu.json",
+  "pnpm test:registry"
+]);
+
 mustInclude("docs/components/searchbox.md", [
   "LiquidSearchBox",
   "src/components/LiquidSearchBox.tsx",
@@ -474,6 +524,17 @@ mustInclude("docs/components/searchbox.md", [
   "pnpm test:kube-reference"
 ]);
 
+mustInclude("docs/components/select.md", [
+  "LiquidSelect",
+  "src/components/LiquidSelect.tsx",
+  "LiquidSelectProps",
+  "LiquidNativeSelectProps",
+  "lg-select-surface",
+  "stories/LiquidField.stories.tsx",
+  "registry/components/liquid-select.json",
+  "pnpm test:registry"
+]);
+
 mustInclude("docs/components/slider.md", [
   "LiquidSlider",
   "src/components/LiquidSlider.tsx",
@@ -483,6 +544,17 @@ mustInclude("docs/components/slider.md", [
   "stories/LiquidSlider.stories.tsx",
   "registry/components/liquid-slider.json",
   "pnpm test:kube-reference"
+]);
+
+mustInclude("docs/components/sidebar.md", [
+  "LiquidSidebar",
+  "src/components/LiquidSidebar.tsx",
+  "LiquidSidebarProvider",
+  "LiquidSidebarMenuButton",
+  'aria-current="page"',
+  "stories/LiquidSidebar.stories.tsx",
+  "registry/components/liquid-sidebar.json",
+  "pnpm test:registry"
 ]);
 
 mustInclude("docs/components/switch.md", [

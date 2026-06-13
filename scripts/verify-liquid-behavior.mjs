@@ -72,6 +72,10 @@ const behaviorStories = {
     id: "liquid-glass-liquidtoggle--interactive",
     selector: ".lg-surface--toggle"
   },
+  tooltipTrigger: {
+    id: "liquid-glass-overlay-primitives--light",
+    selector: ".lg-tooltip__trigger"
+  },
   segmentedControl: {
     id: "liquid-glass-liquidsegmentedcontrol--modes",
     selector: ".lg-segmented-control__item"
@@ -97,6 +101,18 @@ const behaviorStories = {
     focusSelector: ".lg-command__input",
     id: "liquid-glass-liquidcommand--command-palette",
     selector: ".lg-command__item[data-selected]"
+  },
+  contextMenuTrigger: {
+    id: "liquid-glass-overlay-primitives--light",
+    selector: ".lg-context-menu__trigger"
+  },
+  hoverCardTrigger: {
+    id: "liquid-glass-overlay-primitives--light",
+    selector: ".lg-hover-card__trigger"
+  },
+  menubarTrigger: {
+    id: "liquid-glass-overlay-primitives--light",
+    selector: ".lg-menubar__trigger"
   },
   otp: {
     id: "liquid-glass-liquidfield--select-and-otp",
@@ -268,8 +284,24 @@ const focusAuditTargets = [
     options: { minimumFocusedScale: 1.01, requireMaterialDeepening: true }
   },
   {
+    name: "contextMenuTrigger",
+    options: { minimumFocusedScale: 1.018, requireMaterialDeepening: true }
+  },
+  {
+    name: "hoverCardTrigger",
+    options: { minimumFocusedScale: 1.018, requireMaterialDeepening: true }
+  },
+  {
+    name: "menubarTrigger",
+    options: { minimumFocusedScale: 1.018, requireMaterialDeepening: true }
+  },
+  {
     name: "otp",
     options: { minimumFocusedScale: 1.05, requireMaterialDeepening: true }
+  },
+  {
+    name: "tooltipTrigger",
+    options: { minimumFocusedScale: 1.018, requireMaterialDeepening: true }
   },
   {
     name: "button",

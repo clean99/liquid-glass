@@ -1326,6 +1326,10 @@
 .lg-hover-card__trigger {
   display: inline-block;
   color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
   text-decoration-color: color-mix(in srgb, currentColor, transparent 54%);
   text-underline-offset: 0.18em;
   transition:
