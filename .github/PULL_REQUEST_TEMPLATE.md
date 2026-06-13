@@ -21,7 +21,7 @@
 - [ ] Not applicable
 - [ ] `pnpm test:physics`
 - [ ] `pnpm test:visual`
-- [ ] `pnpm test:kube-reference`
+- [ ] `pnpm test:kube-reference:strict`
 
 ## Checklist
 

@@ -160,7 +160,7 @@ if (isStandaloneRepository) {
   mustInclude(".github/workflows/ci.yml", "pnpm test:release-readiness");
   mustInclude(".github/workflows/ci.yml", "pnpm test:a11y");
   mustInclude(".github/workflows/ci.yml", "pnpm test:e2e");
-  mustInclude(".github/workflows/visual.yml", "pnpm test:kube-reference");
+  mustInclude(".github/workflows/visual.yml", "pnpm test:kube-reference:strict");
   mustInclude(".github/workflows/release.yml", "pnpm verify");
   mustInclude(".github/workflows/release.yml", "NPM_TOKEN");
   mustInclude(".github/workflows/pages.yml", "actions/deploy-pages");
