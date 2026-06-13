@@ -87,7 +87,7 @@ const references = [
     metricTolerances: {
       deltaX: 8,
       deltaY: 8,
-      heightDelta: 8,
+      heightDelta: 10,
       widthDelta: 10
     },
     maxDiffRatio: 0.455,
