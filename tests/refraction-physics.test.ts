@@ -1065,6 +1065,7 @@ describe("Liquid Glass physics contract", () => {
     expect(searchboxContentRule).toContain("height: 100%");
     expect(searchboxContentRule).toContain("box-sizing: border-box");
     expect(searchboxContentRule).toContain("padding: 0 1.25rem");
+    expect(searchboxContentRule).toContain("border-radius: inherit");
     expect(searchboxContentRule).toContain("align-items: center");
     expect(searchboxPillRule).toContain("padding: 0");
     expect(enhancedSearchboxContentRule).toContain("text-shadow: none");
