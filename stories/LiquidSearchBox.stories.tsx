@@ -87,13 +87,18 @@ function KubeSearchboxReferenceStory() {
             style={{
               position: "absolute",
               left: "50%",
-              bottom: 12,
+              bottom: useImageBackground ? 8 : 12,
               display: "inline-flex",
               alignItems: "center",
               gap: 6,
+              padding: useImageBackground ? "3px 5px" : undefined,
               color: useImageBackground ? "#fff" : "#111",
               fontSize: 10,
-              textShadow: useImageBackground ? "0 1px 3px rgba(0, 0, 0, 0.55)" : undefined,
+              background: useImageBackground ? "rgba(0, 0, 0, 0.1)" : undefined,
+              borderRadius: useImageBackground ? 5 : undefined,
+              WebkitBackdropFilter: useImageBackground ? "blur(8px)" : undefined,
+              backdropFilter: useImageBackground ? "blur(8px)" : undefined,
+              textShadow: "none",
               transform: "translateX(-50%)"
             }}
           >
@@ -171,14 +176,14 @@ function KubeSearchboxPhotoCredit() {
       aria-hidden="true"
       style={{
         position: "absolute",
-        top: 22,
-        left: 22,
-        color: "rgba(255, 255, 255, 0.48)",
-        fontSize: 11,
-        fontWeight: 700,
-        letterSpacing: 2,
-        lineHeight: 1.15,
-        textShadow: "0 1px 3px rgba(0, 0, 0, 0.75)",
+        top: 10,
+        left: 10,
+        color: "rgba(255, 255, 255, 0.4)",
+        fontSize: 9,
+        fontWeight: 400,
+        letterSpacing: 0.9,
+        lineHeight: 1.1,
+        textShadow: "none",
         textTransform: "uppercase"
       }}
     >

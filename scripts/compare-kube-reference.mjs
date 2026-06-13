@@ -99,6 +99,7 @@ const references = [
     storyId: "liquid-glass-liquidsearchbox--kube-reference",
     targetId: "searchbox",
     candidateFrame: "searchbox",
+    controlContract: "searchbox",
     action: {
       backgroundIncludes: ["photo-1497250681960-ef046c08a56e", "searchbox-demo-background.jpg"],
       checked: true,
@@ -169,6 +170,9 @@ try {
       const targetAction = reference.action
         ? await applyTargetAction(referencePage, targetElement, reference.action)
         : null;
+      const targetControlContract = reference.controlContract
+        ? await readControlContract(targetElement, "kube", reference.controlContract)
+        : null;
       const targetScreenshotSubject =
         reference.capture === "handle" ? (targetAction?.subject ?? targetElement) : targetElement;
       await captureReferenceScreenshot(
@@ -199,6 +203,9 @@ try {
       const candidateAction = reference.action
         ? await applyCandidateAction(candidatePage, candidateElement, reference.action)
         : null;
+      const candidateControlContract = reference.controlContract
+        ? await readControlContract(candidateElement, "local", reference.controlContract)
+        : null;
       const candidateScreenshotSubject =
         reference.capture === "handle"
           ? (candidateAction?.subject ?? candidateElement)
@@ -210,6 +217,20 @@ try {
         reference.capture,
         candidatePath
       );
+      if (targetControlContract && candidateControlContract) {
+        await fs.writeFile(
+          path.join(artifactDir, `${reference.name}-control-contract.json`),
+          `${JSON.stringify(
+            {
+              summary: summarizeControlContract(targetControlContract, candidateControlContract),
+              target: targetControlContract,
+              candidate: candidateControlContract
+            },
+            null,
+            2
+          )}\n`
+        );
+      }
       await candidateAction?.cleanup();
 
       if (reference.targetId === "magnifying-glass") {
@@ -954,6 +975,230 @@ function assertActionMetricParity(reference, targetMetrics, candidateMetrics) {
   if (failures.length > 0) {
     throw new Error(`Kube action metrics diverged for ${reference.name}: ${failures.join("; ")}`);
   }
+}
+
+async function readControlContract(element, label, kind) {
+  return element.evaluate(
+    (root, options) => {
+      const rootRect = root.getBoundingClientRect();
+      const searchInput = findSearchInput(root);
+      const surface = searchInput ? findSearchSurface(root, searchInput) : null;
+      const icon = surface?.querySelector("svg, [class*='icon']") ?? null;
+      const credit = findTextElement(root, /photo|teemu|unsplash/i, {
+        maxHeight: 90,
+        maxWidth: 260,
+        maxY: 96
+      });
+      const labelElement = findTextElement(root, /use image background/i, {
+        maxHeight: 60,
+        maxWidth: 260,
+        minY: rootRect.height - 96
+      });
+      const rootStyle = getComputedStyle(root);
+
+      return {
+        kind: options.kind,
+        label: options.label,
+        rootRect: toRect(rootRect),
+        rootStyle: {
+          backgroundImage: truncate(rootStyle.backgroundImage),
+          backgroundPosition: rootStyle.backgroundPosition,
+          backgroundSize: rootStyle.backgroundSize
+        },
+        surface: surface ? readElement(surface, rootRect) : null,
+        input: searchInput ? readElement(searchInput, rootRect) : null,
+        icon: icon ? readElement(icon, rootRect) : null,
+        credit: credit ? readElement(credit, rootRect) : null,
+        imageBackgroundLabel: labelElement ? readElement(labelElement, rootRect) : null
+      };
+
+      function findSearchInput(base) {
+        return (
+          Array.from(base.querySelectorAll("input")).find((input) => {
+            const type = input.getAttribute("type") ?? "";
+            const placeholder = input.getAttribute("placeholder") ?? "";
+            return type === "search" || placeholder.toLowerCase().includes("search");
+          }) ?? null
+        );
+      }
+
+      function findSearchSurface(base, input) {
+        let current = input.parentElement;
+
+        while (current && current !== base.parentElement) {
+          const rect = current.getBoundingClientRect();
+          const style = getComputedStyle(current);
+          const backdropFilter = style.backdropFilter || style.webkitBackdropFilter;
+          const looksLikeSearchbox =
+            rect.width >= 250 &&
+            rect.width <= 500 &&
+            rect.height >= 32 &&
+            rect.height <= 80 &&
+            (style.borderRadius !== "0px" ||
+              style.overflow === "hidden" ||
+              (backdropFilter && backdropFilter !== "none"));
+
+          if (looksLikeSearchbox) {
+            return current;
+          }
+
+          if (current === base) {
+            break;
+          }
+
+          current = current.parentElement;
+        }
+
+        return null;
+      }
+
+      function findTextElement(base, pattern, bounds) {
+        const candidates = Array.from(base.querySelectorAll("*"))
+          .map((node) => {
+            const text = (node.textContent ?? "").replace(/\s+/g, " ").trim();
+            const rect = node.getBoundingClientRect();
+            const relativeY = rect.y - rootRect.y;
+
+            return { node, rect, relativeY, text };
+          })
+          .filter(({ rect, relativeY, text }) => {
+            if (!pattern.test(text) || rect.width <= 0 || rect.height <= 0) {
+              return false;
+            }
+
+            if (bounds.maxWidth !== undefined && rect.width > bounds.maxWidth) {
+              return false;
+            }
+
+            if (bounds.maxHeight !== undefined && rect.height > bounds.maxHeight) {
+              return false;
+            }
+
+            if (bounds.minY !== undefined && relativeY < bounds.minY) {
+              return false;
+            }
+
+            if (bounds.maxY !== undefined && relativeY > bounds.maxY) {
+              return false;
+            }
+
+            return true;
+          })
+          .sort(
+            (a, b) =>
+              a.relativeY - b.relativeY || a.rect.x - b.rect.x || a.text.length - b.text.length
+          );
+
+        return candidates[0]?.node ?? null;
+      }
+
+      function readElement(node, rootBounds) {
+        const rect = node.getBoundingClientRect();
+        const style = getComputedStyle(node);
+
+        return {
+          rect: toRelativeRect(rect, rootBounds),
+          text: truncate((node.textContent ?? "").replace(/\s+/g, " ").trim()),
+          style: {
+            backdropFilter: style.backdropFilter || style.webkitBackdropFilter,
+            backgroundColor: style.backgroundColor,
+            borderRadius: style.borderRadius,
+            boxShadow: truncate(style.boxShadow),
+            color: style.color,
+            fontSize: style.fontSize,
+            fontWeight: style.fontWeight,
+            letterSpacing: style.letterSpacing,
+            lineHeight: style.lineHeight,
+            opacity: style.opacity,
+            textShadow: truncate(style.textShadow),
+            transform: style.transform
+          }
+        };
+      }
+
+      function toRelativeRect(rect, rootBounds) {
+        return {
+          height: round(rect.height),
+          width: round(rect.width),
+          x: round(rect.x - rootBounds.x),
+          y: round(rect.y - rootBounds.y)
+        };
+      }
+
+      function toRect(rect) {
+        return {
+          height: round(rect.height),
+          width: round(rect.width),
+          x: round(rect.x),
+          y: round(rect.y)
+        };
+      }
+
+      function round(value) {
+        return Math.round(value * 100) / 100;
+      }
+
+      function truncate(value) {
+        return value.length > 240 ? `${value.slice(0, 240)}...` : value;
+      }
+    },
+    { kind, label }
+  );
+}
+
+function summarizeControlContract(target, candidate) {
+  return {
+    kind: target.kind,
+    rectDeltas: {
+      credit: summarizeRectDelta(target.credit?.rect, candidate.credit?.rect),
+      imageBackgroundLabel: summarizeRectDelta(
+        target.imageBackgroundLabel?.rect,
+        candidate.imageBackgroundLabel?.rect
+      ),
+      input: summarizeRectDelta(target.input?.rect, candidate.input?.rect),
+      surface: summarizeRectDelta(target.surface?.rect, candidate.surface?.rect)
+    },
+    rootBackgroundSize: {
+      candidate: candidate.rootStyle.backgroundSize,
+      target: target.rootStyle.backgroundSize
+    },
+    surfaceMaterial: {
+      candidate: pickStyle(candidate.surface?.style),
+      target: pickStyle(target.surface?.style)
+    }
+  };
+}
+
+function summarizeRectDelta(target, candidate) {
+  if (!target || !candidate) {
+    return { candidate: candidate ?? null, delta: null, target: target ?? null };
+  }
+
+  return {
+    candidate,
+    delta: {
+      height: round(candidate.height - target.height),
+      width: round(candidate.width - target.width),
+      x: round(candidate.x - target.x),
+      y: round(candidate.y - target.y)
+    },
+    target
+  };
+}
+
+function pickStyle(style) {
+  if (!style) {
+    return null;
+  }
+
+  return {
+    backdropFilter: style.backdropFilter,
+    backgroundColor: style.backgroundColor,
+    borderRadius: style.borderRadius,
+    boxShadow: style.boxShadow,
+    color: style.color,
+    transform: style.transform
+  };
 }
 
 async function readFilterContract(element, label) {

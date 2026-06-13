@@ -536,11 +536,19 @@ describe("Liquid Glass physics contract", () => {
 
   it("checks the Kube searchbox image background through real checkbox input", () => {
     expect(kubeReferenceCompareSource).toContain('name: "searchbox-image-background"');
+    expect(kubeReferenceCompareSource).toContain('controlContract: "searchbox"');
     expect(kubeReferenceCompareSource).toContain('kind: "checkbox"');
     expect(kubeReferenceCompareSource).toContain("applyCheckboxAction");
     expect(kubeReferenceCompareSource).toContain("readCheckboxActionSample");
+    expect(kubeReferenceCompareSource).toContain("readControlContract");
+    expect(kubeReferenceCompareSource).toContain("summarizeControlContract");
+    expect(kubeReferenceCompareSource).toContain("-control-contract.json");
     expect(kubeReferenceCompareSource).toContain("photo-1497250681960-ef046c08a56e");
     expect(kubeReferenceCompareSource).toContain("searchbox-demo-background.jpg");
+    expect(searchboxStorySource).toContain("top: 10");
+    expect(searchboxStorySource).toContain("left: 10");
+    expect(searchboxStorySource).toContain("fontSize: 9");
+    expect(searchboxStorySource).toContain("backdropFilter: useImageBackground ? \"blur(8px)\"");
   });
 
   it("does not fake Kube pointer parity by boosting active filter scales", () => {
