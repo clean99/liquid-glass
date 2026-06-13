@@ -37,6 +37,7 @@ const categoryChecks = [
       exists("docs/open-source-governance.md"),
       exists("docs/governance-scorecard.md"),
       exists("docs/visual-documentation.md"),
+      exists("docs/visual-state-coverage.json"),
       exists("docs/open-source-release.md"),
       exists("ROADMAP.md"),
       fileIncludes("docs/open-source-governance.md", "```mermaid"),
@@ -102,7 +103,11 @@ const categoryChecks = [
       fileIncludes("docs/visual-documentation.md", "High contrast"),
       fileIncludes("docs/visual-documentation.md", "Mobile"),
       fileIncludes("docs/visual-documentation.md", "Kube reference"),
-      fileIncludes("docs/open-source-governance.md", "Visual Documentation")
+      fileIncludes("docs/visual-documentation.md", "visual-state-coverage.json"),
+      fileIncludes("docs/open-source-governance.md", "Visual Documentation"),
+      scriptIncludes("test:visual-docs", "validate-visual-state-coverage"),
+      scriptIncludes("ci", "pnpm test:visual-docs"),
+      workflowIncludes("ci.yml", "pnpm test:visual-docs")
     ]
   },
   {

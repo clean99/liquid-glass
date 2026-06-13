@@ -58,6 +58,7 @@ const packageRequiredFiles = [
   "docs/shadcn-parity.json",
   "docs/testing.md",
   "docs/visual-documentation.md",
+  "docs/visual-state-coverage.json",
   "examples/README.md",
   "registry.json",
   "liquid-glass.json",
@@ -65,13 +66,15 @@ const packageRequiredFiles = [
   "scripts/audit-open-source-governance.mjs",
   "scripts/build-component-registry.mjs",
   "scripts/validate-component-test-coverage.mjs",
+  "scripts/validate-visual-state-coverage.mjs",
   "scripts/check-release-readiness.mjs",
   "scripts/check-shadcn-parity.mjs",
   "scripts/validate-reference-provenance.mjs",
   "scripts/verify-storybook-a11y.mjs",
   "schema/component-inventory.schema.json",
   "schema/reference-provenance.schema.json",
-  "schema/shadcn-parity.schema.json"
+  "schema/shadcn-parity.schema.json",
+  "schema/visual-state-coverage.schema.json"
 ];
 
 const standaloneRequiredFiles = [
@@ -178,7 +181,16 @@ mustInclude("docs/visual-documentation.md", [
   "High contrast",
   "Mobile",
   "Kube reference",
+  "visual-state-coverage.json",
   "Current Gaps"
+]);
+
+mustInclude("docs/visual-state-coverage.json", [
+  "visual-state-coverage.schema.json",
+  "componentsByProfile",
+  "high contrast",
+  "reduced motion",
+  "mobile"
 ]);
 
 mustInclude("docs/github-repository-settings.md", [
@@ -267,6 +279,7 @@ mustInclude("docs/testing.md", [
   "test:package",
   "test:a11y",
   "test:e2e",
+  "test:visual-docs",
   "@axe-core/playwright",
   "critical",
   "serious",
@@ -352,6 +365,9 @@ if (fs.existsSync(path.join(root, "package.json"))) {
   if (!packageJson.scripts?.["test:research"]) {
     errors.push("package.json must include test:research");
   }
+  if (!packageJson.scripts?.["test:visual-docs"]) {
+    errors.push("package.json must include test:visual-docs");
+  }
   if (!packageJson.scripts?.["test:kube-reference:strict"]?.includes("KUBE_STRICT_INTERACTIVE=1")) {
     errors.push("package.json test:kube-reference:strict must enable strict Kube interactions");
   }
@@ -381,10 +397,20 @@ if (fs.existsSync(path.join(root, "package.json"))) {
   if (!packageJson.scripts?.ci?.includes("pnpm test:governance")) {
     errors.push("package.json scripts.ci must include pnpm test:governance");
   }
+  if (!packageJson.scripts?.ci?.includes("pnpm test:visual-docs")) {
+    errors.push("package.json scripts.ci must include pnpm test:visual-docs");
+  }
   if (
     !packageJson.scripts?.["test:research"]?.includes("scripts/validate-reference-provenance.mjs")
   ) {
     errors.push("package.json test:research must run the reference provenance gate");
+  }
+  if (
+    !packageJson.scripts?.["test:visual-docs"]?.includes(
+      "scripts/validate-visual-state-coverage.mjs"
+    )
+  ) {
+    errors.push("package.json test:visual-docs must run the visual state coverage gate");
   }
   if (!packageJson.scripts?.["test:e2e"]?.includes("verify-liquid-behavior.mjs")) {
     errors.push("package.json test:e2e must run the real Storybook interaction gate");

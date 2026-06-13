@@ -82,6 +82,7 @@ for (const script of [
   "test:governance",
   "test:inventory",
   "test:component-coverage",
+  "test:visual-docs",
   "test:registry",
   "test:research",
   "test:shadcn-parity",
@@ -112,6 +113,7 @@ mustScript(packageJson, "test:research", ["scripts/validate-reference-provenance
 mustScript(packageJson, "test:component-coverage", [
   "scripts/validate-component-test-coverage.mjs"
 ]);
+mustScript(packageJson, "test:visual-docs", ["scripts/validate-visual-state-coverage.mjs"]);
 mustScript(packageJson, "test:kube-reference:strict", ["KUBE_STRICT_INTERACTIVE=1"]);
 mustScript(packageJson, "test:kube-reference:exact", [
   "KUBE_EXACT_PARITY=1",
@@ -127,6 +129,7 @@ mustScript(packageJson, "ci", [
   "pnpm test:research",
   "pnpm test:governance",
   "pnpm test:component-coverage",
+  "pnpm test:visual-docs",
   "pnpm test:release-readiness"
 ]);
 mustScript(packageJson, "verify", [
@@ -160,10 +163,13 @@ const packageRequiredFiles = [
   "docs/shadcn-registry.md",
   "docs/testing.md",
   "docs/visual-documentation.md",
+  "docs/visual-state-coverage.json",
   "docs/component-inventory.md",
   "examples/README.md",
   "registry.json",
-  "liquid-glass.json"
+  "liquid-glass.json",
+  "schema/visual-state-coverage.schema.json",
+  "scripts/validate-visual-state-coverage.mjs"
 ];
 
 const standaloneRequiredFiles = [
@@ -202,6 +208,7 @@ if (isStandaloneRepository) {
   mustInclude(".github/workflows/ci.yml", "pnpm test:governance");
   mustInclude(".github/workflows/ci.yml", "pnpm test:research");
   mustInclude(".github/workflows/ci.yml", "pnpm test:component-coverage");
+  mustInclude(".github/workflows/ci.yml", "pnpm test:visual-docs");
   mustInclude(".github/workflows/ci.yml", "pnpm test:a11y");
   mustInclude(".github/workflows/ci.yml", "pnpm test:e2e");
   mustInclude(".github/workflows/ci.yml", "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24");
@@ -215,12 +222,16 @@ if (isStandaloneRepository) {
 mustInclude("docs/open-source-release.md", "pnpm test:release-readiness");
 mustInclude("docs/open-source-release.md", "pnpm test:governance");
 mustInclude("docs/open-source-release.md", "pnpm test:component-coverage");
+mustInclude("docs/open-source-release.md", "pnpm test:visual-docs");
 mustInclude("docs/governance-scorecard.md", "CHECK_REMOTE_GOVERNANCE=1");
 mustInclude("docs/governance-scorecard.md", "pnpm --silent audit:governance:json");
 mustInclude("docs/governance-scorecard.md", "remoteStatus.checked");
 mustInclude("docs/visual-documentation.md", "Visual Documentation Contract");
 mustInclude("docs/visual-documentation.md", "Storybook Pages");
 mustInclude("docs/visual-documentation.md", "Kube reference");
+mustInclude("docs/visual-documentation.md", "visual-state-coverage.json");
+mustInclude("docs/visual-state-coverage.json", "componentsByProfile");
+mustInclude("docs/testing.md", "pnpm test:visual-docs");
 mustInclude("docs/github-repository-settings.md", "build_type=workflow");
 mustInclude("docs/open-source-release.md", "pnpm test:kube-reference:strict");
 mustInclude("docs/open-source-release.md", "pnpm pack --dry-run");

@@ -50,6 +50,7 @@ the repository without running a private demo:
 | Storybook examples  | `stories/*.stories.tsx` plus `.storybook` docs and a11y addon configuration.                | Present locally                 |
 | Storybook Pages     | `.github/workflows/pages.yml` builds Storybook and runs a11y before deploy.                 | Blocked until Pages is enabled  |
 | Visual regression   | `tests/visual/liquid-components-visual.spec.ts` and checked-in Playwright snapshots.        | Present                         |
+| Visual state audit  | `docs/visual-state-coverage.json` assigns every implemented component to a state profile.   | Present                         |
 | A11y evidence       | `pnpm test:a11y` runs `@axe-core/playwright` against representative Storybook routes.       | Present                         |
 | Kube reference      | `pnpm test:kube-reference` and `docs/kube-parity-gate.md` separate strict and exact parity. | Strict gate present; exact open |
 | Release visibility  | `docs/open-source-release.md` requires local gates before release or publish.               | Present                         |
@@ -88,9 +89,9 @@ sequenceDiagram
 
 ## Current Gaps
 
-| Gap                         | Why it matters                                                        | Next action                                              |
-| --------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------- |
-| Pages is not enabled        | Users cannot inspect the full visual documentation from the repo URL. | Enable GitHub Pages with GitHub Actions as the source.   |
-| Homepage is not set         | GitHub About cannot route users to the public visual docs yet.        | Set homepage after the first Pages deploy succeeds.      |
-| Exact Kube parity is open   | The strict gate is useful, but it is not a 1:1 visual claim.          | Keep exact parity out of release claims until it passes. |
-| Component states need audit | Stories exist, but state coverage is not yet scored per component.    | Add a state-coverage manifest before broad API growth.   |
+| Gap                          | Why it matters                                                                     | Next action                                                  |
+| ---------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Pages is not enabled         | Users cannot inspect the full visual documentation from the repo URL.              | Enable GitHub Pages with GitHub Actions as the source.       |
+| Homepage is not set          | GitHub About cannot route users to the public visual docs yet.                     | Set homepage after the first Pages deploy succeeds.          |
+| Exact Kube parity is open    | The strict gate is useful, but it is not a 1:1 visual claim.                       | Keep exact parity out of release claims until it passes.     |
+| Story-level state assertions | The manifest covers expected states, but story source is not tagged per state yet. | Add Storybook tags or metadata when the docs site is public. |

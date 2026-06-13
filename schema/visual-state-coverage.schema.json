@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Liquid Glass visual state coverage",
+  "type": "object",
+  "required": ["profiles", "componentsByProfile"],
+  "properties": {
+    "description": {
+      "type": "string"
+    },
+    "profiles": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["stateGroups", "reviewStates", "environments", "evidence"],
+        "properties": {
+          "stateGroups": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          },
+          "reviewStates": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          },
+          "environments": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          },
+          "evidence": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          }
+        }
+      }
+    },
+    "componentsByProfile": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string" },
+        "minItems": 1
+      }
+    }
+  }
+}

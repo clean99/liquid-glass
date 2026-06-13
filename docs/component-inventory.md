@@ -14,6 +14,7 @@ Run:
 ```sh
 pnpm test:inventory
 pnpm test:component-coverage
+pnpm test:visual-docs
 pnpm registry:build
 pnpm test:registry
 pnpm test:shadcn-parity
@@ -30,6 +31,11 @@ public export. Every implemented component must also have both generated
 implemented public component export is imported and exercised in
 `tests/components.test.tsx`. This catches the bad state where a component has
 source, a story, and a registry shim, but no component-level behavior check.
+
+`pnpm test:visual-docs` reads `docs/visual-state-coverage.json` and verifies
+that every implemented component is assigned to a visual state profile matching
+its inventory category. This keeps Storybook coverage reviewable as data instead
+of scattered prose.
 
 `pnpm test:shadcn-parity` fetches `https://ui.shadcn.com/docs/components` and
 compares the official component slugs with `docs/shadcn-parity.json` and the

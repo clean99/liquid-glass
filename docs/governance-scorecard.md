@@ -39,19 +39,19 @@ the automation.
 
 ## Score Areas
 
-| Area                     | What it proves                                                                      |
-| ------------------------ | ----------------------------------------------------------------------------------- |
-| Repository first screen  | README and package metadata tell users the true project status.                     |
-| Documentation structure  | Required docs exist and include useful visual flow diagrams.                        |
-| Contribution workflow    | PR and issue templates route bugs, features, and registry issues.                   |
-| Release CI               | CI, release, visual, and Pages workflows use the expected gates.                    |
-| Registry distribution    | shadcn-style registry files are generated, tested, and honest about npm dependency. |
-| Storybook Pages          | The workflow can build and deploy Storybook after Pages is enabled.                 |
-| Visual documentation     | Storybook, screenshots, a11y, and reference gates describe the visual contract.     |
-| Dependency governance    | Dependabot updates are grouped so dependency noise stays manageable.                |
-| Security and attribution | Security policy, license, attributions, and reference provenance are present.       |
-| Publish readiness        | Changesets, package files, public publish config, and release docs are aligned.     |
-| Discoverability          | Keywords, repository metadata, and links expose the package to the right audience.  |
+| Area                     | What it proves                                                                                  |
+| ------------------------ | ----------------------------------------------------------------------------------------------- |
+| Repository first screen  | README and package metadata tell users the true project status.                                 |
+| Documentation structure  | Required docs exist and include useful visual flow diagrams.                                    |
+| Contribution workflow    | PR and issue templates route bugs, features, and registry issues.                               |
+| Release CI               | CI, release, visual, and Pages workflows use the expected gates.                                |
+| Registry distribution    | shadcn-style registry files are generated, tested, and honest about npm dependency.             |
+| Storybook Pages          | The workflow can build and deploy Storybook after Pages is enabled.                             |
+| Visual documentation     | Storybook, screenshots, state profiles, a11y, and reference gates describe the visual contract. |
+| Dependency governance    | Dependabot updates are grouped so dependency noise stays manageable.                            |
+| Security and attribution | Security policy, license, attributions, and reference provenance are present.                   |
+| Publish readiness        | Changesets, package files, public publish config, and release docs are aligned.                 |
+| Discoverability          | Keywords, repository metadata, and links expose the package to the right audience.              |
 
 ## Current Remote Gaps
 

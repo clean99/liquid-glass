@@ -1,0 +1,150 @@
+{
+  "$schema": "../schema/visual-state-coverage.schema.json",
+  "description": "Visual state coverage profiles for implemented components. Component source files and Storybook files are verified against docs/component-inventory.json by scripts/validate-visual-state-coverage.mjs.",
+  "profiles": {
+    "command": {
+      "stateGroups": ["interaction", "accessibility", "material-mode", "environment", "layout"],
+      "reviewStates": ["default", "active item", "empty", "keyboard navigation", "long labels"],
+      "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
+      "evidence": ["Storybook story", "component unit test", "a11y scan"]
+    },
+    "control": {
+      "stateGroups": ["interaction", "accessibility", "material-mode", "environment", "layout"],
+      "reviewStates": ["default", "hover", "focus-visible", "pressed", "disabled", "selected"],
+      "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
+      "evidence": ["Storybook story", "component unit test", "visual snapshot"]
+    },
+    "data": {
+      "stateGroups": ["interaction", "accessibility", "material-mode", "environment", "layout"],
+      "reviewStates": ["default", "empty", "sorted", "filtered", "dense content", "overflow"],
+      "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
+      "evidence": ["Storybook story", "component unit test", "visual snapshot"]
+    },
+    "date-time": {
+      "stateGroups": ["interaction", "accessibility", "material-mode", "environment", "layout"],
+      "reviewStates": ["default", "selected", "disabled", "keyboard navigation", "popover open"],
+      "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
+      "evidence": ["Storybook story", "component unit test", "a11y scan"]
+    },
+    "disclosure": {
+      "stateGroups": ["interaction", "accessibility", "material-mode", "environment", "layout"],
+      "reviewStates": ["default", "hover", "focus-visible", "expanded", "collapsed"],
+      "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
+      "evidence": ["Storybook story", "component unit test", "visual snapshot"]
+    },
+    "display": {
+      "stateGroups": ["accessibility", "material-mode", "environment", "layout"],
+      "reviewStates": ["default", "variant", "long content", "nested surface"],
+      "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
+      "evidence": ["Storybook story", "component unit test"]
+    },
+    "feedback": {
+      "stateGroups": ["interaction", "accessibility", "material-mode", "environment", "layout"],
+      "reviewStates": ["default", "loading", "empty", "dismissible", "live region"],
+      "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
+      "evidence": ["Storybook story", "component unit test", "a11y scan"]
+    },
+    "form": {
+      "stateGroups": ["interaction", "accessibility", "material-mode", "environment", "layout"],
+      "reviewStates": [
+        "default",
+        "focus-visible",
+        "disabled",
+        "invalid",
+        "description",
+        "long value"
+      ],
+      "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
+      "evidence": ["Storybook story", "component unit test", "a11y scan"]
+    },
+    "layout": {
+      "stateGroups": ["accessibility", "material-mode", "environment", "layout"],
+      "reviewStates": ["default", "dense content", "overflow", "nested surface", "responsive"],
+      "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
+      "evidence": ["Storybook story", "component unit test", "visual snapshot"]
+    },
+    "media": {
+      "stateGroups": ["interaction", "accessibility", "material-mode", "environment", "layout"],
+      "reviewStates": ["default", "fallback content", "loaded media", "keyboard navigation"],
+      "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
+      "evidence": ["Storybook story", "component unit test", "visual snapshot"]
+    },
+    "navigation": {
+      "stateGroups": ["interaction", "accessibility", "material-mode", "environment", "layout"],
+      "reviewStates": [
+        "default",
+        "hover",
+        "focus-visible",
+        "current item",
+        "collapsed",
+        "overflow"
+      ],
+      "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
+      "evidence": ["Storybook story", "component unit test", "visual snapshot"]
+    },
+    "overlay": {
+      "stateGroups": ["interaction", "accessibility", "material-mode", "environment", "layout"],
+      "reviewStates": ["closed", "open", "focus trap", "escape", "outside click", "long content"],
+      "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
+      "evidence": ["Storybook story", "component unit test", "a11y scan"]
+    },
+    "typography": {
+      "stateGroups": ["accessibility", "material-mode", "environment", "layout"],
+      "reviewStates": ["default", "scale", "long content", "nested surface"],
+      "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
+      "evidence": ["Storybook story", "component unit test"]
+    },
+    "utility": {
+      "stateGroups": ["accessibility", "material-mode", "environment", "layout"],
+      "reviewStates": ["default", "ltr", "rtl", "nested surface"],
+      "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
+      "evidence": ["Storybook story", "component unit test"]
+    }
+  },
+  "componentsByProfile": {
+    "command": ["command"],
+    "control": [
+      "button",
+      "button-group",
+      "checkbox",
+      "combobox",
+      "radio-group",
+      "select",
+      "slider",
+      "switch",
+      "toggle",
+      "toggle-group"
+    ],
+    "data": ["chart", "data-table", "table"],
+    "date-time": ["calendar", "date-picker"],
+    "disclosure": ["accordion", "collapsible"],
+    "display": ["badge", "item", "kbd"],
+    "feedback": ["alert", "empty", "progress", "skeleton", "spinner", "sonner", "toast"],
+    "form": [
+      "field",
+      "input",
+      "input-group",
+      "input-otp",
+      "label",
+      "native-select",
+      "searchbox",
+      "textarea"
+    ],
+    "layout": ["aspect-ratio", "card", "resizable", "scroll-area", "separator"],
+    "media": ["avatar", "carousel"],
+    "navigation": ["breadcrumb", "menubar", "navigation-menu", "pagination", "sidebar", "tabs"],
+    "overlay": [
+      "alert-dialog",
+      "context-menu",
+      "dialog",
+      "drawer",
+      "dropdown-menu",
+      "hover-card",
+      "popover",
+      "sheet",
+      "tooltip"
+    ],
+    "typography": ["typography"],
+    "utility": ["direction"]
+  }
+}

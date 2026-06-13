@@ -8,6 +8,7 @@ pnpm typecheck
 pnpm test:docs
 pnpm test:inventory
 pnpm test:component-coverage
+pnpm test:visual-docs
 pnpm test:research
 pnpm test:unit
 pnpm test:a11y
@@ -110,6 +111,12 @@ verify pinned commits against public remotes.
 `docs/component-inventory.json` is imported and exercised in
 `tests/components.test.tsx`. It exists because a source file, story, and registry
 shim are not enough to prove a component has behavior coverage.
+
+`pnpm test:visual-docs` verifies `docs/visual-state-coverage.json` against the
+component inventory. Every implemented component must be assigned to one visual
+state profile, the profile must match its inventory category, the Storybook file
+must exist, and each profile must include material-mode, environment, light,
+dark, high contrast, reduced motion, and mobile review coverage.
 
 `pnpm test:package` builds the package and verifies the publish contract:
 CommonJS and ESM entries, type declarations, CSS exports, `sideEffects`, npm

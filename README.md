@@ -85,6 +85,7 @@ pnpm test:docs
 pnpm test:governance
 pnpm test:inventory
 pnpm test:component-coverage
+pnpm test:visual-docs
 pnpm test:registry
 pnpm test:research
 pnpm test:shadcn-parity

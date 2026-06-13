@@ -34,6 +34,7 @@ jobs:
       - run: pnpm test:research
       - run: pnpm test:inventory
       - run: pnpm test:component-coverage
+      - run: pnpm test:visual-docs
       - run: pnpm test:registry
       - run: pnpm test:shadcn-parity
       - run: pnpm test:release-readiness
