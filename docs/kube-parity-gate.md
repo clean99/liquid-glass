@@ -166,8 +166,8 @@ Recent sampled `pnpm test:kube-reference:exact` result on 2026-06-13:
 | Reference                | Exact diff ratio | Best phase | Phase diff |
 | ------------------------ | ---------------: | ---------- | ---------: |
 | magnifying-glass         |           0.5240 | `0,-1`     |     0.5133 |
-| magnifying-glass-pressed |           0.7348 | `3,2`      |     0.6868 |
-| magnifying-glass-dragged |           0.6887 | `-2,1`     |     0.6585 |
+| magnifying-glass-pressed |           0.7237 | `1,1`      |     0.7084 |
+| magnifying-glass-dragged |           0.6408 | `-1,0`     |     0.6442 |
 | searchbox                |           0.1138 | `0,0`      |     0.1150 |
 | switch                   |           0.0904 | `0,0`      |     0.0934 |
 | slider                   |           0.0750 | `0,0`      |     0.0763 |
