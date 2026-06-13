@@ -765,7 +765,7 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain(
       "verifyFocusMaterial(target.name, target.options)"
     );
-    expect(verifyLiquidBehaviorSource).toContain("for (let attempt = 1; attempt <= 2");
+    expect(verifyLiquidBehaviorSource).toContain("for (let attempt = 1; attempt <= 3");
     expect(verifyLiquidBehaviorSource).toContain("await page.close().catch(() => {})");
     expect(verifyLiquidBehaviorSource).toContain("await waitForStoryReady(page, id)");
     expect(verifyLiquidBehaviorSource).toContain("Storybook story did not become ready");
@@ -777,9 +777,10 @@ describe("Liquid Glass physics contract", () => {
   });
 
   it("retries transient Storybook iframe misses before failing behavior audits", () => {
-    expect(verifyLiquidBehaviorSource).toContain("for (let attempt = 1; attempt <= 2;");
+    expect(verifyLiquidBehaviorSource).toContain("for (let attempt = 1; attempt <= 3;");
     expect(verifyLiquidBehaviorSource).toContain("lastError = error");
     expect(verifyLiquidBehaviorSource).toContain("await page.close().catch(() => {})");
+    expect(verifyLiquidBehaviorSource).toContain('return "application/json; charset=utf-8"');
     expect(verifyLiquidBehaviorSource).toContain("throw lastError");
   });
 

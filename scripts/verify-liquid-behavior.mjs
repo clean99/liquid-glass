@@ -741,7 +741,7 @@ async function keyboardFocusVisible(page, selector) {
 async function openStory(id, media = {}, viewport = { width: 900, height: 520 }) {
   let lastError;
 
-  for (let attempt = 1; attempt <= 2; attempt += 1) {
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
     const page = await browser.newPage({ viewport });
     await page.emulateMedia(media);
 
@@ -1089,6 +1089,10 @@ function contentType(filePath) {
 
   if (filePath.endsWith(".css")) {
     return "text/css; charset=utf-8";
+  }
+
+  if (filePath.endsWith(".json")) {
+    return "application/json; charset=utf-8";
   }
 
   if (filePath.endsWith(".svg")) {
