@@ -62,6 +62,15 @@ fixture. That removes synthetic CSS artwork as a hidden variable: if the
 interactive rows drift, the remaining gap is in the lens material, the transform
 coordinate system, or the droplet response, not in a different background.
 
+The shared board still needs one deliberate distinction: the interactive
+Storybook board applies an `-8px, -2px` content phase offset under the draggable
+lens. Real pointer metrics already matched the public page, so moving the lens
+coordinate would be the wrong fix. The phase offset changes only the
+high-contrast field sampled by the active lens and moved the pressed row from
+`0.4163` to `0.4148` and the dragged row from `0.4224` to `0.4142`. A larger
+vertical offset (`-8px, -10px`) was tested and rejected because it regressed
+pressed to `0.5173` and dragged to `0.4519`.
+
 The draggable magnifying glass uses the same observable geometry as the public
 reference: the optical body is `210x150`, and the idle visual height comes from
 `scaleY(0.8)`, not from making the DOM node `120px` tall. Pressed and dragged
