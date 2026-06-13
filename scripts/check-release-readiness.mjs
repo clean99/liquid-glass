@@ -97,6 +97,8 @@ for (const script of [
   "test:kube-reference:exact",
   "test:release-readiness",
   "test:package",
+  "audit:governance",
+  "audit:governance:json",
   "ci",
   "verify",
   "release"
@@ -213,6 +215,8 @@ mustInclude("docs/open-source-release.md", "pnpm test:release-readiness");
 mustInclude("docs/open-source-release.md", "pnpm test:governance");
 mustInclude("docs/open-source-release.md", "pnpm test:component-coverage");
 mustInclude("docs/governance-scorecard.md", "CHECK_REMOTE_GOVERNANCE=1");
+mustInclude("docs/governance-scorecard.md", "pnpm --silent audit:governance:json");
+mustInclude("docs/github-repository-settings.md", "build_type=workflow");
 mustInclude("docs/open-source-release.md", "pnpm test:kube-reference:strict");
 mustInclude("docs/open-source-release.md", "pnpm pack --dry-run");
 mustInclude("docs/open-source-release.md", "NPM_CONFIG_PROVENANCE");

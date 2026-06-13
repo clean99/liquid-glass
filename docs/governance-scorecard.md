@@ -24,6 +24,12 @@ Remote-aware audit:
 CHECK_REMOTE_GOVERNANCE=1 pnpm audit:governance
 ```
 
+Machine-readable output for automation:
+
+```sh
+CHECK_REMOTE_GOVERNANCE=1 pnpm --silent audit:governance:json
+```
+
 The remote-aware audit checks public GitHub state such as Pages, homepage,
 topics, wiki state, and repository visibility. It is not part of CI because
 repository settings can be unavailable to forks and local contributors.

@@ -62,6 +62,40 @@ Discussions are currently disabled. Keep the issue template contact link pointed
 at Discussions only after that feature is enabled, or use Issues for structured
 questions.
 
+## Maintainer Commands
+
+These commands require an authenticated GitHub CLI session with repository
+administration permission. They mirror GitHub REST API operations and should be
+run by a maintainer, not by CI.
+
+Enable GitHub Pages for Actions deployments:
+
+```sh
+gh api \
+  --method POST \
+  -H "Accept: application/vnd.github+json" \
+  repos/clean99/liquid-glass/pages \
+  -f build_type=workflow
+```
+
+After the first successful Pages deployment, set the repository homepage and
+disable Wiki:
+
+```sh
+gh api \
+  --method PATCH \
+  -H "Accept: application/vnd.github+json" \
+  repos/clean99/liquid-glass \
+  -f homepage="https://clean99.github.io/liquid-glass/" \
+  -F has_wiki=false
+```
+
+Check the scorecard after changing repository settings:
+
+```sh
+CHECK_REMOTE_GOVERNANCE=1 pnpm audit:governance
+```
+
 ## Branch Protection
 
 Require these checks before merging to `main`:
@@ -72,6 +106,11 @@ Require these checks before merging to `main`:
 Use linear history if the repository does not need merge commits. Do not enable
 rules that block the Changesets release workflow from opening its version pull
 request.
+
+Branch protection can be configured through the GitHub UI or REST API. The
+important contract is that the `ci` check must be required after it has reported
+success on `main`; `visual` should be required for pull requests before external
+contributions are accepted.
 
 ## Repository Secrets
 

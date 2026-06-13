@@ -158,9 +158,18 @@ mustInclude("docs/open-source-governance.md", [
 mustInclude("docs/governance-scorecard.md", [
   "pnpm audit:governance",
   "pnpm test:governance",
+  "pnpm --silent audit:governance:json",
   "CHECK_REMOTE_GOVERNANCE=1",
   "GitHub Pages",
   "not part of CI"
+]);
+
+mustInclude("docs/github-repository-settings.md", [
+  "Maintainer Commands",
+  "gh api",
+  "build_type=workflow",
+  "has_wiki=false",
+  "CHECK_REMOTE_GOVERNANCE=1 pnpm audit:governance"
 ]);
 
 mustInclude("ATTRIBUTIONS.md", [
@@ -319,6 +328,9 @@ if (fs.existsSync(path.join(root, "package.json"))) {
   }
   if (!packageJson.scripts?.["audit:governance"]) {
     errors.push("package.json must include audit:governance");
+  }
+  if (!packageJson.scripts?.["audit:governance:json"]) {
+    errors.push("package.json must include audit:governance:json");
   }
   if (!packageJson.scripts?.["test:research"]) {
     errors.push("package.json must include test:research");

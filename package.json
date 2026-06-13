@@ -81,6 +81,7 @@
     "lint": "eslint .",
     "storybook:build": "storybook build --quiet",
     "audit:governance": "node scripts/audit-open-source-governance.mjs",
+    "audit:governance:json": "node scripts/audit-open-source-governance.mjs --json",
     "registry:build": "node scripts/build-component-registry.mjs",
     "shadcn:sync": "node scripts/check-shadcn-parity.mjs --update",
     "test": "vitest run",

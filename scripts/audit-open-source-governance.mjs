@@ -4,6 +4,7 @@ import path from "node:path";
 const root = process.cwd();
 const minScore = Number(readArgValue("--min-score") ?? 0);
 const checkRemote = process.env.CHECK_REMOTE_GOVERNANCE === "1";
+const jsonOutput = process.argv.includes("--json");
 const packageJson = readJson("package.json");
 
 const categoryChecks = [
@@ -173,13 +174,30 @@ const results = categoryChecks.map((category) => {
 const overall =
   Math.round((results.reduce((sum, result) => sum + result.score, 0) / results.length) * 10) / 10;
 
-for (const result of results) {
-  console.log(`${result.name}: ${result.score}/10 (${result.passed}/${result.total})`);
-  for (const check of result.checks.filter((item) => !item.passed)) {
-    console.log(`  - ${check.label}`);
+const report = {
+  categories: results.map((result) => ({
+    failed: result.checks.filter((check) => !check.passed).map((check) => check.label),
+    name: result.name,
+    passed: result.passed,
+    score: result.score,
+    total: result.total
+  })),
+  minScore: minScore > 0 ? minScore / 10 : null,
+  overall,
+  remote: checkRemote
+};
+
+if (jsonOutput) {
+  console.log(JSON.stringify(report, null, 2));
+} else {
+  for (const result of results) {
+    console.log(`${result.name}: ${result.score}/10 (${result.passed}/${result.total})`);
+    for (const check of result.checks.filter((item) => !item.passed)) {
+      console.log(`  - ${check.label}`);
+    }
   }
+  console.log(`overall-governance-score: ${overall}/10`);
 }
-console.log(`overall-governance-score: ${overall}/10`);
 
 if (minScore > 0 && overall < minScore / 10) {
   throw new Error(`Governance score ${overall}/10 is below required ${minScore / 10}/10`);
