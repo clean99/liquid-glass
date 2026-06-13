@@ -178,6 +178,7 @@ const address = server.address();
 const port = typeof address === "object" && address ? address.port : 0;
 const browser = await chromium.launch({ headless: true });
 const focusAuditResults = [];
+const interactionAuditResults = [];
 const focusAuditTargets = [
   {
     name: "breadcrumb",
@@ -337,6 +338,48 @@ const focusAuditTargets = [
     }
   }
 ];
+const interactionAuditTargets = [
+  {
+    activeScaleMaxFromHover: 0,
+    materialSelector: behaviorStories.tabs.selector,
+    name: "tabs",
+    pointerSelector: behaviorStories.tabs.selector,
+    stateSelector: behaviorStories.tabs.selector,
+    targetIndex: 1
+  },
+  {
+    materialSelector: behaviorStories.nav.selector,
+    name: "nav",
+    pointerSelector: behaviorStories.nav.selector,
+    stateSelector: behaviorStories.nav.selector
+  },
+  {
+    activeScaleMin: 0.99,
+    materialSelector: behaviorStories.searchbox.selector,
+    minimumHoverScale: 0.84,
+    name: "searchbox",
+    pointerSelector: behaviorStories.searchbox.selector,
+    stateSelector: behaviorStories.searchbox.selector
+  },
+  {
+    activeScaleDeltaFromHover: 0.025,
+    materialSelector: ".lg-switch__track",
+    minimumHoverScale: 0.68,
+    name: "switch",
+    pointerSelector: ".lg-switch",
+    stateSelector: ".lg-switch__thumb"
+  },
+  {
+    activeScaleDeltaFromHover: 0.025,
+    dragOffset: { x: 140, y: 0 },
+    materialSelector: ".lg-slider__track",
+    minimumDragLeftDelta: 50,
+    minimumHoverScale: 0.63,
+    name: "slider",
+    pointerSelector: ".lg-slider",
+    stateSelector: ".lg-slider__thumb"
+  }
+];
 
 try {
   for (const target of focusAuditTargets) {
@@ -474,27 +517,132 @@ async function writeFocusAuditResults() {
 }
 
 async function verifyHoverAndActiveResponse() {
-  const page = await openStory(behaviorStories.tabs.id);
-  const locator = page.locator(".lg-tabs__tab").nth(1);
-  await locator.waitFor({ state: "visible", timeout: 10_000 });
-  const idle = await readState(locator);
+  for (const target of interactionAuditTargets) {
+    await verifyPointerInteractionMaterial(target);
+  }
 
-  await locator.hover();
-  await page.waitForTimeout(120);
-  const hovered = await readState(locator);
-  assertGreaterThan(hovered.backgroundAlpha, idle.backgroundAlpha, "tabs hover material alpha");
+  await fs.writeFile(
+    path.join(behaviorArtifactDir, "pointer-interaction-audit.json"),
+    `${JSON.stringify(
+      { count: interactionAuditResults.length, targets: interactionAuditResults },
+      null,
+      2
+    )}\n`
+  );
+}
 
-  const box = await locator.boundingBox();
+async function verifyPointerInteractionMaterial(target) {
+  const story = behaviorStories[target.name];
+  const page = await openStory(story.id);
+  const targetIndex = target.targetIndex ?? 0;
+  const pointerLocator = page.locator(target.pointerSelector).nth(targetIndex);
+  const stateLocator = page.locator(target.stateSelector).nth(target.stateIndex ?? targetIndex);
+  const materialLocator = page
+    .locator(target.materialSelector)
+    .nth(
+      target.materialIndex ?? (target.materialSelector === target.pointerSelector ? targetIndex : 0)
+    );
+
+  await pointerLocator.waitFor({ state: "visible", timeout: 10_000 });
+  await stateLocator.waitFor({ state: "visible", timeout: 10_000 });
+  await materialLocator.waitFor({ state: "visible", timeout: 10_000 });
+
+  const idle = await readState(stateLocator);
+  const idleMaterial = await readState(materialLocator);
+
+  await pointerLocator.hover();
+  await page.waitForTimeout(180);
+  const hovered = await readState(stateLocator);
+  const hoveredMaterial = await readState(materialLocator);
+  assertNoPlasticInteractionChrome(hovered, `${target.name} hover`);
+  assertNoPlasticInteractionChrome(hoveredMaterial, `${target.name} hover material`);
+  assertMaterialResponse(idleMaterial, hoveredMaterial, `${target.name} hover material`);
+  if (target.minimumHoverScale !== undefined) {
+    assertGreaterOrEqual(hovered.scale, target.minimumHoverScale, `${target.name} hover scale`);
+  }
+
+  const box = await pointerLocator.boundingBox();
   if (!box) {
-    throw new Error("tabs active target is missing a bounding box");
+    throw new Error(`${target.name} active target is missing a bounding box`);
   }
 
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
   await page.mouse.down();
-  await page.waitForTimeout(240);
-  const active = await readState(locator);
-  assertLessThanOrEqual(active.scale, hovered.scale, "tabs active scale relaxes");
+  await page.waitForTimeout(220);
+  const active = await readState(stateLocator);
+  const activeMaterial = await readState(materialLocator);
+  assertNoPlasticInteractionChrome(active, `${target.name} active`);
+  assertNoPlasticInteractionChrome(activeMaterial, `${target.name} active material`);
+  assertMaterialResponse(idleMaterial, activeMaterial, `${target.name} active material`);
+  if (target.activeScaleMaxFromHover !== undefined) {
+    assertLessThanOrEqual(
+      active.scale,
+      hovered.scale + target.activeScaleMaxFromHover,
+      `${target.name} active scale relaxes`
+    );
+  }
+  if (target.activeScaleDeltaFromHover !== undefined) {
+    assertGreaterOrEqual(
+      active.scale,
+      hovered.scale + target.activeScaleDeltaFromHover,
+      `${target.name} active scale grows from hover`
+    );
+  }
+  if (target.activeScaleMin !== undefined) {
+    assertGreaterOrEqual(active.scale, target.activeScaleMin, `${target.name} active scale`);
+  }
+
+  let dragged;
+  let draggedMaterial;
+  if (target.dragOffset) {
+    await page.mouse.move(
+      box.x + box.width / 2 + target.dragOffset.x,
+      box.y + box.height / 2 + target.dragOffset.y,
+      { steps: 8 }
+    );
+    await page.waitForTimeout(160);
+    dragged = await readState(stateLocator);
+    draggedMaterial = await readState(materialLocator);
+    assertNoPlasticInteractionChrome(dragged, `${target.name} drag`);
+    assertNoPlasticInteractionChrome(draggedMaterial, `${target.name} drag material`);
+    assertMaterialResponse(idleMaterial, draggedMaterial, `${target.name} drag material`);
+    if (target.minimumDragLeftDelta !== undefined) {
+      assertGreaterThan(
+        dragged.left,
+        active.left + target.minimumDragLeftDelta,
+        `${target.name} drag visual x movement`
+      );
+    }
+  }
+
   await page.mouse.up();
+
+  interactionAuditResults.push({
+    activeMaterialAlphaDelta: round(activeMaterial.backgroundAlpha - idleMaterial.backgroundAlpha),
+    activeMaterialFilterChanged: activeMaterial.filter !== idleMaterial.filter,
+    activeMaterialShadowLayerDelta: activeMaterial.shadowLayerCount - idleMaterial.shadowLayerCount,
+    activeScale: round(active.scale),
+    dragLeftDelta: dragged ? round(dragged.left - active.left) : null,
+    dragMaterialAlphaDelta: draggedMaterial
+      ? round(draggedMaterial.backgroundAlpha - idleMaterial.backgroundAlpha)
+      : null,
+    dragMaterialFilterChanged: draggedMaterial
+      ? draggedMaterial.filter !== idleMaterial.filter
+      : null,
+    dragMaterialShadowLayerDelta: draggedMaterial
+      ? draggedMaterial.shadowLayerCount - idleMaterial.shadowLayerCount
+      : null,
+    hoverMaterialAlphaDelta: round(hoveredMaterial.backgroundAlpha - idleMaterial.backgroundAlpha),
+    hoverMaterialFilterChanged: hoveredMaterial.filter !== idleMaterial.filter,
+    hoverMaterialShadowLayerDelta: hoveredMaterial.shadowLayerCount - idleMaterial.shadowLayerCount,
+    hoverScale: round(hovered.scale),
+    idleScale: round(idle.scale),
+    materialSelector: target.materialSelector,
+    name: target.name,
+    pointerSelector: target.pointerSelector,
+    stateSelector: target.stateSelector,
+    storyId: story.id
+  });
 
   await page.close();
 }
@@ -942,6 +1090,7 @@ async function readState(locator) {
       foregroundTextShadowCount: countForegroundTextShadows(element),
       hardRingLayerCount: countCheapHardRingLayers(style.boxShadow),
       height: rect.height,
+      left: rect.left,
       outlineColor: style.outlineColor,
       outlineStyle: style.outlineStyle,
       scale,
@@ -1077,6 +1226,10 @@ async function readState(locator) {
 }
 
 function assertNoPlasticFocusChrome(state, label) {
+  assertNoPlasticInteractionChrome(state, label, "focus");
+}
+
+function assertNoPlasticInteractionChrome(state, label, stateName = "interaction") {
   const visibleBorder =
     state.borderWidthPx > 0 && state.borderStyle !== "none" && state.borderStyle !== "hidden";
   const visibleOutline = state.outlineStyle !== "none";
@@ -1087,11 +1240,11 @@ function assertNoPlasticFocusChrome(state, label) {
   ].join(" ");
 
   if (focusText.includes("10, 132, 255") || focusText.includes("0, 95, 204")) {
-    throw new Error(`${label}: focus style still uses system-blue plastic ring`);
+    throw new Error(`${label}: ${stateName} style still uses system-blue plastic ring`);
   }
 
   if (state.hardRingLayerCount > 0) {
-    throw new Error(`${label}: focus style still uses a hard white/black 1px ring`);
+    throw new Error(`${label}: ${stateName} style still uses a hard white/black 1px ring`);
   }
 
   if (
@@ -1100,7 +1253,7 @@ function assertNoPlasticFocusChrome(state, label) {
     (state.borderLuma <= 20 || state.borderLuma >= 235)
   ) {
     throw new Error(
-      `${label}: focus border is still a high-contrast hard edge (${state.borderColor}, alpha=${state.borderAlpha}, luma=${state.borderLuma})`
+      `${label}: ${stateName} border is still a high-contrast hard edge (${state.borderColor}, alpha=${state.borderAlpha}, luma=${state.borderLuma})`
     );
   }
 }

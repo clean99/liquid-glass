@@ -257,6 +257,20 @@
   color: color-mix(in srgb, var(--lg-text), transparent 58%);
 }
 
+.lg-searchbox:hover:not(:focus-within) {
+  background: color-mix(in srgb, var(--lg-control-focus-fill), rgba(255, 255, 255, 0.05) 44%);
+  box-shadow: var(--lg-control-focus-shadow-soft);
+  filter: saturate(1.04) brightness(1.012);
+  transform: scale(0.86);
+}
+
+.lg-searchbox:active:not(:focus-within) {
+  background: color-mix(in srgb, var(--lg-control-focus-fill), rgba(255, 255, 255, 0.05) 28%);
+  box-shadow: var(--lg-control-focus-shadow-deep);
+  filter: saturate(1.07) brightness(1.022);
+  transform: scale(0.92);
+}
+
 .lg-searchbox:focus-within {
   border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
   background: var(--lg-control-focus-fill);
@@ -1776,6 +1790,32 @@
   display: none;
 }
 
+.lg-switch:hover .lg-switch__track {
+  box-shadow: var(--lg-control-focus-shadow-soft);
+  filter: saturate(1.08) brightness(1.018);
+}
+
+.lg-switch:hover .lg-switch__thumb {
+  background: color-mix(in srgb, var(--lg-control-focus-fill), #fff 54%);
+  box-shadow: var(--lg-control-focus-shadow-soft);
+  transform: scale(0.69);
+}
+
+.lg-switch:active {
+  transform: scale(0.995);
+}
+
+.lg-switch:active .lg-switch__track {
+  box-shadow: var(--lg-control-focus-shadow-deep);
+  filter: saturate(1.12) brightness(1.028);
+}
+
+.lg-switch:active .lg-switch__thumb {
+  background: var(--lg-control-focus-fill);
+  box-shadow: var(--lg-control-focus-shadow-deep);
+  transform: scale(0.75);
+}
+
 .lg-switch:focus {
   outline: none;
 }
@@ -1861,6 +1901,34 @@
 
 .lg-slider__input:focus {
   outline: none;
+}
+
+.lg-slider:hover .lg-slider__track {
+  background: color-mix(in srgb, rgba(137, 137, 143, 0.4), var(--lg-control-focus-fill) 28%);
+  box-shadow: var(--lg-control-focus-shadow-soft);
+  filter: saturate(1.07) brightness(1.016);
+}
+
+.lg-slider:hover .lg-slider__thumb {
+  background: color-mix(in srgb, var(--lg-control-focus-fill), #fff 56%);
+  box-shadow: var(--lg-control-focus-shadow-soft);
+  transform: translateX(-50%) scale(0.64);
+}
+
+.lg-slider:has(.lg-slider__input:active) {
+  transform: scale(1.012);
+}
+
+.lg-slider:has(.lg-slider__input:active) .lg-slider__track {
+  background: color-mix(in srgb, rgba(137, 137, 143, 0.4), var(--lg-control-focus-fill) 42%);
+  box-shadow: var(--lg-control-focus-shadow-deep);
+  filter: saturate(1.1) brightness(1.024);
+}
+
+.lg-slider:has(.lg-slider__input:active) .lg-slider__thumb {
+  background: var(--lg-control-focus-fill);
+  box-shadow: var(--lg-control-focus-shadow-deep);
+  transform: translateX(-50%) scale(0.72);
 }
 
 .lg-slider:focus-within {
@@ -4143,6 +4211,15 @@
 
 @media (prefers-reduced-motion: reduce) {
   .lg-surface {
+    transition: none;
+  }
+
+  .lg-switch,
+  .lg-switch__track,
+  .lg-switch__thumb,
+  .lg-slider,
+  .lg-slider__track,
+  .lg-slider__thumb {
     transition: none;
   }
 

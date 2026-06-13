@@ -997,6 +997,36 @@ describe("Liquid Glass physics contract", () => {
     );
   });
 
+  it("runs real browser hover, active, and slider drag material audits", () => {
+    const auditedInteractionTargets = ["tabs", "nav", "searchbox", "switch", "slider"];
+
+    expect(verifyLiquidBehaviorSource).toContain("const interactionAuditTargets = [");
+    for (const target of auditedInteractionTargets) {
+      expect(verifyLiquidBehaviorSource).toContain(`name: "${target}"`);
+    }
+
+    expect(verifyLiquidBehaviorSource).toContain("verifyPointerInteractionMaterial(target)");
+    expect(verifyLiquidBehaviorSource).toContain("await pointerLocator.hover()");
+    expect(verifyLiquidBehaviorSource).toContain("await page.mouse.down()");
+    expect(verifyLiquidBehaviorSource).toContain("dragOffset: { x: 140, y: 0 }");
+    expect(verifyLiquidBehaviorSource).toContain("minimumDragLeftDelta");
+    expect(verifyLiquidBehaviorSource).toContain(
+      "assertMaterialResponse(idleMaterial, hoveredMaterial"
+    );
+    expect(verifyLiquidBehaviorSource).toContain(
+      "assertMaterialResponse(idleMaterial, activeMaterial"
+    );
+    expect(verifyLiquidBehaviorSource).toContain("pointer-interaction-audit.json");
+    expect(verifyLiquidBehaviorSource).toContain("interactionAuditResults.push");
+
+    expect(styles).toContain(".lg-searchbox:hover:not(:focus-within)");
+    expect(styles).toContain(".lg-searchbox:active:not(:focus-within)");
+    expect(styles).toContain(".lg-switch:hover .lg-switch__track");
+    expect(styles).toContain(".lg-switch:active .lg-switch__thumb");
+    expect(styles).toContain(".lg-slider:hover .lg-slider__track");
+    expect(styles).toContain(".lg-slider:has(.lg-slider__input:active) .lg-slider__thumb");
+  });
+
   it("retries transient Storybook iframe misses before failing behavior audits", () => {
     expect(verifyLiquidBehaviorSource).toContain("for (let attempt = 1; attempt <= 3;");
     expect(verifyLiquidBehaviorSource).toContain("lastError = error");
