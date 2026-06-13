@@ -1489,6 +1489,18 @@ function assertSearchboxLayerContract(label, contract) {
   if (!contract.contentLayer) {
     failures.push("missing content layer");
   } else {
+    const contentRect = contract.contentLayer.rect;
+    const surfaceRect = contract.surface?.rect ?? contract.glassLayer?.rect;
+
+    if (surfaceRect && !rectsMatch(contentRect, surfaceRect, 2)) {
+      failures.push(
+        `content layer does not cover glass surface: ${JSON.stringify({
+          content: contentRect,
+          surface: surfaceRect
+        })}`
+      );
+    }
+
     if (contentFilter && contentFilter !== "none") {
       failures.push(`content layer is filtered: ${contentFilter}`);
     }
@@ -1499,6 +1511,15 @@ function assertSearchboxLayerContract(label, contract) {
   }
 
   return failures.length > 0 ? `${label} ${failures.join(", ")}` : null;
+}
+
+function rectsMatch(a, b, tolerance) {
+  return (
+    Math.abs(a.x - b.x) <= tolerance &&
+    Math.abs(a.y - b.y) <= tolerance &&
+    Math.abs(a.width - b.width) <= tolerance &&
+    Math.abs(a.height - b.height) <= tolerance
+  );
 }
 
 function summarizeRectDelta(target, candidate) {

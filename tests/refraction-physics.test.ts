@@ -639,6 +639,8 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain("glassLayerMaterial");
     expect(kubeReferenceCompareSource).toContain("contentLayerMaterial");
     expect(kubeReferenceCompareSource).toContain("content layer is filtered");
+    expect(kubeReferenceCompareSource).toContain("content layer does not cover glass surface");
+    expect(kubeReferenceCompareSource).toContain("rectsMatch");
     expect(kubeReferenceCompareSource).toContain("glass layer has inset rim");
     expect(kubeReferenceCompareSource).toContain("-control-contract.json");
     expect(kubeReferenceCompareSource).toContain("photo-1497250681960-ef046c08a56e");
@@ -1041,6 +1043,10 @@ describe("Liquid Glass physics contract", () => {
       ".lg-surface--enhanced.lg-searchbox > .lg-surface__content"
     );
     const focusRule = collectCssRuleBodies(styles, ".lg-searchbox:focus-within").join("\n");
+    const searchboxPillRule = collectCssRuleBodies(
+      styles,
+      ".lg-surface--pill.lg-searchbox"
+    ).join("\n");
     const reducedMotionRule = collectCssRuleBodies(
       styles,
       ".lg-searchbox[data-liquid-reduced-motion]"
@@ -1049,11 +1055,19 @@ describe("Liquid Glass physics contract", () => {
     expect(searchboxRule).toContain("width: 26.25rem");
     expect(searchboxRule).toContain("max-width: 100%");
     expect(searchboxRule).toContain("height: 3.5rem");
+    expect(searchboxRule).toContain("padding: 0");
     expect(searchboxRule).not.toContain("inset");
     expect(searchboxRule).toContain("transform: scale(0.8)");
     expect(searchboxRule).toContain("transition:");
     expect(searchboxRule).toContain("transform 260ms");
+    expect(searchboxContentRule).toContain("position: absolute");
+    expect(searchboxContentRule).toContain("inset: 0");
     expect(searchboxContentRule).toContain("text-shadow: none");
+    expect(searchboxContentRule).toContain("height: 100%");
+    expect(searchboxContentRule).toContain("box-sizing: border-box");
+    expect(searchboxContentRule).toContain("padding: 0 1.25rem");
+    expect(searchboxContentRule).toContain("align-items: center");
+    expect(searchboxPillRule).toContain("padding: 0");
     expect(enhancedSearchboxContentRule).toContain("text-shadow: none");
     expect(focusRule).toContain("background: var(--lg-control-focus-fill)");
     expect(focusRule).toContain("box-shadow: var(--lg-control-focus-shadow-deep)");

@@ -177,7 +177,7 @@
   width: 26.25rem;
   max-width: 100%;
   height: 3.5rem;
-  padding: 0 1.25rem;
+  padding: 0;
   background: rgba(255, 255, 255, 0.05);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
   transform: scale(0.8);
@@ -198,9 +198,15 @@
 }
 
 .lg-searchbox > .lg-surface__content {
+  position: absolute;
+  inset: 0;
   display: flex;
   width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0 1.25rem;
   gap: 0.65rem;
+  align-items: center;
   justify-content: flex-start;
   text-shadow: none;
 }
@@ -1568,6 +1574,10 @@
   min-height: 1.9rem;
   padding: 0.32rem 0.64rem;
   font-size: 0.875rem;
+}
+
+.lg-surface--pill.lg-searchbox {
+  padding: 0;
 }
 
 .lg-nav .lg-surface--button,
