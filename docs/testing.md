@@ -84,7 +84,10 @@ templates, registry files, docs, attributions, testing notes, and package script
 `pnpm test:package` builds the package and verifies the publish contract:
 CommonJS and ESM entries, type declarations, CSS exports, `sideEffects`, npm
 publish access, package file whitelist, React peer dependencies, the
-`@hashintel/refractive` dependency, and the generated CSS/type outputs.
+`@hashintel/refractive` dependency, generated CSS/type outputs, and every
+implemented component export listed in `docs/component-inventory.json`. A
+component cannot be marked implemented if it disappears from the ESM, CommonJS,
+or TypeScript declaration package output.
 
 The physical unit tests intentionally exercise pure functions before UI:
 
