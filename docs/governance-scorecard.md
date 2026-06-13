@@ -5,9 +5,10 @@ easy to overstate by hand: docs, issue routing, CI gates, release readiness,
 registry distribution, attribution, and discoverability.
 
 The comparative benchmark lives in `docs/ui-library-benchmark.md`. The release
-evidence dashboard lives in `docs/release-evidence.md`. Together they separate
-local gate readiness from public launch readiness so the project does not
-overclaim npm, Pages, or exact Kube parity.
+evidence dashboard lives in `docs/release-evidence.md`. The recurring progress
+rubric lives in `docs/progress-checkpoints.md`. Together they separate local
+gate readiness from public launch readiness so the project does not overclaim
+npm, Pages, or exact Kube parity.
 
 ## Commands
 

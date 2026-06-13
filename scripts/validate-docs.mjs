@@ -93,6 +93,7 @@ const packageRequiredFiles = [
   "docs/maintainer-runbook.md",
   "docs/open-source-governance.md",
   "docs/open-source-release.md",
+  "docs/progress-checkpoints.md",
   "docs/release-evidence.md",
   "docs/optics-architecture.md",
   "docs/reference-provenance.json",
@@ -192,6 +193,7 @@ mustInclude("README.md", [
   "Open-source governance",
   "UI library benchmark",
   "Release evidence dashboard",
+  "Progress checkpoints",
   "Support",
   "ROADMAP.md"
 ]);
@@ -231,6 +233,7 @@ mustInclude("docs/index.md", [
   "docs/components/map.md",
   "docs/components/index.md",
   "docs/maintainer-runbook.md",
+  "docs/progress-checkpoints.md",
   "Visual Documentation",
   "Quality Gates",
   "docs/accessibility.md",
@@ -851,9 +854,30 @@ mustInclude("docs/governance-scorecard.md", [
   "docs/ui-library-benchmark.md",
   "docs/components/index.md",
   "docs/maintainer-runbook.md",
+  "docs/progress-checkpoints.md",
   "remoteStatus.checked",
   "GitHub Pages",
   "not part of CI"
+]);
+
+mustInclude("docs/progress-checkpoints.md", [
+  "Progress Checkpoints",
+  "30 minute checkpoint",
+  "shadcn-ui/ui",
+  "radix-ui/primitives",
+  "chakra-ui/chakra-ui",
+  "heroui-inc/heroui",
+  "Quantitative Scorecard",
+  "launch-progress score",
+  "86/110",
+  "78%",
+  "Visual Documentation Gaps",
+  "GitHub Pages setting",
+  "pnpm test:kube-reference:exact",
+  "Continuation Rule",
+  "pnpm test:release-readiness",
+  "ATTRIBUTIONS.md",
+  "docs/reference-provenance.json"
 ]);
 
 mustInclude("docs/ui-library-benchmark.md", [

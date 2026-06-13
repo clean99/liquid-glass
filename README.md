@@ -47,6 +47,7 @@ reference parity checks.
 - [Open-source governance](docs/open-source-governance.md)
 - [Maintainer runbook](docs/maintainer-runbook.md)
 - [Governance scorecard](docs/governance-scorecard.md)
+- [Progress checkpoints](docs/progress-checkpoints.md)
 - [UI library benchmark](docs/ui-library-benchmark.md)
 - [Release evidence dashboard](docs/release-evidence.md)
 - [Release checklist](docs/open-source-release.md)
@@ -136,6 +137,8 @@ Primary docs:
 - `docs/testing.md`: local and CI validation strategy.
 - `docs/maintainer-runbook.md`: maintainer triage, CI failure, Pages, release,
   security, registry, and rollback procedures.
+- `docs/progress-checkpoints.md`: 30 minute launch-progress rubric, benchmark
+  comparison loop, visual documentation gaps, and continuation rule.
 - `docs/release-evidence.md`: proof map for what can be claimed publicly and
   what still needs remote evidence.
 - `docs/open-source-release.md`: release, Pages, npm, and rollback checklist.
