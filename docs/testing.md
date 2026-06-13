@@ -70,8 +70,9 @@ Pressed and dragged lens rows are captured from the post-action visual bounding
 box clip, not from `element.screenshot()`, so DOM transform differences between
 Kube and Storybook do not decide the crop. `kube-reference-results.json` records
 target and candidate screenshot sizes, the effective crop, action clip, pixel
-threshold, diff ratio, and pointer action metrics so geometry, capture,
-material, and filter regressions can be separated.
+threshold, diff ratio, a non-gating best phase offset, and pointer action
+metrics so geometry, capture, background phase, material, and filter regressions
+can be separated.
 For the magnifying-glass target, the script also asserts the SVG filter contract:
 the candidate must expose the same two-pass displacement pipeline, image count,
 map count, and displacement scales before pixels are compared. This contract is

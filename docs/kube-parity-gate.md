@@ -48,22 +48,25 @@ captures a page clip from the post-action visual bounding box instead of relying
 on `element.screenshot()`, because the Kube page and local Storybook do not use
 the same DOM transform structure. `kube-reference-results.json` records the
 target screenshot size, candidate screenshot size, effective compare region,
-diff threshold, action clip, and action metrics. Those fields are required for
-lens work: without them a pressed-state regression can be mistaken for a
-material problem when the real issue is a capture-size or crop mismatch.
+diff threshold, action clip, action metrics, and a non-gating best phase offset.
+The phase offset scans a small candidate-image translation window and records
+which sampled offset best aligns the local crop with the Kube crop. Those fields
+are required for lens work: without them a pressed-state regression can be
+mistaken for a material problem when the real issue is a capture-size,
+background-phase, or crop mismatch.
 
 ## Latest Measurement
 
 Measured locally on 2026-06-13 against `https://kube.io/blog/liquid-glass-css-svg/`.
 
-| Reference                | Diff ratio | Threshold | Mode |
-| ------------------------ | ---------: | --------: | ---- |
-| magnifying-glass         |     0.2000 |    0.2400 | gate |
-| magnifying-glass-pressed |     0.3306 |    0.3600 | gate |
-| magnifying-glass-dragged |     0.3990 |    0.4050 | gate |
-| searchbox                |     0.0167 |    0.0200 | gate |
-| switch                   |     0.0142 |    0.0200 | gate |
-| slider                   |     0.0149 |    0.0200 | gate |
+| Reference                | Diff ratio | Best phase | Phase diff | Threshold | Mode |
+| ------------------------ | ---------: | ---------- | ---------: | --------: | ---- |
+| magnifying-glass         |     0.2000 | `0,-1`     |     0.1859 |    0.2400 | gate |
+| magnifying-glass-pressed |     0.3402 | `2,0`      |     0.3344 |    0.3600 | gate |
+| magnifying-glass-dragged |     0.3937 | `-3,-1`    |     0.3631 |    0.4050 | gate |
+| searchbox                |     0.0167 | `0,0`      |     0.0111 |    0.0200 | gate |
+| switch                   |     0.0142 | `0,0`      |     0.0090 |    0.0200 | gate |
+| slider                   |     0.0149 | `0,0`      |     0.0074 |    0.0200 | gate |
 
 This measurement includes these verified geometry fixes:
 
@@ -93,8 +96,12 @@ This measurement includes these verified geometry fixes:
 - pressed and dragged screenshots are captured from the post-action visual
   bounding box clip. This removed a false mismatch from `element.screenshot()`
   using different target and candidate transform boxes.
+- the comparison now records a non-gating best phase offset. Searchbox, switch,
+  and slider align at `0,0`; the lens interaction rows improve only modestly
+  after tiny offsets, so the remaining gap is material and optical response, not
+  just a bad screenshot crop.
 
-This proves three things:
+This proves four things:
 
 - The static searchbox, switch, and slider stories are already within the current
   screenshot budget, so their thresholds are ratcheted down to `0.0200`.

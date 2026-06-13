@@ -21,10 +21,20 @@ const pixelDeltaThreshold = process.env.KUBE_PIXEL_DELTA_THRESHOLD
   : exactPixelParity
     ? 0
     : 24;
+const phaseMaxOffset = Number(process.env.KUBE_PHASE_MAX_OFFSET ?? 12);
+const phaseSampleStride = Number(process.env.KUBE_PHASE_SAMPLE_STRIDE ?? 2);
 const strictInteractivePixels = process.env.KUBE_STRICT_INTERACTIVE === "1";
 
 if (!Number.isFinite(pixelDeltaThreshold) || pixelDeltaThreshold < 0) {
   throw new Error(`Invalid KUBE_PIXEL_DELTA_THRESHOLD: ${process.env.KUBE_PIXEL_DELTA_THRESHOLD}`);
+}
+
+if (!Number.isInteger(phaseMaxOffset) || phaseMaxOffset < 0) {
+  throw new Error(`Invalid KUBE_PHASE_MAX_OFFSET: ${process.env.KUBE_PHASE_MAX_OFFSET}`);
+}
+
+if (!Number.isInteger(phaseSampleStride) || phaseSampleStride < 1) {
+  throw new Error(`Invalid KUBE_PHASE_SAMPLE_STRIDE: ${process.env.KUBE_PHASE_SAMPLE_STRIDE}`);
 }
 
 const references = [
@@ -210,7 +220,9 @@ try {
       candidatePath,
       reference.compareRegion,
       diffPath,
-      pixelDeltaThreshold
+      pixelDeltaThreshold,
+      phaseMaxOffset,
+      phaseSampleStride
     );
     assertActionMetricParity(reference, targetAction?.metrics, candidateAction?.metrics);
     const reportOnly = Boolean(reference.reportOnly) && !strictInteractivePixels;
@@ -253,6 +265,8 @@ console.table(
     height: result.height,
     diffRatio: result.diffRatio.toFixed(4),
     meanDelta: result.meanDelta.toFixed(2),
+    phase: `${result.bestPhaseOffset.candidateDx},${result.bestPhaseOffset.candidateDy}`,
+    phaseDiffRatio: result.bestPhaseOffset.diffRatio.toFixed(4),
     rmsDelta: result.rmsDelta.toFixed(2),
     maxDiffRatio: result.maxDiffRatio,
     pixelDeltaThreshold: result.pixelDeltaThreshold,
@@ -731,7 +745,9 @@ async function compareImagesInBrowser(
   candidatePath,
   compareRegion,
   diffPath,
-  threshold
+  threshold,
+  maxPhaseOffset,
+  phaseStride
 ) {
   const [target, candidate] = await Promise.all([
     fs.readFile(targetPath),
@@ -739,7 +755,7 @@ async function compareImagesInBrowser(
   ]);
   const page = await browser.newPage();
   const result = await page.evaluate(
-    async ({ targetBase64, candidateBase64, pixelThreshold, region }) => {
+    async ({ targetBase64, candidateBase64, maxOffset, pixelThreshold, region, sampleStride }) => {
       const targetImage = await loadImage(targetBase64);
       const candidateImage = await loadImage(candidateBase64);
       const targetImageSize = { height: targetImage.height, width: targetImage.width };
@@ -794,12 +810,23 @@ async function compareImagesInBrowser(
         diffImage.data[index + 3] = delta > pixelThreshold ? 255 : 96;
       }
 
+      const bestPhaseOffset = findBestPhaseOffset(
+        targetPixels,
+        candidatePixels,
+        width,
+        height,
+        pixelThreshold,
+        maxOffset,
+        sampleStride
+      );
+
       context.putImageData(diffImage, 0, 0);
       const diffBlob = await canvas.convertToBlob({ type: "image/png" });
       const diffPngBase64 = await blobToBase64(diffBlob);
 
       const pixelCount = width * height;
       return {
+        bestPhaseOffset,
         candidateImageSize,
         compareRegion: source,
         diffRatio: different / pixelCount,
@@ -810,6 +837,94 @@ async function compareImagesInBrowser(
         targetImageSize,
         width
       };
+
+      function findBestPhaseOffset(
+        targetPixelsToCompare,
+        candidatePixelsToCompare,
+        imageWidth,
+        imageHeight,
+        differenceThreshold,
+        maxCandidateOffset,
+        stride
+      ) {
+        let best = null;
+
+        for (
+          let candidateDy = -maxCandidateOffset;
+          candidateDy <= maxCandidateOffset;
+          candidateDy += 1
+        ) {
+          for (
+            let candidateDx = -maxCandidateOffset;
+            candidateDx <= maxCandidateOffset;
+            candidateDx += 1
+          ) {
+            const startX = Math.max(0, -candidateDx);
+            const endX = Math.min(imageWidth, imageWidth - candidateDx);
+            const startY = Math.max(0, -candidateDy);
+            const endY = Math.min(imageHeight, imageHeight - candidateDy);
+            let compared = 0;
+            let differentPixels = 0;
+            let totalOffsetDelta = 0;
+            let totalOffsetSquaredDelta = 0;
+
+            for (let y = startY; y < endY; y += stride) {
+              const candidateY = y + candidateDy;
+
+              for (let x = startX; x < endX; x += stride) {
+                const candidateX = x + candidateDx;
+                const targetIndex = (y * imageWidth + x) * 4;
+                const candidateIndex = (candidateY * imageWidth + candidateX) * 4;
+                const delta =
+                  Math.abs(
+                    targetPixelsToCompare[targetIndex] - candidatePixelsToCompare[candidateIndex]
+                  ) +
+                  Math.abs(
+                    targetPixelsToCompare[targetIndex + 1] -
+                      candidatePixelsToCompare[candidateIndex + 1]
+                  ) +
+                  Math.abs(
+                    targetPixelsToCompare[targetIndex + 2] -
+                      candidatePixelsToCompare[candidateIndex + 2]
+                  ) +
+                  Math.abs(
+                    targetPixelsToCompare[targetIndex + 3] -
+                      candidatePixelsToCompare[candidateIndex + 3]
+                  );
+
+                compared += 1;
+                totalOffsetDelta += delta;
+                totalOffsetSquaredDelta += delta * delta;
+                if (delta > differenceThreshold) {
+                  differentPixels += 1;
+                }
+              }
+            }
+
+            if (compared === 0) {
+              continue;
+            }
+
+            const candidate = {
+              candidateDx,
+              candidateDy,
+              comparedPixels: compared,
+              diffRatio: differentPixels / compared,
+              meanDelta: totalOffsetDelta / compared,
+              overlapHeight: endY - startY,
+              overlapWidth: endX - startX,
+              rmsDelta: Math.sqrt(totalOffsetSquaredDelta / compared),
+              sampleStride: stride
+            };
+
+            if (!best || candidate.diffRatio < best.diffRatio) {
+              best = candidate;
+            }
+          }
+        }
+
+        return best;
+      }
 
       async function loadImage(base64) {
         const bytes = Uint8Array.from(atob(base64), (char) => char.charCodeAt(0));
@@ -830,8 +945,10 @@ async function compareImagesInBrowser(
     },
     {
       candidateBase64: candidate.toString("base64"),
+      maxOffset: maxPhaseOffset,
       pixelThreshold: threshold,
       region: compareRegion,
+      sampleStride: phaseStride,
       targetBase64: target.toString("base64")
     }
   );
