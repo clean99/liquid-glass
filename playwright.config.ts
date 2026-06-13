@@ -7,6 +7,11 @@ export default defineConfig({
   snapshotPathTemplate: "{testDir}/{testFileDir}/{testFileName}-snapshots/{arg}-{projectName}{ext}",
   fullyParallel: true,
   reporter: [["list"], ["html", { outputFolder: "playwright-report", open: "never" }]],
+  expect: {
+    toHaveScreenshot: {
+      maxDiffPixelRatio: 0.01
+    }
+  },
   use: {
     trace: "on-first-retry"
   },
