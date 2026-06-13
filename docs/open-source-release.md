@@ -50,6 +50,10 @@ those files already live in this repository.
 `pnpm test:docs` verifies the presence of these files and the key claims they
 must contain.
 
+Repository-level settings are tracked in `docs/github-repository-settings.md`.
+The shadcn-style registry distribution model is tracked in
+`docs/shadcn-registry.md`.
+
 ## Release Flow
 
 1. Run `pnpm test:release-readiness` to validate package metadata, workflows,

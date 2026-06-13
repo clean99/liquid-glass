@@ -124,7 +124,9 @@ const packageRequiredFiles = [
   "SECURITY.md",
   "CODE_OF_CONDUCT.md",
   "CHANGELOG.md",
+  "docs/github-repository-settings.md",
   "docs/open-source-release.md",
+  "docs/shadcn-registry.md",
   "docs/testing.md",
   "docs/component-inventory.md",
   "examples/README.md",
@@ -166,6 +168,11 @@ if (isStandaloneRepository) {
 mustInclude("docs/open-source-release.md", "pnpm test:release-readiness");
 mustInclude("docs/open-source-release.md", "pnpm test:kube-reference:strict");
 mustInclude("docs/open-source-release.md", "pnpm pack --dry-run");
+mustInclude("docs/github-repository-settings.md", "git push -u origin main");
+mustInclude("docs/github-repository-settings.md", "Branch Protection");
+mustInclude("docs/github-repository-settings.md", "NPM_TOKEN");
+mustInclude("docs/shadcn-registry.md", "npx shadcn@latest add");
+mustInclude("docs/shadcn-registry.md", "test:shadcn-parity");
 
 if (errors.length > 0) {
   throw new Error(
