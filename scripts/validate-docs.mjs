@@ -47,6 +47,7 @@ const packageRequiredFiles = [
   "docs/design-principles.md",
   "docs/github-repository-settings.md",
   "docs/governance-scorecard.md",
+  "docs/index.md",
   "docs/installation.md",
   "docs/kube-parity-gate.md",
   "docs/open-source-governance.md",
@@ -127,10 +128,31 @@ mustInclude("README.md", [
 mustInclude("README.md", [
   "Project Status",
   "not published yet",
+  "not published to npm yet",
+  "docs/index.md",
   "Open-source governance",
   "UI library benchmark",
   "Support",
   "ROADMAP.md"
+]);
+
+mustInclude("docs/index.md", [
+  "Liquid Glass UI",
+  "shadcn/ui",
+  "Radix UI",
+  "Chakra UI",
+  "HeroUI",
+  "```mermaid",
+  "Component Navigation",
+  "Visual Documentation",
+  "Quality Gates",
+  "Public Launch Checklist",
+  "not published to npm yet",
+  "Storybook Pages",
+  "shadcn-style Registry",
+  "test:kube-reference:exact",
+  "pnpm test:visual-docs",
+  "pnpm verify"
 ]);
 
 mustInclude("SUPPORT.md", [

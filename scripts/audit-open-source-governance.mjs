@@ -31,6 +31,10 @@ const categoryChecks = [
   {
     name: "documentation-structure",
     checks: [
+      exists("docs/index.md"),
+      fileIncludes("docs/index.md", "```mermaid"),
+      fileIncludes("docs/index.md", "Component Navigation"),
+      fileIncludes("docs/index.md", "Public Launch Checklist"),
       exists("docs/installation.md"),
       exists("docs/api-overview.md"),
       exists("docs/testing.md"),

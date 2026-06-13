@@ -1,54 +1,61 @@
 # @clean99/liquid-glass
 
-Beautiful, accessible Liquid Glass components for React with real SVG/CSS refraction and production-ready fallbacks.
+Beautiful, accessible Liquid Glass components for React that you can customize,
+extend, and build on. Open Source. Open Code. Real SVG/CSS refraction with
+production-ready fallbacks.
 
-`@clean99/liquid-glass` is an open-source component system for building Apple-inspired Liquid Glass interfaces on the web. It provides typed React components, CSS tokens, Storybook demos, shadcn-style registry metadata, browser behavior checks, package tests, and conservative fallback materials. The refraction engine is delegated to `@hashintel/refractive`; this project owns the component API, accessibility contract, design tokens, fallback strategy, and integration tests.
+`@clean99/liquid-glass` is a React UI library for Apple-inspired Liquid Glass
+interfaces on the web. The refraction engine is delegated to
+`@hashintel/refractive`; this project owns the component API, accessibility
+contract, design tokens, fallback strategy, shadcn-style Registry metadata,
+Storybook documentation, and release gates.
 
-The goal is not generic glassmorphism. The library treats Liquid Glass as an optical material: clear foreground content, capped enhanced surfaces, reduced-motion and reduced-transparency support, browser-specific fallback behavior, and automated parity gates against public Liquid Glass references.
+This is not generic glassmorphism. The library treats Liquid Glass as a material
+system: readable foreground content, capped enhanced surfaces, reduced-motion
+and reduced-transparency support, browser-specific fallback behavior, and Kube
+reference parity checks.
 
 ## Project Status
 
 - GitHub repository: `https://github.com/clean99/liquid-glass`
-- npm package: prepared for public release, but not published yet.
-- Storybook Pages: workflow is present; the public site goes live after GitHub Pages is enabled with GitHub Actions as the source.
-- Kube visual parity: `pnpm test:kube-reference` and the strict release-candidate gate are tracked separately from `pnpm test:kube-reference:exact`; exact 1:1 parity is not claimed yet.
+- npm package: prepared for public release, but not published to npm yet; it is
+  not published yet.
+- Storybook Pages: workflow is present; the public site goes live after GitHub
+  Pages is enabled with GitHub Actions as the source.
+- Kube visual parity: `pnpm test:kube-reference` and
+  `pnpm test:kube-reference:strict` are release-candidate gates.
+  `pnpm test:kube-reference:exact` is tracked separately; exact 1:1 parity is
+  not claimed yet.
 
 ## Start Here
 
+- [Documentation index](docs/index.md)
 - [Installation](docs/installation.md)
 - [API overview](docs/api-overview.md)
+- [Component inventory](docs/component-inventory.md)
 - [Design principles](docs/design-principles.md)
-- [Governance scorecard](docs/governance-scorecard.md)
-- [UI library benchmark](docs/ui-library-benchmark.md)
+- [Browser Support](docs/browser-support.md)
 - [Visual documentation](docs/visual-documentation.md)
 - [Testing strategy](docs/testing.md)
-- [shadcn-style registry](docs/shadcn-registry.md)
+- [shadcn-style Registry](docs/shadcn-registry.md)
 - [Open-source governance](docs/open-source-governance.md)
+- [Governance scorecard](docs/governance-scorecard.md)
+- [UI library benchmark](docs/ui-library-benchmark.md)
 - [Release checklist](docs/open-source-release.md)
-- [Roadmap](ROADMAP.md)
-- [Security policy](SECURITY.md)
+- [ROADMAP.md](ROADMAP.md)
 - [Support](SUPPORT.md)
-
-## Why This Exists
-
-Most glass UI libraries stop at blur, transparency, and shadows. This package is built around a stricter contract:
-
-- real refraction is isolated behind `LiquidSurface`;
-- foreground text stays outside the displacement layer;
-- fallback and solid modes are first-class, not afterthoughts;
-- keyboard, screen-reader, reduced-motion, and high-contrast states are tested;
-- Storybook, package exports, documentation, registry metadata, and visual parity gates ship with the library.
+- [Security policy](SECURITY.md)
 
 ## Installation
 
-The package is not published to npm yet. After the first public npm release,
-the install command will be:
+The package is not published to npm yet. After the first public npm release, the
+install command will be:
 
 ```sh
 pnpm add @clean99/liquid-glass
 ```
 
-`@hashintel/refractive` is included as a package dependency. React is a peer dependency:
+`react` and `react-dom` are peer dependencies:
 
 ```sh
 pnpm add react react-dom
@@ -75,334 +82,115 @@ export function Example() {
 }
 ```
 
-## Repository Scripts
+## Documentation
+
+The documentation is organized like a public UI library docs site: start with
+the overview, install the package, choose a mode, inspect the component
+inventory, then use the registry and release checklist only when the package is
+ready for public distribution.
+
+```mermaid
+flowchart LR
+  A["docs/index.md"] --> B["Installation"]
+  A --> C["Components"]
+  A --> D["Theming and modes"]
+  A --> E["Visual documentation"]
+  A --> F["Registry"]
+  A --> G["Release"]
+```
+
+Primary docs:
+
+- `docs/index.md`: UI library documentation entry point.
+- `docs/api-overview.md`: public API shape, modes, provider behavior, and
+  component groups.
+- `docs/component-inventory.md`: implemented and planned component inventory.
+- `docs/visual-documentation.md`: Storybook Pages, light and dark states,
+  reduced motion, high contrast, mobile, and Kube reference evidence.
+- `docs/testing.md`: local and CI validation strategy.
+- `docs/open-source-release.md`: release, Pages, npm, and rollback checklist.
+
+## Components
+
+The implemented surface is tracked in `docs/component-inventory.json` and
+rendered in [Component inventory](docs/component-inventory.md). Coverage against
+the shadcn/ui-style baseline is tracked in `docs/shadcn-parity.json`.
+
+Core groups:
+
+- Foundations: `LiquidProvider`, `LiquidSurface`, `FallbackGlassSurface`,
+  `LiquidButton`, `LiquidCard`, `LiquidTypography`.
+- Forms: input, field, textarea, checkbox, switch, slider, select, combobox,
+  date picker, calendar, and OTP input.
+- Navigation: nav, link, breadcrumb, menubar, pagination, tabs, sidebar, and
+  command primitives.
+- Overlays: dialog, alert dialog, drawer, sheet, popover, hover card, tooltip,
+  dropdown menu, and context menu.
+- Data and feedback: table, data table, chart, progress, badge, alert, toast,
+  empty, skeleton, spinner, carousel, and resizable panels.
+- Kube-aligned primitives: lens, search box, switch, slider, and music player
+  reference states.
+
+## Browser Support
+
+Enhanced SVG/CSS refraction is conservative by default. Chrome and Chromium can
+use enhanced mode when capability checks pass. Safari, iOS Safari, Firefox,
+reduced transparency, and high contrast are first-class fallback or solid mode
+targets.
+
+## Accessibility
+
+Interactive components use native controls or well-known ARIA patterns. Dialogs,
+menus, tabs, accordions, form fields, toasts, data tables, charts, carousel,
+calendar, and sidebar behavior are tested with unit, component, Storybook, and
+`@axe-core/playwright` checks. Foreground text stays outside the displacement
+layer so refraction does not distort readable content.
+
+## Performance
+
+Enhanced mode is guarded by runtime capability checks. `maxEnhancedSurfaces`
+limits expensive surfaces, mobile enhanced mode is disabled by default, dense
+content stays in fallback or solid material, and CSS is exported separately for
+tree-shakable package use.
+
+## shadcn-style Registry
+
+The repository includes a root `registry.json`, a flat `liquid-glass.json`, a
+package-local `registry/liquid-glass.json`, and generated entries under
+`registry/components/`.
+
+After the first npm release, registry examples can be installed with:
 
 ```sh
-pnpm install
-pnpm dev
+npx shadcn@latest add https://raw.githubusercontent.com/clean99/liquid-glass/main/liquid-glass.json
+```
+
+Registry items depend on `@clean99/liquid-glass`, so this is a post-npm-publish
+consumer path, not proof that the package has already been published.
+
+## Quality Gates
+
+Use the small loop while developing:
+
+```sh
 pnpm format
 pnpm lint
 pnpm typecheck
 pnpm test:docs
-pnpm test:governance
-pnpm test:inventory
-pnpm test:component-coverage
-pnpm test:visual-docs
-pnpm test:registry
-pnpm test:research
-pnpm test:shadcn-parity
 pnpm test:release-readiness
 pnpm test:unit
-pnpm test:e2e
-pnpm test:storybook
-pnpm test:kube-reference:exact
-pnpm build
-pnpm test:package
-pnpm run ci
-pnpm verify
 ```
 
-Storybook runs at `http://localhost:6006`.
-
-## Browser Support
-
-| Browser                   | Default behavior                     | Notes                                                                  |
-| ------------------------- | ------------------------------------ | ---------------------------------------------------------------------- |
-| Chrome / Chromium desktop | Enhanced when capability checks pass | Uses `@hashintel/refractive` through `LiquidSurface` only.             |
-| Chrome / Chromium mobile  | Fallback by default                  | Mobile can be forced, but enhanced surfaces are intentionally limited. |
-| Safari / iOS Safari       | Fallback or solid                    | WebKit paths are treated as first-class fallback targets.              |
-| Firefox                   | Fallback or solid                    | Layout and accessibility must work without SVG backdrop refraction.    |
-| Reduced transparency      | Solid                                | Readability wins over visual effect.                                   |
-| High contrast             | Higher contrast fallback             | Borders and fill are strengthened through CSS.                         |
-
-## Enhanced, Fallback, Solid, Off
-
-```ts
-type LiquidMode = "auto" | "enhanced" | "fallback" | "solid" | "off";
-```
-
-- `auto`: conservative default. Enhanced mode is enabled only when runtime checks pass.
-- `enhanced`: requests real refraction, but still falls back if unsupported.
-- `fallback`: translucent material with blur, saturation, edge, highlight, and shadow.
-- `solid`: opaque readable material for reduced transparency and high-risk contexts.
-- `off`: no glass treatment beyond structural layout classes.
-
-Users can force a global mode through `LiquidProvider` or `localStorage`:
-
-```ts
-localStorage.setItem("clean99-liquid-glass-mode", "fallback");
-```
-
-## Next.js Usage
-
-Use components from a client boundary and import CSS once:
-
-```tsx
-"use client";
-
-import { LiquidLink, LiquidNav, LiquidProvider } from "@clean99/liquid-glass";
-import "@clean99/liquid-glass/styles.css";
-
-export function SiteChrome() {
-  return (
-    <LiquidProvider defaultMode="auto" disableOnMobile>
-      <LiquidNav aria-label="Primary navigation">
-        <LiquidLink href="/">Home</LiquidLink>
-        <LiquidLink href="/writing/">Writing</LiquidLink>
-      </LiquidNav>
-    </LiquidProvider>
-  );
-}
-```
-
-For static export, avoid Node-only logic in component code. Capability detection runs after hydration and starts from a conservative fallback snapshot.
-
-## Component API
-
-Implemented components:
-
-- `LiquidProvider`
-- `LiquidSurface`
-- `FallbackGlassSurface`
-- `LiquidAccordion`
-- `LiquidAlert`
-- `LiquidAlertTitle`
-- `LiquidAlertDescription`
-- `LiquidAlertDialog`
-- `LiquidAlertDialogTrigger`
-- `LiquidAlertDialogContent`
-- `LiquidAlertDialogTitle`
-- `LiquidAlertDialogDescription`
-- `LiquidAlertDialogCancel`
-- `LiquidAlertDialogAction`
-- `LiquidAspectRatio`
-- `LiquidAvatar`
-- `LiquidAvatarImage`
-- `LiquidAvatarFallback`
-- `LiquidBadge`
-- `LiquidBreadcrumb`
-- `LiquidButton`
-- `LiquidButtonGroup`
-- `LiquidCalendar`
-- `LiquidCarousel`
-- `LiquidCarouselContent`
-- `LiquidCarouselItem`
-- `LiquidCarouselPrevious`
-- `LiquidCarouselNext`
-- `LiquidCheckbox`
-- `LiquidCollapsible`
-- `LiquidCollapsibleTrigger`
-- `LiquidCollapsibleContent`
-- `LiquidCombobox`
-- `LiquidCommand`
-- `LiquidCommandInput`
-- `LiquidCommandList`
-- `LiquidCommandItem`
-- `LiquidCommandEmpty`
-- `LiquidCommandGroup`
-- `LiquidCommandSeparator`
-- `LiquidContextMenu`
-- `LiquidContextMenuTrigger`
-- `LiquidContextMenuContent`
-- `LiquidContextMenuItem`
-- `LiquidChart`
-- `LiquidChartContainer`
-- `LiquidChartTooltipContent`
-- `LiquidChartLegendContent`
-- `LiquidDataTable`
-- `LiquidDatePicker`
-- `LiquidDirection`
-- `LiquidDrawer`
-- `LiquidDrawerTrigger`
-- `LiquidDrawerContent`
-- `LiquidDrawerTitle`
-- `LiquidDrawerDescription`
-- `LiquidDrawerClose`
-- `LiquidDropdownMenu`
-- `LiquidDropdownMenuTrigger`
-- `LiquidDropdownMenuContent`
-- `LiquidDropdownMenuItem`
-- `LiquidEmpty`
-- `LiquidIconButton`
-- `LiquidDialog`
-- `LiquidDialogTrigger`
-- `LiquidDialogContent`
-- `LiquidDialogTitle`
-- `LiquidDialogDescription`
-- `LiquidDialogClose`
-- `LiquidField`
-- `LiquidLabel`
-- `LiquidInput`
-- `LiquidInputGroup`
-- `LiquidInputOtp`
-- `LiquidTextarea`
-- `LiquidFieldDescription`
-- `LiquidFieldError`
-- `LiquidHoverCard`
-- `LiquidHoverCardTrigger`
-- `LiquidHoverCardContent`
-- `LiquidItem`
-- `LiquidKbd`
-- `LiquidLens`
-- `LiquidMenubar`
-- `LiquidSearchBox`
-- `LiquidNativeSelect`
-- `LiquidSelect`
-- `LiquidPagination`
-- `LiquidPaginationList`
-- `LiquidPaginationItem`
-- `LiquidPaginationLink`
-- `LiquidPaginationPrevious`
-- `LiquidPaginationNext`
-- `LiquidProgress`
-- `LiquidRadioGroup`
-- `LiquidResizable`
-- `LiquidResizablePanelGroup`
-- `LiquidResizablePanel`
-- `LiquidResizableHandle`
-- `LiquidScrollArea`
-- `LiquidPopover`
-- `LiquidPopoverTrigger`
-- `LiquidPopoverContent`
-- `LiquidPopoverClose`
-- `LiquidSeparator`
-- `LiquidSheet`
-- `LiquidSheetTrigger`
-- `LiquidSheetContent`
-- `LiquidSheetTitle`
-- `LiquidSheetDescription`
-- `LiquidSheetClose`
-- `LiquidSidebar`
-- `LiquidSidebarProvider`
-- `LiquidSidebarTrigger`
-- `LiquidSidebarInset`
-- `LiquidSidebarMenu`
-- `LiquidSidebarMenuButton`
-- `LiquidSkeleton`
-- `LiquidSpinner`
-- `LiquidToast`
-- `LiquidToastClose`
-- `LiquidToaster`
-- `LiquidSonner`
-- `LiquidSwitch`
-- `LiquidSlider`
-- `LiquidMusicPlayerBar`
-- `LiquidTable`
-- `LiquidTableHeader`
-- `LiquidTableBody`
-- `LiquidTableRow`
-- `LiquidTableHead`
-- `LiquidTableCell`
-- `LiquidCard`
-- `LiquidPill`
-- `LiquidToggle`
-- `LiquidNav`
-- `LiquidSegmentedControl`
-- `LiquidTabs`
-- `LiquidTooltip`
-- `LiquidTooltipTrigger`
-- `LiquidTooltipContent`
-- `LiquidToolbar`
-- `LiquidLink`
-- `LiquidTypography`
-
-Coverage against shadcn/ui-style primitives is tracked in `docs/component-inventory.json`. Implemented rows are verified by `pnpm test:inventory`.
-
-The current shadcn/ui component baseline is stored in `docs/shadcn-parity.json`.
-`pnpm test:inventory` fails if the inventory misses a baseline entry.
-`pnpm test:shadcn-parity` fetches the official shadcn/ui component index and
-fails when the local baseline falls behind. Run `pnpm shadcn:sync` only when you
-are ready to update the baseline and implement the newly detected components.
-
-`LiquidSurface` is the only component abstraction that selects the render engine. Higher-level components compose it instead of importing `@hashintel/refractive` directly.
-
-Kube-aligned primitives:
-
-- `LiquidLens`: transparent capsule lens tuned for high-contrast refraction targets.
-- `LiquidSearchBox`: native search input wrapped in a refractive pill surface.
-- `LiquidSwitch`: semantic switch with refraction only on the thumb.
-- `LiquidSlider`: native range input with refraction only on the thumb.
-- `LiquidMusicPlayerBar`: refractive player plate with foreground metadata outside the displacement layer.
-
-## Design Tokens
-
-CSS token exports:
-
-```css
-@import "@clean99/liquid-glass/tokens.css";
-@import "@clean99/liquid-glass/styles.css";
-```
-
-Core tokens include `--lg-bg`, `--lg-bg-2`, `--lg-text`, `--lg-text-muted`, `--lg-glass-fill`, `--lg-glass-border`, `--lg-glass-highlight`, `--lg-glass-edge`, `--lg-glass-shadow`, `--lg-accent`, `--lg-accent-2`, radius tokens, and `--lg-ease-apple`.
-
-The font stack intentionally uses system fonts:
-
-```css
--apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial,
-"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-```
-
-## Theming
-
-The package supports system color scheme and explicit theme scopes:
-
-```tsx
-<div data-lg-theme="dark">
-  <LiquidButton>Dark material</LiquidButton>
-</div>
-```
-
-## Accessibility
-
-- Interactive components use native buttons or anchors by default.
-- Dialog uses the native `<dialog>` element, labelled content, and native cancel/close events.
-- AlertDialog reuses dialog plumbing but exposes `role="alertdialog"` and disables backdrop dismissal by default.
-- Drawer reuses sheet semantics and defaults to a bottom-mounted surface for mobile ergonomics.
-- Field controls use native `input`, `textarea`, `label`, and alert semantics.
-- Select is a styled native `<select>` entry point; Combobox composes Popover and Command for searchable listbox selection.
-- Command uses a registry-backed item model, `searchbox` / `listbox` / `option` semantics, Arrow/Home/End navigation, Enter selection, disabled item skipping, and empty-state announcements.
-- InputOtp uses real text inputs with paste distribution, arrow-key navigation, hidden form value support, and forwarded group refs.
-- `LiquidToggle` uses `aria-pressed`.
-- `LiquidNav` and `LiquidToolbar` require accessible labels.
-- `LiquidSegmentedControl` uses `radiogroup` / `radio`.
-- `LiquidTabs` uses `tablist` / `tab` / `tabpanel`, roving tab index, Home/End, and arrow-key navigation.
-- `LiquidAccordion` uses native trigger buttons, `aria-expanded`, labelled region panels, and Arrow/Home/End focus movement.
-- Menu primitives use `menu` / `menuitem`, Escape dismissal, Home/End, arrow-key navigation, disabled item skipping, and context-menu keyboard fallback through Shift+F10.
-- Toast primitives use `status` for passive updates, `alert` for warning/danger variants, and expose dismiss controls with readable labels.
-- Resizable primitives wrap `react-resizable-panels`, preserving keyboard-accessible separators and panel constraints while applying Liquid Glass handle styling.
-- Calendar wraps React DayPicker for localized date grids, selection modes, keyboard focus, and ARIA semantics while applying Liquid Glass shell styling.
-- Carousel wraps Embla Carousel for drag physics, snapping, loop behavior, orientation, and API events while exposing labelled regions, slide groups, and native previous/next buttons.
-- DataTable wraps TanStack Table for typed sorting, filtering, pagination, and `aria-sort` while keeping rows and cells as clear semantic table content.
-- Chart wraps Recharts composition, scoped color variables, clear tooltip/legend content, and accessible chart output without refracting dense data labels.
-- Sidebar uses a provider-driven composition model with landmark, list, active link, trigger, and rail semantics while keeping dense navigation text outside enhanced refraction.
-- Disabled controls suppress interaction and expose disabled state.
-- Focus-visible deepens and scales the material instead of drawing hard white/black rings.
-- Reduced transparency resolves to solid mode.
-
-## Performance
-
-- Enhanced refraction is opt-in through runtime capability checks.
-- `maxEnhancedSurfaces` limits expensive surfaces.
-- Mobile enhanced mode is disabled by default.
-- Foreground content is not placed inside a distorted filter layer.
-- The package is tree-shakable and exports CSS separately.
-- Avoid enhanced mode for article bodies, long lists, code blocks, and tables.
-- Calendar never creates enhanced refraction per date cell; date buttons stay clear and cheap to render.
-- DataTable never creates enhanced refraction per row or cell; only toolbar controls may use material styling.
-- Carousel delegates drag physics to Embla and applies material styling to the frame and controls instead of creating enhanced refraction per slide.
-
-## Testing
-
-The repository includes unit, component, SSR, CSS contract, Storybook behavior, real drag animation, kube-reference, and package output checks.
+Additional project gates:
 
 ```sh
-pnpm lint
-pnpm typecheck
-pnpm test:docs
 pnpm test:inventory
 pnpm test:component-coverage
-pnpm test:release-readiness
-pnpm test:unit
+pnpm test:registry
+pnpm test:governance
+pnpm test:research
+pnpm test:shadcn-parity
+pnpm test:visual-docs
 pnpm test:e2e
 pnpm test:a11y
 pnpm test:storybook
@@ -414,110 +202,15 @@ pnpm test:package
 pnpm verify
 ```
 
-`test:storybook` builds Storybook, opens stories in Chromium, and checks
-enhanced-mode rendering contracts such as resolved mode, SVG filter use, radius,
-dimensions, and material values.
-
-`test:e2e` builds Storybook and runs real browser interaction checks for
-focus/hover/active behavior, reduced motion, and pointer-driven drag frames for
-the draggable lens board.
-
-`test:a11y` builds static Storybook and runs `@axe-core/playwright` against
-representative component stories. CI fails on critical or serious violations,
-and writes the JSON summary under `test-results/a11y`.
-
-`test:kube-reference` captures the public Kube reference and local Storybook
-stories. `test:kube-reference:strict` additionally turns pressed and dragged
-lens pixels into hard gates through `KUBE_STRICT_INTERACTIVE=1`; that command is
-the target for release-candidate visual parity.
-`test:kube-reference:exact` sets both `KUBE_MAX_DIFF_RATIO=0` and
-`KUBE_PIXEL_DELTA_THRESHOLD=0`; it is the final 1:1 acceptance target. It is
-intentionally separate from `verify` until the local stories pass exact pixel
-parity against the public reference.
-
-`pnpm verify` is the release gate. It runs formatting, linting, typechecking,
-docs and inventory validation, unit/component/physics checks, Storybook
-behavior checks, build/package checks, visual regression, Kube reference
-strict comparison, and `pnpm pack --dry-run`.
-
-`pnpm test:research` validates the structured reference provenance file used for
-external research, licensing, and attribution. It confirms that Kube, HASH
-Refractive, rdev/liquid-glass-react, shuding/liquid-glass, and shadcn/ui are
-documented as references only and that no third-party source code is marked as
-copied. For a stronger manual audit, run
-`CHECK_REMOTE_REFS=1 pnpm test:research` to verify pinned Git commits that are
-advertised by their public remotes.
-
-## shadcn-style Registry
-
-This repository includes a root `registry.json`, a flat `liquid-glass.json`, and a package-local `registry/liquid-glass.json`. It is intentionally source-readable: consumers can inspect the components, tokens, and examples without depending on a private monorepo layout.
-
-After the first npm release, registry examples can be installed with:
-
-```sh
-npx shadcn@latest add https://raw.githubusercontent.com/clean99/liquid-glass/main/liquid-glass.json
-```
-
-Single package-backed component shims can be installed the same way:
-
-```sh
-npx shadcn@latest add https://raw.githubusercontent.com/clean99/liquid-glass/main/registry/components/liquid-button.json
-```
-
-The registry also includes generated package-backed entries under
-`registry/components/`, one per implemented component. Run `pnpm registry:build`
-after inventory changes and `pnpm test:registry` before review. The gate fails if
-the root registry or component entries drift from `docs/component-inventory.json`.
-
-Registry items depend on `@clean99/liquid-glass`, so `npx shadcn@latest add ...`
-is a post-npm-publish consumer path, not proof that the package has already been
-published.
+`pnpm verify` is the release gate. It runs `pnpm run ci`, package validation,
+visual checks, Kube strict comparison, and `pnpm pack --dry-run`.
 
 ## Release
 
-The package uses Changesets. For user-visible changes, run:
-
-```sh
-pnpm changeset
-```
-
-The GitHub release workflow runs `pnpm verify`, then uses Changesets to open a
-version PR or publish the package with `pnpm release`. npm publishing requires an
-`NPM_TOKEN` repository secret, and `publishConfig.access` is pinned to `public`
-so the scoped package cannot accidentally publish as private.
-
-## Documentation Map
-
-- `docs/api-overview.md`: public API shape and mode model.
-- `docs/calendar-architecture.md`: DayPicker boundary, date-grid accessibility, and test contract.
-- `docs/carousel-architecture.md`: carousel composition, Embla boundary, accessibility, and test contract.
-- `docs/component-inventory.md`: implemented and planned component inventory.
-- `docs/date-picker-architecture.md`: DatePicker composition boundary, local date semantics, and accessibility contract.
-- `docs/github-repository-settings.md`: GitHub repository, Pages, secrets, and branch protection setup.
-- `docs/open-source-governance.md`: public UI library governance benchmark and local decisions.
-- `docs/optics-architecture.md`: physical invariants and engine boundaries.
-- `docs/reference-research.md`: Kube, rdev, and registry research notes.
-- `docs/shadcn-registry.md`: shadcn-style registry distribution model and commands.
-- `docs/testing.md`: local and CI validation strategy.
-- `docs/open-source-release.md`: release, Pages, and rollback checklist.
-- `ROADMAP.md`: staged governance, release, registry, docs, and parity work.
-
-## Known Limitations
-
-- `asChild` is accepted on `LiquidSurface` but not implemented yet.
-- True refraction is currently limited to Chrome/Chromium capability checks.
-- Safari and Firefox are first-class fallback targets, not enhanced targets.
-- The experimental two-pass reference lens engine is shipped for research but the default enhanced path remains `@hashintel/refractive`.
-
-## Roadmap
-
-See `ROADMAP.md` for the staged project plan. The short version:
-
-- publish the first npm version only after release gates and secrets are ready;
-- make registry distribution reliable after npm publish;
-- keep Storybook Pages and docs discoverability first-class;
-- improve Kube parity without claiming exact 1:1 completion early;
-- track Safari and Firefox enhanced support only as platform capabilities evolve.
+The package uses Changesets. npm publishing requires an `NPM_TOKEN` repository
+secret, `NPM_CONFIG_PROVENANCE=true`, `id-token: write`, and
+`publishConfig.access` pinned to `public`. Do not claim npm publish, GitHub Pages
+deployment, or exact Kube parity until the corresponding run has succeeded.
 
 ## License and Attribution
 
