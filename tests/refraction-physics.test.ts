@@ -1092,6 +1092,22 @@ describe("Liquid Glass physics contract", () => {
       styles,
       ".lg-surface--enhanced.lg-searchbox > .lg-surface__content"
     );
+    const kubeSearchboxHostRule = collectCssRuleBodies(
+      styles,
+      ".lg-searchbox.lg-searchbox--kube-reference"
+    ).join("\n");
+    const kubeSearchboxContentRule = collectCssRuleBodies(
+      styles,
+      ".lg-searchbox--kube-reference > .lg-surface__content"
+    ).join("\n");
+    const kubeSearchboxIconRule = collectCssRuleBodies(
+      styles,
+      ".lg-searchbox--kube-reference .lg-searchbox__icon"
+    ).join("\n");
+    const kubeSearchboxMagnifierRule = collectCssRuleBodies(
+      styles,
+      ".lg-searchbox--kube-reference .lg-searchbox__magnifier"
+    ).join("\n");
     const focusRule = collectCssRuleBodies(styles, ".lg-searchbox:focus-within").join("\n");
     const searchboxPillRule = collectCssRuleBodies(styles, ".lg-surface--pill.lg-searchbox").join(
       "\n"
@@ -1123,6 +1139,26 @@ describe("Liquid Glass physics contract", () => {
     expect(focusRule).toContain("box-shadow: var(--lg-control-focus-shadow-deep)");
     expect(focusRule).toContain("transform: scale(1)");
     expect(reducedMotionRule).toContain("transform: none");
+    expect(searchboxStorySource).toContain('className: "lg-searchbox--kube-reference"');
+    expect(searchboxStorySource).toContain("radius: 34");
+    expect(kubeSearchboxHostRule).toContain("width: 21rem");
+    expect(kubeSearchboxHostRule).toContain("height: 2.8rem");
+    expect(kubeSearchboxHostRule).toContain("border: 0");
+    expect(kubeSearchboxHostRule).toContain("border-radius: 28px");
+    expect(kubeSearchboxHostRule).toContain("font-size: 1rem");
+    expect(kubeSearchboxHostRule).toContain("line-height: 1.375rem");
+    expect(kubeSearchboxHostRule).toContain("transform: none");
+    expect(kubeSearchboxContentRule).toContain("padding: 0 0.8125rem");
+    expect(kubeSearchboxContentRule).toContain("border-radius: 28px");
+    expect(kubeSearchboxContentRule).toContain("gap: 0.4875rem");
+    expect(kubeSearchboxContentRule).toContain("font-size: 1rem");
+    expect(kubeSearchboxIconRule).toContain(
+      "color: color-mix(in srgb, var(--lg-text), transparent 10%)"
+    );
+    expect(kubeSearchboxIconRule).toContain("opacity: 0.7");
+    expect(kubeSearchboxMagnifierRule).toContain("width: 1rem");
+    expect(kubeSearchboxMagnifierRule).toContain("height: 1rem");
+    expect(kubeSearchboxMagnifierRule).toContain("opacity: 0.7");
   });
 
   it("keeps source and registry components free of hard-coded focus rings", () => {

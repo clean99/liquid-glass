@@ -80,7 +80,11 @@ function KubeSearchboxReferenceStory() {
           >
             <LiquidSearchBox
               aria-label="Search docs"
-              surfaceProps={{ style: imageBackgroundTextStyle }}
+              surfaceProps={{
+                className: "lg-searchbox--kube-reference",
+                radius: 34,
+                style: imageBackgroundTextStyle
+              }}
             />
           </div>
           <label

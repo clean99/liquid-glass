@@ -212,6 +212,44 @@
   text-shadow: none;
 }
 
+.lg-searchbox.lg-searchbox--kube-reference {
+  width: 21rem;
+  height: 2.8rem;
+  border: 0;
+  border-radius: 28px;
+  font-size: 1rem;
+  line-height: 1.375rem;
+  transform: none;
+}
+
+.lg-searchbox--kube-reference > .lg-surface__content {
+  padding: 0 0.8125rem;
+  border-radius: 28px;
+  gap: 0.4875rem;
+  font-size: 1rem;
+  line-height: 1.375rem;
+}
+
+.lg-searchbox--kube-reference .lg-searchbox__icon {
+  width: 1rem;
+  height: 1rem;
+  color: color-mix(in srgb, var(--lg-text), transparent 10%);
+  font-size: 1rem;
+  line-height: 1.375rem;
+  opacity: 0.7;
+}
+
+.lg-searchbox--kube-reference .lg-searchbox__magnifier {
+  width: 1rem;
+  height: 1rem;
+  opacity: 0.7;
+}
+
+.lg-searchbox--kube-reference .lg-searchbox__input {
+  height: 0.95rem;
+  color: color-mix(in srgb, var(--lg-text), transparent 30%);
+}
+
 .lg-surface--enhanced.lg-searchbox > .lg-surface__content,
 .lg-searchbox .lg-surface--enhanced > .lg-surface__content,
 .lg-searchbox .lg-surface__content {
