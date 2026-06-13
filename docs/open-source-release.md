@@ -3,6 +3,32 @@
 This repository is prepared as an independent package, not as a private blog
 subdirectory.
 
+## GitHub Repository Bootstrap
+
+The intended remote is `git@github.com:clean99/liquid-glass.git`. Create the
+repository as a public GitHub repository before the first push. With GitHub CLI
+available, the bootstrap command is:
+
+```sh
+gh repo create clean99/liquid-glass \
+  --public \
+  --description "Refractive Liquid Glass components for React, built on @hashintel/refractive with accessible fallbacks." \
+  --source . \
+  --remote origin \
+  --push
+```
+
+Without GitHub CLI, create `clean99/liquid-glass` in the GitHub UI, keep it
+empty, then run:
+
+```sh
+git remote set-url origin git@github.com:clean99/liquid-glass.git
+git push -u origin main
+```
+
+Do not initialize the GitHub repository with a README, license, or `.gitignore`;
+those files already live in this repository.
+
 ## Required Repository Files
 
 - `README.md`
