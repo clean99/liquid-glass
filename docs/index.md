@@ -46,6 +46,7 @@ flowchart TD
 | Installation         | `docs/installation.md`            | Package install, peer dependencies, CSS imports, and Next.js usage.               |
 | Components           | `docs/component-inventory.md`     | Implemented and planned component inventory.                                      |
 | Component docs       | `docs/component-documentation.md` | Per-component page standard for usage, anatomy, API, visual states, and evidence. |
+| Component pages      | `docs/components/index.md`        | Package-backed pages for Provider, Surface, Button, Card, Field, and Dialog.      |
 | API                  | `docs/api-overview.md`            | Provider, modes, component API groups, and export shape.                          |
 | Accessibility        | `docs/accessibility.md`           | Native-first semantics, ARIA patterns, a11y gates, and release limits.            |
 | Theming              | `docs/design-principles.md`       | Material rules, mode policy, tokens, and fallback behavior.                       |
@@ -73,7 +74,7 @@ flowchart TD
 Use `docs/component-documentation.md` when adding or reviewing per-component
 pages. It keeps component status, install honesty, anatomy, API, visual states,
 accessibility notes, registry entries, and verification commands in one
-repeatable shape.
+repeatable shape. The first concrete pages live under `docs/components/`.
 
 ## Visual Documentation
 

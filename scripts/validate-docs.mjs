@@ -46,6 +46,13 @@ const packageRequiredFiles = [
   "docs/api-overview.md",
   "docs/browser-support.md",
   "docs/component-documentation.md",
+  "docs/components/index.md",
+  "docs/components/provider.md",
+  "docs/components/surface.md",
+  "docs/components/button.md",
+  "docs/components/card.md",
+  "docs/components/field.md",
+  "docs/components/dialog.md",
   "docs/component-inventory.json",
   "docs/component-inventory.md",
   "docs/design-principles.md",
@@ -130,7 +137,8 @@ mustInclude("README.md", [
   "shadcn-style Registry",
   "docs/adoption-guide.md",
   "docs/accessibility.md",
-  "docs/component-documentation.md"
+  "docs/component-documentation.md",
+  "docs/components/index.md"
 ]);
 
 mustInclude("README.md", [
@@ -140,6 +148,7 @@ mustInclude("README.md", [
   "docs/index.md",
   "docs/accessibility.md",
   "docs/component-documentation.md",
+  "docs/components/index.md",
   "llms.txt",
   "Open-source governance",
   "UI library benchmark",
@@ -157,6 +166,7 @@ mustInclude("llms.txt", [
   "Governance And Release",
   "Assistant Rules",
   "docs/accessibility.md",
+  "docs/components/index.md",
   "pnpm test:release-readiness",
   "pnpm test:kube-reference:strict",
   "pnpm test:kube-reference:exact",
@@ -175,6 +185,7 @@ mustInclude("docs/index.md", [
   "```mermaid",
   "Component Navigation",
   "docs/component-documentation.md",
+  "docs/components/index.md",
   "Visual Documentation",
   "Quality Gates",
   "docs/accessibility.md",
@@ -246,6 +257,7 @@ mustInclude("docs/component-documentation.md", [
   "Release Rules",
   "Current Gaps",
   "docs/component-inventory.json",
+  "docs/components/",
   "docs/visual-state-coverage.json",
   "parameters.visualState",
   "pnpm test:a11y",
@@ -256,6 +268,95 @@ mustInclude("docs/component-documentation.md", [
   "not published"
 ]);
 
+mustInclude("docs/components/index.md", [
+  "Component Docs",
+  "docs/component-documentation.md",
+  "not published to npm yet",
+  "Storybook Pages",
+  "test:kube-reference:exact",
+  "LiquidProvider",
+  "LiquidSurface",
+  "LiquidButton",
+  "LiquidCard",
+  "LiquidField",
+  "LiquidDialog",
+  "```mermaid",
+  "pnpm test:docs",
+  "pnpm test:release-readiness",
+  "pnpm test:unit"
+]);
+
+mustInclude("docs/components/provider.md", [
+  "LiquidProvider",
+  "src/providers/LiquidProvider.tsx",
+  "src/types.ts",
+  "maxEnhancedSurfaces",
+  "respectReducedMotion",
+  "respectReducedTransparency",
+  "disableOnMobile",
+  "not published to npm yet",
+  "```mermaid",
+  "tests/ssr.test.tsx",
+  "pnpm test:unit"
+]);
+
+mustInclude("docs/components/surface.md", [
+  "LiquidSurface",
+  "src/components/LiquidSurface.tsx",
+  "LiquidSurface",
+  "asChild",
+  "not Slot semantics",
+  "data-liquid-as-child",
+  "lg-surface__content",
+  "not published to npm yet",
+  "pnpm test:kube-reference:strict"
+]);
+
+mustInclude("docs/components/button.md", [
+  "LiquidButton",
+  "src/components/LiquidButton.tsx",
+  "LiquidButtonProps",
+  "native button",
+  "disabled",
+  "stories/LiquidButton.stories.tsx",
+  "registry/components/liquid-button.json",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/card.md", [
+  "LiquidCard",
+  "src/components/LiquidCard.tsx",
+  "LiquidCardProps",
+  "LiquidSurfaceProps",
+  "not an interactive primitive",
+  "stories/LiquidCard.stories.tsx",
+  "registry/components/liquid-card.json",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/field.md", [
+  "LiquidField",
+  "LiquidInput",
+  "LiquidTextarea",
+  "LiquidFieldError",
+  'role="alert"',
+  "aria-invalid",
+  "registry items",
+  "stories/LiquidField.stories.tsx",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/dialog.md", [
+  "LiquidDialog",
+  "LiquidDialogTrigger",
+  "LiquidDialogContent",
+  "aria-labelledby",
+  "aria-describedby",
+  "native `dialog`",
+  "registry/components/liquid-dialog.json",
+  "pnpm test:a11y"
+]);
+
 mustInclude(".storybook/main.ts", ["../stories/**/*.mdx", "@storybook/addon-docs"]);
 
 mustInclude("stories/Introduction.mdx", [
@@ -264,6 +365,7 @@ mustInclude("stories/Introduction.mdx", [
   "Start Here",
   "Component Map",
   "Visual Documentation Contract",
+  "docs/components/index.md",
   "Release Gate",
   "not published to npm yet",
   "Storybook Pages",
@@ -314,6 +416,7 @@ mustInclude("docs/open-source-governance.md", [
   "pnpm test:visual-docs",
   "pnpm test:a11y",
   "docs/accessibility.md",
+  "docs/components/index.md",
   "main push",
   "Current Gaps",
   "Release Flow"
@@ -325,6 +428,7 @@ mustInclude("docs/governance-scorecard.md", [
   "pnpm --silent audit:governance:json",
   "CHECK_REMOTE_GOVERNANCE=1",
   "docs/ui-library-benchmark.md",
+  "docs/components/index.md",
   "remoteStatus.checked",
   "GitHub Pages",
   "not part of CI"
@@ -339,6 +443,7 @@ mustInclude("docs/ui-library-benchmark.md", [
   "Public Benchmark Surface",
   "Component page standard",
   "docs/component-documentation.md",
+  "docs/components/index.md",
   "Support routing",
   "Visual regression signal",
   "Local governance gate",
@@ -357,6 +462,7 @@ mustInclude("docs/visual-documentation.md", [
   "HeroUI",
   "Storybook Pages",
   "docs/component-documentation.md",
+  "docs/components/index.md",
   "Light and dark",
   "Reduced motion",
   "High contrast",

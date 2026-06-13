@@ -125,9 +125,9 @@ Do not publish or merge a component documentation page that:
 
 ## Current Gaps
 
-| Gap                                      | Risk                                                        | Next action                                                                           |
-| ---------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Per-component written pages are sparse   | Users must infer API and states from stories and inventory. | Add component pages in priority order: provider, surface, button, field, dialog.      |
-| Public Storybook deploy is still skipped | Visual docs are build-proven but not publicly browseable.   | Enable GitHub Pages with GitHub Actions as the source.                                |
-| npm package is not published             | Registry examples remain inspectable but not live installs. | Publish with provenance only after `pnpm verify` and release workflow are configured. |
-| Exact Kube parity is not complete        | Reference docs must not claim 1:1 visual equivalence.       | Keep strict and exact parity language separate until exact passes.                    |
+| Gap                                      | Risk                                                                                                      | Next action                                                                                                      |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Per-component written pages are partial  | Users can read the first core pages, but most implemented components still rely on stories and inventory. | Extend `docs/components/` from Provider, Surface, Button, Card, Field, and Dialog to the rest of the public API. |
+| Public Storybook deploy is still skipped | Visual docs are build-proven but not publicly browseable.                                                 | Enable GitHub Pages with GitHub Actions as the source.                                                           |
+| npm package is not published             | Registry examples remain inspectable but not live installs.                                               | Publish with provenance only after `pnpm verify` and release workflow are configured.                            |
+| Exact Kube parity is not complete        | Reference docs must not claim 1:1 visual equivalence.                                                     | Keep strict and exact parity language separate until exact passes.                                               |

@@ -44,18 +44,19 @@ the repository without running a private demo:
 
 ## Current Evidence
 
-| Surface              | Evidence                                                                                     | Status                          |
-| -------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- |
-| README first screen  | Project status, Start Here links, install honesty, registry honesty, Kube parity honesty.    | Present                         |
-| Storybook examples   | `stories/*.stories.tsx` plus `.storybook` docs and a11y addon configuration.                 | Present locally                 |
-| Component page shape | `docs/component-documentation.md` defines required status, anatomy, API, states, and gates.  | Present                         |
-| Storybook Pages      | `.github/workflows/pages.yml` builds Storybook and runs a11y before deploy.                  | Blocked until Pages is enabled  |
-| Visual regression    | `tests/visual/liquid-components-visual.spec.ts` and checked-in Playwright snapshots.         | Present                         |
-| Visual state audit   | `docs/visual-state-coverage.json` assigns every implemented component to a state profile.    | Present                         |
-| Story state metadata | Every implemented component story and Kube/reference story exposes `parameters.visualState`. | Present and gate-backed         |
-| A11y evidence        | `docs/accessibility.md` and `pnpm test:a11y` define and test the accessibility contract.     | Present                         |
-| Kube reference       | `pnpm test:kube-reference` and `docs/kube-parity-gate.md` separate strict and exact parity.  | Strict gate present; exact open |
-| Release visibility   | `docs/open-source-release.md` requires local gates before release or publish.                | Present                         |
+| Surface               | Evidence                                                                                     | Status                          |
+| --------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- |
+| README first screen   | Project status, Start Here links, install honesty, registry honesty, Kube parity honesty.    | Present                         |
+| Storybook examples    | `stories/*.stories.tsx` plus `.storybook` docs and a11y addon configuration.                 | Present locally                 |
+| Component page shape  | `docs/component-documentation.md` defines required status, anatomy, API, states, and gates.  | Present                         |
+| First component pages | `docs/components/index.md` links Provider, Surface, Button, Card, Field, and Dialog pages.   | Present                         |
+| Storybook Pages       | `.github/workflows/pages.yml` builds Storybook and runs a11y before deploy.                  | Blocked until Pages is enabled  |
+| Visual regression     | `tests/visual/liquid-components-visual.spec.ts` and checked-in Playwright snapshots.         | Present                         |
+| Visual state audit    | `docs/visual-state-coverage.json` assigns every implemented component to a state profile.    | Present                         |
+| Story state metadata  | Every implemented component story and Kube/reference story exposes `parameters.visualState`. | Present and gate-backed         |
+| A11y evidence         | `docs/accessibility.md` and `pnpm test:a11y` define and test the accessibility contract.     | Present                         |
+| Kube reference        | `pnpm test:kube-reference` and `docs/kube-parity-gate.md` separate strict and exact parity.  | Strict gate present; exact open |
+| Release visibility    | `docs/open-source-release.md` requires local gates before release or publish.                | Present                         |
 
 ## Required State Matrix
 
@@ -63,7 +64,8 @@ Every public component page or Storybook story should cover the states that make
 sense for that component. Static display components can mark inapplicable states
 as not applicable, but interactive components should not silently skip them.
 `docs/component-documentation.md` defines the required per-component page
-sections so visual states, accessibility notes, registry entries, and
+sections, and `docs/components/index.md` starts applying that structure to core
+components so visual states, accessibility notes, registry entries, and
 verification commands do not drift into separate claims.
 
 | State group        | Examples                                                                | Gate or location                                  |

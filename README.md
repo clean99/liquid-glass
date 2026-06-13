@@ -37,6 +37,7 @@ reference parity checks.
 - [Accessibility](docs/accessibility.md)
 - [Component inventory](docs/component-inventory.md)
 - [Component documentation contract](docs/component-documentation.md)
+- [Component docs](docs/components/index.md)
 - [Design principles](docs/design-principles.md)
 - [Browser Support](docs/browser-support.md)
 - [Visual documentation](docs/visual-documentation.md)
@@ -118,6 +119,8 @@ Primary docs:
 - `docs/component-inventory.md`: implemented and planned component inventory.
 - `docs/component-documentation.md`: per-component page standard for usage,
   anatomy, API, visual states, accessibility, and verification evidence.
+- `docs/components/index.md`: first package-backed component pages for Provider,
+  Surface, Button, Card, Field, and Dialog.
 - `docs/visual-documentation.md`: Storybook Pages, light and dark states,
   reduced motion, high contrast, mobile, and Kube reference evidence.
 - `docs/testing.md`: local and CI validation strategy.

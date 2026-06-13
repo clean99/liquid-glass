@@ -15,7 +15,8 @@ copying their monorepo complexity or source code.
 Component pages follow `docs/component-documentation.md`: status, install
 honesty, usage, anatomy, API, visual states, accessibility behavior, registry
 distribution, and verification evidence must be reviewable before a component is
-described as public-ready.
+described as public-ready. The first package-backed pages live in
+`docs/components/index.md`.
 
 Tracked repository identifiers: `shadcn-ui/ui`, `radix-ui/primitives`,
 `chakra-ui/chakra-ui`, and `heroui-inc/heroui`.

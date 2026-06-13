@@ -38,6 +38,8 @@ run has succeeded.
 - [Component documentation contract](docs/component-documentation.md):
   per-component page standard for status, install honesty, usage, anatomy, API,
   visual states, accessibility, registry entries, and verification evidence.
+- [Component docs](docs/components/index.md): package-backed pages for
+  Provider, Surface, Button, Card, Field, and Dialog.
 - [Component inventory data](docs/component-inventory.json): machine-readable
   component status.
 - [shadcn-style Registry](docs/shadcn-registry.md): registry files and
