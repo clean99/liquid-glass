@@ -30,7 +30,9 @@ hard-fails pressed and dragged lens screenshots produced by real pointer input.
 
 `pnpm test:kube-reference:strict` sets `KUBE_STRICT_INTERACTIVE=1` and preserves
 the release-candidate command used by CI and manual reviews. The interactive
-screenshots are hard gates in both commands.
+screenshots are hard gates in both commands. Because this gate captures the live
+public Kube page, the strict script retries the same command once after a failed
+capture; the retry does not change thresholds or pointer input.
 
 `pnpm test:kube-reference:exact` is the final acceptance target. It sets
 `KUBE_EXACT_PARITY=1`, `KUBE_STRICT_INTERACTIVE=1`, `KUBE_MAX_DIFF_RATIO=0`, and
@@ -38,7 +40,7 @@ screenshots are hard gates in both commands.
 public Kube page. This command is intentionally not part of `ci` or `verify`
 while the current implementation still fails exact pixel parity. It exists so
 the project has a real 1:1 target instead of silently redefining success around
-loose thresholds.
+loose thresholds. Exact parity is intentionally not retried.
 
 Each row writes target, candidate, and diff PNG artifacts under
 `test-results/kube-reference/`. The diff image is generated from the same crop

@@ -105,11 +105,14 @@ The interactive lens screenshots and pointer action metrics are both hard
 assertions, so press and drag cannot silently stop working or drift visually.
 `pnpm test:kube-reference:strict` sets `KUBE_STRICT_INTERACTIVE=1` and preserves
 the release-candidate target for the Kube replica work. The current measured gaps
-and threshold-tightening plan are tracked in `docs/kube-parity-gate.md`.
+and threshold-tightening plan are tracked in `docs/kube-parity-gate.md`. Strict
+mode retries the same live-reference capture once after failure so a transient
+Kube page or network sample does not fail CI; thresholds and real pointer input
+stay unchanged.
 `pnpm test:kube-reference:exact` additionally sets `KUBE_MAX_DIFF_RATIO=0`,
 `KUBE_PIXEL_DELTA_THRESHOLD=0`, and `KUBE_EXACT_PARITY=1`. It is the final
 acceptance target for 1:1 Kube parity, not a release gate while the measured
-diff remains above zero.
+diff remains above zero, and it is not retried.
 Those hard metrics include the Kube-derived water-drop rule that press expands
 both axes, while drag is taller and narrower than press. The comparison script
 also compares candidate action metrics against the live Kube target with explicit

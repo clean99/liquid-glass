@@ -537,11 +537,18 @@ describe("Liquid Glass physics contract", () => {
 
   it("keeps Kube parity Storybook builds isolated per command run", () => {
     const kubeScript = packageJson.scripts["test:kube-reference"];
+    const strictScript = packageJson.scripts["test:kube-reference:strict"];
+    const exactScript = packageJson.scripts["test:kube-reference:exact"];
 
     expect(kubeScript).toContain("KUBE_STORYBOOK_STATIC_DIR");
     expect(kubeScript).toContain("storybook-static-kube-reference-$$");
     expect(kubeScript).toContain('--output-dir "$KUBE_STORYBOOK_STATIC_DIR"');
     expect(kubeScript).toContain('STORYBOOK_STATIC_DIR="$KUBE_STORYBOOK_STATIC_DIR"');
+    expect(strictScript).toContain("Retrying strict Kube reference capture once");
+    expect(strictScript.match(/KUBE_STRICT_INTERACTIVE=1/g)).toHaveLength(2);
+    expect(strictScript).toContain("||");
+    expect(exactScript).not.toContain("Retrying strict Kube reference capture once");
+    expect(exactScript).not.toContain("||");
   });
 
   it("keeps behavior Storybook builds isolated per command run", () => {
