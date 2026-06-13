@@ -42,7 +42,7 @@ jobs:
       - run: pnpm build
       - run: pnpm test:package
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: ci-test-results
