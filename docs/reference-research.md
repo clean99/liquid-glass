@@ -139,7 +139,7 @@ Current measured interaction contract:
   of flattening the capsule,
 - drag state becomes taller and narrower than press while preserving pointer
   travel,
-- target press samples have recently measured around `+20px` to `+21px` width
+- target press samples have recently measured around `+17px` to `+21px` width
   and `+15px` to `+21px` height across local Chromium and GitHub Actions,
 - target drag samples vary with the live page and have recently measured around
   `+6px` to `+17px` width and `+22px` to `+27px` height.
