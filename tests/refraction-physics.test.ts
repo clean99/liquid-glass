@@ -959,7 +959,9 @@ describe("Liquid Glass physics contract", () => {
       "contextMenuTrigger",
       "hoverCardTrigger",
       "menubarTrigger",
-      "tooltipTrigger"
+      "tooltipTrigger",
+      "switch",
+      "slider"
     ];
 
     for (const target of auditedFocusTargets) {
@@ -975,6 +977,12 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain("await waitForStoryReady(page, id)");
     expect(verifyLiquidBehaviorSource).toContain("Storybook story did not become ready");
     expect(verifyLiquidBehaviorSource).toContain("focusAuditResults.push");
+    expect(verifyLiquidBehaviorSource).toContain('materialSelector: ".lg-switch__track"');
+    expect(verifyLiquidBehaviorSource).toContain('materialSelector: ".lg-slider__track"');
+    expect(verifyLiquidBehaviorSource).toContain("requireMaterialResponse: true");
+    expect(verifyLiquidBehaviorSource).toContain("assertMaterialResponse");
+    expect(verifyLiquidBehaviorSource).toContain("materialFilterChanged");
+    expect(verifyLiquidBehaviorSource).toContain("materialShadowLayerDelta");
     expect(verifyLiquidBehaviorSource).toContain("focus-material-audit.json");
     expect(verifyLiquidBehaviorSource).toContain(
       "const minimumFocusAuditCount = focusAuditTargets.length"

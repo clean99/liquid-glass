@@ -311,16 +311,20 @@ const focusAuditTargets = [
     name: "switch",
     options: {
       focusSelector: behaviorStories.switch.focusSelector,
+      materialSelector: ".lg-switch__track",
       minimumFocusedScale: 0.7,
-      requireMaterialDeepening: false
+      requireMaterialDeepening: false,
+      requireMaterialResponse: true
     }
   },
   {
     name: "slider",
     options: {
       focusSelector: behaviorStories.slider.focusSelector,
+      materialSelector: ".lg-slider__track",
       minimumFocusedScale: 0.67,
-      requireMaterialDeepening: false
+      requireMaterialDeepening: false,
+      requireMaterialResponse: true
     }
   },
   {
@@ -356,6 +360,11 @@ async function verifyFocusMaterial(name, options) {
   const locator = page.locator(story.selector).first();
   await locator.waitFor({ state: "visible", timeout: 10_000 });
   const idle = await readState(locator);
+  const materialLocator = options.materialSelector
+    ? page.locator(options.materialSelector).first()
+    : locator;
+  await materialLocator.waitFor({ state: "visible", timeout: 10_000 });
+  const idleMaterial = await readState(materialLocator);
 
   const focusSelector = options.focusSelector ?? story.selector;
   if (options.focusSelector) {
@@ -369,15 +378,23 @@ async function verifyFocusMaterial(name, options) {
     .locator(options.focusedSelector ?? `${story.selector}:focus-visible`)
     .first();
   const focused = await readState((await focusedLocator.count()) > 0 ? focusedLocator : locator);
+  const focusedMaterialLocator = options.focusedMaterialSelector
+    ? page.locator(options.focusedMaterialSelector).first()
+    : materialLocator;
+  const focusedMaterial = await readState(focusedMaterialLocator);
 
   assertEqual(focused.outlineStyle, "none", `${name} focus outline style`);
   assertNoPlasticFocusChrome(focused, `${name} focus`);
+  assertNoPlasticFocusChrome(focusedMaterial, `${name} focus material`);
   if (options.requireMaterialDeepening) {
     assertGreaterThan(
-      focused.backgroundAlpha,
-      idle.backgroundAlpha + 0.04,
+      focusedMaterial.backgroundAlpha,
+      idleMaterial.backgroundAlpha + 0.04,
       `${name} focus material alpha`
     );
+  }
+  if (options.requireMaterialResponse) {
+    assertMaterialResponse(idleMaterial, focusedMaterial, `${name} focus material`);
   }
   if (options.minimumFocusedScale !== undefined) {
     assertGreaterOrEqual(focused.scale, options.minimumFocusedScale, `${name} focus scale`);
@@ -424,6 +441,13 @@ async function verifyFocusMaterial(name, options) {
     focusedScale: round(focused.scale),
     focusedShadowLayerCount: focused.shadowLayerCount,
     idleScale: round(idle.scale),
+    materialBackgroundAlphaDelta: round(
+      focusedMaterial.backgroundAlpha - idleMaterial.backgroundAlpha
+    ),
+    materialFilterChanged: focusedMaterial.filter !== idleMaterial.filter,
+    materialLumaDelta: round(focusedMaterial.backgroundLuma - idleMaterial.backgroundLuma),
+    materialSelector: options.materialSelector ?? story.selector,
+    materialShadowLayerDelta: focusedMaterial.shadowLayerCount - idleMaterial.shadowLayerCount,
     name,
     selector: story.selector,
     storyId: story.id,
@@ -914,6 +938,7 @@ async function readState(locator) {
       borderStyle: style.borderStyle,
       borderWidthPx: parseFloat(style.borderTopWidth) || 0,
       boxShadow: style.boxShadow,
+      filter: style.filter,
       foregroundTextShadowCount: countForegroundTextShadows(element),
       hardRingLayerCount: countCheapHardRingLayers(style.boxShadow),
       height: rect.height,
@@ -1076,6 +1101,20 @@ function assertNoPlasticFocusChrome(state, label) {
   ) {
     throw new Error(
       `${label}: focus border is still a high-contrast hard edge (${state.borderColor}, alpha=${state.borderAlpha}, luma=${state.borderLuma})`
+    );
+  }
+}
+
+function assertMaterialResponse(idle, focused, label) {
+  const backgroundChanged =
+    Math.abs(focused.backgroundAlpha - idle.backgroundAlpha) >= 0.02 ||
+    Math.abs(focused.backgroundLuma - idle.backgroundLuma) >= 3;
+  const shadowChanged = focused.boxShadow !== idle.boxShadow && focused.shadowLayerCount > 0;
+  const filterChanged = focused.filter !== idle.filter && focused.filter !== "none";
+
+  if (!backgroundChanged && !shadowChanged && !filterChanged) {
+    throw new Error(
+      `${label}: expected frosted material response through background, shadow, or filter change`
     );
   }
 }
