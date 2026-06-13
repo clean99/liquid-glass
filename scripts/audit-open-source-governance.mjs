@@ -33,6 +33,9 @@ const categoryChecks = [
     checks: [
       exists("docs/index.md"),
       fileIncludes("docs/index.md", "```mermaid"),
+      exists("docs/adoption-guide.md"),
+      fileIncludes("docs/adoption-guide.md", "Decision Flow"),
+      fileIncludes("docs/adoption-guide.md", "Launch Blockers"),
       fileIncludes("docs/index.md", "Component Navigation"),
       fileIncludes("docs/index.md", "Public Launch Checklist"),
       exists("stories/Introduction.mdx"),

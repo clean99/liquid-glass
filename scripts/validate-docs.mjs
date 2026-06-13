@@ -40,6 +40,7 @@ const packageRequiredFiles = [
   "ROADMAP.md",
   "SUPPORT.md",
   ".changeset/config.json",
+  "docs/adoption-guide.md",
   "docs/api-overview.md",
   "docs/browser-support.md",
   "docs/component-inventory.json",
@@ -123,7 +124,8 @@ mustInclude("README.md", [
   "test:a11y",
   "test:e2e",
   "@axe-core/playwright",
-  "shadcn-style Registry"
+  "shadcn-style Registry",
+  "docs/adoption-guide.md"
 ]);
 
 mustInclude("README.md", [
@@ -139,6 +141,7 @@ mustInclude("README.md", [
 
 mustInclude("docs/index.md", [
   "Liquid Glass UI",
+  "Adoption guide",
   "shadcn/ui",
   "Radix UI",
   "Chakra UI",
@@ -154,6 +157,27 @@ mustInclude("docs/index.md", [
   "test:kube-reference:exact",
   "pnpm test:visual-docs",
   "pnpm verify"
+]);
+
+mustInclude("docs/adoption-guide.md", [
+  "Adoption Guide",
+  "Current Adoption Status",
+  "not published yet",
+  "React 19",
+  "Storybook workflow exists",
+  "shadcn/ui",
+  "Radix UI",
+  "Chakra UI",
+  "HeroUI",
+  "```mermaid",
+  "Decision Flow",
+  "Good Fits",
+  "Poor Fits",
+  "Integration Paths",
+  "Local Verification Before Adoption",
+  "pnpm verify",
+  "test:kube-reference:exact",
+  "Launch Blockers"
 ]);
 
 mustInclude(".storybook/main.ts", ["../stories/**/*.mdx", "@storybook/addon-docs"]);

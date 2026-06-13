@@ -30,6 +30,7 @@ reference parity checks.
 ## Start Here
 
 - [Documentation index](docs/index.md)
+- [Adoption guide](docs/adoption-guide.md)
 - [Installation](docs/installation.md)
 - [API overview](docs/api-overview.md)
 - [Component inventory](docs/component-inventory.md)
@@ -102,6 +103,8 @@ flowchart LR
 Primary docs:
 
 - `docs/index.md`: UI library documentation entry point.
+- `docs/adoption-guide.md`: who should adopt now, who should wait, and what
+  proof is required before production use.
 - `docs/api-overview.md`: public API shape, modes, provider behavior, and
   component groups.
 - `docs/component-inventory.md`: implemented and planned component inventory.

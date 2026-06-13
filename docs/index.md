@@ -23,11 +23,12 @@ distribution notes, visual evidence, and release gates.
 ```mermaid
 flowchart TD
   A["Start"] --> B["Install"]
-  B --> C["Choose mode"]
-  C --> D["Use components"]
-  D --> E["Verify accessibility and visual states"]
-  E --> F["Publish package"]
-  F --> G["Distribute registry entries"]
+  A --> C["Adoption guide"]
+  C --> D["Choose mode"]
+  D --> E["Use components"]
+  E --> F["Verify accessibility and visual states"]
+  F --> G["Publish package"]
+  G --> K["Distribute registry entries"]
 
   A --> H["Governance"]
   H --> I["Release checklist"]
@@ -37,6 +38,7 @@ flowchart TD
 | Section              | File                             | Purpose                                                                     |
 | -------------------- | -------------------------------- | --------------------------------------------------------------------------- |
 | Introduction         | `docs/index.md`                  | Public docs landing page and status.                                        |
+| Adoption             | `docs/adoption-guide.md`         | Who should adopt now, who should wait, and which proof is required.         |
 | Installation         | `docs/installation.md`           | Package install, peer dependencies, CSS imports, and Next.js usage.         |
 | Components           | `docs/component-inventory.md`    | Implemented and planned component inventory.                                |
 | API                  | `docs/api-overview.md`           | Provider, modes, component API groups, and export shape.                    |
