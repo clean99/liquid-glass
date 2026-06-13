@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { useState } from "react";
 import { LiquidProvider, LiquidSearchBox } from "../src";
+import { kubeReferenceImageAssets } from "./kube-reference-assets";
 import { StoryFrame } from "./story-fixtures";
-
-const kubeSearchboxImageBackground =
-  "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop";
 
 const meta = {
   title: "Liquid Glass/LiquidSearchBox",
@@ -54,7 +52,7 @@ function KubeSearchboxReferenceStory() {
             border: "1px solid rgba(0, 0, 0, 0.1)",
             borderRadius: 9.75,
             background: useImageBackground
-              ? `url("${kubeSearchboxImageBackground}")`
+              ? `url("${kubeReferenceImageAssets.searchboxDemoBackground}")`
               : "linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), radial-gradient(120% 100% at 10% 0%, #f8fafc, #e7eeef)",
             backgroundPosition: useImageBackground ? "50% 50%" : "12px 12px, 12px 12px, 0 0",
             backgroundSize: useImageBackground ? "cover" : "24px 24px, 24px 24px, 100% 100%"
@@ -128,7 +126,7 @@ export const FocusPhotoReference: Story = {
             height: 313,
             overflow: "hidden",
             borderRadius: 12,
-            background: `url("${kubeSearchboxImageBackground}")`,
+            background: `url("${kubeReferenceImageAssets.searchboxDemoBackground}")`,
             backgroundPosition: "50% 50%",
             backgroundSize: "cover"
           }}

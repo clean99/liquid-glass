@@ -52,7 +52,7 @@ for (const reference of provenance.references ?? []) {
     const includesName =
       source.includes(normalizedName) ||
       normalizedName
-        .split(/[/@]/)
+        .split(/[/@\s-]+/)
         .filter(Boolean)
         .some((part) => part.length > 3 && source.includes(part));
     const includesUrl = source.includes(normalizedUrl);
@@ -90,7 +90,7 @@ for (const url of extractUnsplashImageUrls(attribution)) {
 }
 
 for (const file of collectFiles(path.join(root, "stories"), (filePath) =>
-  filePath.endsWith(".tsx")
+  /\.(?:ts|tsx)$/.test(filePath)
 )) {
   const source = fs.readFileSync(file, "utf8");
   const relativePath = path.relative(root, file);

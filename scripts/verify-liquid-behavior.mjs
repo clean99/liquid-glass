@@ -5,10 +5,16 @@ import http from "node:http";
 import path from "node:path";
 import { chromium } from "playwright";
 
+const kubeAssetSource = await fs.readFile(
+  new URL("../stories/kube-reference-assets.ts", import.meta.url),
+  "utf8"
+);
 const staticDir = path.resolve(process.env.STORYBOOK_STATIC_DIR ?? "storybook-static-test");
 const behaviorArtifactDir = path.resolve("test-results/liquid-behavior");
 const kubeLensImageId = "photo-1688494930098-e88c53c26e3a";
 const kubeSearchboxImageId = "photo-1497250681960-ef046c08a56e";
+const kubeLensDemoImage = readKubeReferenceAsset("lensDemoImage");
+const kubeSearchboxDemoBackground = readKubeReferenceAsset("searchboxDemoBackground");
 
 await fs.mkdir(behaviorArtifactDir, { recursive: true });
 
@@ -213,6 +219,11 @@ async function verifySearchboxKubeImageBackground() {
   await focusFrame.waitFor({ state: "visible", timeout: 10_000 });
   const focusBackground = await readBackgroundImage(focusFrame);
   assertIncludes(focusBackground, kubeSearchboxImageId, "searchbox focus photo background");
+  assertIncludes(
+    focusBackground,
+    kubeSearchboxDemoBackground,
+    "searchbox focus photo background URL"
+  );
   await waitForImageRequest(focusPage, kubeSearchboxImageId);
   await focusFrame.screenshot({
     path: path.join(behaviorArtifactDir, "searchbox-kube-photo-focus.png")
@@ -232,8 +243,8 @@ async function verifySearchboxKubeImageBackground() {
   const checkedBackground = await readBackgroundImage(referenceFrame);
   assertIncludes(
     checkedBackground,
-    kubeSearchboxImageId,
-    "searchbox checked Kube image background"
+    kubeSearchboxDemoBackground,
+    "searchbox checked Kube image background URL"
   );
   await waitForImageRequest(referencePage, kubeSearchboxImageId);
   await referenceFrame.screenshot({
@@ -291,8 +302,8 @@ async function verifyDraggableLensPlayground() {
     await lensImage.waitFor({ state: "visible", timeout: 10_000 });
     assertIncludes(
       await lensImage.getAttribute("src"),
-      kubeLensImageId,
-      "draggable lens Kube image"
+      kubeLensDemoImage,
+      "draggable lens Kube image URL"
     );
     await waitForImageRequest(page, kubeLensImageId);
     await boardLocator.screenshot({
@@ -383,6 +394,16 @@ async function verifyDraggableLensPlayground() {
     await framesPromise?.catch(() => []);
     await page.close();
   }
+}
+
+function readKubeReferenceAsset(name) {
+  const match = kubeAssetSource.match(new RegExp(`${name}:\\n\\s+"([^"]+)"`));
+
+  if (!match?.[1]) {
+    throw new Error(`Missing Kube reference asset ${name}`);
+  }
+
+  return match[1];
 }
 
 async function recordAnimationFrames(page, selector, durationMs) {

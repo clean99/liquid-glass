@@ -39,7 +39,11 @@
         "Storybook focus photo reference",
         "Kube-aligned visual documentation"
       ],
-      "requiredDocs": ["ATTRIBUTIONS.md", "stories/LiquidSearchBox.stories.tsx"]
+      "requiredDocs": [
+        "ATTRIBUTIONS.md",
+        "stories/kube-reference-assets.ts",
+        "stories/LiquidSearchBox.stories.tsx"
+      ]
     },
     {
       "name": "Kube lens demo image",
@@ -53,7 +57,11 @@
         "Storybook magnifying-glass reference",
         "Kube-aligned visual documentation"
       ],
-      "requiredDocs": ["ATTRIBUTIONS.md", "stories/LiquidLens.stories.tsx"]
+      "requiredDocs": [
+        "ATTRIBUTIONS.md",
+        "stories/kube-reference-assets.ts",
+        "stories/LiquidLens.stories.tsx"
+      ]
     },
     {
       "name": "rdev/liquid-glass-react",

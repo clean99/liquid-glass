@@ -16,6 +16,10 @@ import {
 const styles = fs.readFileSync(path.resolve("src/styles/styles.css"), "utf8");
 const storyFixture = fs.readFileSync(path.resolve("stories/story-fixtures.tsx"), "utf8");
 const lensStorySource = fs.readFileSync(path.resolve("stories/LiquidLens.stories.tsx"), "utf8");
+const kubeReferenceAssetsSource = fs.readFileSync(
+  path.resolve("stories/kube-reference-assets.ts"),
+  "utf8"
+);
 const searchboxStorySource = fs.readFileSync(
   path.resolve("stories/LiquidSearchBox.stories.tsx"),
   "utf8"
@@ -270,17 +274,22 @@ describe("Liquid Glass physics contract", () => {
   });
 
   it("uses the Kube lens demo image instead of the local optics illustration", () => {
-    expect(lensStorySource).toContain(
+    expect(kubeReferenceAssetsSource).toContain(
       "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=400&h=700&crop=focalpoint&fp-x=0.3&fp-y=0.6&fp-z=1.9"
     );
+    expect(kubeReferenceAssetsSource).toContain(
+      "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=1400&h=1600&crop=focalpoint&fp-x=0.3&fp-y=0.5&fp-z=1"
+    );
+    expect(lensStorySource).toContain("kubeReferenceImageAssets.lensDemoImage");
     expect(lensStorySource).toContain("Photo: Stephanie LeBlanc / Unsplash");
     expect(lensStorySource).not.toContain("src={localOpticsImage}");
   });
 
   it("uses the Kube searchbox demo image instead of a synthetic photo fallback", () => {
-    expect(searchboxStorySource).toContain(
+    expect(kubeReferenceAssetsSource).toContain(
       "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop"
     );
+    expect(searchboxStorySource).toContain("kubeReferenceImageAssets.searchboxDemoBackground");
     expect(searchboxStorySource).toContain("Photo by Teemu Paananen");
     expect(searchboxStorySource).not.toContain("radial-gradient(ellipse at 18% 24%");
   });

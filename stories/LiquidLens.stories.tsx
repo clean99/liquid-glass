@@ -17,6 +17,7 @@ import {
   type LiquidLensDropletResponse,
   type LiquidLensPoint
 } from "../src";
+import { kubeReferenceImageAssets } from "./kube-reference-assets";
 import { StoryFrame } from "./story-fixtures";
 
 const meta = {
@@ -31,8 +32,6 @@ type Story = StoryObj;
 const precisionLensSize = { width: 210, height: 150 };
 const precisionLensBounds = { width: 706, height: 460, padding: 16 };
 const precisionLensInitialPosition = { x: 19.5, y: 19.5 };
-const kubeLensImageBackground =
-  "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=400&h=700&crop=focalpoint&fp-x=0.3&fp-y=0.6&fp-z=1.9";
 const precisionLensIdleRefraction = {
   blur: 0,
   glassThickness: 88,
@@ -367,7 +366,7 @@ function KubeLensBoard({
         >
           <img
             alt="Green frog on a red post"
-            src={kubeLensImageBackground}
+            src={kubeReferenceImageAssets.lensDemoImage}
             style={{
               display: "block",
               width: "100%",
