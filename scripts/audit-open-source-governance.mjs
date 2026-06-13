@@ -36,11 +36,15 @@ const categoryChecks = [
       exists("docs/testing.md"),
       exists("docs/open-source-governance.md"),
       exists("docs/governance-scorecard.md"),
+      exists("docs/ui-library-benchmark.md"),
       exists("docs/visual-documentation.md"),
       exists("docs/visual-state-coverage.json"),
       exists("docs/open-source-release.md"),
       exists("ROADMAP.md"),
       fileIncludes("docs/open-source-governance.md", "```mermaid"),
+      fileIncludes("docs/ui-library-benchmark.md", "```mermaid"),
+      fileIncludes("docs/ui-library-benchmark.md", "Public Benchmark Surface"),
+      fileIncludes("docs/ui-library-benchmark.md", "Public launch score"),
       fileIncludes("docs/visual-documentation.md", "```mermaid"),
       fileIncludes("ROADMAP.md", "```mermaid")
     ]

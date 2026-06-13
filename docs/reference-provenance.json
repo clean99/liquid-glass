@@ -73,6 +73,7 @@
       "requiredDocs": [
         "ATTRIBUTIONS.md",
         "docs/open-source-governance.md",
+        "docs/ui-library-benchmark.md",
         "docs/visual-documentation.md",
         "docs/shadcn-parity.json",
         "docs/shadcn-registry.md",
@@ -95,6 +96,7 @@
       "requiredDocs": [
         "ATTRIBUTIONS.md",
         "docs/open-source-governance.md",
+        "docs/ui-library-benchmark.md",
         "docs/visual-documentation.md"
       ]
     },
@@ -114,6 +116,7 @@
       "requiredDocs": [
         "ATTRIBUTIONS.md",
         "docs/open-source-governance.md",
+        "docs/ui-library-benchmark.md",
         "docs/visual-documentation.md"
       ]
     },
@@ -133,6 +136,7 @@
       "requiredDocs": [
         "ATTRIBUTIONS.md",
         "docs/open-source-governance.md",
+        "docs/ui-library-benchmark.md",
         "docs/visual-documentation.md"
       ]
     }

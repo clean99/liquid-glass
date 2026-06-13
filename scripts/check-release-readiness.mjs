@@ -162,6 +162,7 @@ const packageRequiredFiles = [
   "docs/open-source-release.md",
   "docs/shadcn-registry.md",
   "docs/testing.md",
+  "docs/ui-library-benchmark.md",
   "docs/visual-documentation.md",
   "docs/visual-state-coverage.json",
   "docs/component-inventory.md",
@@ -232,6 +233,9 @@ mustInclude("docs/open-source-release.md", "pnpm test:release-readiness");
 mustInclude("docs/open-source-release.md", "pnpm test:governance");
 mustInclude("docs/open-source-release.md", "pnpm test:component-coverage");
 mustInclude("docs/open-source-release.md", "pnpm test:visual-docs");
+mustInclude("docs/ui-library-benchmark.md", "Public Benchmark Surface");
+mustInclude("docs/ui-library-benchmark.md", "Public launch score");
+mustInclude("docs/ui-library-benchmark.md", "not published");
 mustInclude("docs/governance-scorecard.md", "CHECK_REMOTE_GOVERNANCE=1");
 mustInclude("docs/governance-scorecard.md", "pnpm --silent audit:governance:json");
 mustInclude("docs/governance-scorecard.md", "remoteStatus.checked");

@@ -57,6 +57,7 @@ const packageRequiredFiles = [
   "docs/shadcn-registry.md",
   "docs/shadcn-parity.json",
   "docs/testing.md",
+  "docs/ui-library-benchmark.md",
   "docs/visual-documentation.md",
   "docs/visual-state-coverage.json",
   "examples/README.md",
@@ -126,6 +127,7 @@ mustInclude("README.md", [
   "Project Status",
   "not published yet",
   "Open-source governance",
+  "UI library benchmark",
   "ROADMAP.md"
 ]);
 
@@ -168,9 +170,24 @@ mustInclude("docs/governance-scorecard.md", [
   "pnpm test:governance",
   "pnpm --silent audit:governance:json",
   "CHECK_REMOTE_GOVERNANCE=1",
+  "docs/ui-library-benchmark.md",
   "remoteStatus.checked",
   "GitHub Pages",
   "not part of CI"
+]);
+
+mustInclude("docs/ui-library-benchmark.md", [
+  "shadcn-ui/ui",
+  "radix-ui/primitives",
+  "chakra-ui/chakra-ui",
+  "heroui-inc/heroui",
+  "mermaid",
+  "Public Benchmark Surface",
+  "Local governance gate",
+  "Public launch score",
+  "Visual Documentation Gaps",
+  "GitHub Pages",
+  "not published"
 ]);
 
 mustInclude("docs/visual-documentation.md", [

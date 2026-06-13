@@ -4,6 +4,10 @@ The governance scorecard is a repeatable audit for the repository work that is
 easy to overstate by hand: docs, issue routing, CI gates, release readiness,
 registry distribution, attribution, and discoverability.
 
+The comparative benchmark lives in `docs/ui-library-benchmark.md`. It separates
+local gate readiness from public launch readiness so the project does not
+overclaim npm, Pages, or exact Kube parity.
+
 ## Commands
 
 Local-only audit:
