@@ -3604,7 +3604,9 @@
   outline: none;
 }
 
-.lg-precision-lens-demo__handle:focus-visible {
+.lg-precision-lens-demo__handle:focus-visible:not([data-liquid-droplet="pressed"]):not(
+    [data-liquid-dragging="true"]
+  ) {
   box-shadow:
     0 4px 16px var(--lg-control-focus-depth),
     inset 0 1px 0 rgba(255, 255, 255, 0.18),

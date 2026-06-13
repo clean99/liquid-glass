@@ -337,7 +337,10 @@ describe("Liquid Glass physics contract", () => {
       { growth: ".lg-pagination__link:focus-visible" },
       { growth: ".lg-scroll-area__viewport:focus-visible" },
       { growth: ".lg-resizable__handle:focus-visible" },
-      { growth: ".lg-precision-lens-demo__handle:focus-visible" },
+      {
+        growth:
+          '.lg-precision-lens-demo__handle:focus-visible:not([data-liquid-droplet="pressed"]):not([data-liquid-dragging="true"])'
+      },
       { growth: ".lg-calendar__nav-button:focus-visible" },
       { growth: ".lg-calendar__day-button:focus-visible" }
     ];
@@ -499,6 +502,8 @@ function collectFiles(directories: string[], extension: string) {
 function normalizeCssSelector(selector: string) {
   return selector
     .replace(/\s+/g, " ")
+    .replace(/:not\(\s+/g, ":not(")
+    .replace(/\s+\)/g, ")")
     .replace(/\s*,\s*/g, ", ")
     .trim();
 }
