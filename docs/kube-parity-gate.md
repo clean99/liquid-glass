@@ -43,11 +43,14 @@ loose thresholds.
 Each row writes target, candidate, and diff PNG artifacts under
 `test-results/kube-reference/`. The diff image is generated from the same crop
 used for the metric, so it is useful for diagnosing phase, material, and edge
-errors without changing the gate. `kube-reference-results.json` also records the
+errors without changing the gate. For pressed and dragged lens rows, the script
+captures a page clip from the post-action visual bounding box instead of relying
+on `element.screenshot()`, because the Kube page and local Storybook do not use
+the same DOM transform structure. `kube-reference-results.json` records the
 target screenshot size, candidate screenshot size, effective compare region,
-diff threshold, and action metrics. Those fields are required for lens work:
-without them a pressed-state regression can be mistaken for a material problem
-when the real issue is a capture-size or crop mismatch.
+diff threshold, action clip, and action metrics. Those fields are required for
+lens work: without them a pressed-state regression can be mistaken for a
+material problem when the real issue is a capture-size or crop mismatch.
 
 ## Latest Measurement
 
@@ -56,8 +59,8 @@ Measured locally on 2026-06-13 against `https://kube.io/blog/liquid-glass-css-sv
 | Reference                | Diff ratio | Threshold | Mode |
 | ------------------------ | ---------: | --------: | ---- |
 | magnifying-glass         |     0.2000 |    0.2400 | gate |
-| magnifying-glass-pressed |     0.4148 |    0.4160 | gate |
-| magnifying-glass-dragged |     0.4142 |    0.4180 | gate |
+| magnifying-glass-pressed |     0.3306 |    0.3600 | gate |
+| magnifying-glass-dragged |     0.3990 |    0.4050 | gate |
 | searchbox                |     0.0167 |    0.0200 | gate |
 | switch                   |     0.0142 |    0.0200 | gate |
 | slider                   |     0.0149 |    0.0200 | gate |
@@ -87,6 +90,9 @@ This measurement includes these verified geometry fixes:
   high-contrast text field under the active lens without faking the lens motion
   metrics. A larger vertical shift regressed pressed and dragged screenshots, so
   the current offset is intentionally small.
+- pressed and dragged screenshots are captured from the post-action visual
+  bounding box clip. This removed a false mismatch from `element.screenshot()`
+  using different target and candidate transform boxes.
 
 This proves three things:
 
@@ -97,7 +103,7 @@ This proves three things:
   is still not the final target.
 - The pressed and dragged water-drop states now pass the current hard gate, but
   the thresholds are still loose while the fixture moves toward tighter pixel
-  parity. Pressed is now gated at `0.4160`; dragged is now gated at `0.4180`.
+  parity. Pressed is now gated at `0.3600`; dragged is now gated at `0.4050`.
   They must not be described as 100% complete.
 - The final acceptance command is `pnpm test:kube-reference:exact`. Until that
   command passes, Kube parity remains incomplete regardless of the current

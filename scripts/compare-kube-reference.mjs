@@ -52,7 +52,7 @@ const references = [
       heightDelta: 4,
       widthDelta: 4
     },
-    maxDiffRatio: 0.416,
+    maxDiffRatio: 0.36,
     reportOnly: false
   },
   {
@@ -74,7 +74,7 @@ const references = [
       heightDelta: 4,
       widthDelta: 4
     },
-    maxDiffRatio: 0.418,
+    maxDiffRatio: 0.405,
     reportOnly: false
   },
   {
@@ -141,7 +141,13 @@ try {
       : null;
     const targetScreenshotSubject =
       reference.capture === "handle" ? (targetAction?.subject ?? targetElement) : targetElement;
-    await targetScreenshotSubject.screenshot({ path: targetPath });
+    await captureReferenceScreenshot(
+      referencePage,
+      targetScreenshotSubject,
+      targetAction,
+      reference.capture,
+      targetPath
+    );
     await targetAction?.cleanup();
 
     const candidatePage = await browser.newPage({ viewport: { width: 900, height: 560 } });
@@ -167,7 +173,13 @@ try {
       reference.capture === "handle"
         ? (candidateAction?.subject ?? candidateElement)
         : candidateElement;
-    await candidateScreenshotSubject.screenshot({ path: candidatePath });
+    await captureReferenceScreenshot(
+      candidatePage,
+      candidateScreenshotSubject,
+      candidateAction,
+      reference.capture,
+      candidatePath
+    );
     await candidateAction?.cleanup();
 
     if (reference.targetId === "magnifying-glass") {
@@ -206,6 +218,7 @@ try {
     results.push({
       ...reference,
       ...diff,
+      candidateActionClip: candidateAction?.clip,
       candidateActionMetrics: candidateAction?.metrics,
       diffArtifact: path.relative(process.cwd(), diffPath),
       pixelDeltaThreshold,
@@ -213,6 +226,7 @@ try {
       exactPixelParity,
       reportOnly,
       strictInteractivePixels,
+      targetActionClip: targetAction?.clip,
       targetActionMetrics: targetAction?.metrics
     });
     await candidatePage.close();
@@ -431,8 +445,27 @@ async function applyPointerAction(page, handle, action) {
       await page.mouse.move(0, 0).catch(() => undefined);
       await page.waitForTimeout(160);
     },
+    clip: screenshotClipFromBox(after),
     metrics,
     subject: handle
+  };
+}
+
+async function captureReferenceScreenshot(page, subject, action, captureMode, screenshotPath) {
+  if (captureMode === "handle" && action?.clip) {
+    await page.screenshot({ clip: action.clip, path: screenshotPath });
+    return;
+  }
+
+  await subject.screenshot({ path: screenshotPath });
+}
+
+function screenshotClipFromBox(box) {
+  return {
+    height: Math.ceil(box.height),
+    width: Math.ceil(box.width),
+    x: Math.floor(box.x),
+    y: Math.floor(box.y)
   };
 }
 

@@ -66,9 +66,12 @@ Storybook stories. It includes static component screenshots plus
 For every compared row, the script writes `*-target.png`, `*-candidate.png`, and
 `*-diff.png` under `test-results/kube-reference/`; the diff image is a red
 heatmap of the compared crop, not a hand-reviewed artifact.
-`kube-reference-results.json` records target and candidate screenshot sizes,
-the effective crop, pixel threshold, diff ratio, and pointer action metrics so
-geometry, capture, material, and filter regressions can be separated.
+Pressed and dragged lens rows are captured from the post-action visual bounding
+box clip, not from `element.screenshot()`, so DOM transform differences between
+Kube and Storybook do not decide the crop. `kube-reference-results.json` records
+target and candidate screenshot sizes, the effective crop, action clip, pixel
+threshold, diff ratio, and pointer action metrics so geometry, capture,
+material, and filter regressions can be separated.
 For the magnifying-glass target, the script also asserts the SVG filter contract:
 the candidate must expose the same two-pass displacement pipeline, image count,
 map count, and displacement scales before pixels are compared. This contract is
