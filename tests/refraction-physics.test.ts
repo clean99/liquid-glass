@@ -97,6 +97,37 @@ type KubeReferenceAssetManifest = {
   sourcePage: string;
 };
 
+const expectedKubeDemoImageAssets = {
+  lensDemoBackground: {
+    file: "lens-demo-background.jpg",
+    height: 1600,
+    sourceUrl:
+      "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=1400&h=1600&crop=focalpoint&fp-x=0.3&fp-y=0.5&fp-z=1",
+    width: 1400
+  },
+  lensDemoInlineImage: {
+    file: "lens-demo-inline-image.jpg",
+    height: 700,
+    sourceUrl:
+      "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=400&h=700&crop=focalpoint&fp-x=0.3&fp-y=0.6&fp-z=1.9",
+    width: 400
+  },
+  lensDemoImage: {
+    file: "lens-demo-image.jpg",
+    height: 1200,
+    sourceUrl:
+      "https://images.unsplash.com/photo-1579380656108-f98e4df8ea62?q=80&w=800&auto=format&fit=crop",
+    width: 800
+  },
+  searchboxDemoBackground: {
+    file: "searchbox-demo-background.jpg",
+    height: 2399,
+    sourceUrl:
+      "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop",
+    width: 1600
+  }
+} as const;
+
 describe("Liquid Glass physics contract", () => {
   it("keeps default optical parameters in a plausible glass range", () => {
     for (const intensity of intensities) {
@@ -310,6 +341,8 @@ describe("Liquid Glass physics contract", () => {
     expect(handleRule).toContain("transform-origin: center");
     expect(handleLensRule).toContain("transform 260ms var(--lg-ease-apple)");
     expect(styles).not.toContain(".lg-precision-lens-demo__handle .lg-lens");
+    expect(styles).not.toContain(".lg-precision-lens-demo__handle::before");
+    expect(styles).not.toContain(".lg-precision-lens-demo__handle::after");
     expect(handleRule).not.toContain("padding: 0.9375rem 0");
     expect(pressedHandleRule).not.toContain("drop-shadow");
     expect(pressedHandleRule).toContain("4px 16px 24px rgba(0, 0, 0, 0.22)");
@@ -363,6 +396,7 @@ describe("Liquid Glass physics contract", () => {
     );
     expect(kubeReferenceAssetManifest.captureMethod).toContain("Chrome DOM");
     expect(kubeReferenceAssetManifest.captureMethod).toContain("CDP");
+    expect(kubeReferenceAssetManifest.assets).toMatchObject(expectedKubeDemoImageAssets);
 
     for (const [name, asset] of Object.entries(kubeReferenceAssetManifest.assets)) {
       const localPath = path.resolve("stories/assets/kube", asset.file);
