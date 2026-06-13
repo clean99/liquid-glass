@@ -3,7 +3,7 @@ import http from "node:http";
 import path from "node:path";
 import { chromium } from "playwright";
 
-/* global FileReader, OffscreenCanvas, createImageBitmap, document, getComputedStyle */
+/* global FileReader, OffscreenCanvas, createImageBitmap, document, getComputedStyle, window */
 
 process.env.PW_TEST_SCREENSHOT_NO_FONTS_READY = "1";
 
@@ -527,10 +527,15 @@ async function applyPointerAction(page, handle, action) {
       .catch(() => undefined);
     await page.waitForTimeout(120);
 
-    const box = await handle.boundingBox();
+    const before = await readPointerActionSample(page, handle);
+    const box = before.box;
 
-    if (!box) {
-      throw new Error(`Missing bounding box for ${action.kind} action`);
+    if (!isActionPointInViewport(before, action)) {
+      lastRejection = `${action.kind} action point is outside the viewport after scrolling: ${JSON.stringify(
+        before
+      )}`;
+      await page.waitForTimeout(220 * attempt);
+      continue;
     }
 
     const startX = box.x + box.width * action.point.x;
@@ -544,8 +549,8 @@ async function applyPointerAction(page, handle, action) {
       await page.waitForTimeout(action.settleMs ?? 120);
     }
 
-    const after = await waitForPointerActionEffect(handle, box, action);
-    const metrics = summarizeActionMetrics(box, after, action);
+    const after = await waitForPointerActionEffect(page, handle, before, action);
+    const metrics = summarizeActionMetrics(before, after, action);
     lastMetrics = metrics;
     const hasEffect = hasPointerActionEffect(metrics, action);
     const hasPlausibleMetrics = hasPlausiblePointerActionMetrics(metrics, action);
@@ -557,7 +562,7 @@ async function applyPointerAction(page, handle, action) {
           await page.mouse.move(0, 0).catch(() => undefined);
           await page.waitForTimeout(160);
         },
-        clip: screenshotClipFromBox(after),
+        clip: screenshotClipFromBox(after.box),
         metrics,
         subject: handle
       };
@@ -593,40 +598,77 @@ function screenshotClipFromBox(box) {
   };
 }
 
-async function waitForPointerActionEffect(handle, before, action) {
+async function waitForPointerActionEffect(page, handle, before, action) {
   const deadline = Date.now() + (action.effectTimeoutMs ?? 1_000);
-  let lastBox = await handle.boundingBox();
+  let lastSample = await readPointerActionSample(page, handle);
 
   while (Date.now() < deadline) {
-    const metrics = summarizeActionMetrics(before, lastBox, action);
+    const metrics = summarizeActionMetrics(before, lastSample, action);
 
     if (
       hasPointerActionEffect(metrics, action) &&
       hasPlausiblePointerActionMetrics(metrics, action)
     ) {
-      return lastBox;
+      return lastSample;
     }
 
     await delay(50);
-    lastBox = await handle.boundingBox();
+    lastSample = await readPointerActionSample(page, handle);
   }
 
-  return lastBox;
+  return lastSample;
+}
+
+async function readPointerActionSample(page, handle) {
+  const box = await handle.boundingBox();
+
+  if (!box) {
+    throw new Error("Missing pointer action bounding box");
+  }
+
+  const viewport = await page.evaluate(() => ({
+    height: window.innerHeight,
+    scrollX: window.scrollX,
+    scrollY: window.scrollY,
+    width: window.innerWidth
+  }));
+
+  return {
+    box,
+    documentBox: {
+      height: box.height,
+      width: box.width,
+      x: box.x + viewport.scrollX,
+      y: box.y + viewport.scrollY
+    },
+    viewport
+  };
+}
+
+function isActionPointInViewport(sample, action) {
+  const pointX = sample.box.x + sample.box.width * action.point.x;
+  const pointY = sample.box.y + sample.box.height * action.point.y;
+
+  return (
+    pointX >= 0 &&
+    pointY >= 0 &&
+    pointX <= sample.viewport.width &&
+    pointY <= sample.viewport.height
+  );
 }
 
 function summarizeActionMetrics(before, after, action) {
-  if (!after) {
-    throw new Error(`Missing post-action bounding box for ${action.kind} action`);
-  }
+  const beforeBox = before.documentBox;
+  const afterBox = after.documentBox;
 
   return {
-    deltaX: round(after.x - before.x),
-    deltaY: round(after.y - before.y),
-    height: round(after.height),
-    heightDelta: round(after.height - before.height),
+    deltaX: round(afterBox.x - beforeBox.x),
+    deltaY: round(afterBox.y - beforeBox.y),
+    height: round(after.box.height),
+    heightDelta: round(after.box.height - before.box.height),
     kind: action.kind,
-    width: round(after.width),
-    widthDelta: round(after.width - before.width)
+    width: round(after.box.width),
+    widthDelta: round(after.box.width - before.box.width)
   };
 }
 

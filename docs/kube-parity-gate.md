@@ -63,16 +63,16 @@ instead of subjective screenshot review.
 
 ## Representative Strict Measurement
 
-Measured locally on 2026-06-13 against `https://kube.io/blog/liquid-glass-css-svg/`.
+Measured locally on 2026-06-14 against `https://kube.io/blog/liquid-glass-css-svg/`.
 Live-page interaction sampling can move a few pixels between runs, so this table
 is a representative strict gate sample rather than a promise of bit-stable
 metrics.
 
 | Reference                | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | ------------------------ | ---------: | ---------- | ---------: | --------: | ---- |
-| magnifying-glass         |     0.2007 | `0,-1`     |     0.1908 |    0.2400 | gate |
-| magnifying-glass-pressed |     0.3818 | `0,-2`     |     0.3674 |    0.4050 | gate |
-| magnifying-glass-dragged |     0.3921 | `-2,-1`    |     0.3775 |    0.4550 | gate |
+| magnifying-glass         |     0.2024 | `0,-1`     |     0.1861 |    0.2400 | gate |
+| magnifying-glass-pressed |     0.3683 | `-2,-2`    |     0.3554 |    0.4050 | gate |
+| magnifying-glass-dragged |     0.3981 | `-2,-1`    |     0.3804 |    0.4550 | gate |
 | searchbox                |     0.0180 | `0,0`      |     0.0169 |    0.0200 | gate |
 | switch                   |     0.0136 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                   |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
@@ -174,13 +174,13 @@ fix should keep changing the optical model or material rendering. Threshold
 changes are acceptable only as documented CI variance budgets for interactive
 captures; they are not visual completion.
 
-Recent sampled `pnpm test:kube-reference:exact` result on 2026-06-13:
+Recent sampled `pnpm test:kube-reference:exact` result on 2026-06-14:
 
 | Reference                | Exact diff ratio | Best phase | Phase diff |
 | ------------------------ | ---------------: | ---------- | ---------: |
-| magnifying-glass         |           0.5240 | `0,-1`     |     0.5133 |
-| magnifying-glass-pressed |           0.7153 | `-1,1`     |     0.6874 |
-| magnifying-glass-dragged |           0.6326 | `-1,0`     |     0.6342 |
+| magnifying-glass         |           0.5243 | `0,-1`     |     0.5133 |
+| magnifying-glass-pressed |           0.7185 | `1,1`      |     0.6836 |
+| magnifying-glass-dragged |           0.6487 | `0,0`      |     0.6494 |
 | searchbox                |           0.1138 | `0,0`      |     0.1150 |
 | switch                   |           0.0904 | `0,0`      |     0.0934 |
 | slider                   |           0.0750 | `0,0`      |     0.0763 |
