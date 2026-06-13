@@ -204,6 +204,15 @@ if (isStandaloneRepository) {
   ]) {
     mustInclude(workflow, 'node-version: "24"');
   }
+  mustInclude(".github/PULL_REQUEST_TEMPLATE.md", "pnpm test:governance");
+  mustInclude(".github/PULL_REQUEST_TEMPLATE.md", "pnpm test:research");
+  mustInclude(".github/PULL_REQUEST_TEMPLATE.md", "pnpm test:component-coverage");
+  mustInclude(".github/PULL_REQUEST_TEMPLATE.md", "pnpm test:visual-docs");
+  mustInclude(".github/PULL_REQUEST_TEMPLATE.md", "pnpm test:a11y");
+  mustInclude(
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    "npm publish, Pages, and exact Kube parity are not claimed unless they have succeeded"
+  );
   mustInclude(".github/workflows/ci.yml", "pnpm test:release-readiness");
   mustInclude(".github/workflows/ci.yml", "pnpm test:governance");
   mustInclude(".github/workflows/ci.yml", "pnpm test:research");

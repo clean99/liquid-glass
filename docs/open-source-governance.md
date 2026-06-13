@@ -32,17 +32,23 @@ flowchart TD
 
 ## Required Local Gates
 
-| Gate                          | Purpose                                                                              |
-| ----------------------------- | ------------------------------------------------------------------------------------ |
-| `pnpm format`                 | Formatting stays deterministic.                                                      |
-| `pnpm lint`                   | Source and docs-adjacent scripts stay clean.                                         |
-| `pnpm typecheck`              | Public TypeScript contracts still compile.                                           |
-| `pnpm test:docs`              | Required open-source docs, templates, references, and registry claims exist.         |
-| `pnpm test:governance`        | Governance scorecard stays above the local readiness threshold.                      |
-| `pnpm test:registry`          | Generated registry files match component inventory.                                  |
-| `pnpm test:release-readiness` | Package metadata, workflows, docs, and release scripts stay aligned.                 |
-| `pnpm test:unit`              | Pure logic and component behavior stay covered.                                      |
-| `pnpm verify`                 | Release-candidate gate including visual, strict Kube reference, and package dry run. |
+| Gate                           | Purpose                                                                              |
+| ------------------------------ | ------------------------------------------------------------------------------------ |
+| `pnpm format`                  | Formatting stays deterministic.                                                      |
+| `pnpm lint`                    | Source and docs-adjacent scripts stay clean.                                         |
+| `pnpm typecheck`               | Public TypeScript contracts still compile.                                           |
+| `pnpm test:docs`               | Required open-source docs, templates, references, and registry claims exist.         |
+| `pnpm test:governance`         | Governance scorecard stays above the local readiness threshold.                      |
+| `pnpm test:research`           | Reference provenance stays explicit and third-party source is not copied.            |
+| `pnpm test:inventory`          | Component inventory stays synchronized with the public component surface.            |
+| `pnpm test:component-coverage` | Component-facing tests stay mapped to the documented inventory.                      |
+| `pnpm test:visual-docs`        | Visual state coverage stays mapped to Storybook, snapshots, a11y, and Pages.         |
+| `pnpm test:registry`           | Generated registry files match component inventory.                                  |
+| `pnpm test:release-readiness`  | Package metadata, workflows, docs, and release scripts stay aligned.                 |
+| `pnpm test:unit`               | Pure logic and component behavior stay covered.                                      |
+| `pnpm test:e2e`                | Browser behavior stays verified through Playwright.                                  |
+| `pnpm test:a11y`               | Storybook examples stay free of critical and serious axe violations.                 |
+| `pnpm verify`                  | Release-candidate gate including visual, strict Kube reference, and package dry run. |
 
 ## Visual Documentation
 

@@ -155,6 +155,10 @@ mustInclude("docs/open-source-governance.md", [
   "HeroUI",
   "mermaid",
   "pnpm test:governance",
+  "pnpm test:research",
+  "pnpm test:component-coverage",
+  "pnpm test:visual-docs",
+  "pnpm test:a11y",
   "Current Gaps",
   "Release Flow"
 ]);
@@ -305,6 +309,14 @@ mustInclude("docs/open-source-release.md", [
   "not published to npm yet"
 ]);
 if (isStandaloneRepository) {
+  mustInclude(".github/PULL_REQUEST_TEMPLATE.md", [
+    "pnpm test:governance",
+    "pnpm test:research",
+    "pnpm test:component-coverage",
+    "pnpm test:visual-docs",
+    "pnpm test:a11y",
+    "npm publish, Pages, and exact Kube parity are not claimed unless they have succeeded"
+  ]);
   mustInclude(".github/workflows/release.yml", [
     "pnpm verify",
     "pnpm release",
@@ -319,6 +331,8 @@ if (isStandaloneRepository) {
     "pnpm test:shadcn-parity",
     "pnpm test:component-coverage",
     "pnpm test:governance",
+    "pnpm test:research",
+    "pnpm test:visual-docs",
     "pnpm test:release-readiness",
     "pnpm test:e2e",
     "pnpm test:a11y",

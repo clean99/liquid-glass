@@ -8,12 +8,17 @@
 - [ ] `pnpm lint`
 - [ ] `pnpm typecheck`
 - [ ] `pnpm test:docs`
+- [ ] `pnpm test:governance`
+- [ ] `pnpm test:research`
 - [ ] `pnpm test:inventory`
+- [ ] `pnpm test:component-coverage`
+- [ ] `pnpm test:visual-docs`
 - [ ] `pnpm test:registry`
 - [ ] `pnpm test:release-readiness`
 - [ ] `pnpm test:unit`
 - [ ] `pnpm test:e2e`
 - [ ] `pnpm test:storybook`
+- [ ] `pnpm test:a11y`
 - [ ] `pnpm build`
 - [ ] `pnpm test:package`
 - [ ] `pnpm verify` for release candidates
