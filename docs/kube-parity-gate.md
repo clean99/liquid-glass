@@ -107,7 +107,7 @@ This measurement includes these verified geometry fixes:
   height-delta variance because the live Kube page has recently sampled between
   roughly `17px` and `21px` of width growth and `15px` and `21px` of height
   growth during press deformation; the screenshot gate remains unchanged.
-- the dragged action metric guard allows `8px` height-delta and `6px`
+- the dragged action metric guard allows `8px` height-delta and `7px`
   width-delta variance for the same live-page sampling reason; it is still only
   a capture sanity check before the screenshot gate runs.
 - pressed and dragged screenshots are captured from the post-action visual
