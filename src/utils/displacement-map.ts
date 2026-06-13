@@ -130,9 +130,11 @@ export function createLensSpecularPixelMap({
   const width = geometry.opticalWidth * resolvedPixelRatio;
   const height = geometry.opticalHeight * resolvedPixelRatio;
   const data = new Uint8ClampedArray(width * height * 4);
-  const peakDistance = 0.95;
-  const endDistance = 1.95;
-  const axisPower = 2.5;
+  const peakDistance = 0.35;
+  const endDistance = 1.8;
+  const lightX = 0.35;
+  const lightY = -Math.sqrt(1 - lightX * lightX);
+  const rimPower = 4.2;
 
   for (let py = 0; py < height; py += 1) {
     for (let px = 0; px < width; px += 1) {
@@ -153,11 +155,10 @@ export function createLensSpecularPixelMap({
         continue;
       }
 
-      const normalAxis = Math.max(Math.abs(sample.normalX), Math.abs(sample.normalY));
-      const diagonalFalloff = Math.pow(normalAxis, axisPower);
-      const verticalNormal = Math.abs(sample.normalY);
-      const alpha = coverage * diagonalFalloff * (64 + 155 * verticalNormal);
-      const gray = diagonalFalloff * (108 + 80 * verticalNormal);
+      const lightAlignment = Math.abs(sample.normalX * lightX + sample.normalY * lightY);
+      const rimLight = Math.pow(lightAlignment, rimPower);
+      const alpha = coverage * rimLight * 255;
+      const gray = rimLight * 255;
 
       writeRgba(data, index, gray, gray, gray, alpha);
     }

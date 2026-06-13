@@ -95,13 +95,19 @@ describe("lens displacement pixel maps", () => {
     const sideRim = rgbaAt(map, 1, 150);
     const topRim = rgbaAt(map, 210, 1);
     const bottomRim = rgbaAt(map, 210, 298);
+    const topLeftRim = rgbaAt(map, 74, 23);
+    const topRightRim = rgbaAt(map, 346, 23);
+    const bottomLeftRim = rgbaAt(map, 74, 277);
+    const bottomRightRim = rgbaAt(map, 346, 277);
 
-    expect(countNonTransparentPixels(map)).toBeGreaterThan(4000);
-    expect(countNonTransparentPixels(map)).toBeLessThan(5000);
+    expect(countNonTransparentPixels(map)).toBeGreaterThan(3600);
+    expect(countNonTransparentPixels(map)).toBeLessThan(4300);
     expect(topRim[0]).toBeLessThan(220);
     expect(sideRim[0]).toBeLessThan(topRim[0]);
     expect(sideRim[3]).toBeLessThan(topRim[3]);
     expect(bottomRim[3]).toBe(topRim[3]);
+    expect(topRightRim[3]).toBeGreaterThan(topLeftRim[3]);
+    expect(bottomLeftRim[3]).toBeGreaterThan(bottomRightRim[3]);
   });
 
   it("samples the capsule field with finite normals and no outside false positives", () => {

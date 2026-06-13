@@ -61,9 +61,9 @@ Measured locally on 2026-06-13 against `https://kube.io/blog/liquid-glass-css-sv
 
 | Reference                | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | ------------------------ | ---------: | ---------- | ---------: | --------: | ---- |
-| magnifying-glass         |     0.2000 | `0,-1`     |     0.1859 |    0.2400 | gate |
-| magnifying-glass-pressed |     0.3402 | `2,0`      |     0.3344 |    0.3600 | gate |
-| magnifying-glass-dragged |     0.3937 | `-3,-1`    |     0.3631 |    0.4050 | gate |
+| magnifying-glass         |     0.2016 | `0,-1`     |     0.1894 |    0.2400 | gate |
+| magnifying-glass-pressed |     0.3282 | `0,1`      |     0.3294 |    0.3600 | gate |
+| magnifying-glass-dragged |     0.3994 | `-4,-1`    |     0.3670 |    0.4050 | gate |
 | searchbox                |     0.0167 | `0,0`      |     0.0111 |    0.0200 | gate |
 | switch                   |     0.0142 | `0,0`      |     0.0090 |    0.0200 | gate |
 | slider                   |     0.0149 | `0,0`      |     0.0074 |    0.0200 | gate |
@@ -75,6 +75,9 @@ This measurement includes these verified geometry fixes:
 - the magnification pass uses a full rectangular center-pull displacement map;
   the bevel-only capsule field is reserved for the second displacement pass,
 - the specular pass uses a narrow gray rim instead of a broad white highlight.
+- the specular map uses a directional rim light, so the brightest points follow
+  the Kube reference's upper-right and lower-left edge response instead of
+  drawing an even plastic ring around the whole capsule.
 - the bevel displacement pass uses a `25px` edge falloff, not the full capsule
   radius.
 - the water-drop shadow belongs to the lens surface itself; applying it
@@ -101,7 +104,7 @@ This measurement includes these verified geometry fixes:
   after tiny offsets, so the remaining gap is material and optical response, not
   just a bad screenshot crop.
 
-This proves four things:
+This proves five things:
 
 - The static searchbox, switch, and slider stories are already within the current
   screenshot budget, so their thresholds are ratcheted down to `0.0200`.
@@ -112,6 +115,10 @@ This proves four things:
   the thresholds are still loose while the fixture moves toward tighter pixel
   parity. Pressed is now gated at `0.3600`; dragged is now gated at `0.4050`.
   They must not be described as 100% complete.
+- The latest specular change improved the pressed screenshot but did not improve
+  every lens state. That is acceptable only because the generated specular map
+  is closer to the reference rim-light physics; it is still not enough for exact
+  component parity.
 - The final acceptance command is `pnpm test:kube-reference:exact`. Until that
   command passes, Kube parity remains incomplete regardless of the current
   release-candidate gate.

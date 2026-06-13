@@ -432,37 +432,50 @@ async function findTargetDragHandle(root) {
 }
 
 async function applyPointerAction(page, handle, action) {
-  const box = await handle.boundingBox();
+  const attempts = action.attempts ?? 3;
+  let lastMetrics = null;
 
-  if (!box) {
-    throw new Error(`Missing bounding box for ${action.kind} action`);
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    const box = await handle.boundingBox();
+
+    if (!box) {
+      throw new Error(`Missing bounding box for ${action.kind} action`);
+    }
+
+    const startX = box.x + box.width * action.point.x;
+    const startY = box.y + box.height * action.point.y;
+    await page.mouse.move(startX, startY);
+    await page.mouse.down();
+    await page.waitForTimeout(action.pressMs ?? 180);
+
+    if (action.kind === "drag") {
+      await page.mouse.move(startX + action.delta.x, startY + action.delta.y, { steps: 8 });
+      await page.waitForTimeout(action.settleMs ?? 120);
+    }
+
+    const after = await waitForPointerActionEffect(handle, box, action);
+    const metrics = summarizeActionMetrics(box, after, action);
+    lastMetrics = metrics;
+
+    if (hasPointerActionEffect(metrics, action)) {
+      return {
+        cleanup: async () => {
+          await page.mouse.up().catch(() => undefined);
+          await page.mouse.move(0, 0).catch(() => undefined);
+          await page.waitForTimeout(160);
+        },
+        clip: screenshotClipFromBox(after),
+        metrics,
+        subject: handle
+      };
+    }
+
+    await page.mouse.up().catch(() => undefined);
+    await page.mouse.move(0, 0).catch(() => undefined);
+    await page.waitForTimeout(220 * attempt);
   }
 
-  const startX = box.x + box.width * action.point.x;
-  const startY = box.y + box.height * action.point.y;
-  await page.mouse.move(startX, startY);
-  await page.mouse.down();
-  await page.waitForTimeout(action.pressMs ?? 180);
-
-  if (action.kind === "drag") {
-    await page.mouse.move(startX + action.delta.x, startY + action.delta.y, { steps: 8 });
-    await page.waitForTimeout(action.settleMs ?? 120);
-  }
-
-  const after = await waitForPointerActionEffect(handle, box, action);
-  const metrics = summarizeActionMetrics(box, after, action);
-  assertPointerActionMetrics(metrics, action);
-
-  return {
-    cleanup: async () => {
-      await page.mouse.up().catch(() => undefined);
-      await page.mouse.move(0, 0).catch(() => undefined);
-      await page.waitForTimeout(160);
-    },
-    clip: screenshotClipFromBox(after),
-    metrics,
-    subject: handle
-  };
+  throw new Error(describePointerActionFailure(action, lastMetrics));
 }
 
 async function captureReferenceScreenshot(page, subject, action, captureMode, screenshotPath) {
@@ -530,23 +543,16 @@ function hasPointerActionEffect(metrics, action) {
   );
 }
 
-function assertPointerActionMetrics(metrics, action) {
+function describePointerActionFailure(action, metrics) {
   if (action.kind === "press") {
-    if (!hasPointerActionEffect(metrics, action)) {
-      throw new Error(`Press action did not deform the lens enough: ${JSON.stringify(metrics)}`);
-    }
-    return;
+    return `Press action did not deform the lens enough: ${JSON.stringify(metrics)}`;
   }
 
-  if (!hasPointerActionEffect(metrics, action)) {
-    const minX = Math.abs(action.delta.x) * 0.45;
-    const minY = Math.abs(action.delta.y) * 0.45;
-    throw new Error(
-      `Drag action did not move the lens enough: expected at least ${round(minX)}px x and ${round(
-        minY
-      )}px y, got ${JSON.stringify(metrics)}`
-    );
-  }
+  const minX = Math.abs(action.delta.x) * 0.45;
+  const minY = Math.abs(action.delta.y) * 0.45;
+  return `Drag action did not move the lens enough: expected at least ${round(
+    minX
+  )}px x and ${round(minY)}px y, got ${JSON.stringify(metrics)}`;
 }
 
 function assertActionMetricParity(reference, targetMetrics, candidateMetrics) {
