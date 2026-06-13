@@ -30,6 +30,7 @@ jobs:
       - run: pnpm test:inventory
       - run: pnpm test:registry
       - run: pnpm test:shadcn-parity
+      - run: pnpm test:release-readiness
       - run: pnpm test:unit
       - run: pnpm test:components
       - run: pnpm test:physics
