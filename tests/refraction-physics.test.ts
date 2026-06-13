@@ -717,6 +717,8 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain(
       "verifyFocusMaterial(target.name, target.options)"
     );
+    expect(verifyLiquidBehaviorSource).toContain("await waitForStoryReady(page, id)");
+    expect(verifyLiquidBehaviorSource).toContain("Storybook story did not become ready");
     expect(verifyLiquidBehaviorSource).toContain("focusAuditResults.push");
     expect(verifyLiquidBehaviorSource).toContain("focus-material-audit.json");
     expect(verifyLiquidBehaviorSource).toContain(

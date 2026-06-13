@@ -205,6 +205,7 @@ const focusAuditTargets = [
       afterFocus: async (page) => {
         await page.keyboard.press("ArrowRight");
       },
+      focusedSelector: ".lg-calendar__day-button:focus-visible",
       minimumFocusedScale: 1.05,
       requireMaterialDeepening: true
     }
@@ -308,7 +309,9 @@ async function verifyFocusMaterial(name, options) {
   }
   await options.afterFocus?.(page);
   await page.waitForTimeout(240);
-  const focusedLocator = page.locator(`${story.selector}:focus-visible`).first();
+  const focusedLocator = page
+    .locator(options.focusedSelector ?? `${story.selector}:focus-visible`)
+    .first();
   const focused = await readState((await focusedLocator.count()) > 0 ? focusedLocator : locator);
 
   assertEqual(focused.outlineStyle, "none", `${name} focus outline style`);
@@ -742,7 +745,38 @@ async function openStory(id, media = {}, viewport = { width: 900, height: 520 })
     waitUntil: "networkidle",
     timeout: 20_000
   });
+  await waitForStoryReady(page, id);
   return page;
+}
+
+async function waitForStoryReady(page, id) {
+  try {
+    await page.waitForFunction(
+      () => {
+        const root = document.querySelector("#storybook-root");
+        const bodyText = document.body.textContent ?? "";
+        return Boolean(root?.children.length && !bodyText.includes("Preparing story"));
+      },
+      undefined,
+      { timeout: 20_000 }
+    );
+  } catch (error) {
+    const diagnostic = await page.evaluate(() => {
+      const root = document.querySelector("#storybook-root");
+      return {
+        bodyText: (document.body.textContent ?? "").replace(/\s+/g, " ").trim().slice(0, 240),
+        rootChildCount: root?.children.length ?? 0,
+        surfaceCount: document.querySelectorAll(".lg-surface").length,
+        title: document.title
+      };
+    });
+
+    throw new Error(
+      `${id}: Storybook story did not become ready: ${JSON.stringify(diagnostic)} (${
+        error instanceof Error ? error.message : String(error)
+      })`
+    );
+  }
 }
 
 async function readDraggableLensState(locator) {
