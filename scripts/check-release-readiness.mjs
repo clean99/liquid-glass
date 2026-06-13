@@ -79,6 +79,7 @@ for (const script of [
   "lint",
   "typecheck",
   "test:docs",
+  "test:governance",
   "test:inventory",
   "test:component-coverage",
   "test:registry",
@@ -104,6 +105,7 @@ for (const script of [
 }
 
 mustScript(packageJson, "test:release-readiness", ["scripts/check-release-readiness.mjs"]);
+mustScript(packageJson, "test:governance", ["scripts/audit-open-source-governance.mjs"]);
 mustScript(packageJson, "test:research", ["scripts/validate-reference-provenance.mjs"]);
 mustScript(packageJson, "test:component-coverage", [
   "scripts/validate-component-test-coverage.mjs"
@@ -121,6 +123,7 @@ mustScript(packageJson, "test:storybook", ["verify-enhanced-storybook.mjs"]);
 mustScript(packageJson, "test:package", ["tests/package-exports.mjs"]);
 mustScript(packageJson, "ci", [
   "pnpm test:research",
+  "pnpm test:governance",
   "pnpm test:component-coverage",
   "pnpm test:release-readiness"
 ]);
@@ -149,6 +152,7 @@ const packageRequiredFiles = [
   "CHANGELOG.md",
   "ROADMAP.md",
   "docs/github-repository-settings.md",
+  "docs/governance-scorecard.md",
   "docs/open-source-governance.md",
   "docs/open-source-release.md",
   "docs/shadcn-registry.md",
@@ -205,7 +209,9 @@ if (isStandaloneRepository) {
   mustInclude(".github/workflows/pages.yml", "actions/deploy-pages");
 }
 mustInclude("docs/open-source-release.md", "pnpm test:release-readiness");
+mustInclude("docs/open-source-release.md", "pnpm test:governance");
 mustInclude("docs/open-source-release.md", "pnpm test:component-coverage");
+mustInclude("docs/governance-scorecard.md", "CHECK_REMOTE_GOVERNANCE=1");
 mustInclude("docs/open-source-release.md", "pnpm test:kube-reference:strict");
 mustInclude("docs/open-source-release.md", "pnpm pack --dry-run");
 mustInclude("docs/open-source-release.md", "NPM_CONFIG_PROVENANCE");

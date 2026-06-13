@@ -38,6 +38,7 @@ flowchart TD
 | `pnpm lint`                   | Source and docs-adjacent scripts stay clean.                                         |
 | `pnpm typecheck`              | Public TypeScript contracts still compile.                                           |
 | `pnpm test:docs`              | Required open-source docs, templates, references, and registry claims exist.         |
+| `pnpm test:governance`        | Governance scorecard stays above the local readiness threshold.                      |
 | `pnpm test:registry`          | Generated registry files match component inventory.                                  |
 | `pnpm test:release-readiness` | Package metadata, workflows, docs, and release scripts stay aligned.                 |
 | `pnpm test:unit`              | Pure logic and component behavior stay covered.                                      |

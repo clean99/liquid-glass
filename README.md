@@ -18,6 +18,7 @@ The goal is not generic glassmorphism. The library treats Liquid Glass as an opt
 - [Installation](docs/installation.md)
 - [API overview](docs/api-overview.md)
 - [Design principles](docs/design-principles.md)
+- [Governance scorecard](docs/governance-scorecard.md)
 - [Testing strategy](docs/testing.md)
 - [shadcn-style registry](docs/shadcn-registry.md)
 - [Open-source governance](docs/open-source-governance.md)
@@ -80,6 +81,7 @@ pnpm format
 pnpm lint
 pnpm typecheck
 pnpm test:docs
+pnpm test:governance
 pnpm test:inventory
 pnpm test:component-coverage
 pnpm test:registry

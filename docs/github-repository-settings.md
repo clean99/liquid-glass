@@ -41,7 +41,7 @@ gh repo create clean99/liquid-glass \
   actively used.
 - General > Features: disable Wiki if repository docs remain the source of
   truth.
-- Pages > Build and deployment: select GitHub Actions.
+- Pages > Build and deployment: select GitHub Actions as the Pages source.
 - Actions > General: allow GitHub Actions and reusable workflows.
 - Actions > Workflow permissions: read and write permissions, with pull request
   creation enabled for the release workflow.

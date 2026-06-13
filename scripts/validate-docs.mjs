@@ -45,6 +45,7 @@ const packageRequiredFiles = [
   "docs/component-inventory.md",
   "docs/design-principles.md",
   "docs/github-repository-settings.md",
+  "docs/governance-scorecard.md",
   "docs/installation.md",
   "docs/kube-parity-gate.md",
   "docs/open-source-governance.md",
@@ -60,6 +61,7 @@ const packageRequiredFiles = [
   "registry.json",
   "liquid-glass.json",
   "registry/liquid-glass.json",
+  "scripts/audit-open-source-governance.mjs",
   "scripts/build-component-registry.mjs",
   "scripts/validate-component-test-coverage.mjs",
   "scripts/check-release-readiness.mjs",
@@ -103,6 +105,7 @@ mustInclude("README.md", [
   "test:inventory",
   "test:component-coverage",
   "test:registry",
+  "test:governance",
   "test:research",
   "test:shadcn-parity",
   "test:release-readiness",
@@ -147,8 +150,17 @@ mustInclude("docs/open-source-governance.md", [
   "Chakra UI",
   "HeroUI",
   "mermaid",
+  "pnpm test:governance",
   "Current Gaps",
   "Release Flow"
+]);
+
+mustInclude("docs/governance-scorecard.md", [
+  "pnpm audit:governance",
+  "pnpm test:governance",
+  "CHECK_REMOTE_GOVERNANCE=1",
+  "GitHub Pages",
+  "not part of CI"
 ]);
 
 mustInclude("ATTRIBUTIONS.md", [
@@ -242,6 +254,7 @@ mustInclude("CONTRIBUTING.md", ["pnpm verify", "pnpm test:docs", "pnpm test:inve
 mustInclude("docs/open-source-release.md", [
   "pnpm verify",
   "pnpm test:release-readiness",
+  "pnpm test:governance",
   "pnpm pack --dry-run",
   "pnpm test:a11y",
   "pnpm test:kube-reference:strict",
@@ -300,6 +313,12 @@ if (fs.existsSync(path.join(root, "package.json"))) {
   if (!packageJson.scripts?.["test:release-readiness"]) {
     errors.push("package.json must include test:release-readiness");
   }
+  if (!packageJson.scripts?.["test:governance"]) {
+    errors.push("package.json must include test:governance");
+  }
+  if (!packageJson.scripts?.["audit:governance"]) {
+    errors.push("package.json must include audit:governance");
+  }
   if (!packageJson.scripts?.["test:research"]) {
     errors.push("package.json must include test:research");
   }
@@ -323,6 +342,14 @@ if (fs.existsSync(path.join(root, "package.json"))) {
     )
   ) {
     errors.push("package.json test:release-readiness must run the release readiness gate");
+  }
+  if (
+    !packageJson.scripts?.["test:governance"]?.includes("scripts/audit-open-source-governance.mjs")
+  ) {
+    errors.push("package.json test:governance must run the governance audit");
+  }
+  if (!packageJson.scripts?.ci?.includes("pnpm test:governance")) {
+    errors.push("package.json scripts.ci must include pnpm test:governance");
   }
   if (
     !packageJson.scripts?.["test:research"]?.includes("scripts/validate-reference-provenance.mjs")

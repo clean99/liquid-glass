@@ -72,19 +72,22 @@ GitHub Actions run Node 24. The package `engines.node` lower bound is
 1. Run `pnpm test:component-coverage` and `pnpm test:release-readiness` to
    validate component behavior coverage, package metadata, workflows, docs,
    registry files, Changesets, and strict release gates.
-2. Run `pnpm test:research` to validate external reference provenance, licenses,
+2. Run `pnpm test:governance` to validate the local open-source readiness
+   scorecard. Run `CHECK_REMOTE_GOVERNANCE=1 pnpm audit:governance` during
+   maintainer release review to include GitHub Pages and repository metadata.
+3. Run `pnpm test:research` to validate external reference provenance, licenses,
    inspected commits, and the no-copied-source policy.
-3. For manual release review, run
+4. For manual release review, run
    `CHECK_REMOTE_REFS=1 pnpm test:research` to verify pinned research commits
    against public remotes.
-4. Run `pnpm verify`.
-5. Run `pnpm test:kube-reference:strict` for release-candidate visual parity.
-6. Confirm `pnpm pack --dry-run` includes only package, docs, examples, registry,
+5. Run `pnpm verify`.
+6. Run `pnpm test:kube-reference:strict` for release-candidate visual parity.
+7. Confirm `pnpm pack --dry-run` includes only package, docs, examples, registry,
    schema, license, README, and attribution files.
-7. Add a changeset for user-visible changes.
-8. Merge to `main`.
-9. Run the release workflow manually after reviewing the generated version PR.
-10. The release workflow runs `pnpm verify`, then uses Changesets to either open
+8. Add a changeset for user-visible changes.
+9. Merge to `main`.
+10. Run the release workflow manually after reviewing the generated version PR.
+11. The release workflow runs `pnpm verify`, then uses Changesets to either open
     a version PR or publish the already-versioned package with `pnpm release`.
     The workflow sets `NPM_CONFIG_PROVENANCE=true` so npm receives a GitHub
     Actions provenance statement for published artifacts.
