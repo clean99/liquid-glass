@@ -28,7 +28,13 @@ generated inventory and the smaller set of full written component pages.
 | `LiquidProvider`     | `docs/components/provider.md`      | `src/providers/LiquidProvider.tsx`      | `stories/LiquidSurface.stories.tsx`    | Not a registry item                             |
 | `LiquidSurface`      | `docs/components/surface.md`       | `src/components/LiquidSurface.tsx`      | `stories/LiquidSurface.stories.tsx`    | Not a registry item                             |
 | `LiquidAccordion`    | `docs/components/accordion.md`     | `src/components/LiquidAccordion.tsx`    | `stories/LiquidAccordion.stories.tsx`  | `registry/components/liquid-accordion.json`     |
+| `LiquidAlert`        | `docs/components/alert.md`         | `src/components/LiquidAlert.tsx`        | `stories/LiquidFoundation.stories.tsx` | `registry/components/liquid-alert.json`         |
+| `LiquidAlertDialog`  | `docs/components/alert-dialog.md`  | `src/components/LiquidAlertDialog.tsx`  | `stories/LiquidOverlay.stories.tsx`    | `registry/components/liquid-alert-dialog.json`  |
+| `LiquidAvatar`       | `docs/components/avatar.md`        | `src/components/LiquidAvatar.tsx`       | `stories/LiquidFoundation.stories.tsx` | `registry/components/liquid-avatar.json`        |
+| `LiquidBadge`        | `docs/components/badge.md`         | `src/components/LiquidBadge.tsx`        | `stories/LiquidFoundation.stories.tsx` | `registry/components/liquid-badge.json`         |
+| `LiquidBreadcrumb`   | `docs/components/breadcrumb.md`    | `src/components/LiquidBreadcrumb.tsx`   | `stories/LiquidFoundation.stories.tsx` | `registry/components/liquid-breadcrumb.json`    |
 | `LiquidButton`       | `docs/components/button.md`        | `src/components/LiquidButton.tsx`       | `stories/LiquidButton.stories.tsx`     | `registry/components/liquid-button.json`        |
+| `LiquidCalendar`     | `docs/components/calendar.md`      | `src/components/LiquidCalendar.tsx`     | `stories/LiquidCalendar.stories.tsx`   | `registry/components/liquid-calendar.json`      |
 | `LiquidCard`         | `docs/components/card.md`          | `src/components/LiquidCard.tsx`         | `stories/LiquidCard.stories.tsx`       | `registry/components/liquid-card.json`          |
 | `LiquidCheckbox`     | `docs/components/checkbox.md`      | `src/components/LiquidCheckbox.tsx`     | `stories/LiquidFoundation.stories.tsx` | `registry/components/liquid-checkbox.json`      |
 | `LiquidCombobox`     | `docs/components/combobox.md`      | `src/components/LiquidCombobox.tsx`     | `stories/LiquidCommand.stories.tsx`    | `registry/components/liquid-combobox.json`      |
@@ -51,8 +57,8 @@ status. It follows the same role as the shadcn/ui component directory: a user
 can scan the whole component surface from one place without guessing which
 Storybook file or registry item owns a component. The written page set now
 covers the provider and surface base, the first layout/action/form/overlay
-pages, and high-frequency disclosure, form, control, navigation, overlay, and
-Kube reference controls.
+pages, and high-frequency disclosure, feedback, media, display, date-time,
+form, control, navigation, overlay, and Kube reference controls.
 
 ## Documentation Flow
 

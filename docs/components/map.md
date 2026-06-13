@@ -15,9 +15,10 @@ written page shape from `docs/component-documentation.md`.
 ## Status
 
 - Implemented public components: 60.
-- Full written component pages: Provider, Surface, Accordion, Button, Card,
-  Checkbox, Combobox, DatePicker, Dialog, DropdownMenu, Field, SearchBox,
-  Select, Sidebar, Slider, Switch, Tabs.
+- Full written component pages: Provider, Surface, Accordion, Alert,
+  AlertDialog, Avatar, Badge, Breadcrumb, Button, Calendar, Card, Checkbox,
+  Combobox, DatePicker, Dialog, DropdownMenu, Field, SearchBox, Select,
+  Sidebar, Slider, Switch, Tabs.
 - npm package: not published to npm yet.
 - shadcn-style registry: generated and testable, but live install commands wait
   for npm publish.
@@ -62,15 +63,15 @@ flowchart TD
 | Export                   | Slug              | Category     | Visual profile | Source                                      | Story                                        | Registry                                          | Written page                       |
 | ------------------------ | ----------------- | ------------ | -------------- | ------------------------------------------- | -------------------------------------------- | ------------------------------------------------- | ---------------------------------- |
 | `LiquidAccordion`        | `accordion`       | `disclosure` | `disclosure`   | `src/components/LiquidAccordion.tsx`        | `stories/LiquidAccordion.stories.tsx`        | `registry/components/liquid-accordion.json`       | `docs/components/accordion.md`     |
-| `LiquidAlert`            | `alert`           | `feedback`   | `feedback`     | `src/components/LiquidAlert.tsx`            | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-alert.json`           | Storybook + inventory              |
-| `LiquidAlertDialog`      | `alert-dialog`    | `overlay`    | `overlay`      | `src/components/LiquidAlertDialog.tsx`      | `stories/LiquidOverlay.stories.tsx`          | `registry/components/liquid-alert-dialog.json`    | Storybook + inventory              |
+| `LiquidAlert`            | `alert`           | `feedback`   | `feedback`     | `src/components/LiquidAlert.tsx`            | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-alert.json`           | `docs/components/alert.md`         |
+| `LiquidAlertDialog`      | `alert-dialog`    | `overlay`    | `overlay`      | `src/components/LiquidAlertDialog.tsx`      | `stories/LiquidOverlay.stories.tsx`          | `registry/components/liquid-alert-dialog.json`    | `docs/components/alert-dialog.md`  |
 | `LiquidAspectRatio`      | `aspect-ratio`    | `layout`     | `layout`       | `src/components/LiquidAspectRatio.tsx`      | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-aspect-ratio.json`    | Storybook + inventory              |
-| `LiquidAvatar`           | `avatar`          | `media`      | `media`        | `src/components/LiquidAvatar.tsx`           | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-avatar.json`          | Storybook + inventory              |
-| `LiquidBadge`            | `badge`           | `display`    | `display`      | `src/components/LiquidBadge.tsx`            | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-badge.json`           | Storybook + inventory              |
-| `LiquidBreadcrumb`       | `breadcrumb`      | `navigation` | `navigation`   | `src/components/LiquidBreadcrumb.tsx`       | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-breadcrumb.json`      | Storybook + inventory              |
+| `LiquidAvatar`           | `avatar`          | `media`      | `media`        | `src/components/LiquidAvatar.tsx`           | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-avatar.json`          | `docs/components/avatar.md`        |
+| `LiquidBadge`            | `badge`           | `display`    | `display`      | `src/components/LiquidBadge.tsx`            | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-badge.json`           | `docs/components/badge.md`         |
+| `LiquidBreadcrumb`       | `breadcrumb`      | `navigation` | `navigation`   | `src/components/LiquidBreadcrumb.tsx`       | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-breadcrumb.json`      | `docs/components/breadcrumb.md`    |
 | `LiquidButton`           | `button`          | `control`    | `control`      | `src/components/LiquidButton.tsx`           | `stories/LiquidButton.stories.tsx`           | `registry/components/liquid-button.json`          | `docs/components/button.md`        |
 | `LiquidButtonGroup`      | `button-group`    | `control`    | `control`      | `src/components/LiquidButtonGroup.tsx`      | `stories/LiquidFoundation.stories.tsx`       | `registry/components/liquid-button-group.json`    | Storybook + inventory              |
-| `LiquidCalendar`         | `calendar`        | `date-time`  | `date-time`    | `src/components/LiquidCalendar.tsx`         | `stories/LiquidCalendar.stories.tsx`         | `registry/components/liquid-calendar.json`        | Storybook + inventory              |
+| `LiquidCalendar`         | `calendar`        | `date-time`  | `date-time`    | `src/components/LiquidCalendar.tsx`         | `stories/LiquidCalendar.stories.tsx`         | `registry/components/liquid-calendar.json`        | `docs/components/calendar.md`      |
 | `LiquidCard`             | `card`            | `layout`     | `layout`       | `src/components/LiquidCard.tsx`             | `stories/LiquidCard.stories.tsx`             | `registry/components/liquid-card.json`            | `docs/components/card.md`          |
 | `LiquidCarousel`         | `carousel`        | `media`      | `media`        | `src/components/LiquidCarousel.tsx`         | `stories/LiquidCarousel.stories.tsx`         | `registry/components/liquid-carousel.json`        | Storybook + inventory              |
 | `LiquidChart`            | `chart`           | `data`       | `data`         | `src/components/LiquidChart.tsx`            | `stories/LiquidChart.stories.tsx`            | `registry/components/liquid-chart.json`           | Storybook + inventory              |

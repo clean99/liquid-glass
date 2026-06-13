@@ -52,7 +52,13 @@ const packageRequiredFiles = [
   "docs/components/provider.md",
   "docs/components/surface.md",
   "docs/components/accordion.md",
+  "docs/components/alert.md",
+  "docs/components/alert-dialog.md",
+  "docs/components/avatar.md",
+  "docs/components/badge.md",
+  "docs/components/breadcrumb.md",
   "docs/components/button.md",
+  "docs/components/calendar.md",
   "docs/components/card.md",
   "docs/components/checkbox.md",
   "docs/components/combobox.md",
@@ -423,6 +429,61 @@ mustInclude("docs/components/accordion.md", [
   "pnpm test:registry"
 ]);
 
+mustInclude("docs/components/alert.md", [
+  "LiquidAlert",
+  "src/components/LiquidAlert.tsx",
+  "LiquidAlertProps",
+  'role="status"',
+  "LiquidAlertDescription",
+  "stories/LiquidFoundation.stories.tsx",
+  "registry/components/liquid-alert.json",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/alert-dialog.md", [
+  "LiquidAlertDialog",
+  "src/components/LiquidAlertDialog.tsx",
+  "LiquidAlertDialogContentProps",
+  'role="alertdialog"',
+  "closeOnBackdropClick",
+  "stories/LiquidOverlay.stories.tsx",
+  "registry/components/liquid-alert-dialog.json",
+  "pnpm test:a11y"
+]);
+
+mustInclude("docs/components/avatar.md", [
+  "LiquidAvatar",
+  "src/components/LiquidAvatar.tsx",
+  "LiquidAvatarImage",
+  "LiquidAvatarFallback",
+  "LiquidAvatarProps",
+  "stories/LiquidFoundation.stories.tsx",
+  "registry/components/liquid-avatar.json",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/badge.md", [
+  "LiquidBadge",
+  "src/components/LiquidBadge.tsx",
+  "LiquidBadgeProps",
+  "LiquidBadgeVariant",
+  "data-variant",
+  "stories/LiquidFoundation.stories.tsx",
+  "registry/components/liquid-badge.json",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/breadcrumb.md", [
+  "LiquidBreadcrumb",
+  "src/components/LiquidBreadcrumb.tsx",
+  "LiquidBreadcrumbPage",
+  'aria-current="page"',
+  'aria-hidden="true"',
+  "stories/LiquidFoundation.stories.tsx",
+  "registry/components/liquid-breadcrumb.json",
+  "pnpm test:registry"
+]);
+
 mustInclude("docs/components/button.md", [
   "LiquidButton",
   "src/components/LiquidButton.tsx",
@@ -431,6 +492,17 @@ mustInclude("docs/components/button.md", [
   "disabled",
   "stories/LiquidButton.stories.tsx",
   "registry/components/liquid-button.json",
+  "pnpm test:registry"
+]);
+
+mustInclude("docs/components/calendar.md", [
+  "LiquidCalendar",
+  "src/components/LiquidCalendar.tsx",
+  "LiquidCalendarProps",
+  "DayPickerProps",
+  "createCalendarClassNames",
+  "stories/LiquidCalendar.stories.tsx",
+  "registry/components/liquid-calendar.json",
   "pnpm test:registry"
 ]);
 
