@@ -16,6 +16,13 @@ export default meta;
 type Story = StoryObj;
 
 export const KubeReference: Story = {
+  parameters: {
+    visualState: {
+      evidence: ["pnpm test:kube-reference"],
+      profile: "form",
+      states: ["default", "light", "material-mode", "Kube reference"]
+    }
+  },
   render: () => <KubeSearchboxReferenceStory />
 };
 
@@ -93,6 +100,13 @@ function KubeSearchboxReferenceStory() {
 }
 
 export const FocusPhotoReference: Story = {
+  parameters: {
+    visualState: {
+      evidence: ["pnpm test:e2e"],
+      profile: "form",
+      states: ["focus-visible", "light", "loaded media", "Kube reference"]
+    }
+  },
   render: () => (
     <LiquidProvider defaultMode="enhanced" disableOnMobile={false} maxEnhancedSurfaces={4}>
       <div

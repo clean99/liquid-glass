@@ -54,6 +54,13 @@ const idleDroplet = resolveLensDropletResponse({
 });
 
 export const KubeReference: Story = {
+  parameters: {
+    visualState: {
+      evidence: ["pnpm test:kube-reference"],
+      profile: "reference",
+      states: ["default", "light", "material-mode", "Kube reference"]
+    }
+  },
   render: () => (
     <LiquidProvider defaultMode="enhanced" disableOnMobile={false} maxEnhancedSurfaces={4}>
       <KubeLensStoryShell>
@@ -70,6 +77,13 @@ export const KubeReference: Story = {
 };
 
 export const DraggablePrecisionLens: Story = {
+  parameters: {
+    visualState: {
+      evidence: ["pnpm test:e2e"],
+      profile: "reference",
+      states: ["dragged", "light", "material-mode", "Kube reference"]
+    }
+  },
   render: () => (
     <LiquidProvider defaultMode="enhanced" disableOnMobile={false} maxEnhancedSurfaces={4}>
       <DraggablePrecisionLensDemo />

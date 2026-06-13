@@ -81,6 +81,8 @@ for (const component of implemented) {
   }
 }
 
+validateStoryEvidence(coverage.storyEvidence ?? []);
+
 if (errors.length > 0) {
   throw new Error(
     `Visual state coverage is invalid:\n${errors.map((error) => `- ${error}`).join("\n")}`
@@ -101,6 +103,73 @@ function validateStringArray(value, label) {
     if (typeof item !== "string" || item.trim().length === 0) {
       errors.push(`${label} must contain only non-empty strings`);
     }
+  }
+}
+
+function validateStoryEvidence(entries) {
+  if (!Array.isArray(entries) || entries.length === 0) {
+    errors.push("storyEvidence must be a non-empty array");
+    return;
+  }
+
+  for (const entry of entries) {
+    validateString(entry.name, "storyEvidence.name");
+    validateString(entry.profile, `${entry.name}.profile`);
+    validateString(entry.story, `${entry.name}.story`);
+    validateString(entry.exportName, `${entry.name}.exportName`);
+    validateStringArray(entry.stateTags, `${entry.name}.stateTags`);
+    validateStringArray(entry.evidence, `${entry.name}.evidence`);
+
+    if (!coverage.profiles?.[entry.profile]) {
+      errors.push(`${entry.name}: references missing profile ${entry.profile}`);
+    }
+
+    const storyPath = path.join(root, entry.story ?? "");
+    if (!fs.existsSync(storyPath)) {
+      errors.push(`${entry.name}: story file is missing at ${entry.story}`);
+      continue;
+    }
+
+    if (entry.component) {
+      const component = implementedByName.get(entry.component);
+      if (!component) {
+        errors.push(`${entry.name}: unknown or unimplemented component ${entry.component}`);
+      } else {
+        if (component.story !== entry.story) {
+          errors.push(
+            `${entry.name}: component ${entry.component} story must be ${component.story}`
+          );
+        }
+        if (component.category !== entry.profile) {
+          errors.push(
+            `${entry.name}: component ${entry.component} profile ${entry.profile} must match ${component.category}`
+          );
+        }
+      }
+    }
+
+    const storySource = fs.readFileSync(storyPath, "utf8");
+    if (!storySource.includes(`export const ${entry.exportName}`)) {
+      errors.push(`${entry.name}: missing Storybook export ${entry.exportName}`);
+    }
+    if (!storySource.includes("visualState")) {
+      errors.push(`${entry.name}: story file must include visualState metadata`);
+    }
+    if (!storySource.includes(`profile: "${entry.profile}"`)) {
+      errors.push(`${entry.name}: visualState metadata must include profile ${entry.profile}`);
+    }
+
+    for (const stateTag of entry.stateTags ?? []) {
+      if (!storySource.includes(`"${stateTag}"`)) {
+        errors.push(`${entry.name}: visualState metadata must include state tag ${stateTag}`);
+      }
+    }
+  }
+}
+
+function validateString(value, label) {
+  if (typeof value !== "string" || value.trim().length === 0) {
+    errors.push(`${label} must be a non-empty string`);
   }
 }
 

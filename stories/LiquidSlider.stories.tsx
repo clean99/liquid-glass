@@ -12,6 +12,13 @@ export default meta;
 type Story = StoryObj;
 
 export const KubeReference: Story = {
+  parameters: {
+    visualState: {
+      evidence: ["pnpm test:kube-reference"],
+      profile: "control",
+      states: ["default", "light", "material-mode", "Kube reference"]
+    }
+  },
   render: () => (
     <LiquidProvider defaultMode="enhanced" disableOnMobile={false} maxEnhancedSurfaces={4}>
       <div

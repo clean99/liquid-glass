@@ -1158,20 +1158,21 @@
   text-shadow: var(--lg-control-text-shadow);
   transition:
     background 160ms var(--lg-ease-apple),
+    box-shadow 180ms var(--lg-ease-apple),
     color 160ms var(--lg-ease-apple),
     opacity 160ms var(--lg-ease-apple),
     transform 180ms var(--lg-ease-apple);
 }
 
 .lg-command__item[data-selected] {
-  color: rgba(255, 255, 255, 0.94);
-  background:
-    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.22), transparent 54%),
-    rgba(24, 26, 30, 0.38);
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.72),
-    0 0 10px rgba(0, 0, 0, 0.26);
-  transform: scale(1.01);
+  color: color-mix(in srgb, var(--lg-text), transparent 6%);
+  background: var(--lg-control-focus-fill);
+  box-shadow:
+    0 4px 14px var(--lg-control-focus-depth),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 0 18px var(--lg-control-focus-mist);
+  text-shadow: none;
+  transform: scale(1.012);
 }
 
 .lg-command__item[data-disabled] {
@@ -4229,9 +4230,35 @@
   .lg-surface--interactive:not(.lg-surface--disabled):hover,
   .lg-surface--interactive:not(.lg-surface--disabled):active,
   .lg-surface--interactive:not(.lg-surface--disabled):focus-visible,
+  .lg-input-otp__field:focus-visible,
+  .lg-radio-group__item:has(.lg-radio-group__input:focus-visible),
   .lg-tabs__tab:focus-visible,
+  .lg-tabs__panel:focus-visible,
+  .lg-accordion__trigger:focus-visible,
+  .lg-menu__item:focus-visible,
+  .lg-command__item[data-selected],
+  .lg-context-menu__trigger:focus-visible,
+  .lg-menubar__trigger:focus-visible,
+  .lg-tooltip__trigger:focus-visible,
+  .lg-hover-card__trigger:focus-visible,
+  .lg-nav .lg-surface--button:focus-visible,
+  .lg-nav .lg-surface--toggle:focus-visible,
+  .lg-toolbar .lg-surface--button:focus-visible,
+  .lg-toolbar .lg-surface--toggle:focus-visible,
   .lg-searchbox:focus-within,
   .lg-field-control:focus-within,
+  .lg-breadcrumb__link:focus-visible,
+  .lg-checkbox__input:focus-visible + .lg-checkbox__surface,
+  .lg-data-table__sort:focus-visible,
+  .lg-sidebar-menu__button:focus-visible,
+  .lg-sidebar-group__action:focus-visible,
+  .lg-sidebar-menu__action:focus-visible,
+  .lg-sidebar-rail:focus-visible,
+  .lg-pagination__link:focus-visible,
+  .lg-scroll-area__viewport:focus-visible,
+  .lg-resizable__handle:focus-visible,
+  .lg-calendar__nav-button:focus-visible,
+  .lg-calendar__day-button:focus-visible,
   .lg-skeleton::after {
     transform: none;
     animation: none;

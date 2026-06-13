@@ -215,6 +215,7 @@ mustInclude("docs/visual-documentation.md", [
   "High contrast",
   "Mobile",
   "Kube reference",
+  "parameters.visualState",
   "visual-state-coverage.json",
   "Current Gaps"
 ]);
@@ -222,6 +223,7 @@ mustInclude("docs/visual-documentation.md", [
 mustInclude("docs/visual-state-coverage.json", [
   "visual-state-coverage.schema.json",
   "componentsByProfile",
+  "storyEvidence",
   "high contrast",
   "reduced motion",
   "mobile"

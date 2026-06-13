@@ -38,6 +38,7 @@ flowchart TD
 | Release engineering        | CI and release workflows run the same gates maintainers run locally.            | `.github/workflows/ci.yml`, `.github/workflows/release.yml`, Changesets, package dry run.                   | Gate-backed                           | `pnpm verify`, `pnpm test:release-readiness`          |
 | Accessibility              | Accessibility is treated as a release property, not just documentation.         | Storybook a11y addon, `scripts/verify-storybook-a11y.mjs`, `pnpm test:a11y`.                                | Gate-backed                           | `pnpm test:a11y`                                      |
 | Visual documentation       | Component states are visible through examples, snapshots, and docs site.        | `docs/visual-documentation.md`, `docs/visual-state-coverage.json`, Storybook stories, Playwright snapshots. | Local gate-backed; public URL blocked | `pnpm test:visual-docs`, Pages workflow               |
+| Story-level state metadata | Reference stories expose machine-readable state profile metadata.               | `parameters.visualState` on Kube/reference stories and `docs/visual-state-coverage.json#storyEvidence`.     | Reference stories gate-backed         | `pnpm test:visual-docs`                               |
 | Registry distribution      | Registry metadata is source-readable and tested before users install it.        | `registry.json`, `liquid-glass.json`, `registry/liquid-glass.json`, `docs/shadcn-registry.md`.              | Prepared; npm publish blocked         | `pnpm test:registry`, `pnpm test:shadcn-parity`       |
 | Component inventory        | Public component surface is documented and checked.                             | `docs/component-inventory.json`, `docs/component-inventory.md`, generated registry items.                   | Gate-backed                           | `pnpm test:inventory`, `pnpm test:component-coverage` |
 | Dependency governance      | Dependency updates are grouped so maintenance noise stays readable.             | `.github/dependabot.yml`.                                                                                   | Gate-backed                           | `pnpm test:docs`, `pnpm test:governance`              |
@@ -63,12 +64,12 @@ Open public launch points:
 The visual side is close but not finished. Do not claim public visual docs until
 Storybook Pages succeeds.
 
-| Gap                        | Why it matters                                                          | Required proof                                      |
-| -------------------------- | ----------------------------------------------------------------------- | --------------------------------------------------- |
-| Public Storybook URL       | Users cannot inspect visual states from GitHub yet.                     | Successful Pages deploy and README/homepage update. |
-| Story-level state metadata | The state manifest is global; individual stories are not tagged yet.    | Storybook metadata or tags tied to visual profiles. |
-| Exact Kube parity          | Strict reference gate passes, but exact 1:1 pixel parity is still open. | `pnpm test:kube-reference:exact` passes.            |
-| Registry install path      | Registry files exist, but package-backed imports need npm availability. | First successful npm publish with provenance.       |
+| Gap                           | Why it matters                                                                         | Required proof                                             |
+| ----------------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Public Storybook URL          | Users cannot inspect visual states from GitHub yet.                                    | Successful Pages deploy and README/homepage update.        |
+| Component-wide story metadata | Kube/reference stories are tagged, but every public component story is not tagged yet. | Broaden `parameters.visualState` beyond reference stories. |
+| Exact Kube parity             | Strict reference gate passes, but exact 1:1 pixel parity is still open.                | `pnpm test:kube-reference:exact` passes.                   |
+| Registry install path         | Registry files exist, but package-backed imports need npm availability.                | First successful npm publish with provenance.              |
 
 ## What Not To Copy
 

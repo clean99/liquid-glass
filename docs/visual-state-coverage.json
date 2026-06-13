@@ -1,6 +1,6 @@
 {
   "$schema": "../schema/visual-state-coverage.schema.json",
-  "description": "Visual state coverage profiles for implemented components. Component source files and Storybook files are verified against docs/component-inventory.json by scripts/validate-visual-state-coverage.mjs.",
+  "description": "Visual state coverage profiles for implemented components. Component source files, Storybook files, and story-level visualState metadata are verified against docs/component-inventory.json by scripts/validate-visual-state-coverage.mjs.",
   "profiles": {
     "command": {
       "stateGroups": ["interaction", "accessibility", "material-mode", "environment", "layout"],
@@ -68,6 +68,12 @@
       "reviewStates": ["default", "fallback content", "loaded media", "keyboard navigation"],
       "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
       "evidence": ["Storybook story", "component unit test", "visual snapshot"]
+    },
+    "reference": {
+      "stateGroups": ["interaction", "accessibility", "material-mode", "environment", "layout"],
+      "reviewStates": ["default", "focus-visible", "pressed", "dragged", "Kube reference"],
+      "environments": ["light", "dark", "high contrast", "reduced motion", "mobile"],
+      "evidence": ["Storybook story metadata", "Kube reference gate", "visual snapshot"]
     },
     "navigation": {
       "stateGroups": ["interaction", "accessibility", "material-mode", "environment", "layout"],
@@ -146,5 +152,59 @@
     ],
     "typography": ["typography"],
     "utility": ["direction"]
-  }
+  },
+  "storyEvidence": [
+    {
+      "name": "SearchBox Kube reference frame",
+      "component": "searchbox",
+      "profile": "form",
+      "story": "stories/LiquidSearchBox.stories.tsx",
+      "exportName": "KubeReference",
+      "stateTags": ["default", "light", "material-mode", "Kube reference"],
+      "evidence": ["Storybook visualState metadata", "pnpm test:kube-reference"]
+    },
+    {
+      "name": "SearchBox focus photo reference",
+      "component": "searchbox",
+      "profile": "form",
+      "story": "stories/LiquidSearchBox.stories.tsx",
+      "exportName": "FocusPhotoReference",
+      "stateTags": ["focus-visible", "light", "loaded media", "Kube reference"],
+      "evidence": ["Storybook visualState metadata", "pnpm test:e2e"]
+    },
+    {
+      "name": "Switch Kube reference frame",
+      "component": "switch",
+      "profile": "control",
+      "story": "stories/LiquidSwitch.stories.tsx",
+      "exportName": "KubeReference",
+      "stateTags": ["default", "light", "material-mode", "Kube reference"],
+      "evidence": ["Storybook visualState metadata", "pnpm test:kube-reference"]
+    },
+    {
+      "name": "Slider Kube reference frame",
+      "component": "slider",
+      "profile": "control",
+      "story": "stories/LiquidSlider.stories.tsx",
+      "exportName": "KubeReference",
+      "stateTags": ["default", "light", "material-mode", "Kube reference"],
+      "evidence": ["Storybook visualState metadata", "pnpm test:kube-reference"]
+    },
+    {
+      "name": "Lens Kube reference frame",
+      "profile": "reference",
+      "story": "stories/LiquidLens.stories.tsx",
+      "exportName": "KubeReference",
+      "stateTags": ["default", "light", "material-mode", "Kube reference"],
+      "evidence": ["Storybook visualState metadata", "pnpm test:kube-reference"]
+    },
+    {
+      "name": "Lens draggable precision reference",
+      "profile": "reference",
+      "story": "stories/LiquidLens.stories.tsx",
+      "exportName": "DraggablePrecisionLens",
+      "stateTags": ["dragged", "light", "material-mode", "Kube reference"],
+      "evidence": ["Storybook visualState metadata", "pnpm test:e2e"]
+    }
+  ]
 }

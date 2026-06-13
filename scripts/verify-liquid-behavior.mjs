@@ -26,12 +26,17 @@ const behaviorStories = {
     id: "liquid-glass-liquidaccordion--focus-visible",
     selector: ".lg-accordion__trigger"
   },
+  command: {
+    focusSelector: ".lg-command__input",
+    id: "liquid-glass-liquidcommand--command-palette",
+    selector: ".lg-command__item[data-selected]"
+  },
   otp: {
     id: "liquid-glass-liquidfield--select-and-otp",
     selector: ".lg-input-otp__field"
   },
   tabs: {
-    id: "liquid-glass-liquidtabs--focus-visible",
+    id: "liquid-glass-liquidtabs--light-mode",
     selector: ".lg-tabs__tab"
   },
   switch: {
@@ -111,6 +116,7 @@ try {
     minimumFocusedScale: 1.018,
     requireMaterialDeepening: true
   });
+  await verifyCommandRovingFocusMaterial();
   await verifyFocusMaterial("switch", {
     focusSelector: behaviorStories.switch.focusSelector,
     minimumFocusedScale: 0.7,
@@ -234,6 +240,27 @@ async function verifySearchboxKubeImageBackground() {
     path: path.join(behaviorArtifactDir, "searchbox-kube-photo-checked.png")
   });
   await referencePage.close();
+}
+
+async function verifyCommandRovingFocusMaterial() {
+  const page = await openStory(behaviorStories.command.id);
+  const input = page.locator(behaviorStories.command.focusSelector).first();
+  await input.waitFor({ state: "visible", timeout: 10_000 });
+  await input.focus();
+  await page.keyboard.press("ArrowDown");
+  await page.waitForTimeout(180);
+
+  const selected = page.locator(behaviorStories.command.selector).first();
+  await selected.waitFor({ state: "visible", timeout: 10_000 });
+  const focused = await readState(selected);
+
+  assertNoPlasticFocusChrome(focused, "command roving focus");
+  assertGreaterOrEqual(focused.backgroundLuma, 150, "command roving focus material luma");
+  assertGreaterThan(focused.shadowLayerCount, 0, "command roving focus shadow layers");
+  assertEqual(focused.textShadow, "none", "command roving focus text shadow");
+  assertGreaterOrEqual(focused.scale, 1.01, "command roving focus scale");
+
+  await page.close();
 }
 
 async function readBackgroundImage(locator) {
@@ -554,9 +581,12 @@ async function readState(locator) {
 
     return {
       backgroundAlpha: alphaOf(style.backgroundColor),
+      backgroundLuma: lumaOf(style.backgroundColor),
       borderAlpha: alphaOf(style.borderColor),
       borderLuma: lumaOf(style.borderColor),
       borderColor: style.borderColor,
+      borderStyle: style.borderStyle,
+      borderWidthPx: parseFloat(style.borderTopWidth) || 0,
       boxShadow: style.boxShadow,
       foregroundTextShadowCount: countForegroundTextShadows(element),
       hardRingLayerCount: countCheapHardRingLayers(style.boxShadow),
@@ -696,7 +726,14 @@ async function readState(locator) {
 }
 
 function assertNoPlasticFocusChrome(state, label) {
-  const focusText = [state.borderColor, state.boxShadow, state.outlineColor].join(" ");
+  const visibleBorder =
+    state.borderWidthPx > 0 && state.borderStyle !== "none" && state.borderStyle !== "hidden";
+  const visibleOutline = state.outlineStyle !== "none";
+  const focusText = [
+    visibleBorder ? state.borderColor : "",
+    state.boxShadow,
+    visibleOutline ? state.outlineColor : ""
+  ].join(" ");
 
   if (focusText.includes("10, 132, 255") || focusText.includes("0, 95, 204")) {
     throw new Error(`${label}: focus style still uses system-blue plastic ring`);
@@ -706,7 +743,11 @@ function assertNoPlasticFocusChrome(state, label) {
     throw new Error(`${label}: focus style still uses a hard white/black 1px ring`);
   }
 
-  if (state.borderAlpha >= 0.34 && (state.borderLuma <= 20 || state.borderLuma >= 235)) {
+  if (
+    visibleBorder &&
+    state.borderAlpha >= 0.34 &&
+    (state.borderLuma <= 20 || state.borderLuma >= 235)
+  ) {
     throw new Error(
       `${label}: focus border is still a high-contrast hard edge (${state.borderColor}, alpha=${state.borderAlpha}, luma=${state.borderLuma})`
     );

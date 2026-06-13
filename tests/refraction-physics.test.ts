@@ -380,6 +380,7 @@ describe("Liquid Glass physics contract", () => {
       { growth: ".lg-tabs__panel:focus-visible" },
       { growth: ".lg-accordion__trigger:focus-visible" },
       { growth: ".lg-menu__item:focus-visible" },
+      { growth: ".lg-command__item[data-selected]" },
       { growth: ".lg-context-menu__trigger:focus-visible" },
       { growth: ".lg-menubar__trigger:focus-visible" },
       { growth: ".lg-tooltip__trigger:focus-visible" },
@@ -469,6 +470,67 @@ describe("Liquid Glass physics contract", () => {
       .filter(Boolean);
 
     expect(offenders).toEqual([]);
+  });
+
+  it("keeps command roving focus on frosted material instead of a dark selected slab", () => {
+    const body = collectCssRuleBodyForSelector(styles, ".lg-command__item[data-selected]");
+
+    expect(body).toContain("background: var(--lg-control-focus-fill)");
+    expect(body).toContain("box-shadow:");
+    expect(body).toContain("var(--lg-control-focus-depth)");
+    expect(body).toContain("var(--lg-control-focus-mist)");
+    expect(body).toContain("text-shadow: none");
+    expect(body).toContain("transform: scale(1.012)");
+    expect(body).not.toContain("rgba(24, 26, 30");
+    expect(body).not.toContain("rgba(255, 255, 255, 0.94)");
+    expect(body).not.toContain("0 1px 2px rgba(0, 0, 0");
+  });
+
+  it("removes elastic focus transforms for every frosted focus target in reduced motion", () => {
+    const reducedMotionBlock = Array.from(
+      styles.matchAll(/@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n\}/g),
+      (match) => match[1] ?? ""
+    ).find((block) =>
+      block.includes(".lg-surface--interactive:not(.lg-surface--disabled):focus-visible")
+    );
+    const reducedMotionFocusSelectors = [
+      ".lg-surface--interactive:not(.lg-surface--disabled):focus-visible",
+      ".lg-input-otp__field:focus-visible",
+      ".lg-radio-group__item:has(.lg-radio-group__input:focus-visible)",
+      ".lg-tabs__tab:focus-visible",
+      ".lg-tabs__panel:focus-visible",
+      ".lg-accordion__trigger:focus-visible",
+      ".lg-menu__item:focus-visible",
+      ".lg-command__item[data-selected]",
+      ".lg-context-menu__trigger:focus-visible",
+      ".lg-menubar__trigger:focus-visible",
+      ".lg-tooltip__trigger:focus-visible",
+      ".lg-hover-card__trigger:focus-visible",
+      ".lg-nav .lg-surface--button:focus-visible",
+      ".lg-nav .lg-surface--toggle:focus-visible",
+      ".lg-toolbar .lg-surface--button:focus-visible",
+      ".lg-toolbar .lg-surface--toggle:focus-visible",
+      ".lg-searchbox:focus-within",
+      ".lg-field-control:focus-within",
+      ".lg-breadcrumb__link:focus-visible",
+      ".lg-checkbox__input:focus-visible + .lg-checkbox__surface",
+      ".lg-data-table__sort:focus-visible",
+      ".lg-sidebar-menu__button:focus-visible",
+      ".lg-sidebar-group__action:focus-visible",
+      ".lg-sidebar-menu__action:focus-visible",
+      ".lg-sidebar-rail:focus-visible",
+      ".lg-pagination__link:focus-visible",
+      ".lg-scroll-area__viewport:focus-visible",
+      ".lg-resizable__handle:focus-visible",
+      ".lg-calendar__nav-button:focus-visible",
+      ".lg-calendar__day-button:focus-visible"
+    ];
+
+    expect(reducedMotionBlock).toContain("transform: none");
+    expect(reducedMotionBlock).toContain("animation: none");
+    for (const selector of reducedMotionFocusSelectors) {
+      expect(reducedMotionBlock).toContain(selector);
+    }
   });
 
   it("models search focus as a frosted capsule growing from idle scale", () => {

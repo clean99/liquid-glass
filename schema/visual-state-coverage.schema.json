@@ -43,6 +43,30 @@
         "items": { "type": "string" },
         "minItems": 1
       }
+    },
+    "storyEvidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "profile", "story", "exportName", "stateTags", "evidence"],
+        "properties": {
+          "name": { "type": "string" },
+          "component": { "type": "string" },
+          "profile": { "type": "string" },
+          "story": { "type": "string" },
+          "exportName": { "type": "string" },
+          "stateTags": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          },
+          "evidence": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          }
+        }
+      }
     }
   }
 }
