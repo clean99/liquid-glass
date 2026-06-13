@@ -71,10 +71,10 @@ metrics.
 | Reference                  | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | -------------------------- | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass           |     0.1954 | `0,-1`     |     0.1807 |    0.2400 | gate |
-| magnifying-glass-pressed   |     0.3643 | `-1,-1`    |     0.3609 |    0.4050 | gate |
-| magnifying-glass-dragged   |     0.4007 | `-4,1`     |     0.3732 |    0.4550 | gate |
+| magnifying-glass-pressed   |     0.3669 | `1,1`      |     0.3618 |    0.4050 | gate |
+| magnifying-glass-dragged   |     0.4028 | `-3,0`     |     0.3743 |    0.4550 | gate |
 | searchbox                  |     0.0180 | `0,0`      |     0.0169 |    0.0200 | gate |
-| searchbox-image-background |     0.1213 | `0,1`      |     0.1177 |    0.1300 | gate |
+| searchbox-image-background |     0.1218 | `0,1`      |     0.1183 |    0.1300 | gate |
 | switch                     |     0.0137 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                     |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
 
