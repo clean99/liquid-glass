@@ -58,9 +58,10 @@ describe("draggable lens response", () => {
 
     expect(dragging.phase).toBe("dragging");
     expect(dragging.scaleX).toBeLessThan(pressed.scaleX);
-    expect(dragging.scaleX).toBeGreaterThan(1.047);
-    expect(dragging.scaleX).toBeLessThan(1.054);
+    expect(dragging.scaleX).toBeGreaterThan(1.052);
+    expect(dragging.scaleX).toBeLessThan(1.059);
     expect(dragging.scaleY).toBeGreaterThan(pressed.scaleY);
+    expect(dragging.scaleY).toBeGreaterThan(0.965);
   });
 
   it("keeps pressed feedback visible but removes motion when requested", () => {
