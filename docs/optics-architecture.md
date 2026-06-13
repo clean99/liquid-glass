@@ -40,11 +40,17 @@ not import `@hashintel/refractive` directly.
   are treated as a regression.
 - Edge masks are monotonic: edge refraction fades inward while clean-center
   opacity rises. The center is restored; it is not a second distorted layer.
+- Chromatic aberration is edge-only and normal-aligned. Red and blue may split
+  around the green channel at the bevel, but tangent smear and center color
+  splitting are regressions.
 
 These invariants are covered by `tests/refraction-physics.test.ts` and
 `tests/edge-mask.test.ts`. `tests/displacement-map.test.ts` additionally samples
 the actual generated RGBA maps so edge direction, neutral center behavior, and
 specular alpha cannot regress silently.
+`src/utils/chromatic-aberration.ts` owns the optional RGB split model, and
+`tests/chromatic-aberration.test.ts` covers it before it is allowed into any
+browser engine.
 
 ## Engine Strategy
 
@@ -99,6 +105,13 @@ It models the material as two blended zones:
 This model was added after inspecting `rdev/liquid-glass-react`, which uses a
 filter composition with edge aberration and a clean center. We keep the physical
 idea, but not its baked map assets or single-component architecture.
+
+`resolveLiquidChromaticAberration()` is the matching channel-split contract. It
+returns a pure sample with red, green, and blue offsets so engines can apply
+color separation without distorting foreground content or inventing diagonal
+texture. The reference lens engine wires it into an opt-in SVG channel split;
+the default Kube parity stories keep `chromaticAberration` unset so the live
+two-pass filter contract remains unchanged.
 
 ## Why The Center Must Stay Calm
 
