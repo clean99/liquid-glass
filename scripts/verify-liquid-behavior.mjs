@@ -20,9 +20,27 @@ const behaviorStories = {
     focusSelector: ".lg-input",
     selector: ".lg-field-control"
   },
+  accordion: {
+    id: "liquid-glass-liquidaccordion--focus-visible",
+    selector: ".lg-accordion__trigger"
+  },
+  otp: {
+    id: "liquid-glass-liquidfield--select-and-otp",
+    selector: ".lg-input-otp__field"
+  },
   tabs: {
     id: "liquid-glass-liquidtabs--focus-visible",
     selector: ".lg-tabs__tab"
+  },
+  switch: {
+    focusSelector: ".lg-switch",
+    id: "liquid-glass-liquidswitch--kube-reference",
+    selector: ".lg-switch__thumb"
+  },
+  slider: {
+    focusSelector: ".lg-slider__input",
+    id: "liquid-glass-liquidslider--kube-reference",
+    selector: ".lg-slider__thumb"
   },
   searchbox: {
     id: "liquid-glass-liquidsearchbox--focus-photo-reference",
@@ -78,9 +96,27 @@ try {
     focusSelector: behaviorStories.field.focusSelector,
     requireMaterialDeepening: true
   });
+  await verifyFocusMaterial("accordion", {
+    minimumFocusedScale: 1.01,
+    requireMaterialDeepening: true
+  });
+  await verifyFocusMaterial("otp", {
+    minimumFocusedScale: 1.05,
+    requireMaterialDeepening: true
+  });
   await verifyFocusMaterial("button", {
     minimumFocusedScale: 1.018,
     requireMaterialDeepening: true
+  });
+  await verifyFocusMaterial("switch", {
+    focusSelector: behaviorStories.switch.focusSelector,
+    minimumFocusedScale: 0.7,
+    requireMaterialDeepening: false
+  });
+  await verifyFocusMaterial("slider", {
+    focusSelector: behaviorStories.slider.focusSelector,
+    minimumFocusedScale: 0.67,
+    requireMaterialDeepening: false
   });
   await verifyHoverAndActiveResponse();
   await verifyDraggableLensPlayground();

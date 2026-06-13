@@ -293,7 +293,13 @@ describe("Liquid Glass physics contract", () => {
   it("uses material focus instead of system-blue or hard white rings", () => {
     const focusRules = [
       ...collectCssRuleBodies(styles, ".lg-surface:focus-visible"),
+      ...collectCssRuleBodies(
+        styles,
+        ".lg-surface--interactive:not(.lg-surface--disabled):focus-visible"
+      ),
       ...collectCssRuleBodies(styles, ".lg-tabs__tab:focus-visible"),
+      ...collectCssRuleBodies(styles, ".lg-switch:focus-visible .lg-switch__thumb"),
+      ...collectCssRuleBodies(styles, ".lg-slider:focus-within .lg-slider__thumb"),
       ...collectCssRuleBodies(styles, ".lg-searchbox:focus-within"),
       ...collectCssRuleBodies(styles, ".lg-field-control:focus-within")
     ].join("\n");
@@ -304,6 +310,61 @@ describe("Liquid Glass physics contract", () => {
     expect(focusRules).not.toContain("--lg-control-focus-rim");
     expect(focusRules).toContain("--lg-control-focus-fill");
     expect(focusRules).toContain("scale(");
+  });
+
+  it("keeps shadcn primitive focus targets on frosted material with growth", () => {
+    const focusContracts = [
+      { growth: ".lg-input-otp__field:focus-visible" },
+      { growth: ".lg-radio-group__item:has(.lg-radio-group__input:focus-visible)" },
+      { growth: ".lg-tabs__tab:focus-visible" },
+      { growth: ".lg-tabs__panel:focus-visible" },
+      { growth: ".lg-accordion__trigger:focus-visible" },
+      { growth: ".lg-menu__item:focus-visible" },
+      { growth: ".lg-context-menu__trigger:focus-visible" },
+      { growth: ".lg-menubar__trigger:focus-visible" },
+      { growth: ".lg-tooltip__trigger:focus-visible" },
+      { growth: ".lg-nav .lg-surface--button:focus-visible" },
+      {
+        growth: ".lg-surface--interactive:not(.lg-surface--disabled):focus-visible",
+        material: ".lg-surface:focus-visible"
+      },
+      { growth: ".lg-switch:focus-visible .lg-switch__thumb" },
+      { growth: ".lg-slider:focus-within .lg-slider__thumb" },
+      { growth: ".lg-breadcrumb__link:focus-visible" },
+      { growth: ".lg-checkbox__input:focus-visible + .lg-checkbox__surface" },
+      { growth: ".lg-data-table__sort:focus-visible" },
+      { growth: ".lg-sidebar-menu__button:focus-visible" },
+      { growth: ".lg-pagination__link:focus-visible" },
+      { growth: ".lg-scroll-area__viewport:focus-visible" },
+      { growth: ".lg-resizable__handle:focus-visible" },
+      { growth: ".lg-precision-lens-demo__handle:focus-visible" },
+      { growth: ".lg-calendar__nav-button:focus-visible" },
+      { growth: ".lg-calendar__day-button:focus-visible" }
+    ];
+    const missingContracts = focusContracts.flatMap(({ growth, material = growth }) => {
+      const materialBody = collectCssRuleBodyForSelector(styles, material);
+      const growthBody = collectCssRuleBodyForSelector(styles, growth);
+      const violations = [];
+
+      if (!materialBody || !growthBody) {
+        return [`${growth}: missing focus rule`];
+      }
+
+      if (
+        !materialBody.includes("--lg-control-focus-fill") &&
+        !materialBody.includes("--lg-control-focus-mist")
+      ) {
+        violations.push("missing frosted material");
+      }
+
+      if (!growthBody.includes("transform:") && !growthBody.includes("--lg-demo-droplet-scale")) {
+        violations.push("missing focus growth");
+      }
+
+      return violations.length > 0 ? [`${growth}: ${violations.join(", ")}`] : [];
+    });
+
+    expect(missingContracts).toEqual([]);
   });
 
   it("keeps every focus rule in the transparent frosted material family", () => {
@@ -366,7 +427,39 @@ describe("Liquid Glass physics contract", () => {
     expect(focusRule).toContain("transform: scale(1)");
     expect(reducedMotionRule).toContain("transform: none");
   });
+
+  it("keeps source and registry components free of hard-coded focus rings", () => {
+    const sourceFiles = collectFiles(["src/components", "registry/components"], ".tsx");
+    const offenders = sourceFiles.flatMap((filePath) => {
+      const source = fs.readFileSync(filePath, "utf8");
+      const matches = source
+        .split("\n")
+        .filter((line) =>
+          /\b(?:focus|focus-visible):(?:ring|outline|shadow|border-(?:black|white|blue)|bg-(?:black|white|blue)|text-white)|\b(?:outline-none|ring-\d|ring-offset)/.test(
+            line
+          )
+        );
+
+      return matches.map((match) => `${filePath}: ${match.trim()}`);
+    });
+
+    expect(offenders).toEqual([]);
+  });
 });
+
+function collectCssRuleBodyForSelector(css: string, selector: string) {
+  const normalizedSelector = normalizeCssSelector(selector);
+
+  return collectCssRules(css)
+    .filter(({ selector: ruleSelector }) =>
+      normalizeCssSelector(ruleSelector)
+        .split(", ")
+        .map((part) => part.trim())
+        .includes(normalizedSelector)
+    )
+    .map(({ body }) => body)
+    .join("\n");
+}
 
 function isMonotonic(options: DefaultRefractiveOptions[], key: keyof DefaultRefractiveOptions) {
   return options.every((option, index) => {
@@ -379,9 +472,10 @@ function isMonotonic(options: DefaultRefractiveOptions[], key: keyof DefaultRefr
 }
 
 function collectCssRuleBodies(css: string, selector: string) {
-  const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const matcher = new RegExp(`${escapedSelector}[^{}]*\\{([^}]*)\\}`, "g");
-  return Array.from(css.matchAll(matcher), (match) => match[1] ?? "");
+  const normalizedSelector = normalizeCssSelector(selector);
+  return collectCssRules(css)
+    .filter((rule) => normalizeCssSelector(rule.selector) === normalizedSelector)
+    .map((rule) => rule.body);
 }
 
 function collectCssRules(css: string) {
@@ -391,4 +485,20 @@ function collectCssRules(css: string) {
     body: (match[2] ?? "").trim(),
     selector: (match[1] ?? "").trim().replace(/\s+/g, " ")
   }));
+}
+
+function collectFiles(directories: string[], extension: string) {
+  return directories.flatMap((directory) =>
+    fs
+      .readdirSync(path.resolve(directory))
+      .filter((fileName) => fileName.endsWith(extension))
+      .map((fileName) => path.resolve(directory, fileName))
+  );
+}
+
+function normalizeCssSelector(selector: string) {
+  return selector
+    .replace(/\s+/g, " ")
+    .replace(/\s*,\s*/g, ", ")
+    .trim();
 }
