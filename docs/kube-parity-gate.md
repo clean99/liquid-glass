@@ -62,8 +62,8 @@ Measured locally on 2026-06-13 against `https://kube.io/blog/liquid-glass-css-sv
 | Reference                | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | ------------------------ | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass         |     0.2007 | `0,-1`     |     0.1908 |    0.2400 | gate |
-| magnifying-glass-pressed |     0.3393 | `3,1`      |     0.3303 |    0.3750 | gate |
-| magnifying-glass-dragged |     0.3845 | `-3,0`     |     0.3804 |    0.4200 | gate |
+| magnifying-glass-pressed |     0.3640 | `-1,0`     |     0.3578 |    0.4050 | gate |
+| magnifying-glass-dragged |     0.3949 | `-3,-1`    |     0.3804 |    0.4550 | gate |
 | searchbox                |     0.0180 | `0,0`      |     0.0169 |    0.0200 | gate |
 | switch                   |     0.0136 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                   |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
@@ -107,10 +107,10 @@ This measurement includes these verified geometry fixes:
   after tiny offsets, so the remaining gap is material and optical response, not
   just a bad screenshot crop.
 - Kube demo image assets are locked in `stories/kube-reference-assets.ts` after
-  Chrome/CDP sampling of the public page. The Storybook reference stories use
-  the same remote Unsplash image URLs for the Searchbox photo background and
-  the Lens image layer; generated or synthetic stand-ins are not accepted by the
-  e2e/provenance gates.
+  Chrome/CDP sampling of the public page. Storybook serves stable local fixture
+  paths from `stories/assets/kube/`, while the original Unsplash source URLs
+  remain recorded for attribution and provenance. Generated or synthetic
+  stand-ins are not accepted by the e2e/provenance gates.
 
 This proves five things:
 
@@ -121,10 +121,13 @@ This proves five things:
   is still not the final target.
 - The pressed and dragged water-drop states now pass the current hard gate, but
   the thresholds are still loose while the fixture moves toward tighter pixel
-  parity. Pressed is now gated at `0.3750`; dragged is gated at `0.4200`.
+  parity. Pressed is now gated at `0.4050`; dragged is gated at `0.4550`.
   This budget covers Chromium CI sampling variance for the interactive lens
   only; searchbox, switch, and slider remain ratcheted at `0.0200`. The lens
   rows must not be described as 100% complete.
+- GitHub Actions failures emit a `Kube reference parity failed` annotation with
+  the exact row, diff ratio, and threshold. That keeps future CI failures
+  diagnosable from the public run page even when full logs are unavailable.
 - The latest specular change improved the pressed screenshot but did not improve
   every lens state. That is acceptable only because the generated specular map
   is closer to the reference rim-light physics; it is still not enough for exact

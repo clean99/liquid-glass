@@ -43,13 +43,18 @@ The visual direction is informed by Chris Feijoo's public Liquid Glass research 
   - Source: https://images.unsplash.com/photo-1497250681960-ef046c08a56e
   - Credit shown in the story: Teemu Paananen / Unsplash.
   - License/source terms: Unsplash.
-  - Loaded as a remote demo image to match the Kube searchbox reference; the image file is not copied into this package.
+  - Stored under `stories/assets/kube/` as a Storybook/parity fixture and excluded from the published package.
 
 - Kube lens demo image
-  - Source: https://images.unsplash.com/photo-1688494930098-e88c53c26e3a
+  - Source: https://images.unsplash.com/photo-1579380656108-f98e4df8ea62
   - Credit shown in the story: Stephanie LeBlanc / Unsplash.
   - License/source terms: Unsplash.
-  - Loaded as a remote demo image to match the Kube magnifying-glass reference; the image file is not copied into this package.
+  - Stored under `stories/assets/kube/` as a Storybook/parity fixture and excluded from the published package.
+
+- Kube lens page background image
+  - Source: https://images.unsplash.com/photo-1688494930098-e88c53c26e3a
+  - Credit/source terms: Unsplash.
+  - Stored under `stories/assets/kube/` as a Storybook/parity fixture and excluded from the published package.
 
 Open-source governance and visual documentation references:
 

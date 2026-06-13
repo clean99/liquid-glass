@@ -11,8 +11,8 @@ const kubeAssetSource = await fs.readFile(
 );
 const staticDir = path.resolve(process.env.STORYBOOK_STATIC_DIR ?? "storybook-static-test");
 const behaviorArtifactDir = path.resolve("test-results/liquid-behavior");
-const kubeLensImageId = "photo-1688494930098-e88c53c26e3a";
-const kubeSearchboxImageId = "photo-1497250681960-ef046c08a56e";
+const kubeLensImageId = "lens-demo-image.jpg";
+const kubeSearchboxImageId = "searchbox-demo-background.jpg";
 const kubeLensDemoImage = readKubeReferenceAsset("lensDemoImage");
 const kubeSearchboxDemoBackground = readKubeReferenceAsset("searchboxDemoBackground");
 
@@ -397,7 +397,7 @@ async function verifyDraggableLensPlayground() {
 }
 
 function readKubeReferenceAsset(name) {
-  const match = kubeAssetSource.match(new RegExp(`${name}:\\n\\s+"([^"]+)"`));
+  const match = kubeAssetSource.match(new RegExp(`${name}:\\s*"([^"]+)"`));
 
   if (!match?.[1]) {
     throw new Error(`Missing Kube reference asset ${name}`);
@@ -834,6 +834,18 @@ function contentType(filePath) {
 
   if (filePath.endsWith(".svg")) {
     return "image/svg+xml";
+  }
+
+  if (filePath.endsWith(".png")) {
+    return "image/png";
+  }
+
+  if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg")) {
+    return "image/jpeg";
+  }
+
+  if (filePath.endsWith(".webp")) {
+    return "image/webp";
   }
 
   return "application/octet-stream";

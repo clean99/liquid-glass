@@ -64,7 +64,7 @@ const config: StorybookConfig = {
     name: "@storybook/nextjs-vite",
     options: {}
   },
-  staticDirs: [],
+  staticDirs: ["../stories/assets"],
   viteFinal(config) {
     return suppressUseClientDirectiveWarnings(config);
   }

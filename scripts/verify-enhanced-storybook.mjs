@@ -193,6 +193,18 @@ function contentType(filePath) {
     return "image/svg+xml";
   }
 
+  if (filePath.endsWith(".png")) {
+    return "image/png";
+  }
+
+  if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg")) {
+    return "image/jpeg";
+  }
+
+  if (filePath.endsWith(".webp")) {
+    return "image/webp";
+  }
+
   return "application/octet-stream";
 }
 

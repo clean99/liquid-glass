@@ -24,6 +24,7 @@ const searchboxStorySource = fs.readFileSync(
   path.resolve("stories/LiquidSearchBox.stories.tsx"),
   "utf8"
 );
+const storybookMainSource = fs.readFileSync(path.resolve(".storybook/main.ts"), "utf8");
 const switchStorySource = fs.readFileSync(path.resolve("stories/LiquidSwitch.stories.tsx"), "utf8");
 const sliderStorySource = fs.readFileSync(path.resolve("stories/LiquidSlider.stories.tsx"), "utf8");
 const packageJson = JSON.parse(fs.readFileSync(path.resolve("package.json"), "utf8")) as {
@@ -41,6 +42,10 @@ const displacementMapSource = fs.readFileSync(
 const lensPipelineSource = fs.readFileSync(path.resolve("src/utils/lens-pipeline.ts"), "utf8");
 const kubeReferenceCompareSource = fs.readFileSync(
   path.resolve("scripts/compare-kube-reference.mjs"),
+  "utf8"
+);
+const verifyLiquidBehaviorSource = fs.readFileSync(
+  path.resolve("scripts/verify-liquid-behavior.mjs"),
   "utf8"
 );
 const surfaceSource = fs.readFileSync(path.resolve("src/components/LiquidSurface.tsx"), "utf8");
@@ -274,8 +279,15 @@ describe("Liquid Glass physics contract", () => {
   });
 
   it("uses the Kube lens demo image instead of the local optics illustration", () => {
+    expect(storybookMainSource).toContain('staticDirs: ["../stories/assets"]');
+    expect(kubeReferenceAssetsSource).toContain('lensDemoImage: "/kube/lens-demo-image.jpg"');
     expect(kubeReferenceAssetsSource).toContain(
-      "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=400&h=700&crop=focalpoint&fp-x=0.3&fp-y=0.6&fp-z=1.9"
+      'lensDemoBackground: "/kube/lens-demo-background.jpg"'
+    );
+    expect(fs.existsSync(path.resolve("stories/assets/kube/lens-demo-image.jpg"))).toBe(true);
+    expect(fs.existsSync(path.resolve("stories/assets/kube/lens-demo-background.jpg"))).toBe(true);
+    expect(kubeReferenceAssetsSource).toContain(
+      "https://images.unsplash.com/photo-1579380656108-f98e4df8ea62?q=80&w=800&auto=format&fit=crop"
     );
     expect(kubeReferenceAssetsSource).toContain(
       "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=1400&h=1600&crop=focalpoint&fp-x=0.3&fp-y=0.5&fp-z=1"
@@ -287,9 +299,19 @@ describe("Liquid Glass physics contract", () => {
 
   it("uses the Kube searchbox demo image instead of a synthetic photo fallback", () => {
     expect(kubeReferenceAssetsSource).toContain(
+      'searchboxDemoBackground: "/kube/searchbox-demo-background.jpg"'
+    );
+    expect(fs.existsSync(path.resolve("stories/assets/kube/searchbox-demo-background.jpg"))).toBe(
+      true
+    );
+    expect(kubeReferenceAssetsSource).toContain(
       "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop"
     );
     expect(searchboxStorySource).toContain("kubeReferenceImageAssets.searchboxDemoBackground");
+    expect(verifyLiquidBehaviorSource).toContain(
+      'const kubeSearchboxImageId = "searchbox-demo-background.jpg"'
+    );
+    expect(verifyLiquidBehaviorSource).toContain('new RegExp(`${name}:\\\\s*"([^"]+)"`)');
     expect(searchboxStorySource).toContain("Photo by Teemu Paananen");
     expect(searchboxStorySource).not.toContain("radial-gradient(ellipse at 18% 24%");
   });
@@ -329,8 +351,9 @@ describe("Liquid Glass physics contract", () => {
     expect(readKubeMaxDiffRatio("searchbox")).toBe(0.02);
     expect(readKubeMaxDiffRatio("switch")).toBe(0.02);
     expect(readKubeMaxDiffRatio("slider")).toBe(0.02);
-    expect(readKubeMaxDiffRatio("magnifying-glass-pressed")).toBe(0.375);
-    expect(readKubeMaxDiffRatio("magnifying-glass-dragged")).toBe(0.42);
+    expect(readKubeMaxDiffRatio("magnifying-glass-pressed")).toBe(0.405);
+    expect(readKubeMaxDiffRatio("magnifying-glass-dragged")).toBe(0.455);
+    expect(kubeReferenceCompareSource).toContain("::error title=Kube reference parity failed::");
   });
 
   it("does not fake Kube pointer parity by boosting active filter scales", () => {

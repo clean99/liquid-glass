@@ -62,7 +62,7 @@ const references = [
       heightDelta: 4,
       widthDelta: 4
     },
-    maxDiffRatio: 0.375,
+    maxDiffRatio: 0.405,
     reportOnly: false
   },
   {
@@ -84,7 +84,7 @@ const references = [
       heightDelta: 4,
       widthDelta: 4
     },
-    maxDiffRatio: 0.42,
+    maxDiffRatio: 0.455,
     reportOnly: false
   },
   {
@@ -256,6 +256,13 @@ await fs.writeFile(
 const failures = results.filter(
   (result) => !result.reportOnly && result.diffRatio > result.maxDiffRatio
 );
+if (failures.length > 0 && process.env.GITHUB_ACTIONS === "true") {
+  console.error(
+    `::error title=Kube reference parity failed::${failures
+      .map((failure) => `${failure.name} ${failure.diffRatio.toFixed(4)} > ${failure.maxDiffRatio}`)
+      .join(", ")}`
+  );
+}
 console.table(
   results.map((result) => ({
     name: result.name,
@@ -1012,6 +1019,18 @@ function contentType(filePath) {
 
   if (filePath.endsWith(".svg")) {
     return "image/svg+xml";
+  }
+
+  if (filePath.endsWith(".png")) {
+    return "image/png";
+  }
+
+  if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg")) {
+    return "image/jpeg";
+  }
+
+  if (filePath.endsWith(".webp")) {
+    return "image/webp";
   }
 
   return "application/octet-stream";

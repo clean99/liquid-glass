@@ -48,12 +48,12 @@
     {
       "name": "Kube lens demo image",
       "kind": "visual-reference",
-      "url": "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a",
+      "url": "https://images.unsplash.com/photo-1579380656108-f98e4df8ea62",
       "license": "Unsplash",
       "commit": null,
       "copiedSource": false,
       "usedFor": [
-        "Lens visual reference background",
+        "Magnifying Glass visual reference image",
         "Storybook magnifying-glass reference",
         "Kube-aligned visual documentation"
       ],
@@ -61,6 +61,24 @@
         "ATTRIBUTIONS.md",
         "stories/kube-reference-assets.ts",
         "stories/LiquidLens.stories.tsx"
+      ]
+    },
+    {
+      "name": "Kube lens page background image",
+      "kind": "visual-reference",
+      "url": "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a",
+      "license": "Unsplash",
+      "commit": null,
+      "copiedSource": false,
+      "usedFor": [
+        "Lens page background sample",
+        "Storybook lens background fixture",
+        "Kube-aligned visual documentation"
+      ],
+      "requiredDocs": [
+        "ATTRIBUTIONS.md",
+        "stories/kube-reference-assets.ts",
+        "docs/reference-research.md"
       ]
     },
     {
