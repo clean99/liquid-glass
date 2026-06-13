@@ -661,7 +661,7 @@ describe("Liquid Glass physics contract", () => {
     expect(searchboxStorySource).toContain("left: 10");
     expect(searchboxStorySource).toContain("fontSize: 9");
     expect(searchboxStorySource).toContain('backdropFilter: useImageBackground ? "blur(8px)"');
-    expect(searchboxStorySource).toContain("bottom: useImageBackground ? 8.5 : 12");
+    expect(searchboxStorySource).toContain("bottom: useImageBackground ? 7.5 : 12");
     expect(searchboxStorySource).toContain('padding: useImageBackground ? "3.25px 5px"');
     expect(searchboxStorySource).toContain("fontSize: useImageBackground ? 9.75 : 10");
     expect(searchboxStorySource).toContain('lineHeight: useImageBackground ? "13px"');
@@ -1140,16 +1140,17 @@ describe("Liquid Glass physics contract", () => {
     expect(focusRule).toContain("transform: scale(1)");
     expect(reducedMotionRule).toContain("transform: none");
     expect(searchboxStorySource).toContain('className: "lg-searchbox--kube-reference"');
-    expect(searchboxStorySource).toContain("radius: 34");
+    expect(searchboxStorySource).toContain('top: "calc(50% + 1px)"');
+    expect(searchboxStorySource).toContain("radius: 22");
     expect(kubeSearchboxHostRule).toContain("width: 21rem");
     expect(kubeSearchboxHostRule).toContain("height: 2.8rem");
     expect(kubeSearchboxHostRule).toContain("border: 0");
-    expect(kubeSearchboxHostRule).toContain("border-radius: 28px");
+    expect(kubeSearchboxHostRule).toContain("border-radius: 22px");
     expect(kubeSearchboxHostRule).toContain("font-size: 1rem");
     expect(kubeSearchboxHostRule).toContain("line-height: 1.375rem");
     expect(kubeSearchboxHostRule).toContain("transform: none");
     expect(kubeSearchboxContentRule).toContain("padding: 0 0.8125rem");
-    expect(kubeSearchboxContentRule).toContain("border-radius: 28px");
+    expect(kubeSearchboxContentRule).toContain("border-radius: 22px");
     expect(kubeSearchboxContentRule).toContain("gap: 0.4875rem");
     expect(kubeSearchboxContentRule).toContain("font-size: 1rem");
     expect(kubeSearchboxIconRule).toContain(

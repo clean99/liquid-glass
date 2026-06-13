@@ -74,7 +74,7 @@ function KubeSearchboxReferenceStory() {
             style={{
               position: "absolute",
               left: "50%",
-              top: "50%",
+              top: "calc(50% + 1px)",
               transform: "translate(-50%, -50%)"
             }}
           >
@@ -82,7 +82,7 @@ function KubeSearchboxReferenceStory() {
               aria-label="Search docs"
               surfaceProps={{
                 className: "lg-searchbox--kube-reference",
-                radius: 34,
+                radius: 22,
                 style: imageBackgroundTextStyle
               }}
             />
@@ -91,7 +91,7 @@ function KubeSearchboxReferenceStory() {
             style={{
               position: "absolute",
               left: "50%",
-              bottom: useImageBackground ? 8.5 : 12,
+              bottom: useImageBackground ? 7.5 : 12,
               display: "inline-flex",
               alignItems: "center",
               gap: 6,
