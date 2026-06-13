@@ -68,6 +68,11 @@ and fails on any `critical` or `serious` accessibility violation. This is the CI
 gate; the Storybook addon is useful while developing, but it is not treated as
 the only source of truth.
 
+The accessibility contract lives in `docs/accessibility.md`. Axe catches static
+violations, while unit tests, component tests, real Storybook interactions,
+visual-state coverage, and Kube reference checks cover behavior and material
+claims that axe cannot prove alone.
+
 `pnpm test:kube-reference` captures the public Kube reference page and matching
 Storybook stories. It includes static component screenshots plus
 `pressed and dragged magnifying-glass screenshots` produced by real pointer input.

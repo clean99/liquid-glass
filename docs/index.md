@@ -46,6 +46,7 @@ flowchart TD
 | Installation         | `docs/installation.md`           | Package install, peer dependencies, CSS imports, and Next.js usage.         |
 | Components           | `docs/component-inventory.md`    | Implemented and planned component inventory.                                |
 | API                  | `docs/api-overview.md`           | Provider, modes, component API groups, and export shape.                    |
+| Accessibility        | `docs/accessibility.md`          | Native-first semantics, ARIA patterns, a11y gates, and release limits.      |
 | Theming              | `docs/design-principles.md`      | Material rules, mode policy, tokens, and fallback behavior.                 |
 | Browser Support      | `docs/browser-support.md`        | Enhanced, fallback, solid, and unsupported browser behavior.                |
 | Visual Documentation | `docs/visual-documentation.md`   | Storybook Pages coverage, visual states, and screenshot evidence contract.  |
@@ -82,6 +83,16 @@ evidence for:
 
 The source of truth is `docs/visual-state-coverage.json`, validated by
 `pnpm test:visual-docs`.
+
+## Accessibility
+
+Accessibility is documented separately in `docs/accessibility.md`. The contract
+requires native semantics first, APG-style ARIA patterns for composite widgets,
+visible focus, readable foreground content outside the displacement layer,
+reduced motion, reduced transparency, high contrast, and mobile fallback paths.
+`pnpm test:a11y`, `pnpm test:e2e`, `pnpm test:visual-docs`, component tests, and
+Storybook metadata provide the current evidence. This is not a WCAG
+certification claim.
 
 ## Quality Gates
 

@@ -40,6 +40,7 @@ those files already live in this repository.
 - `CODE_OF_CONDUCT.md`
 - `CHANGELOG.md`
 - `ROADMAP.md`
+- `docs/accessibility.md`
 - `docs/open-source-governance.md`
 - `docs/reference-provenance.json`
 - `.github/workflows/ci.yml`
@@ -52,7 +53,8 @@ those files already live in this repository.
 - `.github/dependabot.yml`
 
 `pnpm test:docs` verifies the presence of these files and the key claims they
-must contain, including the assistant-facing `llms.txt` documentation index.
+must contain, including the assistant-facing `llms.txt` documentation index and
+the accessibility contract.
 
 Repository-level settings are tracked in `docs/github-repository-settings.md`.
 The shadcn-style registry distribution model is tracked in
@@ -84,12 +86,14 @@ GitHub Actions run Node 24. The package `engines.node` lower bound is
    against public remotes.
 5. Run `pnpm verify`.
 6. Run `pnpm test:kube-reference:strict` for release-candidate visual parity.
-7. Confirm `pnpm pack --dry-run` includes only package, docs, examples, registry,
+7. Confirm `pnpm test:a11y` and `pnpm test:e2e` pass on `main`; accessibility
+   claims must remain tied to `docs/accessibility.md`, not informal screenshots.
+8. Confirm `pnpm pack --dry-run` includes only package, docs, examples, registry,
    schema, license, README, and attribution files.
-8. Add a changeset for user-visible changes.
-9. Merge to `main`.
-10. Run the release workflow manually after reviewing the generated version PR.
-11. The release workflow runs `pnpm verify`, then uses Changesets to either open
+9. Add a changeset for user-visible changes.
+10. Merge to `main`.
+11. Run the release workflow manually after reviewing the generated version PR.
+12. The release workflow runs `pnpm verify`, then uses Changesets to either open
     a version PR or publish the already-versioned package with `pnpm release`.
     The workflow sets `NPM_CONFIG_PROVENANCE=true` so npm receives a GitHub
     Actions provenance statement for published artifacts.

@@ -608,11 +608,16 @@ describe("Liquid Glass physics contract", () => {
     expect(tokens).toContain("--lg-control-focus-edge: rgba(255, 255, 255, 0.3)");
     expect(tokens).toContain("--lg-control-focus-depth: rgba(20, 28, 36, 0.1)");
     expect(tokens).toContain("--lg-control-focus-mist: rgba(255, 255, 255, 0.24)");
+    expect(tokens).toContain("--lg-control-focus-shadow-soft:");
+    expect(tokens).toContain("--lg-control-focus-shadow-deep:");
     expect(tokens).toContain("--lg-control-focus-fill: rgba(255, 255, 255, 0.14)");
     expect(tokens).not.toContain("--lg-control-focus-depth: rgba(0, 0, 0, 0.16)");
     expect(surfaceRule).not.toContain("--lg-control-focus-fill:");
     expect(surfaceRule).not.toContain("--lg-control-focus-depth:");
     expect(focusRules).toContain("--lg-control-focus-fill");
+    expect(focusRules).toContain("--lg-control-focus-shadow");
+    expect(focusRules).not.toContain("0 4px 16px var(--lg-control-focus-depth)");
+    expect(focusRules).not.toContain("0 4px 14px var(--lg-control-focus-depth)");
     expect(focusRules).toContain("filter: saturate");
     expect(focusRules).toContain("scale(");
   });
@@ -665,7 +670,8 @@ describe("Liquid Glass physics contract", () => {
 
       if (
         !materialBody.includes("--lg-control-focus-fill") &&
-        !materialBody.includes("--lg-control-focus-mist")
+        !materialBody.includes("--lg-control-focus-mist") &&
+        !materialBody.includes("--lg-control-focus-shadow")
       ) {
         violations.push("missing frosted material");
       }
@@ -684,6 +690,42 @@ describe("Liquid Glass physics contract", () => {
     expect(missingContracts).toEqual([]);
   });
 
+  it("shares focus shadow material tokens across component-specific focus states", () => {
+    const shadowContracts = [
+      [".lg-searchbox:focus-within", "--lg-control-focus-shadow-deep"],
+      [".lg-field-control:focus-within", "--lg-control-focus-shadow-deep"],
+      [".lg-input-otp__field:focus-visible", "--lg-control-focus-shadow-deep"],
+      [".lg-tabs__tab:focus-visible", "--lg-control-focus-shadow-deep"],
+      [".lg-accordion__trigger:focus-visible", "--lg-control-focus-shadow-deep"],
+      [".lg-surface:focus-visible", "--lg-control-focus-shadow-deep"],
+      [".lg-switch:focus-visible .lg-switch__thumb", "--lg-control-focus-shadow-deep"],
+      [".lg-slider:focus-within .lg-slider__thumb", "--lg-control-focus-shadow-deep"],
+      [".lg-command__item[data-selected]", "--lg-control-focus-shadow-soft"],
+      [".lg-menu__item:focus-visible", "--lg-control-focus-shadow-soft"],
+      [".lg-menubar__trigger:focus-visible", "--lg-control-focus-shadow-soft"],
+      [".lg-tooltip__trigger:focus-visible", "--lg-control-focus-shadow-soft"],
+      [".lg-breadcrumb__link:focus-visible", "--lg-control-focus-shadow-soft"],
+      [
+        ".lg-checkbox__input:focus-visible + .lg-checkbox__surface",
+        "--lg-control-focus-shadow-soft"
+      ],
+      [".lg-data-table__sort:focus-visible", "--lg-control-focus-shadow-soft"],
+      [".lg-sidebar-menu__button:focus-visible", "--lg-control-focus-shadow-soft"],
+      [".lg-pagination__link:focus-visible", "--lg-control-focus-shadow-soft"],
+      [".lg-scroll-area__viewport:focus-visible", "--lg-control-focus-shadow-soft"],
+      [".lg-resizable__handle:focus-visible", "--lg-control-focus-shadow-soft"],
+      [".lg-calendar__nav-button:focus-visible", "--lg-control-focus-shadow-soft"],
+      [".lg-calendar__day-button:focus-visible", "--lg-control-focus-shadow-soft"]
+    ];
+    const missingShadowContracts = shadowContracts.flatMap(([selector, token]) => {
+      const body = collectCssRuleBodyForSelector(styles, selector);
+
+      return body.includes(token) ? [] : [`${selector}: missing ${token}`];
+    });
+
+    expect(missingShadowContracts).toEqual([]);
+  });
+
   it("keeps calendar today focus from collapsing to the idle today marker", () => {
     const todayBody = collectCssRuleBodyForSelector(
       styles,
@@ -695,8 +737,7 @@ describe("Liquid Glass physics contract", () => {
     );
 
     expect(todayBody).toContain("inset 0 0 0 1px");
-    expect(todayFocusBody).toContain("var(--lg-control-focus-depth)");
-    expect(todayFocusBody).toContain("var(--lg-control-focus-mist)");
+    expect(todayFocusBody).toContain("var(--lg-control-focus-shadow-soft)");
     expect(todayFocusBody).toContain("var(--lg-glass-shadow)");
     expect(todayFocusBody).not.toContain("inset 0 0 0 1px");
   });
@@ -771,9 +812,7 @@ describe("Liquid Glass physics contract", () => {
     const body = collectCssRuleBodyForSelector(styles, ".lg-command__item[data-selected]");
 
     expect(body).toContain("background: var(--lg-control-focus-fill)");
-    expect(body).toContain("box-shadow:");
-    expect(body).toContain("var(--lg-control-focus-depth)");
-    expect(body).toContain("var(--lg-control-focus-mist)");
+    expect(body).toContain("box-shadow: var(--lg-control-focus-shadow-soft)");
     expect(body).toContain("text-shadow: none");
     expect(body).toContain("transform: scale(1.012)");
     expect(body).not.toContain("rgba(24, 26, 30");
@@ -886,7 +925,7 @@ describe("Liquid Glass physics contract", () => {
     expect(searchboxRule).toContain("transition:");
     expect(searchboxRule).toContain("transform 260ms");
     expect(focusRule).toContain("background: var(--lg-control-focus-fill)");
-    expect(focusRule).toContain("0 4px 16px var(--lg-control-focus-depth)");
+    expect(focusRule).toContain("box-shadow: var(--lg-control-focus-shadow-deep)");
     expect(focusRule).toContain("transform: scale(1)");
     expect(reducedMotionRule).toContain("transform: none");
   });

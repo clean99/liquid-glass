@@ -33,6 +33,9 @@ const categoryChecks = [
     name: "documentation-structure",
     checks: [
       exists("docs/index.md"),
+      exists("docs/accessibility.md"),
+      fileIncludes("docs/accessibility.md", "Accessibility"),
+      fileIncludes("docs/accessibility.md", "pnpm test:a11y"),
       exists("llms.txt"),
       fileIncludes("llms.txt", "Assistant Rules"),
       fileIncludes("docs/index.md", "```mermaid"),

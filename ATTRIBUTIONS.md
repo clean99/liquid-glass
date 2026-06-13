@@ -96,3 +96,10 @@ Open-source governance and visual documentation references:
 - `llms.txt`
   - Proposal: https://llmstxt.org/
   - Used as an assistant-facing documentation index format reference. No source code has been copied into this package.
+
+Accessibility standards and documentation references:
+
+- WAI-ARIA Authoring Practices Guide
+  - Documentation: https://www.w3.org/WAI/ARIA/apg/
+  - License: W3C Document License
+  - Used as an accessibility behavior and composite-widget semantics reference. No source code or documentation text has been copied into this package.

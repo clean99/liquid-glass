@@ -8,8 +8,8 @@ copying their monorepo complexity or source code.
 | Project             | Useful pattern                                                                                                           | Local decision                                                                                                                |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
 | shadcn/ui           | README routes users to docs, contributing, security, registry distribution, and assistant-facing docs.                   | Keep registry shims package-backed, add `llms.txt`, and document that registry install requires npm publication.              |
-| Radix UI Primitives | Accessibility-first component positioning and clear primitive boundaries.                                                | Keep `LiquidSurface` as the engine boundary and test semantics separately from optical styling.                               |
-| Chakra UI           | Contributor guidance separates user questions, styling issues, accessibility, and release work.                          | Use issue forms and contributor docs to route bug, feature, registry, and release concerns.                                   |
+| Radix UI Primitives | Accessibility-first component positioning and clear primitive boundaries.                                                | Keep `LiquidSurface` as the engine boundary and test semantics separately from optical styling in `docs/accessibility.md`.    |
+| Chakra UI           | Contributor guidance separates user questions, styling issues, accessibility, and release work.                          | Use issue forms and contributor docs to route bug, feature, registry, accessibility, and release concerns.                    |
 | HeroUI              | Full component library governance with templates, CODEOWNERS, docs, release automation, and AI-oriented discoverability. | Keep a small single-package governance layer: templates, CODEOWNERS, Changesets, CI gates, Pages, Dependabot, and `llms.txt`. |
 
 Tracked repository identifiers: `shadcn-ui/ui`, `radix-ui/primitives`,
@@ -24,9 +24,11 @@ flowchart TD
   Readme --> Agent["llms.txt"]
   Readme --> Issues["Issue forms"]
   Readme --> Registry["Registry URLs"]
+  Docs --> Accessibility["Accessibility contract"]
   Issues --> Triage["Maintainer triage"]
   Registry --> Package["npm package"]
   Docs --> CI["CI and release gates"]
+  Accessibility --> CI
   Agent --> Docs
   CI --> Release["Changesets release"]
   Release --> Pages["Storybook Pages"]
@@ -60,6 +62,14 @@ branch has a public visual gate signal, not only local evidence.
 The visual documentation contract lives in `docs/visual-documentation.md`. It
 keeps Storybook examples, visual snapshots, a11y checks, Pages deployment, and
 Kube reference claims tied to one standard instead of scattered prose.
+
+## Accessibility Contract
+
+The accessibility contract lives in `docs/accessibility.md`. It separates what
+is actually gate-backed from what is not yet claimed: native-first semantics,
+ARIA/APG behavior for composite widgets, keyboard and focus behavior, reduced
+motion, reduced transparency, high contrast, mobile fallback, and the limits of
+axe and Storybook evidence.
 
 ## Current Gaps
 

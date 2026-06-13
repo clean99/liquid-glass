@@ -41,6 +41,7 @@ const packageRequiredFiles = [
   "ROADMAP.md",
   "SUPPORT.md",
   ".changeset/config.json",
+  "docs/accessibility.md",
   "docs/adoption-guide.md",
   "docs/api-overview.md",
   "docs/browser-support.md",
@@ -126,7 +127,8 @@ mustInclude("README.md", [
   "test:e2e",
   "@axe-core/playwright",
   "shadcn-style Registry",
-  "docs/adoption-guide.md"
+  "docs/adoption-guide.md",
+  "docs/accessibility.md"
 ]);
 
 mustInclude("README.md", [
@@ -134,6 +136,7 @@ mustInclude("README.md", [
   "not published yet",
   "not published to npm yet",
   "docs/index.md",
+  "docs/accessibility.md",
   "llms.txt",
   "Open-source governance",
   "UI library benchmark",
@@ -150,6 +153,7 @@ mustInclude("llms.txt", [
   "Visual Docs And Testing",
   "Governance And Release",
   "Assistant Rules",
+  "docs/accessibility.md",
   "pnpm test:release-readiness",
   "pnpm test:kube-reference:strict",
   "pnpm test:kube-reference:exact",
@@ -160,6 +164,7 @@ mustInclude("llms.txt", [
 mustInclude("docs/index.md", [
   "Liquid Glass UI",
   "Adoption guide",
+  "Accessibility",
   "shadcn/ui",
   "Radix UI",
   "Chakra UI",
@@ -168,6 +173,7 @@ mustInclude("docs/index.md", [
   "Component Navigation",
   "Visual Documentation",
   "Quality Gates",
+  "docs/accessibility.md",
   "Public Launch Checklist",
   "not published to npm yet",
   "Storybook Pages",
@@ -197,6 +203,27 @@ mustInclude("docs/adoption-guide.md", [
   "pnpm verify",
   "test:kube-reference:exact",
   "Launch Blockers"
+]);
+
+mustInclude("docs/accessibility.md", [
+  "Accessibility",
+  "WAI-ARIA Authoring Practices Guide",
+  "native semantics",
+  "ARIA",
+  "keyboard",
+  "focus",
+  "reduced motion",
+  "reduced transparency",
+  "high contrast",
+  "@axe-core/playwright",
+  "pnpm test:a11y",
+  "pnpm test:e2e",
+  "pnpm test:visual-docs",
+  "pnpm test:kube-reference:strict",
+  "WCAG certification",
+  "not exact 1:1",
+  "ATTRIBUTIONS.md",
+  "docs/reference-provenance.json"
 ]);
 
 mustInclude(".storybook/main.ts", ["../stories/**/*.mdx", "@storybook/addon-docs"]);
@@ -256,6 +283,7 @@ mustInclude("docs/open-source-governance.md", [
   "pnpm test:component-coverage",
   "pnpm test:visual-docs",
   "pnpm test:a11y",
+  "docs/accessibility.md",
   "main push",
   "Current Gaps",
   "Release Flow"
@@ -290,6 +318,7 @@ mustInclude("docs/ui-library-benchmark.md", [
 
 mustInclude("docs/visual-documentation.md", [
   "Visual Documentation Contract",
+  "docs/accessibility.md",
   "shadcn/ui",
   "Radix UI",
   "Chakra UI",
@@ -331,10 +360,12 @@ mustInclude("ATTRIBUTIONS.md", [
   "shadcn/ui",
   "radix-ui/primitives",
   "chakra-ui/chakra-ui",
-  "heroui-inc/heroui"
+  "heroui-inc/heroui",
+  "WAI-ARIA Authoring Practices Guide"
 ]);
 
 mustInclude("ATTRIBUTIONS.md", ["llms.txt", "llmstxt.org"]);
+mustInclude("ATTRIBUTIONS.md", ["WAI-ARIA Authoring Practices Guide", "W3C Document License"]);
 
 mustInclude("docs/optics-architecture.md", [
   "LiquidSurface",
@@ -369,7 +400,9 @@ mustInclude("docs/reference-provenance.json", [
   "shadcn/ui",
   "radix-ui/primitives",
   "chakra-ui/chakra-ui",
-  "heroui-inc/heroui"
+  "heroui-inc/heroui",
+  "WAI-ARIA Authoring Practices Guide",
+  "standards-reference"
 ]);
 
 mustInclude("docs/kube-parity-gate.md", [
@@ -410,7 +443,9 @@ mustInclude("docs/testing.md", [
   "KUBE_STRICT_INTERACTIVE",
   "sideEffects",
   "tests/displacement-map.test.ts",
-  "tests/edge-mask.test.ts"
+  "tests/edge-mask.test.ts",
+  "docs/accessibility.md",
+  "axe cannot prove"
 ]);
 
 mustInclude("CONTRIBUTING.md", [
@@ -425,6 +460,8 @@ mustInclude("docs/open-source-release.md", [
   "pnpm test:governance",
   "pnpm pack --dry-run",
   "pnpm test:a11y",
+  "pnpm test:e2e",
+  "docs/accessibility.md",
   "pnpm test:kube-reference:strict",
   "pnpm release",
   "NPM_TOKEN",

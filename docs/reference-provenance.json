@@ -235,6 +235,20 @@
         "docs/ui-library-benchmark.md",
         "docs/visual-documentation.md"
       ]
+    },
+    {
+      "name": "WAI-ARIA Authoring Practices Guide",
+      "kind": "standards-reference",
+      "url": "https://www.w3.org/WAI/ARIA/apg/",
+      "license": "W3C Document License",
+      "commit": null,
+      "copiedSource": false,
+      "usedFor": [
+        "accessibility behavior contract",
+        "composite widget semantics reference",
+        "keyboard and focus documentation baseline"
+      ],
+      "requiredDocs": ["ATTRIBUTIONS.md", "docs/accessibility.md"]
     }
   ]
 }

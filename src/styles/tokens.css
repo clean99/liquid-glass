@@ -16,6 +16,12 @@
   --lg-control-focus-edge: rgba(255, 255, 255, 0.3);
   --lg-control-focus-depth: rgba(20, 28, 36, 0.1);
   --lg-control-focus-mist: rgba(255, 255, 255, 0.24);
+  --lg-control-focus-shadow-soft:
+    0 4px 14px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 0 18px var(--lg-control-focus-mist);
+  --lg-control-focus-shadow-deep:
+    0 4px 16px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08), inset 0 0 28px var(--lg-control-focus-mist);
   --lg-accent: #0a84ff;
   --lg-accent-2: #30d158;
   --lg-radius-sm: 8px;
@@ -43,6 +49,12 @@
   --lg-control-focus-edge: rgba(255, 255, 255, 0.24);
   --lg-control-focus-depth: rgba(0, 0, 0, 0.18);
   --lg-control-focus-mist: rgba(255, 255, 255, 0.18);
+  --lg-control-focus-shadow-soft:
+    0 4px 14px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 0 18px var(--lg-control-focus-mist);
+  --lg-control-focus-shadow-deep:
+    0 4px 16px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08), inset 0 0 28px var(--lg-control-focus-mist);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -63,5 +75,11 @@
     --lg-control-focus-edge: rgba(255, 255, 255, 0.24);
     --lg-control-focus-depth: rgba(0, 0, 0, 0.18);
     --lg-control-focus-mist: rgba(255, 255, 255, 0.18);
+    --lg-control-focus-shadow-soft:
+      0 4px 14px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.16),
+      inset 0 0 18px var(--lg-control-focus-mist);
+    --lg-control-focus-shadow-deep:
+      0 4px 16px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.08), inset 0 0 28px var(--lg-control-focus-mist);
   }
 }

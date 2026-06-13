@@ -46,7 +46,7 @@ the automation.
 | Area                     | What it proves                                                                                  |
 | ------------------------ | ----------------------------------------------------------------------------------------------- |
 | Repository first screen  | README, `llms.txt`, and package metadata tell users and assistants the true project status.     |
-| Documentation structure  | Required docs exist and include useful visual flow diagrams plus an AI/agent-readable map.      |
+| Documentation structure  | Required docs exist and include visual flow diagrams, accessibility, and an AI/agent map.       |
 | Contribution workflow    | PR and issue templates route bugs, features, and registry issues.                               |
 | Release CI               | CI, release, visual, and Pages workflows use the expected gates.                                |
 | Registry distribution    | shadcn-style registry files are generated, tested, and honest about npm dependency.             |

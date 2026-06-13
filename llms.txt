@@ -26,6 +26,8 @@ run has succeeded.
   poor fits, integration paths, and launch blockers.
 - [API overview](docs/api-overview.md): provider, modes, component API groups,
   and export shape.
+- [Accessibility](docs/accessibility.md): native-first semantics, ARIA patterns,
+  keyboard and focus behavior, a11y gates, and known limits.
 - [Browser support](docs/browser-support.md): enhanced, fallback, solid, and
   unsupported browser behavior.
 

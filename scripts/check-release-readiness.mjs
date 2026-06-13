@@ -158,6 +158,7 @@ const packageRequiredFiles = [
   "CHANGELOG.md",
   "ROADMAP.md",
   "SUPPORT.md",
+  "docs/accessibility.md",
   "docs/github-repository-settings.md",
   "docs/governance-scorecard.md",
   "docs/open-source-governance.md",
@@ -238,6 +239,10 @@ if (isStandaloneRepository) {
   mustInclude(".github/workflows/pages.yml", "needs.build.outputs.pages-enabled");
 }
 mustInclude("docs/open-source-release.md", "pnpm test:release-readiness");
+mustInclude("docs/open-source-release.md", "docs/accessibility.md");
+mustInclude("docs/accessibility.md", "Accessibility");
+mustInclude("docs/accessibility.md", "pnpm test:a11y");
+mustInclude("docs/accessibility.md", "WCAG certification");
 mustInclude("docs/open-source-release.md", "llms.txt");
 mustInclude("llms.txt", "Assistant Rules");
 mustInclude("llms.txt", "not published to npm yet");
@@ -245,6 +250,7 @@ mustInclude("llms.txt", "pnpm test:kube-reference:exact");
 mustInclude("docs/open-source-release.md", "pnpm test:governance");
 mustInclude("docs/open-source-release.md", "pnpm test:component-coverage");
 mustInclude("docs/open-source-release.md", "pnpm test:visual-docs");
+mustInclude("docs/open-source-release.md", "pnpm test:e2e");
 mustInclude("docs/ui-library-benchmark.md", "Public Benchmark Surface");
 mustInclude("docs/ui-library-benchmark.md", "Public launch score");
 mustInclude("docs/ui-library-benchmark.md", "not published");

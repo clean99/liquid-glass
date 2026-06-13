@@ -34,6 +34,7 @@ reference parity checks.
 - [Adoption guide](docs/adoption-guide.md)
 - [Installation](docs/installation.md)
 - [API overview](docs/api-overview.md)
+- [Accessibility](docs/accessibility.md)
 - [Component inventory](docs/component-inventory.md)
 - [Design principles](docs/design-principles.md)
 - [Browser Support](docs/browser-support.md)
@@ -111,6 +112,8 @@ Primary docs:
   proof is required before production use.
 - `docs/api-overview.md`: public API shape, modes, provider behavior, and
   component groups.
+- `docs/accessibility.md`: accessibility contract, gates, known limits, and
+  release rules.
 - `docs/component-inventory.md`: implemented and planned component inventory.
 - `docs/visual-documentation.md`: Storybook Pages, light and dark states,
   reduced motion, high contrast, mobile, and Kube reference evidence.
@@ -152,6 +155,9 @@ menus, tabs, accordions, form fields, toasts, data tables, charts, carousel,
 calendar, and sidebar behavior are tested with unit, component, Storybook, and
 `@axe-core/playwright` checks. Foreground text stays outside the displacement
 layer so refraction does not distort readable content.
+
+See [Accessibility](docs/accessibility.md) for the full contract and the release
+gates that prove it.
 
 ## Performance
 

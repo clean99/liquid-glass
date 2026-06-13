@@ -52,7 +52,7 @@ the repository without running a private demo:
 | Visual regression    | `tests/visual/liquid-components-visual.spec.ts` and checked-in Playwright snapshots.         | Present                         |
 | Visual state audit   | `docs/visual-state-coverage.json` assigns every implemented component to a state profile.    | Present                         |
 | Story state metadata | Every implemented component story and Kube/reference story exposes `parameters.visualState`. | Present and gate-backed         |
-| A11y evidence        | `pnpm test:a11y` runs `@axe-core/playwright` against representative Storybook routes.        | Present                         |
+| A11y evidence        | `docs/accessibility.md` and `pnpm test:a11y` define and test the accessibility contract.     | Present                         |
 | Kube reference       | `pnpm test:kube-reference` and `docs/kube-parity-gate.md` separate strict and exact parity.  | Strict gate present; exact open |
 | Release visibility   | `docs/open-source-release.md` requires local gates before release or publish.                | Present                         |
 
