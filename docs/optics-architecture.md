@@ -88,10 +88,11 @@ as plastic, not glass, and are covered by pixel-map tests.
 
 The reference lens can vary the two pass strengths through refraction options,
 but the Kube parity stories intentionally keep the live target values:
-`glassThickness: 88` and `magnificationGlassThickness: 21.5`. Browser contract
-artifacts now verify that idle, pressed, and dragged captures all expose the same
-two-pass filter scales as the public Kube page. Pointer parity therefore belongs
-to geometry, background phase, and material response; increasing SVG displacement
+`glassThickness: 88` and
+`magnificationGlassThickness: 21.496810403025258`. Browser contract artifacts now
+verify that idle, pressed, and dragged captures all expose the same two-pass
+filter scales as the public Kube page. Pointer parity therefore belongs to
+geometry, background phase, and material response; increasing SVG displacement
 for active state would be a fake pass.
 
 ## Edge Mask Model

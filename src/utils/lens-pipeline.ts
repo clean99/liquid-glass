@@ -32,11 +32,12 @@ export const referenceLensGeometry = {
 } as const;
 
 export const referenceLensDisplacementFalloff = 25;
+export const referenceLensMagnificationGlassThickness = 21.496810403025258;
 
 export const referenceLensDisplacementRefraction = {
   blur: 0,
   glassThickness: 88,
-  magnificationGlassThickness: 21.5,
+  magnificationGlassThickness: referenceLensMagnificationGlassThickness,
   bezelWidth: 18,
   refractiveIndex: 1.5,
   radius: referenceLensGeometry.radius,

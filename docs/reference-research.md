@@ -142,7 +142,8 @@ coordinate so the two fixtures do not drift. The live reference keeps the same
 two filter stages during active input:
 
 - displacement thickness equivalent: `glassThickness: 88`,
-- magnification thickness equivalent: `magnificationGlassThickness: 21.5`,
+- magnification thickness equivalent:
+  `magnificationGlassThickness: 21.496810403025258`,
 - observed displacement scales: `[24, 98.247...]` for idle, pressed, and dragged
   captures.
 

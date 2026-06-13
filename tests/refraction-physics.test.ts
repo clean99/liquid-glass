@@ -8,6 +8,7 @@ import {
   resolveFilterMapGeometry,
   resolveLensReferencePipeline,
   resolvePhysicalRefractionRadius,
+  referenceLensMagnificationGlassThickness,
   resolveRefractiveOptions,
   resolveRefractionRadius,
   type LiquidIntensity,
@@ -210,11 +211,11 @@ describe("Liquid Glass physics contract", () => {
     });
     expect(pipeline.stages[0]).toMatchObject({
       bezelWidth: 0,
-      glassThickness: 21.5,
+      glassThickness: referenceLensMagnificationGlassThickness,
       name: "magnification",
       refractiveIndex: 1.5
     });
-    expect(pipeline.stages[0]?.scale).toBeCloseTo(24, 1);
+    expect(pipeline.stages[0]?.scale).toBeCloseTo(24, 6);
     expect(pipeline.stages[1]).toMatchObject({
       bezelWidth: 18,
       glassThickness: 88,
@@ -230,8 +231,10 @@ describe("Liquid Glass physics contract", () => {
       })
     ).toBeCloseTo(pipeline.stages[1]?.scale ?? 0, 6);
     expect(lensPipelineSource).toContain("glassThickness: 88");
-    expect(lensPipelineSource).toContain("magnificationGlassThickness: 21.5");
+    expect(lensPipelineSource).toContain("referenceLensMagnificationGlassThickness");
+    expect(lensPipelineSource).toContain("21.496810403025258");
     expect(lensPipelineSource).toContain("refractiveIndex: 1.5");
+    expect(lensStorySource).toContain("referenceLensMagnificationGlassThickness");
     expect(lensSource).toContain("referenceLensDisplacementRefraction");
     expect(lensSource).toContain('engine = "refractive"');
     expect(lensSource).toContain('engine === "reference" ? "reference-lens" : "refractive"');

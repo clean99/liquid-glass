@@ -12,6 +12,7 @@ import {
   LiquidLens,
   LiquidProvider,
   clampLensPosition,
+  referenceLensMagnificationGlassThickness,
   resolveLensDragPosition,
   resolveLensDropletResponse,
   type LiquidLensDropletResponse,
@@ -47,7 +48,7 @@ const precisionLensIdleRefraction = {
   refractiveIndex: 1.5,
   specularOpacity: 0.5,
   specularAngle: 0.8,
-  magnificationGlassThickness: 21.5
+  magnificationGlassThickness: referenceLensMagnificationGlassThickness
 };
 const precisionLensReferenceFilterMaps = {
   displacement: kubeReferenceFilterMapAssets.displacementMapW2qrsb,
