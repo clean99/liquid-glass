@@ -32,6 +32,7 @@ those files already live in this repository.
 ## Required Repository Files
 
 - `README.md`
+- `llms.txt`
 - `LICENSE`
 - `ATTRIBUTIONS.md`
 - `CONTRIBUTING.md`
@@ -51,7 +52,7 @@ those files already live in this repository.
 - `.github/dependabot.yml`
 
 `pnpm test:docs` verifies the presence of these files and the key claims they
-must contain.
+must contain, including the assistant-facing `llms.txt` documentation index.
 
 Repository-level settings are tracked in `docs/github-repository-settings.md`.
 The shadcn-style registry distribution model is tracked in

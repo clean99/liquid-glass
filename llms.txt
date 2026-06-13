@@ -1,0 +1,96 @@
+# Liquid Glass
+
+> Beautiful, accessible Liquid Glass components for React with real SVG/CSS
+> refraction and production-ready fallbacks.
+
+`@clean99/liquid-glass` is a React UI component library for Apple-inspired
+Liquid Glass interfaces on the web. It owns the component API, accessibility
+contract, design tokens, fallback strategy, shadcn-style Registry metadata,
+Storybook documentation, and release gates. Enhanced refraction is delegated to
+`@hashintel/refractive`.
+
+The package is prepared for public release but is not published to npm yet.
+Do not describe npm install commands, shadcn registry install commands,
+GitHub Pages deployment, or exact Kube parity as live until the matching public
+run has succeeded.
+
+## Primary Docs
+
+- [README](README.md): repository first screen, current status, quick start,
+  quality gates, and release status.
+- [Documentation index](docs/index.md): public documentation map and component
+  navigation.
+- [Installation](docs/installation.md): install path, peer dependencies, CSS
+  imports, and Next.js usage after npm publication.
+- [Adoption guide](docs/adoption-guide.md): current adoption status, good fits,
+  poor fits, integration paths, and launch blockers.
+- [API overview](docs/api-overview.md): provider, modes, component API groups,
+  and export shape.
+- [Browser support](docs/browser-support.md): enhanced, fallback, solid, and
+  unsupported browser behavior.
+
+## Components And Registry
+
+- [Component inventory](docs/component-inventory.md): implemented and planned
+  component inventory.
+- [Component inventory data](docs/component-inventory.json): machine-readable
+  component status.
+- [shadcn-style Registry](docs/shadcn-registry.md): registry files and
+  post-npm-publish install path.
+- [Registry root](registry.json): shadcn-compatible registry metadata.
+- [Flat registry item](liquid-glass.json): package-backed registry entry.
+- [Package registry item](registry/liquid-glass.json): registry copy that must
+  stay equivalent to the flat item.
+
+## Visual Docs And Testing
+
+- [Visual documentation](docs/visual-documentation.md): Storybook Pages,
+  component states, screenshots, accessibility, and Kube reference evidence.
+- [Visual state coverage](docs/visual-state-coverage.json): machine-readable
+  visual evidence map.
+- [Testing strategy](docs/testing.md): local gates, CI gates, Storybook,
+  accessibility, package, and Kube reference checks.
+- [Kube parity gate](docs/kube-parity-gate.md): strict and exact reference gate
+  semantics.
+
+## Governance And Release
+
+- [Open-source governance](docs/open-source-governance.md): benchmark against
+  shadcn/ui, Radix UI, Chakra UI, and HeroUI.
+- [Governance scorecard](docs/governance-scorecard.md): local and remote-aware
+  readiness audit commands.
+- [Repository settings](docs/github-repository-settings.md): GitHub Pages,
+  branch protection, secrets, topics, and maintainer commands.
+- [Release checklist](docs/open-source-release.md): npm, provenance, Pages,
+  rollback, and release readiness checklist.
+- [Roadmap](ROADMAP.md): staged public launch plan.
+- [Contributing](CONTRIBUTING.md): contributor workflow and required checks.
+- [Security policy](SECURITY.md): vulnerability reporting and supported
+  versions.
+- [Support](SUPPORT.md): issue routing and support boundaries.
+- [Attributions](ATTRIBUTIONS.md): third-party references, licenses, and
+  no-copied-source policy.
+
+## Assistant Rules
+
+- Use Node `>=22.13.0`, pnpm `>=11`, and GitHub Actions Node 24.
+- Run `pnpm format`, `pnpm lint`, `pnpm typecheck`, `pnpm test:docs`,
+  `pnpm test:release-readiness`, and `pnpm test:unit` after changes.
+- Run `pnpm test:registry` when registry or package metadata changes.
+- Do not copy third-party source. Add new references to `ATTRIBUTIONS.md` or
+  `docs/reference-provenance.json`.
+- Do not claim npm publication, GitHub Pages deployment, or exact Kube parity
+  without a successful public run.
+- Treat `pnpm test:kube-reference:strict` as the release-candidate visual gate.
+  `pnpm test:kube-reference:exact` is the separate final exact-parity target.
+
+## Optional Deep Context
+
+- [Optics architecture](docs/optics-architecture.md): refraction, edge masks,
+  displacement maps, foreground handling, and physics tests.
+- [Reference research](docs/reference-research.md): inspected public references
+  and local implementation decisions.
+- [Reference provenance](docs/reference-provenance.json): machine-readable
+  provenance and no-copied-source evidence.
+- [UI library benchmark](docs/ui-library-benchmark.md): quantified comparison
+  with mainstream React UI libraries.

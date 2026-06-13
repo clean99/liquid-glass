@@ -5,12 +5,12 @@ copying their monorepo complexity or source code.
 
 ## Reference Projects
 
-| Project             | Useful pattern                                                                                  | Local decision                                                                                                    |
-| ------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| shadcn/ui           | README routes users to docs, contributing, security, and a registry distribution model.         | Keep registry shims package-backed and document that registry install requires npm publication.                   |
-| Radix UI Primitives | Accessibility-first component positioning and clear primitive boundaries.                       | Keep `LiquidSurface` as the engine boundary and test semantics separately from optical styling.                   |
-| Chakra UI           | Contributor guidance separates user questions, styling issues, accessibility, and release work. | Use issue forms and contributor docs to route bug, feature, registry, and release concerns.                       |
-| HeroUI              | Full component library governance with templates, CODEOWNERS, docs, and release automation.     | Keep a small single-package governance layer: templates, CODEOWNERS, Changesets, CI gates, Pages, and Dependabot. |
+| Project             | Useful pattern                                                                                                           | Local decision                                                                                                                |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| shadcn/ui           | README routes users to docs, contributing, security, registry distribution, and assistant-facing docs.                   | Keep registry shims package-backed, add `llms.txt`, and document that registry install requires npm publication.              |
+| Radix UI Primitives | Accessibility-first component positioning and clear primitive boundaries.                                                | Keep `LiquidSurface` as the engine boundary and test semantics separately from optical styling.                               |
+| Chakra UI           | Contributor guidance separates user questions, styling issues, accessibility, and release work.                          | Use issue forms and contributor docs to route bug, feature, registry, and release concerns.                                   |
+| HeroUI              | Full component library governance with templates, CODEOWNERS, docs, release automation, and AI-oriented discoverability. | Keep a small single-package governance layer: templates, CODEOWNERS, Changesets, CI gates, Pages, Dependabot, and `llms.txt`. |
 
 Tracked repository identifiers: `shadcn-ui/ui`, `radix-ui/primitives`,
 `chakra-ui/chakra-ui`, and `heroui-inc/heroui`.
@@ -21,11 +21,13 @@ Tracked repository identifiers: `shadcn-ui/ui`, `radix-ui/primitives`,
 flowchart TD
   User["User or contributor"] --> Readme["README first screen"]
   Readme --> Docs["Docs map"]
+  Readme --> Agent["llms.txt"]
   Readme --> Issues["Issue forms"]
   Readme --> Registry["Registry URLs"]
   Issues --> Triage["Maintainer triage"]
   Registry --> Package["npm package"]
   Docs --> CI["CI and release gates"]
+  Agent --> Docs
   CI --> Release["Changesets release"]
   Release --> Pages["Storybook Pages"]
 ```

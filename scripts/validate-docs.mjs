@@ -31,6 +31,7 @@ function mustInclude(relativePath, snippets) {
 
 const packageRequiredFiles = [
   "README.md",
+  "llms.txt",
   "LICENSE",
   "ATTRIBUTIONS.md",
   "CONTRIBUTING.md",
@@ -133,10 +134,27 @@ mustInclude("README.md", [
   "not published yet",
   "not published to npm yet",
   "docs/index.md",
+  "llms.txt",
   "Open-source governance",
   "UI library benchmark",
   "Support",
   "ROADMAP.md"
+]);
+
+mustInclude("llms.txt", [
+  "Liquid Glass",
+  "@clean99/liquid-glass",
+  "not published to npm yet",
+  "Primary Docs",
+  "Components And Registry",
+  "Visual Docs And Testing",
+  "Governance And Release",
+  "Assistant Rules",
+  "pnpm test:release-readiness",
+  "pnpm test:kube-reference:strict",
+  "pnpm test:kube-reference:exact",
+  "ATTRIBUTIONS.md",
+  "docs/reference-provenance.json"
 ]);
 
 mustInclude("docs/index.md", [
@@ -154,6 +172,7 @@ mustInclude("docs/index.md", [
   "not published to npm yet",
   "Storybook Pages",
   "shadcn-style Registry",
+  "llms.txt",
   "test:kube-reference:exact",
   "pnpm test:visual-docs",
   "pnpm verify"
@@ -314,6 +333,8 @@ mustInclude("ATTRIBUTIONS.md", [
   "chakra-ui/chakra-ui",
   "heroui-inc/heroui"
 ]);
+
+mustInclude("ATTRIBUTIONS.md", ["llms.txt", "llmstxt.org"]);
 
 mustInclude("docs/optics-architecture.md", [
   "LiquidSurface",
@@ -551,6 +572,7 @@ if (fs.existsSync(path.join(root, "package.json"))) {
     "CHANGELOG.md",
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.md",
+    "llms.txt",
     "ROADMAP.md",
     "SECURITY.md",
     "SUPPORT.md"
@@ -599,6 +621,9 @@ for (const script of [
 
 if (!packageJson.files?.includes("liquid-glass.json")) {
   errors.push("package.json files must include liquid-glass.json");
+}
+if (!packageJson.files?.includes("llms.txt")) {
+  errors.push("package.json files must include llms.txt");
 }
 
 if (errors.length > 0) {

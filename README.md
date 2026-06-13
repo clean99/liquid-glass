@@ -30,6 +30,7 @@ reference parity checks.
 ## Start Here
 
 - [Documentation index](docs/index.md)
+- [AI/agent documentation index](llms.txt)
 - [Adoption guide](docs/adoption-guide.md)
 - [Installation](docs/installation.md)
 - [API overview](docs/api-overview.md)
@@ -98,11 +99,14 @@ flowchart LR
   A --> E["Visual documentation"]
   A --> F["Registry"]
   A --> G["Release"]
+  A --> H["AI/agent index"]
 ```
 
 Primary docs:
 
 - `docs/index.md`: UI library documentation entry point.
+- `llms.txt`: concise machine-readable map for AI assistants, doc crawlers, and
+  maintainer automation.
 - `docs/adoption-guide.md`: who should adopt now, who should wait, and what
   proof is required before production use.
 - `docs/api-overview.md`: public API shape, modes, provider behavior, and

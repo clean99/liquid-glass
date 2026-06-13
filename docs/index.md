@@ -15,6 +15,8 @@ distribution notes, visual evidence, and release gates.
   be enabled with GitHub Actions as the source.
 - Registry: shadcn-style Registry files exist, but consumer install commands are
   post-npm-publish paths.
+- AI/agent index: `llms.txt` maps the docs, governance rules, release blockers,
+  and no-overclaim constraints for assistants and documentation crawlers.
 - Kube parity: strict reference gate is tracked separately from
   `pnpm test:kube-reference:exact`; exact 1:1 parity is not claimed yet.
 
@@ -33,11 +35,13 @@ flowchart TD
   A --> H["Governance"]
   H --> I["Release checklist"]
   H --> J["Support and security"]
+  A --> L["AI/agent index"]
 ```
 
 | Section              | File                             | Purpose                                                                     |
 | -------------------- | -------------------------------- | --------------------------------------------------------------------------- |
 | Introduction         | `docs/index.md`                  | Public docs landing page and status.                                        |
+| AI/agent context     | `llms.txt`                       | Machine-readable map for docs, governance, release blockers, and gates.     |
 | Adoption             | `docs/adoption-guide.md`         | Who should adopt now, who should wait, and which proof is required.         |
 | Installation         | `docs/installation.md`           | Package install, peer dependencies, CSS imports, and Next.js usage.         |
 | Components           | `docs/component-inventory.md`    | Implemented and planned component inventory.                                |

@@ -92,3 +92,7 @@ Open-source governance and visual documentation references:
   - Documentation: https://www.heroui.com
   - License: Apache-2.0
   - Used as a full component-library governance, visual documentation, template, and release workflow reference. No source code has been copied into this package.
+
+- `llms.txt`
+  - Proposal: https://llmstxt.org/
+  - Used as an assistant-facing documentation index format reference. No source code has been copied into this package.

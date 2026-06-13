@@ -149,6 +149,7 @@ if (changesetConfig.baseBranch !== "main") {
 
 const packageRequiredFiles = [
   "README.md",
+  "llms.txt",
   "LICENSE",
   "ATTRIBUTIONS.md",
   "CONTRIBUTING.md",
@@ -237,6 +238,10 @@ if (isStandaloneRepository) {
   mustInclude(".github/workflows/pages.yml", "needs.build.outputs.pages-enabled");
 }
 mustInclude("docs/open-source-release.md", "pnpm test:release-readiness");
+mustInclude("docs/open-source-release.md", "llms.txt");
+mustInclude("llms.txt", "Assistant Rules");
+mustInclude("llms.txt", "not published to npm yet");
+mustInclude("llms.txt", "pnpm test:kube-reference:exact");
 mustInclude("docs/open-source-release.md", "pnpm test:governance");
 mustInclude("docs/open-source-release.md", "pnpm test:component-coverage");
 mustInclude("docs/open-source-release.md", "pnpm test:visual-docs");

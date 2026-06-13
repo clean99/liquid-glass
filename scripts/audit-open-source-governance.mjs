@@ -13,6 +13,7 @@ const categoryChecks = [
     checks: [
       fileIncludes("README.md", "Project Status"),
       fileIncludes("README.md", "Start Here"),
+      fileIncludes("README.md", "llms.txt"),
       fileIncludes("README.md", "not published to npm yet"),
       fileIncludes("README.md", "shadcn-style Registry"),
       valueIncludes(
@@ -32,6 +33,8 @@ const categoryChecks = [
     name: "documentation-structure",
     checks: [
       exists("docs/index.md"),
+      exists("llms.txt"),
+      fileIncludes("llms.txt", "Assistant Rules"),
       fileIncludes("docs/index.md", "```mermaid"),
       exists("docs/adoption-guide.md"),
       fileIncludes("docs/adoption-guide.md", "Decision Flow"),
@@ -174,6 +177,7 @@ const categoryChecks = [
       exists(".changeset/config.json"),
       arrayIncludes(packageJson.files, "dist", "package files include dist"),
       arrayIncludes(packageJson.files, "README.md", "package files include README"),
+      arrayIncludes(packageJson.files, "llms.txt", "package files include llms.txt"),
       arrayIncludes(packageJson.files, "ROADMAP.md", "package files include ROADMAP"),
       fileIncludes("docs/open-source-release.md", "not published to npm yet")
     ]
@@ -191,7 +195,8 @@ const categoryChecks = [
       arrayIncludes(packageJson.keywords, "react", "keyword react"),
       arrayIncludes(packageJson.keywords, "design-system", "keyword design-system"),
       arrayIncludes(packageJson.keywords, "liquid-glass", "keyword liquid-glass"),
-      arrayIncludes(packageJson.keywords, "svg-filter", "keyword svg-filter")
+      arrayIncludes(packageJson.keywords, "svg-filter", "keyword svg-filter"),
+      fileIncludes("llms.txt", "Governance And Release")
     ]
   }
 ];
