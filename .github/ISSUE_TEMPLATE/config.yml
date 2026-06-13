@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Questions and design discussion
-    url: https://github.com/clean99/liquid-glass/discussions
-    about: Use discussions for exploratory API, styling, or adoption questions.
+  - name: Security reports
+    url: https://github.com/clean99/liquid-glass/security/advisories/new
+    about: Report security issues privately before public disclosure.

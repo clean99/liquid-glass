@@ -2,26 +2,66 @@ version: 2
 updates:
   - package-ecosystem: npm
     directory: /
+    open-pull-requests-limit: 5
     schedule:
       interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Etc/UTC
+    commit-message:
+      prefix: deps
+      include: scope
     groups:
+      component-engines:
+        patterns:
+          - "@hashintel/refractive"
+          - "@tanstack/react-table"
+          - "embla-carousel"
+          - "embla-carousel-react"
+          - "react-day-picker"
+          - "react-resizable-panels"
+          - "recharts"
       frontend-tooling:
         patterns:
-          - "@storybook/*"
-          - "storybook"
           - "vite"
-          - "vitest"
           - "typescript"
           - "eslint*"
           - "@eslint/*"
           - "typescript-eslint"
+          - "globals"
+          - "tsup"
+      storybook:
+        patterns:
+          - "@storybook/*"
+          - "storybook"
+          - "@storybook/nextjs-vite"
+      test-tooling:
+        patterns:
+          - "@axe-core/playwright"
+          - "@playwright/test"
+          - "@testing-library/*"
+          - "jsdom"
+          - "playwright"
+          - "vitest"
       react:
         patterns:
           - "react"
           - "react-dom"
           - "@types/react"
           - "@types/react-dom"
+          - "@types/node"
   - package-ecosystem: github-actions
     directory: /
+    open-pull-requests-limit: 3
     schedule:
       interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Etc/UTC
+    commit-message:
+      prefix: deps
+      include: scope
+    groups:
+      github-actions:
+        patterns:
+          - "*"

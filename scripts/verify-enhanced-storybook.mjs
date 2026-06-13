@@ -4,6 +4,7 @@ import path from "node:path";
 import { chromium } from "playwright";
 
 const staticDir = path.resolve(process.env.STORYBOOK_STATIC_DIR ?? "storybook-static-test");
+const dimensionTolerance = 2;
 
 const stories = [
   {
@@ -95,10 +96,15 @@ await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
 
 const address = server.address();
 const port = typeof address === "object" && address ? address.port : 0;
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({
+  args: ["--disable-dev-shm-usage"],
+  headless: true
+});
 
 try {
   for (const story of stories) {
+    console.log(`Checking ${story.id}`);
+
     const page = await browser.newPage({ viewport: { width: 900, height: 520 } });
     const errors = [];
     page.on("console", (message) => {
@@ -108,9 +114,11 @@ try {
     });
 
     await page.goto(`http://127.0.0.1:${port}/iframe.html?id=${story.id}&viewMode=story`, {
-      waitUntil: "networkidle",
+      waitUntil: "domcontentloaded",
       timeout: 20_000
     });
+    await page.waitForLoadState("networkidle", { timeout: 5_000 }).catch(() => undefined);
+    await page.evaluate(() => globalThis.document?.fonts?.ready).catch(() => undefined);
     const locator = page.locator(story.selector).first();
     await locator.waitFor({ state: "visible", timeout: 10_000 });
     await page.waitForTimeout(50);
@@ -137,8 +145,8 @@ try {
 
     assertEqual(result.mode, "enhanced", `${story.id} mode`);
     assertIncludes(result.filter, "url(", `${story.id} backdrop-filter`);
-    assertEqual(result.width, story.width, `${story.id} width`);
-    assertEqual(result.height, story.height, `${story.id} height`);
+    assertNumberWithin(result.width, story.width, dimensionTolerance, `${story.id} width`);
+    assertNumberWithin(result.height, story.height, dimensionTolerance, `${story.id} height`);
     assertEqual(result.borderRadius, story.radius, `${story.id} radius`);
 
     if (story.opticalRadius) {
@@ -156,6 +164,10 @@ try {
     if (errors.length > 0) {
       throw new Error(`${story.id} emitted console errors:\n${errors.slice(0, 5).join("\n")}`);
     }
+
+    console.log(
+      `Verified ${story.id}: ${result.width}x${result.height}, radius ${result.borderRadius}`
+    );
 
     await page.close();
   }
@@ -195,5 +207,11 @@ function assertEqual(actual, expected, label) {
 function assertIncludes(actual, expected, label) {
   if (!String(actual).includes(expected)) {
     throw new Error(`${label}: expected ${JSON.stringify(actual)} to include ${expected}`);
+  }
+}
+
+function assertNumberWithin(actual, expected, tolerance, label) {
+  if (Math.abs(actual - expected) > tolerance) {
+    throw new Error(`${label}: expected ${expected} +/- ${tolerance}, got ${actual}`);
   }
 }

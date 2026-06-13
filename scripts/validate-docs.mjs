@@ -37,6 +37,7 @@ const packageRequiredFiles = [
   "SECURITY.md",
   "CODE_OF_CONDUCT.md",
   "CHANGELOG.md",
+  "ROADMAP.md",
   ".changeset/config.json",
   "docs/api-overview.md",
   "docs/browser-support.md",
@@ -46,6 +47,7 @@ const packageRequiredFiles = [
   "docs/github-repository-settings.md",
   "docs/installation.md",
   "docs/kube-parity-gate.md",
+  "docs/open-source-governance.md",
   "docs/open-source-release.md",
   "docs/optics-architecture.md",
   "docs/reference-provenance.json",
@@ -76,6 +78,7 @@ const standaloneRequiredFiles = [
   ".github/workflows/release.yml",
   ".github/ISSUE_TEMPLATE/bug_report.yml",
   ".github/ISSUE_TEMPLATE/feature_request.yml",
+  ".github/ISSUE_TEMPLATE/registry_report.yml",
   ".github/ISSUE_TEMPLATE/config.yml",
   ".github/PULL_REQUEST_TEMPLATE.md",
   ".github/dependabot.yml",
@@ -112,6 +115,13 @@ mustInclude("README.md", [
   "shadcn-style Registry"
 ]);
 
+mustInclude("README.md", [
+  "Project Status",
+  "not published yet",
+  "Open-source governance",
+  "ROADMAP.md"
+]);
+
 mustInclude("docs/github-repository-settings.md", [
   "git@github.com:clean99/liquid-glass.git",
   "GitHub Actions",
@@ -127,14 +137,29 @@ mustInclude("docs/shadcn-registry.md", [
   "test:registry",
   "test:research",
   "test:shadcn-parity",
-  "ui.shadcn.com/docs/registry"
+  "ui.shadcn.com/docs/registry",
+  "requires the npm package"
+]);
+
+mustInclude("docs/open-source-governance.md", [
+  "shadcn/ui",
+  "Radix UI",
+  "Chakra UI",
+  "HeroUI",
+  "mermaid",
+  "Current Gaps",
+  "Release Flow"
 ]);
 
 mustInclude("ATTRIBUTIONS.md", [
   "@hashintel/refractive",
   "kube.io/blog/liquid-glass-css-svg",
   "rdev/liquid-glass-react",
-  "shuding/liquid-glass"
+  "shuding/liquid-glass",
+  "shadcn/ui",
+  "radix-ui/primitives",
+  "chakra-ui/chakra-ui",
+  "heroui-inc/heroui"
 ]);
 
 mustInclude("docs/optics-architecture.md", [
@@ -167,7 +192,10 @@ mustInclude("docs/reference-provenance.json", [
   "copiedSource",
   "false",
   "Kube Liquid Glass CSS SVG article",
-  "shadcn/ui"
+  "shadcn/ui",
+  "radix-ui/primitives",
+  "chakra-ui/chakra-ui",
+  "heroui-inc/heroui"
 ]);
 
 mustInclude("docs/kube-parity-gate.md", [
@@ -221,7 +249,8 @@ mustInclude("docs/open-source-release.md", [
   "NPM_TOKEN",
   "NPM_CONFIG_PROVENANCE",
   "id-token: write",
-  "publishConfig.access"
+  "publishConfig.access",
+  "not published to npm yet"
 ]);
 if (isStandaloneRepository) {
   mustInclude(".github/workflows/release.yml", [
@@ -239,7 +268,8 @@ if (isStandaloneRepository) {
     "pnpm test:component-coverage",
     "pnpm test:release-readiness",
     "pnpm test:e2e",
-    "pnpm test:a11y"
+    "pnpm test:a11y",
+    "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24"
   ]);
   mustInclude(".github/workflows/pages.yml", [
     "playwright install --with-deps chromium",
@@ -310,6 +340,17 @@ if (fs.existsSync(path.join(root, "package.json"))) {
   }
   if (packageJson.scripts?.release !== "pnpm changeset publish") {
     errors.push("package.json scripts.release must publish through Changesets");
+  }
+  for (const file of [
+    "CHANGELOG.md",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.md",
+    "ROADMAP.md",
+    "SECURITY.md"
+  ]) {
+    if (!packageJson.files?.includes(file)) {
+      errors.push(`package.json files must include ${file}`);
+    }
   }
 }
 

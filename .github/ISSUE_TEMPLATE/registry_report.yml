@@ -1,0 +1,48 @@
+name: Registry or package install issue
+description: Report npm, package export, or shadcn-style registry installation trouble.
+title: "[Registry]: "
+labels: ["registry"]
+body:
+  - type: dropdown
+    id: install_path
+    attributes:
+      label: Install path
+      options:
+        - npm package
+        - shadcn registry URL
+        - local package build
+        - package exports
+        - other
+    validations:
+      required: true
+  - type: input
+    id: package_version
+    attributes:
+      label: Package version or commit
+      placeholder: 0.1.0 or 91dd6d4
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command
+      description: Paste the exact command that failed.
+      render: sh
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: Paste the relevant error output.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Node, package manager, framework, operating system, and registry URL.
+      placeholder: Node 24.16.0, pnpm 11.5.2, Next.js 16, macOS
+    validations:
+      required: true

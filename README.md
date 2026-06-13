@@ -6,6 +6,25 @@ Beautiful, accessible Liquid Glass components for React with real SVG/CSS refrac
 
 The goal is not generic glassmorphism. The library treats Liquid Glass as an optical material: clear foreground content, capped enhanced surfaces, reduced-motion and reduced-transparency support, browser-specific fallback behavior, and automated parity gates against public Liquid Glass references.
 
+## Project Status
+
+- GitHub repository: `https://github.com/clean99/liquid-glass`
+- npm package: prepared for public release, but not published yet.
+- Storybook Pages: workflow is present; the public site goes live after GitHub Pages is enabled with GitHub Actions as the source.
+- Kube visual parity: `pnpm test:kube-reference` and the strict release-candidate gate are tracked separately from `pnpm test:kube-reference:exact`; exact 1:1 parity is not claimed yet.
+
+## Start Here
+
+- [Installation](docs/installation.md)
+- [API overview](docs/api-overview.md)
+- [Design principles](docs/design-principles.md)
+- [Testing strategy](docs/testing.md)
+- [shadcn-style registry](docs/shadcn-registry.md)
+- [Open-source governance](docs/open-source-governance.md)
+- [Release checklist](docs/open-source-release.md)
+- [Roadmap](ROADMAP.md)
+- [Security policy](SECURITY.md)
+
 ## Why This Exists
 
 Most glass UI libraries stop at blur, transparency, and shadows. This package is built around a stricter contract:
@@ -17,6 +36,9 @@ Most glass UI libraries stop at blur, transparency, and shadows. This package is
 - Storybook, package exports, documentation, registry metadata, and visual parity gates ship with the library.
 
 ## Installation
+
+The package is not published to npm yet. After the first public npm release,
+the install command will be:
 
 ```sh
 pnpm add @clean99/liquid-glass
@@ -424,7 +446,7 @@ advertised by their public remotes.
 
 This repository includes a root `registry.json`, a flat `liquid-glass.json`, and a package-local `registry/liquid-glass.json`. It is intentionally source-readable: consumers can inspect the components, tokens, and examples without depending on a private monorepo layout.
 
-After the GitHub repository is public, registry examples can be installed with:
+After the first npm release, registry examples can be installed with:
 
 ```sh
 npx shadcn@latest add https://raw.githubusercontent.com/clean99/liquid-glass/main/liquid-glass.json
@@ -440,6 +462,10 @@ The registry also includes generated package-backed entries under
 `registry/components/`, one per implemented component. Run `pnpm registry:build`
 after inventory changes and `pnpm test:registry` before review. The gate fails if
 the root registry or component entries drift from `docs/component-inventory.json`.
+
+Registry items depend on `@clean99/liquid-glass`, so `npx shadcn@latest add ...`
+is a post-npm-publish consumer path, not proof that the package has already been
+published.
 
 ## Release
 
@@ -462,11 +488,13 @@ so the scoped package cannot accidentally publish as private.
 - `docs/component-inventory.md`: implemented and planned component inventory.
 - `docs/date-picker-architecture.md`: DatePicker composition boundary, local date semantics, and accessibility contract.
 - `docs/github-repository-settings.md`: GitHub repository, Pages, secrets, and branch protection setup.
+- `docs/open-source-governance.md`: public UI library governance benchmark and local decisions.
 - `docs/optics-architecture.md`: physical invariants and engine boundaries.
 - `docs/reference-research.md`: Kube, rdev, and registry research notes.
 - `docs/shadcn-registry.md`: shadcn-style registry distribution model and commands.
 - `docs/testing.md`: local and CI validation strategy.
 - `docs/open-source-release.md`: release, Pages, and rollback checklist.
+- `ROADMAP.md`: staged governance, release, registry, docs, and parity work.
 
 ## Known Limitations
 
@@ -477,11 +505,13 @@ so the scoped package cannot accidentally publish as private.
 
 ## Roadmap
 
-- Publish the first npm version after final API review and repository creation.
-- Add copyable shadcn registry items per component.
-- Add more navigation and disclosure primitives.
-- Add build-time generated filter presets.
-- Track Safari and Firefox support as platform capabilities evolve.
+See `ROADMAP.md` for the staged project plan. The short version:
+
+- publish the first npm version only after release gates and secrets are ready;
+- make registry distribution reliable after npm publish;
+- keep Storybook Pages and docs discoverability first-class;
+- improve Kube parity without claiming exact 1:1 completion early;
+- track Safari and Firefox enhanced support only as platform capabilities evolve.
 
 ## License and Attribution
 

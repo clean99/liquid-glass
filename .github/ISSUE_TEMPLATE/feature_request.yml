@@ -3,6 +3,20 @@ description: Propose a component, token, behavior, or integration.
 title: "[Feature]: "
 labels: ["enhancement"]
 body:
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - Component API
+        - Accessibility behavior
+        - Registry distribution
+        - Documentation
+        - Release or CI
+        - Browser support
+        - Other
+    validations:
+      required: true
   - type: textarea
     id: problem
     attributes:
@@ -22,3 +36,11 @@ body:
     attributes:
       label: References
       description: Link comparable components, specs, or screenshots.
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Constraints
+      options:
+        - label: This does not require copying third-party source code.
+        - label: This keeps fallback and solid modes functional.
+        - label: This does not require claiming unsupported browser or npm release status.

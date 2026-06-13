@@ -1,0 +1,78 @@
+# Open Source Governance
+
+This project follows the useful parts of larger React UI libraries without
+copying their monorepo complexity or source code.
+
+## Reference Projects
+
+| Project             | Useful pattern                                                                                  | Local decision                                                                                                    |
+| ------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| shadcn/ui           | README routes users to docs, contributing, security, and a registry distribution model.         | Keep registry shims package-backed and document that registry install requires npm publication.                   |
+| Radix UI Primitives | Accessibility-first component positioning and clear primitive boundaries.                       | Keep `LiquidSurface` as the engine boundary and test semantics separately from optical styling.                   |
+| Chakra UI           | Contributor guidance separates user questions, styling issues, accessibility, and release work. | Use issue forms and contributor docs to route bug, feature, registry, and release concerns.                       |
+| HeroUI              | Full component library governance with templates, CODEOWNERS, docs, and release automation.     | Keep a small single-package governance layer: templates, CODEOWNERS, Changesets, CI gates, Pages, and Dependabot. |
+
+Tracked repository identifiers: `shadcn-ui/ui`, `radix-ui/primitives`,
+`chakra-ui/chakra-ui`, and `heroui-inc/heroui`.
+
+## Governance Surface
+
+```mermaid
+flowchart TD
+  User["User or contributor"] --> Readme["README first screen"]
+  Readme --> Docs["Docs map"]
+  Readme --> Issues["Issue forms"]
+  Readme --> Registry["Registry URLs"]
+  Issues --> Triage["Maintainer triage"]
+  Registry --> Package["npm package"]
+  Docs --> CI["CI and release gates"]
+  CI --> Release["Changesets release"]
+  Release --> Pages["Storybook Pages"]
+```
+
+## Required Local Gates
+
+| Gate                          | Purpose                                                                              |
+| ----------------------------- | ------------------------------------------------------------------------------------ |
+| `pnpm format`                 | Formatting stays deterministic.                                                      |
+| `pnpm lint`                   | Source and docs-adjacent scripts stay clean.                                         |
+| `pnpm typecheck`              | Public TypeScript contracts still compile.                                           |
+| `pnpm test:docs`              | Required open-source docs, templates, references, and registry claims exist.         |
+| `pnpm test:registry`          | Generated registry files match component inventory.                                  |
+| `pnpm test:release-readiness` | Package metadata, workflows, docs, and release scripts stay aligned.                 |
+| `pnpm test:unit`              | Pure logic and component behavior stay covered.                                      |
+| `pnpm verify`                 | Release-candidate gate including visual, strict Kube reference, and package dry run. |
+
+## Current Gaps
+
+| Gap                              | Risk                                                                   | Next action                                                                 |
+| -------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| npm package is not published     | Consumers cannot install package or package-backed registry items yet. | Keep docs explicit until the first successful release.                      |
+| GitHub Pages is not enabled      | Storybook build can pass while deploy setup fails.                     | Set Pages source to GitHub Actions in repository settings.                  |
+| `main` is not protected yet      | Broken commits can land after the first green run.                     | Require `ci` and `visual` once both are stable.                             |
+| Dependabot can open too many PRs | Dependency noise hides real release work.                              | Group actions, Storybook, test tooling, runtime engines, and React updates. |
+| Exact Kube parity is incomplete  | Overclaiming 1:1 parity would mislead users.                           | Keep exact parity separate from release readiness until it passes.          |
+
+## Release Flow
+
+```mermaid
+sequenceDiagram
+  participant Maintainer
+  participant CI
+  participant Changesets
+  participant npm
+  participant Pages
+
+  Maintainer->>CI: Run local gates and push
+  CI->>CI: format, lint, typecheck, docs, unit, Storybook, a11y, package
+  Maintainer->>Changesets: Review version PR
+  Changesets->>CI: Run pnpm verify
+  CI->>npm: Publish only with NPM_TOKEN and provenance
+  CI->>Pages: Deploy Storybook after Pages is enabled
+```
+
+## Non-Goals
+
+- Do not copy source from shadcn/ui, Radix UI, Chakra UI, HeroUI, Kube, rdev, or shuding.
+- Do not claim npm availability before the package is published.
+- Do not add enterprise-scale process that a single-package library cannot maintain.

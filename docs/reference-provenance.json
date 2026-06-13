@@ -59,20 +59,65 @@
     {
       "name": "shadcn/ui",
       "kind": "api-and-registry-reference",
-      "url": "https://ui.shadcn.com/docs/components",
+      "url": "https://github.com/shadcn-ui/ui",
       "license": "MIT",
       "commit": null,
       "copiedSource": false,
       "usedFor": [
         "component inventory parity",
         "registry distribution model",
-        "source-readable component documentation"
+        "source-readable component documentation",
+        "open-source governance benchmark"
       ],
       "requiredDocs": [
+        "ATTRIBUTIONS.md",
+        "docs/open-source-governance.md",
         "docs/shadcn-parity.json",
         "docs/shadcn-registry.md",
         "docs/component-inventory.json"
       ]
+    },
+    {
+      "name": "radix-ui/primitives",
+      "kind": "api-and-registry-reference",
+      "url": "https://github.com/radix-ui/primitives",
+      "license": "MIT",
+      "commit": null,
+      "copiedSource": false,
+      "usedFor": [
+        "accessibility-first primitives benchmark",
+        "component boundary governance",
+        "public documentation benchmark"
+      ],
+      "requiredDocs": ["ATTRIBUTIONS.md", "docs/open-source-governance.md"]
+    },
+    {
+      "name": "chakra-ui/chakra-ui",
+      "kind": "api-and-registry-reference",
+      "url": "https://github.com/chakra-ui/chakra-ui",
+      "license": "MIT",
+      "commit": null,
+      "copiedSource": false,
+      "usedFor": [
+        "contribution workflow benchmark",
+        "issue routing benchmark",
+        "accessible component library governance"
+      ],
+      "requiredDocs": ["ATTRIBUTIONS.md", "docs/open-source-governance.md"]
+    },
+    {
+      "name": "heroui-inc/heroui",
+      "kind": "api-and-registry-reference",
+      "url": "https://github.com/heroui-inc/heroui",
+      "license": "Apache-2.0",
+      "commit": null,
+      "copiedSource": false,
+      "usedFor": [
+        "component library governance benchmark",
+        "template and CODEOWNERS benchmark",
+        "release workflow benchmark"
+      ],
+      "requiredDocs": ["ATTRIBUTIONS.md", "docs/open-source-governance.md"]
     }
   ]
 }

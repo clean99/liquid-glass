@@ -43,3 +43,29 @@ The visual direction is informed by Chris Feijoo's public Liquid Glass research 
   - Source: https://images.unsplash.com/photo-1579380656108-f98e4df8ea62
   - Credit shown in the story: Stephanie LeBlanc / Unsplash.
   - Loaded as a remote demo image; the image file is not copied into this package.
+
+Open-source governance references:
+
+- `shadcn/ui`
+  - Repository: https://github.com/shadcn-ui/ui
+  - Documentation: https://ui.shadcn.com/docs
+  - License: MIT
+  - Used as a governance and registry-distribution reference. No source code has been copied into this package.
+
+- `radix-ui/primitives`
+  - Repository: https://github.com/radix-ui/primitives
+  - Documentation: https://www.radix-ui.com/primitives
+  - License: MIT
+  - Used as an accessibility-first primitives and public documentation governance reference. No source code has been copied into this package.
+
+- `chakra-ui/chakra-ui`
+  - Repository: https://github.com/chakra-ui/chakra-ui
+  - Documentation: https://chakra-ui.com/docs
+  - License: MIT
+  - Used as a contribution, issue routing, and accessible component library governance reference. No source code has been copied into this package.
+
+- `heroui-inc/heroui`
+  - Repository: https://github.com/heroui-inc/heroui
+  - Documentation: https://www.heroui.com
+  - License: Apache-2.0
+  - Used as a full component-library governance, template, and release workflow reference. No source code has been copied into this package.

@@ -147,7 +147,9 @@ const packageRequiredFiles = [
   "SECURITY.md",
   "CODE_OF_CONDUCT.md",
   "CHANGELOG.md",
+  "ROADMAP.md",
   "docs/github-repository-settings.md",
+  "docs/open-source-governance.md",
   "docs/open-source-release.md",
   "docs/shadcn-registry.md",
   "docs/testing.md",
@@ -164,6 +166,7 @@ const standaloneRequiredFiles = [
   ".github/workflows/release.yml",
   ".github/ISSUE_TEMPLATE/bug_report.yml",
   ".github/ISSUE_TEMPLATE/feature_request.yml",
+  ".github/ISSUE_TEMPLATE/registry_report.yml",
   ".github/PULL_REQUEST_TEMPLATE.md",
   ".github/dependabot.yml",
   ".github/CODEOWNERS"
@@ -193,6 +196,7 @@ if (isStandaloneRepository) {
   mustInclude(".github/workflows/ci.yml", "pnpm test:component-coverage");
   mustInclude(".github/workflows/ci.yml", "pnpm test:a11y");
   mustInclude(".github/workflows/ci.yml", "pnpm test:e2e");
+  mustInclude(".github/workflows/ci.yml", "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24");
   mustInclude(".github/workflows/visual.yml", "pnpm test:kube-reference:strict");
   mustInclude(".github/workflows/release.yml", "pnpm verify");
   mustInclude(".github/workflows/release.yml", "NPM_TOKEN");
@@ -206,6 +210,8 @@ mustInclude("docs/open-source-release.md", "pnpm test:kube-reference:strict");
 mustInclude("docs/open-source-release.md", "pnpm pack --dry-run");
 mustInclude("docs/open-source-release.md", "NPM_CONFIG_PROVENANCE");
 mustInclude("docs/open-source-release.md", "id-token: write");
+mustInclude("docs/open-source-release.md", "not published to npm yet");
+mustInclude("docs/open-source-governance.md", "Release Flow");
 mustInclude("docs/github-repository-settings.md", "git push -u origin main");
 mustInclude("docs/github-repository-settings.md", "Branch Protection");
 mustInclude("docs/github-repository-settings.md", "NPM_TOKEN");

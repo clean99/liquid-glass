@@ -38,6 +38,8 @@ those files already live in this repository.
 - `SECURITY.md`
 - `CODE_OF_CONDUCT.md`
 - `CHANGELOG.md`
+- `ROADMAP.md`
+- `docs/open-source-governance.md`
 - `docs/reference-provenance.json`
 - `.github/workflows/ci.yml`
 - `.github/workflows/visual.yml`
@@ -54,6 +56,13 @@ must contain.
 Repository-level settings are tracked in `docs/github-repository-settings.md`.
 The shadcn-style registry distribution model is tracked in
 `docs/shadcn-registry.md`.
+
+## Publication Status
+
+The package is not published to npm yet. Do not describe `pnpm add
+@clean99/liquid-glass` or `npx shadcn@latest add ...` as a working consumer path
+until the first npm release succeeds. Registry metadata can be reviewed before
+publish, but the registry entries intentionally depend on the npm package.
 
 ## Release Flow
 
@@ -97,7 +106,9 @@ attestation.
 
 The `pages.yml` workflow installs Chromium, runs `pnpm test:a11y`, builds
 Storybook, and deploys it through GitHub Pages Actions. Repository settings must
-use "GitHub Actions" as the Pages source.
+use "GitHub Actions" as the Pages source. If `actions/configure-pages` fails
+after Storybook builds successfully, check the repository Pages setting before
+changing application code.
 
 ## Visual Regression
 

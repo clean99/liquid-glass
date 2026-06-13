@@ -14,7 +14,7 @@ The registry structure follows the public shadcn registry contract:
 
 ## Install From npm
 
-Most consumers should install the package directly:
+Most consumers should install the package directly after the first npm release:
 
 ```sh
 pnpm add @clean99/liquid-glass
@@ -28,8 +28,9 @@ import "@clean99/liquid-glass/styles.css";
 
 ## Install Registry Examples
 
-After the GitHub repository is public, consumers can install a registry item by
-URL with the shadcn CLI:
+Registry files are committed and reviewable now, but package-backed registry
+installation requires the npm package to exist. After the first npm release,
+consumers can install a registry item by URL with the shadcn CLI:
 
 ```sh
 npx shadcn@latest add https://raw.githubusercontent.com/clean99/liquid-glass/main/liquid-glass.json
@@ -44,7 +45,9 @@ npx shadcn@latest add https://raw.githubusercontent.com/clean99/liquid-glass/mai
 ```
 
 These items intentionally install imports from `@clean99/liquid-glass`. They do
-not vendor the component implementation into the consumer app.
+not vendor the component implementation into the consumer app. Before npm
+publication, treat these URLs as distribution metadata, not a working consumer
+install path.
 
 ## Maintainer Workflow
 

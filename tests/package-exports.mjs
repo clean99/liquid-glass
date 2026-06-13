@@ -48,6 +48,11 @@ expectIncludes(packageJson.files, "schema", "package files");
 expectIncludes(packageJson.files, "README.md", "package files");
 expectIncludes(packageJson.files, "LICENSE", "package files");
 expectIncludes(packageJson.files, "ATTRIBUTIONS.md", "package files");
+expectIncludes(packageJson.files, "CHANGELOG.md", "package files");
+expectIncludes(packageJson.files, "CODE_OF_CONDUCT.md", "package files");
+expectIncludes(packageJson.files, "CONTRIBUTING.md", "package files");
+expectIncludes(packageJson.files, "ROADMAP.md", "package files");
+expectIncludes(packageJson.files, "SECURITY.md", "package files");
 
 expectPeer(packageJson, "react", "^19.0.0");
 expectPeer(packageJson, "react-dom", "^19.0.0");

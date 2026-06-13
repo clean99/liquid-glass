@@ -39,6 +39,8 @@ gh repo create clean99/liquid-glass \
 
 - General > Features: enable Issues, Discussions, and Projects only if they are
   actively used.
+- General > Features: disable Wiki if repository docs remain the source of
+  truth.
 - Pages > Build and deployment: select GitHub Actions.
 - Actions > General: allow GitHub Actions and reusable workflows.
 - Actions > Workflow permissions: read and write permissions, with pull request
@@ -47,6 +49,18 @@ gh repo create clean99/liquid-glass \
   requires Node `>=22.13.0`, and Node 20 action runtime is deprecated.
 - Branches: protect `main` after the first successful CI run.
 - Tags and releases: publish from Changesets only.
+
+## Current Remote Checks
+
+As of June 13, 2026, the public repository exists and has the expected
+description, topics, license, and default branch. The GitHub API reports no
+Pages site yet, so a Pages workflow failure at `actions/configure-pages` should
+be treated as a repository-setting issue until Pages is enabled with GitHub
+Actions as the source.
+
+Discussions are currently disabled. Keep the issue template contact link pointed
+at Discussions only after that feature is enabled, or use Issues for structured
+questions.
 
 ## Branch Protection
 
