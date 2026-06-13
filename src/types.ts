@@ -7,6 +7,12 @@ export type LiquidSurfaceKind = "nav" | "button" | "card" | "pill" | "toggle" | 
 export type LiquidFallback = "material" | "solid" | "gradient";
 export type LiquidRadius = number | "sm" | "md" | "lg" | "xl" | "pill";
 
+export type LiquidLensReferenceFilterMaps = {
+  displacement: string;
+  magnification: string;
+  specular: string;
+};
+
 export type RefractiveOptions = {
   radius: number;
   blur?: number;

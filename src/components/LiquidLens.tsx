@@ -7,12 +7,13 @@ import { referenceLensDisplacementRefraction } from "../utils/lens-pipeline";
 
 export type LiquidLensProps = Omit<
   LiquidSurfaceProps,
-  "children" | "enhancedEngine" | "intensity" | "kind" | "radius"
+  "children" | "enhancedEngine" | "intensity" | "kind" | "radius" | "referenceFilterMaps"
 > & {
   children?: React.ReactNode;
   engine?: "refractive" | "reference";
   intensity?: LiquidSurfaceProps["intensity"];
   radius?: number;
+  referenceFilterMaps?: LiquidSurfaceProps["referenceFilterMaps"];
 };
 
 export const LiquidLens = forwardRef<HTMLElement, LiquidLensProps>(function LiquidLens(
@@ -26,6 +27,7 @@ export const LiquidLens = forwardRef<HTMLElement, LiquidLensProps>(function Liqu
     mode,
     radius = 75,
     refraction,
+    referenceFilterMaps,
     style,
     ...props
   },
@@ -45,6 +47,7 @@ export const LiquidLens = forwardRef<HTMLElement, LiquidLensProps>(function Liqu
       radius={radius}
       ref={ref}
       refraction={{ ...referenceLensDisplacementRefraction, ...refraction, radius }}
+      referenceFilterMaps={referenceFilterMaps}
       style={style}
     >
       {children}

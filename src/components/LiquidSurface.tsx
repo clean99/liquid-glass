@@ -21,6 +21,7 @@ import { useLiquidContext } from "../providers/LiquidProvider";
 import type {
   LiquidFallback,
   LiquidIntensity,
+  LiquidLensReferenceFilterMaps,
   LiquidMode,
   LiquidRadius,
   LiquidSurfaceKind,
@@ -47,6 +48,7 @@ export type LiquidSurfaceProps = Omit<HTMLAttributes<HTMLElement>, "children"> &
   opticalBounds?: "layout" | "visual";
   radius?: LiquidRadius;
   refraction?: Partial<RefractiveOptions>;
+  referenceFilterMaps?: LiquidLensReferenceFilterMaps;
   type?: string;
 };
 
@@ -76,6 +78,7 @@ export const LiquidSurface = forwardRef<HTMLElement, LiquidSurfaceProps>(functio
     opticalBounds = "visual",
     radius = "lg",
     refraction,
+    referenceFilterMaps,
     style,
     tabIndex,
     type,
@@ -259,6 +262,11 @@ export const LiquidSurface = forwardRef<HTMLElement, LiquidSurfaceProps>(functio
       onClick={handleClick}
       ref={surfaceRef}
       refraction={resolvedMode === "enhanced" ? refractiveOptions : undefined}
+      referenceFilterMaps={
+        resolvedMode === "enhanced" && enhancedEngine === "reference-lens"
+          ? referenceFilterMaps
+          : undefined
+      }
       style={surfaceStyle}
       tabIndex={!supportsDisabled && disabled ? -1 : tabIndex}
       type={componentName === "button" ? type : undefined}

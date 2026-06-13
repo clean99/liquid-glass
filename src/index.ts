@@ -623,6 +623,7 @@ export type {
 export type {
   LiquidFallback,
   LiquidIntensity,
+  LiquidLensReferenceFilterMaps,
   LiquidMode,
   LiquidProviderProps,
   LiquidRadius,

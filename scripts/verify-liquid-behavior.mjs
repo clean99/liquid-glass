@@ -739,14 +739,26 @@ async function keyboardFocusVisible(page, selector) {
 }
 
 async function openStory(id, media = {}, viewport = { width: 900, height: 520 }) {
-  const page = await browser.newPage({ viewport });
-  await page.emulateMedia(media);
-  await page.goto(`http://127.0.0.1:${port}/iframe.html?id=${id}&viewMode=story`, {
-    waitUntil: "networkidle",
-    timeout: 20_000
-  });
-  await waitForStoryReady(page, id);
-  return page;
+  let lastError;
+
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    const page = await browser.newPage({ viewport });
+    await page.emulateMedia(media);
+
+    try {
+      await page.goto(`http://127.0.0.1:${port}/iframe.html?id=${id}&viewMode=story`, {
+        waitUntil: "networkidle",
+        timeout: 20_000
+      });
+      await waitForStoryReady(page, id);
+      return page;
+    } catch (error) {
+      lastError = error;
+      await page.close().catch(() => {});
+    }
+  }
+
+  throw lastError;
 }
 
 async function waitForStoryReady(page, id) {

@@ -15,6 +15,7 @@ import {
 } from "../src";
 
 const styles = fs.readFileSync(path.resolve("src/styles/styles.css"), "utf8");
+const tokens = fs.readFileSync(path.resolve("src/styles/tokens.css"), "utf8");
 const storyFixture = fs.readFileSync(path.resolve("stories/story-fixtures.tsx"), "utf8");
 const lensStorySource = fs.readFileSync(path.resolve("stories/LiquidLens.stories.tsx"), "utf8");
 const kubeReferenceAssetsSource = fs.readFileSync(
@@ -387,6 +388,22 @@ describe("Liquid Glass physics contract", () => {
     expect(filterMapAssets.specularMapW2qrsb).toMatchObject({ height: 300, width: 420 });
   });
 
+  it("uses captured Kube filter maps in the reference lens parity stories", () => {
+    expect(lensSource).toContain("referenceFilterMaps");
+    expect(surfaceSource).toContain("referenceFilterMaps?");
+    expect(lensReferenceEngineSource).toContain("referenceFilterMaps ?? generatedMaps");
+    expect(lensReferenceEngineSource).toContain("if (referenceFilterMaps)");
+    expect(lensStorySource).toContain("kubeReferenceFilterMapAssets");
+    expect(lensStorySource).toContain(
+      "displacement: kubeReferenceFilterMapAssets.displacementMapW2qrsb"
+    );
+    expect(lensStorySource).toContain(
+      "magnification: kubeReferenceFilterMapAssets.magnifyingMapQ51ggw"
+    );
+    expect(lensStorySource).toContain("specular: kubeReferenceFilterMapAssets.specularMapW2qrsb");
+    expect(lensStorySource).toContain("referenceFilterMaps={precisionLensReferenceFilterMaps}");
+  });
+
   it("uses the Kube searchbox demo image instead of a synthetic photo fallback", () => {
     expect(kubeReferenceAssetsSource).toContain(
       'searchboxDemoBackground: "/kube/searchbox-demo-background.jpg"'
@@ -529,6 +546,7 @@ describe("Liquid Glass physics contract", () => {
   });
 
   it("uses material focus instead of system-blue or hard white rings", () => {
+    const surfaceRule = collectCssRuleBodies(styles, ".lg-surface").join("\n");
     const focusRules = [
       ...collectCssRuleBodies(styles, ".lg-surface:focus-visible"),
       ...collectCssRuleBodies(
@@ -546,7 +564,16 @@ describe("Liquid Glass physics contract", () => {
     expect(focusRules).not.toContain("#0a84ff");
     expect(focusRules).not.toContain("0 0 0 1px");
     expect(focusRules).not.toContain("--lg-control-focus-rim");
+    expect(tokens).toContain("--lg-control-focus-fill: rgba(255, 255, 255, 0.34)");
+    expect(tokens).toContain("--lg-control-focus-edge: rgba(255, 255, 255, 0.3)");
+    expect(tokens).toContain("--lg-control-focus-depth: rgba(20, 28, 36, 0.1)");
+    expect(tokens).toContain("--lg-control-focus-mist: rgba(255, 255, 255, 0.24)");
+    expect(tokens).toContain("--lg-control-focus-fill: rgba(255, 255, 255, 0.14)");
+    expect(tokens).not.toContain("--lg-control-focus-depth: rgba(0, 0, 0, 0.16)");
+    expect(surfaceRule).not.toContain("--lg-control-focus-fill:");
+    expect(surfaceRule).not.toContain("--lg-control-focus-depth:");
     expect(focusRules).toContain("--lg-control-focus-fill");
+    expect(focusRules).toContain("filter: saturate");
     expect(focusRules).toContain("scale(");
   });
 
@@ -581,7 +608,11 @@ describe("Liquid Glass physics contract", () => {
           '.lg-precision-lens-demo__handle:focus-visible:not([data-liquid-droplet="pressed"]):not([data-liquid-dragging="true"])'
       },
       { growth: ".lg-calendar__nav-button:focus-visible" },
-      { growth: ".lg-calendar__day-button:focus-visible" }
+      { growth: ".lg-calendar__day-button:focus-visible" },
+      {
+        growth: ".lg-calendar__day--today .lg-calendar__day-button:focus-visible",
+        material: ".lg-calendar__day--today .lg-calendar__day-button:focus-visible"
+      }
     ];
     const missingContracts = focusContracts.flatMap(({ growth, material = growth }) => {
       const materialBody = collectCssRuleBodyForSelector(styles, material);
@@ -611,6 +642,23 @@ describe("Liquid Glass physics contract", () => {
     });
 
     expect(missingContracts).toEqual([]);
+  });
+
+  it("keeps calendar today focus from collapsing to the idle today marker", () => {
+    const todayBody = collectCssRuleBodyForSelector(
+      styles,
+      ".lg-calendar__day--today .lg-calendar__day-button"
+    );
+    const todayFocusBody = collectCssRuleBodyForSelector(
+      styles,
+      ".lg-calendar__day--today .lg-calendar__day-button:focus-visible"
+    );
+
+    expect(todayBody).toContain("inset 0 0 0 1px");
+    expect(todayFocusBody).toContain("var(--lg-control-focus-depth)");
+    expect(todayFocusBody).toContain("var(--lg-control-focus-mist)");
+    expect(todayFocusBody).toContain("var(--lg-glass-shadow)");
+    expect(todayFocusBody).not.toContain("inset 0 0 0 1px");
   });
 
   it("keeps nav and toolbar focus growth after the generic surface focus cascade", () => {
@@ -717,6 +765,8 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain(
       "verifyFocusMaterial(target.name, target.options)"
     );
+    expect(verifyLiquidBehaviorSource).toContain("for (let attempt = 1; attempt <= 2");
+    expect(verifyLiquidBehaviorSource).toContain("await page.close().catch(() => {})");
     expect(verifyLiquidBehaviorSource).toContain("await waitForStoryReady(page, id)");
     expect(verifyLiquidBehaviorSource).toContain("Storybook story did not become ready");
     expect(verifyLiquidBehaviorSource).toContain("focusAuditResults.push");
@@ -724,6 +774,13 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain(
       "const minimumFocusAuditCount = focusAuditTargets.length"
     );
+  });
+
+  it("retries transient Storybook iframe misses before failing behavior audits", () => {
+    expect(verifyLiquidBehaviorSource).toContain("for (let attempt = 1; attempt <= 2;");
+    expect(verifyLiquidBehaviorSource).toContain("lastError = error");
+    expect(verifyLiquidBehaviorSource).toContain("await page.close().catch(() => {})");
+    expect(verifyLiquidBehaviorSource).toContain("throw lastError");
   });
 
   it("removes elastic focus transforms for every frosted focus target in reduced motion", () => {

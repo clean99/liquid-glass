@@ -1,5 +1,5 @@
 import type { ElementType, HTMLAttributes, ReactNode, Ref } from "react";
-import type { RefractiveOptions } from "../types";
+import type { LiquidLensReferenceFilterMaps, RefractiveOptions } from "../types";
 
 export type LiquidEngineProps = HTMLAttributes<HTMLElement> & {
   as?: ElementType;
@@ -8,5 +8,6 @@ export type LiquidEngineProps = HTMLAttributes<HTMLElement> & {
   href?: string;
   ref?: Ref<HTMLElement>;
   refraction?: RefractiveOptions;
+  referenceFilterMaps?: LiquidLensReferenceFilterMaps;
   type?: string;
 };

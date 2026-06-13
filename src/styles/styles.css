@@ -16,10 +16,6 @@
   --lg-surface-padding-y: 0.62rem;
   --lg-surface-padding-x: 0.9rem;
   --lg-control-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.42);
-  --lg-control-focus-fill: rgba(255, 255, 255, 0.2);
-  --lg-control-focus-edge: rgba(255, 255, 255, 0.22);
-  --lg-control-focus-depth: rgba(0, 0, 0, 0.16);
-  --lg-control-focus-mist: rgba(255, 255, 255, 0.12);
   position: relative;
   isolation: isolate;
   display: inline-flex;
@@ -49,6 +45,7 @@
     border-color 180ms var(--lg-ease-apple),
     box-shadow 240ms var(--lg-ease-apple),
     color 180ms var(--lg-ease-apple),
+    filter 220ms var(--lg-ease-apple),
     transform 260ms var(--lg-ease-apple);
 }
 
@@ -63,6 +60,7 @@
   content: "";
   opacity: 0.42;
   pointer-events: none;
+  transition: opacity 220ms var(--lg-ease-apple);
 }
 
 .lg-surface::after {
@@ -191,6 +189,7 @@
     border-color 180ms var(--lg-ease-apple),
     box-shadow 240ms var(--lg-ease-apple),
     color 180ms var(--lg-ease-apple),
+    filter 220ms var(--lg-ease-apple),
     transform 260ms var(--lg-ease-apple);
   will-change: transform;
 }
@@ -247,13 +246,14 @@
 }
 
 .lg-searchbox:focus-within {
-  border-color: var(--lg-control-focus-edge);
+  border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
   background: var(--lg-control-focus-fill);
   box-shadow:
     0 4px 16px var(--lg-control-focus-depth),
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
     inset 0 -1px 0 rgba(0, 0, 0, 0.08),
     inset 0 0 28px var(--lg-control-focus-mist);
+  filter: saturate(1.08) brightness(1.025);
   transform: scale(1);
 }
 
@@ -314,7 +314,7 @@
 }
 
 .lg-field-control:focus-within {
-  border-color: var(--lg-control-focus-edge);
+  border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
   background: var(--lg-control-focus-fill);
   box-shadow:
     0 4px 16px var(--lg-control-focus-depth),
@@ -322,6 +322,7 @@
     inset 0 -1px 0 rgba(0, 0, 0, 0.08),
     inset 0 0 28px var(--lg-control-focus-mist),
     var(--lg-surface-shadow);
+  filter: saturate(1.08) brightness(1.025);
   transform: translateY(-1px) scale(1.018);
 }
 
@@ -468,7 +469,8 @@
     transform 220ms var(--lg-ease-apple),
     box-shadow 220ms var(--lg-ease-apple),
     background 220ms var(--lg-ease-apple),
-    color 220ms var(--lg-ease-apple);
+    color 220ms var(--lg-ease-apple),
+    filter 220ms var(--lg-ease-apple);
   -webkit-backdrop-filter: blur(24px) saturate(1.25);
   backdrop-filter: blur(24px) saturate(1.25);
   outline: 0;
@@ -485,6 +487,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.22),
     inset 0 -1px 0 rgba(0, 0, 0, 0.08),
     inset 0 0 28px var(--lg-control-focus-mist);
+  filter: saturate(1.08) brightness(1.025);
   text-shadow: none;
   transform: translateY(-1px) scale(1.055);
 }
@@ -621,7 +624,7 @@
 }
 
 .lg-radio-group__item:has(.lg-radio-group__input:focus-visible) {
-  border-color: var(--lg-control-focus-edge);
+  border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
   background: color-mix(in srgb, var(--lg-glass-fill-strong), var(--lg-surface-strong) 32%);
   box-shadow:
     var(--lg-glass-shadow),
@@ -721,6 +724,7 @@
     border-color 180ms var(--lg-ease-apple),
     box-shadow 180ms var(--lg-ease-apple),
     color 180ms var(--lg-ease-apple),
+    filter 220ms var(--lg-ease-apple),
     transform 220ms var(--lg-ease-apple);
   white-space: nowrap;
 }
@@ -773,12 +777,13 @@
   outline: 0;
   color: color-mix(in srgb, var(--lg-text), transparent 6%);
   background: var(--lg-control-focus-fill);
-  border-color: var(--lg-control-focus-edge);
+  border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
   box-shadow:
     0 4px 16px var(--lg-control-focus-depth),
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
     inset 0 -1px 0 rgba(0, 0, 0, 0.08),
     inset 0 0 28px var(--lg-control-focus-mist);
+  filter: saturate(1.08) brightness(1.025);
   text-shadow: none;
   transform: translateY(-2px) scale(1.06);
 }
@@ -786,7 +791,7 @@
 [data-lg-theme="dark"] .lg-tabs__tab:focus-visible {
   color: var(--lg-text);
   background: var(--lg-control-focus-fill);
-  border-color: var(--lg-control-focus-edge);
+  border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
   box-shadow:
     0 4px 16px var(--lg-control-focus-depth),
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
@@ -894,7 +899,7 @@
 
 .lg-accordion__trigger:focus-visible {
   outline: 0;
-  border-color: var(--lg-control-focus-edge);
+  border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
   background: var(--lg-control-focus-fill);
   box-shadow:
     0 4px 16px var(--lg-control-focus-depth),
@@ -1675,7 +1680,11 @@
 .lg-toolbar .lg-surface--button:focus-visible,
 .lg-toolbar .lg-surface--toggle:focus-visible {
   background: var(--lg-control-focus-fill) !important;
-  border-color: var(--lg-control-focus-edge) !important;
+  border-color: color-mix(
+    in srgb,
+    var(--lg-control-focus-edge),
+    var(--lg-glass-border) 58%
+  ) !important;
   box-shadow:
     0 4px 16px var(--lg-control-focus-depth),
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
@@ -1807,7 +1816,7 @@
     0 4px 16px var(--lg-control-focus-depth),
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
     inset 0 0 22px var(--lg-control-focus-mist);
-  filter: saturate(1.08);
+  filter: saturate(1.12) brightness(1.03);
 }
 
 .lg-switch:focus-visible .lg-switch__thumb {
@@ -1840,7 +1849,8 @@
   background: rgba(137, 137, 143, 0.4);
   transition:
     background 220ms var(--lg-ease-apple),
-    box-shadow 220ms var(--lg-ease-apple);
+    box-shadow 220ms var(--lg-ease-apple),
+    filter 220ms var(--lg-ease-apple);
 }
 
 .lg-slider__fill {
@@ -1897,6 +1907,7 @@
     0 4px 14px var(--lg-control-focus-depth),
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
     inset 0 0 18px var(--lg-control-focus-mist);
+  filter: saturate(1.1) brightness(1.025);
 }
 
 .lg-slider:focus-within .lg-slider__thumb {
@@ -2045,7 +2056,7 @@
 
 .lg-surface:focus-visible {
   outline: 0;
-  border-color: var(--lg-control-focus-edge);
+  border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
   background: var(--lg-control-focus-fill);
   box-shadow:
     0 4px 16px var(--lg-control-focus-depth),
@@ -2053,6 +2064,11 @@
     inset 0 -1px 0 rgba(0, 0, 0, 0.08),
     inset 0 0 28px var(--lg-control-focus-mist),
     var(--lg-surface-shadow);
+  filter: saturate(1.08) brightness(1.025);
+}
+
+.lg-surface:focus-visible::after {
+  opacity: 0.62;
 }
 
 .lg-surface:focus-visible > .lg-surface__content {
@@ -2682,7 +2698,7 @@
 }
 
 .lg-checkbox__input:focus-visible + .lg-checkbox__surface {
-  border-color: var(--lg-control-focus-edge);
+  border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
   background: color-mix(in srgb, var(--lg-control-focus-fill), var(--lg-glass-fill-strong) 95%);
   transform: scale(1.018);
   filter: none;
@@ -3358,7 +3374,7 @@
 .lg-pagination__link:focus-visible {
   outline: 0;
   background: color-mix(in srgb, var(--lg-control-focus-fill), var(--lg-glass-fill-strong) 95%);
-  border-color: var(--lg-control-focus-edge);
+  border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
   box-shadow:
     0 4px 14px var(--lg-control-focus-depth),
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
@@ -4121,6 +4137,15 @@
 
 .lg-calendar__day--today .lg-calendar__day-button {
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lg-accent), transparent 28%);
+}
+
+.lg-calendar__day--today .lg-calendar__day-button:focus-visible {
+  transform: scale(1.08);
+  box-shadow:
+    0 4px 14px var(--lg-control-focus-depth),
+    inset 0 0 18px var(--lg-control-focus-mist),
+    inset 0 1px 0 color-mix(in srgb, var(--lg-glass-edge), transparent 24%),
+    var(--lg-glass-shadow);
 }
 
 .lg-calendar__day--selected .lg-calendar__day-button,

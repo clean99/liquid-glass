@@ -37,24 +37,31 @@ const LensHost = forwardRef<HTMLElement, LensHostProps>(function LensHost(
 });
 
 export const LensReferenceEngine = forwardRef<HTMLElement, LiquidEngineProps>(
-  function LensReferenceEngine({ children, refraction, style, ...props }, ref) {
+  function LensReferenceEngine(
+    { children, refraction, referenceFilterMaps, style, ...props },
+    ref
+  ) {
     const reactId = useId();
     const filterId = `lg-lens-${reactId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
-    const [maps, setMaps] = useState<LensFilterMaps | null>(null);
+    const [generatedMaps, setGeneratedMaps] = useState<LensFilterMaps | null>(null);
     const pipeline = resolveLensReferencePipeline(refraction);
 
     useEffect(() => {
+      if (referenceFilterMaps) {
+        return;
+      }
+
       let isMounted = true;
       queueMicrotask(() => {
         if (isMounted) {
-          setMaps(createLensFilterMaps());
+          setGeneratedMaps(createLensFilterMaps());
         }
       });
 
       return () => {
         isMounted = false;
       };
-    }, []);
+    }, [referenceFilterMaps]);
 
     if (!refraction) {
       return (
@@ -64,6 +71,7 @@ export const LensReferenceEngine = forwardRef<HTMLElement, LiquidEngineProps>(
       );
     }
 
+    const maps = referenceFilterMaps ?? generatedMaps;
     const hostStyle = {
       ...style,
       ...(maps

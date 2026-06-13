@@ -12,10 +12,10 @@
   --lg-glass-highlight: rgba(255, 255, 255, 0.86);
   --lg-glass-edge: rgba(255, 255, 255, 0.52);
   --lg-glass-shadow: 0 18px 48px rgba(20, 28, 36, 0.12);
-  --lg-control-focus-fill: rgba(255, 255, 255, 0.2);
-  --lg-control-focus-edge: rgba(255, 255, 255, 0.22);
-  --lg-control-focus-depth: rgba(0, 0, 0, 0.16);
-  --lg-control-focus-mist: rgba(255, 255, 255, 0.12);
+  --lg-control-focus-fill: rgba(255, 255, 255, 0.34);
+  --lg-control-focus-edge: rgba(255, 255, 255, 0.3);
+  --lg-control-focus-depth: rgba(20, 28, 36, 0.1);
+  --lg-control-focus-mist: rgba(255, 255, 255, 0.24);
   --lg-accent: #0a84ff;
   --lg-accent-2: #30d158;
   --lg-radius-sm: 8px;
@@ -39,6 +39,10 @@
   --lg-glass-highlight: rgba(255, 255, 255, 0.2);
   --lg-glass-edge: rgba(255, 255, 255, 0.12);
   --lg-glass-shadow: 0 18px 52px rgba(0, 0, 0, 0.36);
+  --lg-control-focus-fill: rgba(255, 255, 255, 0.14);
+  --lg-control-focus-edge: rgba(255, 255, 255, 0.24);
+  --lg-control-focus-depth: rgba(0, 0, 0, 0.18);
+  --lg-control-focus-mist: rgba(255, 255, 255, 0.18);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -55,5 +59,9 @@
     --lg-glass-highlight: rgba(255, 255, 255, 0.2);
     --lg-glass-edge: rgba(255, 255, 255, 0.12);
     --lg-glass-shadow: 0 18px 52px rgba(0, 0, 0, 0.36);
+    --lg-control-focus-fill: rgba(255, 255, 255, 0.14);
+    --lg-control-focus-edge: rgba(255, 255, 255, 0.24);
+    --lg-control-focus-depth: rgba(0, 0, 0, 0.18);
+    --lg-control-focus-mist: rgba(255, 255, 255, 0.18);
   }
 }

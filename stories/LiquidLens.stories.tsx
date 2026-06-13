@@ -17,7 +17,7 @@ import {
   type LiquidLensDropletResponse,
   type LiquidLensPoint
 } from "../src";
-import { kubeReferenceImageAssets } from "./kube-reference-assets";
+import { kubeReferenceFilterMapAssets, kubeReferenceImageAssets } from "./kube-reference-assets";
 import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
@@ -49,6 +49,11 @@ const precisionLensIdleRefraction = {
   specularAngle: 0.8,
   magnificationGlassThickness: 21.5
 };
+const precisionLensReferenceFilterMaps = {
+  displacement: kubeReferenceFilterMapAssets.displacementMapW2qrsb,
+  magnification: kubeReferenceFilterMapAssets.magnifyingMapQ51ggw,
+  specular: kubeReferenceFilterMapAssets.specularMapW2qrsb
+} as const;
 type DragSession = {
   pointerStart: LiquidLensPoint;
   positionStart: LiquidLensPoint;
@@ -75,6 +80,7 @@ export const KubeReference: Story = {
           <LiquidLens
             engine="reference"
             refraction={precisionLensIdleRefraction}
+            referenceFilterMaps={precisionLensReferenceFilterMaps}
             style={{ position: "absolute", top: 34.5, left: 19.5, zIndex: 3 }}
           />
         </KubeLensBoard>
@@ -138,6 +144,7 @@ export const KubePageBackgroundReference: Story = {
           <LiquidLens
             engine="reference"
             refraction={precisionLensIdleRefraction}
+            referenceFilterMaps={precisionLensReferenceFilterMaps}
             style={{ position: "absolute", top: 170, left: 248, zIndex: 2 }}
           />
           <div
@@ -297,6 +304,7 @@ function DraggablePrecisionLensDemo() {
           role="button"
           engine="reference"
           refraction={precisionLensIdleRefraction}
+          referenceFilterMaps={precisionLensReferenceFilterMaps}
           style={draggableLensStyle(position, droplet)}
           tabIndex={0}
         />
