@@ -19,6 +19,14 @@ const writtenImplementedComponentDocs = implementedComponents.filter((component)
 const foundationComponentDocs = componentDocs.filter((file) =>
   ["provider.md", "surface.md"].includes(file)
 );
+const documentationStructureComplete =
+  fileIncludes("README.md", "docs/progress-checkpoints.md") &&
+  fileIncludes("docs/index.md", "docs/progress-checkpoints.md") &&
+  fileIncludes("stories/Introduction.mdx", "docs/progress-checkpoints.md") &&
+  fileIncludes("docs/site-navigation.md", "docs/progress-checkpoints.md") &&
+  fileIncludes("docs/index.md", "docs/release-evidence.md") &&
+  fileIncludes("stories/Introduction.mdx", "docs/release-evidence.md") &&
+  fileIncludes("docs/index.md", "docs/components/index.md");
 const remoteStatus = checkRemote ? await fetchRemoteStatus() : { checked: false, requested: false };
 
 const areas = [
@@ -32,9 +40,11 @@ const areas = [
   },
   {
     name: "documentation-structure",
-    score: 9,
-    evidence: ["docs/index.md", "docs/site-navigation.md", "docs/visual-documentation.md"],
-    blocker: "Keep checkpoint docs linked from README, Storybook, and docs index."
+    score: documentationStructureComplete ? 10 : 9,
+    evidence: ["README.md", "docs/index.md", "stories/Introduction.mdx", "docs/site-navigation.md"],
+    blocker: documentationStructureComplete
+      ? null
+      : "Keep checkpoint docs linked from README, Storybook, and docs index."
   },
   {
     name: "component-documentation",
@@ -164,6 +174,11 @@ function readArgValue(name) {
 
 function readJson(relativePath) {
   return JSON.parse(fs.readFileSync(path.join(root, relativePath), "utf8"));
+}
+
+function fileIncludes(relativePath, snippet) {
+  const target = path.join(root, relativePath);
+  return fs.existsSync(target) && fs.readFileSync(target, "utf8").includes(snippet);
 }
 
 async function fetchRemoteStatus() {

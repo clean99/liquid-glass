@@ -61,7 +61,7 @@ It should stay conservative until npm, Pages, and exact Kube parity are proven.
 | Area                       | Score | Current evidence                                                              | Remaining blocker                                     |
 | -------------------------- | ----- | ----------------------------------------------------------------------------- | ----------------------------------------------------- |
 | Repository first screen    | 9/10  | README, project status, docs map, topics, package metadata.                   | Public homepage should point to live Storybook Pages. |
-| Documentation structure    | 9/10  | Docs index, adoption, accessibility, testing, governance, release evidence.   | Keep new checkpoint docs linked from entry points.    |
+| Documentation structure    | 10/10 | Docs index, Storybook intro, checkpoints, accessibility, testing, governance. | Keep new checkpoint docs linked from entry points.    |
 | Component documentation    | 10/10 | 60 package-backed component pages plus Provider and Surface foundation pages. | Keep future inventory additions page-backed.          |
 | Contribution workflow      | 9/10  | Issue forms, PR template, CODEOWNERS, CONTRIBUTING, support, security.        | Apply branch protection remotely.                     |
 | Release and CI gates       | 8/10  | CI, visual, release, Pages workflows, Node 24, local verification scripts.    | Latest main workflow must stay green before release.  |
@@ -72,7 +72,7 @@ It should stay conservative until npm, Pages, and exact Kube parity are proven.
 | npm publish preparation    | 7/10  | Changesets, release workflow, provenance docs, package files, dry-run path.   | Configure token and run first publish.                |
 | Repository discoverability | 8/10  | Description, topics, keywords, llms.txt, docs routes.                         | Homepage and public docs URL are blocked by Pages.    |
 
-Current launch-progress score: 90/110, or 82%.
+Current launch-progress score: 91/110, or 83%.
 
 The command output label is `launch-progress-score`. The recurring automation
 should report the command result first, then explain any score movement against
