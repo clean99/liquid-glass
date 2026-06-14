@@ -27,6 +27,7 @@ describe("CSS contracts", () => {
       "--lg-glass-edge",
       "--lg-glass-shadow",
       "--lg-control-focus-fill",
+      "--lg-control-focus-surface",
       "--lg-control-focus-edge",
       "--lg-control-focus-depth",
       "--lg-control-focus-mist",

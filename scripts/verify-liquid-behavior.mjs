@@ -303,7 +303,11 @@ const focusAuditTargets = [
   },
   {
     name: "segmentedControl",
-    options: { minimumFocusedScale: 1.02, requireMaterialDeepening: true }
+    options: {
+      minimumFocusedScale: 1.02,
+      requireMaterialDeepening: false,
+      requireMaterialResponse: true
+    }
   },
   {
     name: "toolbar",
@@ -574,6 +578,11 @@ async function verifyFocusMaterial(name, options) {
       `${name} focused screenshot dark pixel ratio`
     );
   }
+  assertLessThanOrEqual(
+    focusedScreenshotEvidence.blackPixelRatio ?? 1,
+    options.maximumFocusedScreenshotBlackPixelRatio ?? 0.72,
+    `${name} focused screenshot black pixel ratio`
+  );
   if (options.requireShadowChange) {
     assertNotEqual(focused.boxShadow, idle.boxShadow, `${name} focus shadow`);
   }
@@ -613,6 +622,7 @@ async function verifyFocusMaterial(name, options) {
 
   focusAuditResults.push({
     backgroundAlphaDelta: round(focused.backgroundAlpha - idle.backgroundAlpha),
+    focusedScreenshotBlackPixelRatio: roundNullable(focusedScreenshotEvidence.blackPixelRatio),
     focusedScreenshotDarkPixelRatio: roundNullable(focusedScreenshotEvidence.darkPixelRatio),
     focusedScreenshotMeanLuma: roundNullable(focusedScreenshotEvidence.meanLuma),
     focusedScale: round(focused.scale),
@@ -707,6 +717,7 @@ async function measureScreenshotLuma(page, targetPath) {
     bitmap.close?.();
 
     const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+    let blackPixels = 0;
     let darkPixels = 0;
     let maxLuma = 0;
     let minLuma = 255;
@@ -720,6 +731,9 @@ async function measureScreenshotLuma(page, targetPath) {
       }
 
       const luma = 0.2126 * pixels[index] + 0.7152 * pixels[index + 1] + 0.0722 * pixels[index + 2];
+      if (luma < 118) {
+        blackPixels += 1;
+      }
       if (luma < 170) {
         darkPixels += 1;
       }
@@ -734,6 +748,7 @@ async function measureScreenshotLuma(page, targetPath) {
     }
 
     return {
+      blackPixelRatio: blackPixels / sampledPixels,
       darkPixelRatio: darkPixels / sampledPixels,
       maxLuma,
       meanLuma: totalLuma / sampledPixels,

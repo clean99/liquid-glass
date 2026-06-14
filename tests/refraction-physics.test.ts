@@ -962,20 +962,22 @@ describe("Liquid Glass physics contract", () => {
     expect(focusRules).not.toContain("#0a84ff");
     expect(focusRules).not.toContain("0 0 0 1px");
     expect(focusRules).not.toContain("--lg-control-focus-rim");
-    expect(tokens).toContain("--lg-control-focus-fill: rgba(255, 255, 255, 0.56)");
-    expect(tokens).toContain("--lg-control-focus-edge: rgba(255, 255, 255, 0.5)");
+    expect(tokens).toContain("--lg-control-focus-fill: rgba(255, 255, 255, 0.64)");
+    expect(tokens).toContain("--lg-control-focus-surface: rgba(255, 255, 255, 0.72)");
+    expect(tokens).toContain("--lg-control-focus-edge: rgba(255, 255, 255, 0.56)");
     expect(tokens).toContain("--lg-control-focus-depth: rgba(58, 76, 96, 0.08)");
-    expect(tokens).toContain("--lg-control-focus-mist: rgba(255, 255, 255, 0.38)");
+    expect(tokens).toContain("--lg-control-focus-mist: rgba(255, 255, 255, 0.46)");
     expect(tokens).toContain("--lg-control-focus-shadow-soft:");
     expect(tokens).toContain("--lg-control-focus-shadow-deep:");
-    expect(tokens).toContain("--lg-control-focus-fill: rgba(255, 255, 255, 0.22)");
+    expect(tokens).toContain("--lg-control-focus-fill: rgba(235, 244, 255, 0.42)");
+    expect(tokens).toContain("--lg-control-focus-surface: rgba(235, 244, 255, 0.46)");
     expect(tokens).not.toContain("--lg-control-focus-depth: rgba(0, 0, 0, 0.16)");
     expect(tokens).not.toContain("--lg-control-focus-depth: rgba(0, 0, 0");
     expect(tokens).not.toContain("inset 0 -1px 0 rgba(0, 0, 0");
     expect(surfaceRule).not.toContain("--lg-control-focus-fill:");
     expect(surfaceRule).not.toContain("--lg-control-focus-depth:");
     expect(focusRules).toContain("--lg-control-focus-fill");
-    expect(focusRules).toContain("--lg-glass-fill-strong");
+    expect(focusRules).toContain("--lg-control-focus-surface");
     expect(focusRules).toContain("--lg-control-focus-shadow");
     expect(focusRules).not.toContain("0 4px 16px var(--lg-control-focus-depth)");
     expect(focusRules).not.toContain("0 4px 14px var(--lg-control-focus-depth)");
@@ -1042,6 +1044,7 @@ describe("Liquid Glass physics contract", () => {
 
       if (
         !materialBody.includes("--lg-control-focus-fill") &&
+        !materialBody.includes("--lg-control-focus-surface") &&
         !materialBody.includes("--lg-control-focus-mist") &&
         !materialBody.includes("--lg-control-focus-shadow")
       ) {
@@ -1210,7 +1213,7 @@ describe("Liquid Glass physics contract", () => {
   it("keeps command roving focus on frosted material instead of a dark selected slab", () => {
     const body = collectCssRuleBodyForSelector(styles, ".lg-command__item[data-selected]");
 
-    expect(body).toContain("background: var(--lg-control-focus-fill)");
+    expect(body).toContain("background: var(--lg-control-focus-surface)");
     expect(body).toContain("box-shadow: var(--lg-control-focus-shadow-soft)");
     expect(body).toContain("text-shadow: none");
     expect(body).toContain("transform: scale(1.012)");
@@ -1340,6 +1343,11 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain("minimumFocusedScreenshotLuma: 226");
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotLumaLoss: 22");
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotDarkPixelRatio: 0.02");
+    expect(verifyLiquidBehaviorSource).toContain(
+      "options.maximumFocusedScreenshotBlackPixelRatio ?? 0.72"
+    );
+    expect(verifyLiquidBehaviorSource).toContain("focusedScreenshotBlackPixelRatio");
+    expect(verifyLiquidBehaviorSource).toContain("blackPixelRatio");
     expect(verifyLiquidBehaviorSource).toContain("focusedScreenshotDarkPixelRatio");
     expect(verifyLiquidBehaviorSource).toContain("darkPixelRatio");
     expect(verifyLiquidBehaviorSource).toContain("focusedScreenshotMeanLuma");
