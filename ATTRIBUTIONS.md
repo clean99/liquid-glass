@@ -61,6 +61,11 @@ The visual direction is informed by Chris Feijoo's public Liquid Glass research 
   - Used only as Storybook/parity fixtures and exact-gate diagnostics for map dimensions, hashes, and optical gap classification.
   - Stored under `stories/assets/kube/maps/` and excluded from the published package. Runtime components still generate their own maps.
 
+- Kube CSS-only control demo background capture
+  - Source: https://kube.io/blog/liquid-glass-css-svg/
+  - Captured from the rendered Searchbox, Switch, and Slider demo backgrounds when no raster URL is present.
+  - Stored under `stories/assets/kube/reference-captures/` as a Storybook/parity fixture and excluded from the published package.
+
 - Inter variable font
   - Project: https://rsms.me/inter/
   - Fixture source: https://rsms.me/inter/font-files/InterVariable.woff2?v=4.1

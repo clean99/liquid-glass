@@ -104,6 +104,28 @@
       ]
     },
     {
+      "name": "Kube CSS-only control demo background capture",
+      "kind": "visual-reference",
+      "url": "https://kube.io/blog/liquid-glass-css-svg/",
+      "license": "article reference only",
+      "commit": null,
+      "copiedSource": false,
+      "usedFor": [
+        "Searchbox CSS-only demo background fixture",
+        "Switch CSS-only demo background fixture",
+        "Slider CSS-only demo background fixture",
+        "Storybook Kube reference background stabilization"
+      ],
+      "requiredDocs": [
+        "ATTRIBUTIONS.md",
+        "stories/assets/kube/manifest.json",
+        "stories/kube-reference-assets.ts",
+        "stories/LiquidSearchBox.stories.tsx",
+        "stories/LiquidSwitch.stories.tsx",
+        "stories/LiquidSlider.stories.tsx"
+      ]
+    },
+    {
       "name": "Inter variable font",
       "kind": "visual-reference",
       "url": "https://rsms.me/inter/font-files/InterVariable.woff2?v=4.1",

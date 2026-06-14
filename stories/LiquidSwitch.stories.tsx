@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { LiquidProvider, LiquidSwitch } from "../src";
+import { kubeReferenceImageAssets } from "./kube-reference-assets";
 import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
@@ -38,10 +39,10 @@ export const KubeReference: Story = {
           height: 313,
           placeItems: "center",
           position: "relative",
-          background:
-            "linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), radial-gradient(120% 100% at 10% 0%, #f8fafc, #e7eeef)",
-          backgroundPosition: "12px 12px, 12px 12px, 0 0",
-          backgroundSize: "24px 24px, 24px 24px, 100% 100%",
+          background: `url("${kubeReferenceImageAssets.controlGridBackground}")`,
+          backgroundPosition: "0 0",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "100% 100%",
           border: "1px solid rgba(0,0,0,0.1)",
           borderRadius: 9.75,
           width: 706

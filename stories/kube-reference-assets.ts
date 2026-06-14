@@ -1,4 +1,5 @@
 export const kubeReferenceImageAssets = {
+  controlGridBackground: "/kube/reference-captures/control-grid-background.png",
   lensDemoBackground: "/kube/lens-demo-background.jpg",
   lensDemoInlineImage: "/kube/lens-demo-inline-image.jpg",
   lensDemoImage: "/kube/lens-demo-image.jpg",

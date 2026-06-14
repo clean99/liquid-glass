@@ -91,6 +91,22 @@ type KubeReferenceAssetManifest = {
       width: number;
     }
   >;
+  cssOnlyBackgroundAssets: Record<
+    string,
+    {
+      backgroundIncludes: string[];
+      backgroundPosition: string;
+      backgroundSize: string;
+      file: string;
+      height: number;
+      role: string;
+      sha256: string;
+      sourceSections: string[];
+      sourceUrl: string;
+      targetIds: string[];
+      width: number;
+    }
+  >;
   musicAlbumArtAssets: Array<{
     file: string;
     height: number;
@@ -154,6 +170,20 @@ const expectedKubeDemoImageAssets = {
     sourceUrl:
       "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop",
     width: 1600
+  }
+} as const;
+
+const expectedKubeCssOnlyBackgroundAssets = {
+  controlGridBackground: {
+    backgroundIncludes: ["linear-gradient", "oklab(0 0 0 / 0.05)", "radial-gradient"],
+    backgroundPosition: "12px 12px, 12px 12px, 0px 0px",
+    backgroundSize: "24px 24px, 24px 24px, 100% 100%",
+    file: "reference-captures/control-grid-background.png",
+    height: 313,
+    sha256: "8a8bad22ddad97fb78f190fa7f04a231b4f3f7eb5f4f1a306dd9f76678adfe34",
+    sourceUrl: "https://kube.io/blog/liquid-glass-css-svg/",
+    targetIds: ["searchbox", "switch", "slider"],
+    width: 706
   }
 } as const;
 
@@ -444,6 +474,37 @@ describe("Liquid Glass physics contract", () => {
     }
   });
 
+  it("uses the captured Kube CSS-only control background fixture", () => {
+    expect(kubeReferenceAssetManifest.cssOnlyBackgroundAssets).toMatchObject(
+      expectedKubeCssOnlyBackgroundAssets
+    );
+    expect(kubeReferenceAssetsSource).toContain(
+      'controlGridBackground: "/kube/reference-captures/control-grid-background.png"'
+    );
+    expect(searchboxStorySource).toContain("kubeReferenceImageAssets.controlGridBackground");
+    expect(switchStorySource).toContain("kubeReferenceImageAssets.controlGridBackground");
+    expect(sliderStorySource).toContain("kubeReferenceImageAssets.controlGridBackground");
+    expect(searchboxStorySource).toContain(
+      'backgroundSize: useImageBackground ? "cover" : "100% 100%"'
+    );
+    expect(switchStorySource).toContain('backgroundSize: "100% 100%"');
+    expect(sliderStorySource).toContain('backgroundSize: "100% 100%"');
+
+    for (const [name, asset] of Object.entries(
+      kubeReferenceAssetManifest.cssOnlyBackgroundAssets
+    )) {
+      const localPath = path.resolve("stories/assets/kube", asset.file);
+      const bytes = fs.readFileSync(localPath);
+      const hash = crypto.createHash("sha256").update(bytes).digest("hex");
+
+      expect(asset.targetIds).toEqual(["searchbox", "switch", "slider"]);
+      expect(kubeReferenceAssetsSource).toContain(`"/kube/${asset.file}"`);
+      expect(hash).toBe(asset.sha256);
+      expect(readRasterSize(bytes)).toEqual({ height: asset.height, width: asset.width });
+      expect(name).toBe("controlGridBackground");
+    }
+  });
+
   it("verifies Kube demo asset URLs against the rendered public page before parity capture", () => {
     expect(packageJson.scripts["test:kube-assets"]).toBe(
       "node scripts/verify-kube-demo-assets.mjs"
@@ -463,18 +524,27 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeDemoAssetVerifierSource).toContain("manifest.musicAlbumArtAssets");
     expect(kubeDemoAssetVerifierSource).toContain("manifest.filterMapAssets");
     expect(kubeDemoAssetVerifierSource).toContain("manifest.fontAssets");
+    expect(kubeDemoAssetVerifierSource).toContain("manifest.cssOnlyBackgroundAssets");
     expect(kubeDemoAssetVerifierSource).toContain("filterMapAssets.${name}");
     expect(kubeDemoAssetVerifierSource).toContain("fontAssets.${name}");
+    expect(kubeDemoAssetVerifierSource).toContain("cssOnlyBackgroundAssets.${name}");
     expect(kubeDemoAssetVerifierSource).toContain("searchboxDemoBackground");
     expect(kubeDemoAssetVerifierSource).toContain("lensDemoBackground");
     expect(kubeDemoAssetVerifierSource).toContain("lensDemoInlineImage");
     expect(kubeDemoAssetVerifierSource).toContain("lensDemoImage");
+    expect(kubeDemoAssetVerifierSource).toContain("controlGridBackground");
     expect(kubeDemoAssetVerifierSource).toContain("observed-kube-demo-assets.json");
     expect(kubeDemoAssetVerifierSource).toContain("validateLocalAsset");
     expect(kubeDemoAssetVerifierSource).toContain("validateLocalFontAsset");
+    expect(kubeDemoAssetVerifierSource).toContain("validateRenderedCssOnlyBackgroundAssets");
+    expect(kubeDemoAssetVerifierSource).toContain("readTargetCssOnlyDemoBackground");
     expect(kubeDemoAssetVerifierSource).toContain("crypto.createHash");
     expect(kubeDemoAssetVerifierSource).toContain("readRasterSize(bytes)");
     expect(kubeDemoAssetVerifierSource).toContain("localAssets: localAssetChecks");
+    expect(kubeDemoAssetVerifierSource).toContain(
+      "cssOnlyBackgroundAssets: cssOnlyBackgroundAssetChecks"
+    );
+    expect(kubeDemoAssetVerifierSource).toContain("cssOnlyBackgrounds: cssOnlyBackgroundChecks");
     expect(kubeDemoAssetVerifierSource).toContain("localFontAssets: localFontAssetChecks");
     expect(kubeDemoAssetVerifierSource).toContain("filterMapAssets");
     expect(kubeDemoAssetVerifierSource).toContain("resourceUrls");
@@ -482,6 +552,8 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeDemoAssetVerifierSource).toContain("observedCssBackgrounds");
     expect(kubeDemoAssetVerifierSource).toContain("uncoveredCssBackgrounds");
     expect(kubeDemoAssetVerifierSource).toContain("generatedFallbackAssets");
+    expect(kubeDemoAssetVerifierSource).toContain("Kube CSS-only background verification failed");
+    expect(kubeDemoAssetVerifierSource).toContain("CSS-only background captures");
     expect(kubeDemoAssetVerifierSource).toContain(
       "Add these rendered CSS backgrounds to stories/assets/kube/manifest.json or record a generated fallback"
     );

@@ -65,9 +65,10 @@ function KubeSearchboxReferenceStory() {
             borderRadius: 9.75,
             background: useImageBackground
               ? `url("${kubeReferenceImageAssets.searchboxDemoBackground}")`
-              : "linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), radial-gradient(120% 100% at 10% 0%, #f8fafc, #e7eeef)",
-            backgroundPosition: useImageBackground ? "50% 50%" : "12px 12px, 12px 12px, 0 0",
-            backgroundSize: useImageBackground ? "cover" : "24px 24px, 24px 24px, 100% 100%"
+              : `url("${kubeReferenceImageAssets.controlGridBackground}")`,
+            backgroundPosition: useImageBackground ? "50% 50%" : "0 0",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: useImageBackground ? "cover" : "100% 100%"
           }}
         >
           {useImageBackground ? <KubeSearchboxPhotoCredit /> : null}

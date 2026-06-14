@@ -3,6 +3,21 @@
   "observedOn": "2026-06-14",
   "captureMethod": "Chrome DOM, CDP, and pageAssets sampling of rendered Kube demos",
   "generatedFallbackAssets": [],
+  "cssOnlyBackgroundAssets": {
+    "controlGridBackground": {
+      "backgroundIncludes": ["linear-gradient", "oklab(0 0 0 / 0.05)", "radial-gradient"],
+      "backgroundPosition": "12px 12px, 12px 12px, 0px 0px",
+      "backgroundSize": "24px 24px, 24px 24px, 100% 100%",
+      "file": "reference-captures/control-grid-background.png",
+      "height": 313,
+      "role": "Kube CSS-only control demo grid background capture shared by Searchbox, Switch, and Slider",
+      "sha256": "8a8bad22ddad97fb78f190fa7f04a231b4f3f7eb5f4f1a306dd9f76678adfe34",
+      "sourceSections": ["#searchbox", "#switch", "#slider"],
+      "sourceUrl": "https://kube.io/blog/liquid-glass-css-svg/",
+      "targetIds": ["searchbox", "switch", "slider"],
+      "width": 706
+    }
+  },
   "fontAssets": {
     "interVariable": {
       "bytes": 352240,

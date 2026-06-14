@@ -20,11 +20,17 @@ const requiredDemoAssets = [
   "lensDemoInlineImage",
   "lensDemoImage"
 ];
+const requiredCssOnlyBackgroundAssets = ["controlGridBackground"];
 
 const expectedUrls = new Map();
 const expectedFontUrls = new Map();
+const expectedCssOnlyBackgroundUrls = new Map();
 for (const name of requiredDemoAssets) {
   expectedUrls.set(name, manifest.assets[name]?.sourceUrl);
+}
+
+for (const name of requiredCssOnlyBackgroundAssets) {
+  expectedCssOnlyBackgroundUrls.set(name, manifest.cssOnlyBackgroundAssets?.[name]?.sourceUrl);
 }
 
 for (const [index, asset] of manifest.musicAlbumArtAssets.entries()) {
@@ -39,7 +45,11 @@ for (const [name, asset] of Object.entries(manifest.fontAssets ?? {})) {
   expectedFontUrls.set(`fontAssets.${name}`, asset.sourceUrl);
 }
 
-const missingManifestEntries = [...expectedUrls, ...expectedFontUrls]
+const missingManifestEntries = [
+  ...expectedUrls,
+  ...expectedFontUrls,
+  ...expectedCssOnlyBackgroundUrls
+]
   .filter(([, url]) => typeof url !== "string" || url.length === 0)
   .map(([name]) => name);
 
@@ -67,6 +77,9 @@ const localAssetChecks = [
 const localFontAssetChecks = Object.entries(manifest.fontAssets ?? {}).map(([name, asset]) =>
   validateLocalFontAsset({ asset, name: `fontAssets.${name}` })
 );
+const cssOnlyBackgroundAssetChecks = Object.entries(manifest.cssOnlyBackgroundAssets ?? {}).map(
+  ([name, asset]) => validateLocalAsset({ asset, name: `cssOnlyBackgroundAssets.${name}` })
+);
 
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({
@@ -82,6 +95,10 @@ try {
       timeout: 5_000
     })
     .catch(() => undefined);
+  const cssOnlyBackgroundChecks = await validateRenderedCssOnlyBackgroundAssets(
+    page,
+    manifest.cssOnlyBackgroundAssets ?? {}
+  );
   await page.getByText("Use image background", { exact: true }).click({ timeout: 15_000 });
   await page.waitForTimeout(250);
   await page
@@ -220,6 +237,9 @@ try {
 
   const missing = [...expectedUrls].filter(([, url]) => !observedUrls.has(url));
   const fontFailures = renderedFontAssetChecks.filter((check) => check.errors.length > 0);
+  const cssOnlyBackgroundFailures = cssOnlyBackgroundChecks.filter(
+    (check) => check.errors.length > 0
+  );
 
   fs.mkdirSync(artifactDir, { recursive: true });
   fs.writeFileSync(
@@ -228,6 +248,8 @@ try {
       {
         expected: Object.fromEntries(expectedUrls),
         generatedFallbackAssets,
+        cssOnlyBackgroundAssets: cssOnlyBackgroundAssetChecks,
+        cssOnlyBackgrounds: cssOnlyBackgroundChecks,
         missing: missing.map(([name, url]) => ({ name, url })),
         localFontAssets: localFontAssetChecks,
         localAssets: localAssetChecks,
@@ -259,6 +281,14 @@ try {
     );
   }
 
+  if (cssOnlyBackgroundFailures.length > 0) {
+    throw new Error(
+      `Kube CSS-only background verification failed:\n${cssOnlyBackgroundFailures
+        .map((failure) => `- ${failure.name}: ${failure.errors.join(", ")}`)
+        .join("\n")}`
+    );
+  }
+
   if (uncoveredCssBackgrounds.length > 0) {
     throw new Error(
       `Kube demo background asset verification failed. Add these rendered CSS backgrounds to stories/assets/kube/manifest.json or record a generated fallback:\n${uncoveredCssBackgrounds
@@ -268,7 +298,7 @@ try {
   }
 
   console.log(
-    `Verified ${expectedUrls.size} Kube demo asset URLs from the rendered public page, ${localAssetChecks.length} local raster fixture locks, and ${localFontAssetChecks.length} local font fixture locks.`
+    `Verified ${expectedUrls.size} Kube demo asset URLs from the rendered public page, ${localAssetChecks.length} local raster fixture locks, ${cssOnlyBackgroundAssetChecks.length} CSS-only background captures, and ${localFontAssetChecks.length} local font fixture locks.`
   );
 } finally {
   await browser.close();
@@ -369,6 +399,105 @@ async function validateRenderedFontAsset({ asset, name, observed }) {
     sourceUrl: asset.sourceUrl,
     stylesheetUrl
   };
+}
+
+async function validateRenderedCssOnlyBackgroundAssets(page, assets) {
+  const checks = [];
+
+  for (const [name, asset] of Object.entries(assets)) {
+    const targetIds = Array.isArray(asset.targetIds) ? asset.targetIds : [];
+    const errors = [];
+    const samples = [];
+
+    if (targetIds.length === 0) {
+      errors.push("missing targetIds");
+    }
+
+    for (const targetId of targetIds) {
+      const sample = await readTargetCssOnlyDemoBackground(page, targetId);
+      samples.push(sample);
+
+      if (sample.backgroundImage.includes("url(")) {
+        errors.push(`${targetId} background unexpectedly uses url(): ${sample.backgroundImage}`);
+      }
+
+      for (const needle of asset.backgroundIncludes ?? []) {
+        if (!sample.backgroundImage.includes(needle)) {
+          errors.push(`${targetId} background is missing ${needle}`);
+        }
+      }
+
+      if (sample.backgroundPosition !== asset.backgroundPosition) {
+        errors.push(
+          `${targetId} backgroundPosition ${sample.backgroundPosition} !== ${asset.backgroundPosition}`
+        );
+      }
+
+      if (sample.backgroundSize !== asset.backgroundSize) {
+        errors.push(
+          `${targetId} backgroundSize ${sample.backgroundSize} !== ${asset.backgroundSize}`
+        );
+      }
+
+      if (Math.abs(sample.rect.width - asset.width) > 1) {
+        errors.push(`${targetId} width ${sample.rect.width} !== ${asset.width}`);
+      }
+
+      if (Math.abs(sample.rect.height - asset.height) > 2) {
+        errors.push(`${targetId} height ${sample.rect.height} differs from ${asset.height}`);
+      }
+    }
+
+    checks.push({
+      errors,
+      file: asset.file,
+      name,
+      samples,
+      sourceUrl: asset.sourceUrl
+    });
+  }
+
+  return checks;
+}
+
+async function readTargetCssOnlyDemoBackground(page, targetId) {
+  await page.locator(`#${targetId}`).scrollIntoViewIfNeeded();
+  await page.waitForTimeout(120);
+
+  return page.evaluate((sectionId) => {
+    const heading = document.getElementById(sectionId);
+    if (!heading) {
+      throw new Error(`Missing target heading: ${sectionId}`);
+    }
+
+    let current = heading.nextElementSibling;
+    while (current) {
+      const rect = current.getBoundingClientRect();
+      const style = getComputedStyle(current);
+      const isDemo =
+        rect.width >= 650 &&
+        rect.width <= 730 &&
+        rect.height >= 300 &&
+        rect.height <= 500 &&
+        style.position === "relative";
+
+      if (isDemo) {
+        return {
+          backgroundImage: style.backgroundImage,
+          backgroundPosition: style.backgroundPosition,
+          backgroundSize: style.backgroundSize,
+          rect: {
+            height: Math.round(rect.height),
+            width: Math.round(rect.width)
+          }
+        };
+      }
+
+      current = current.nextElementSibling;
+    }
+
+    throw new Error(`Missing target demo after heading: ${sectionId}`);
+  }, targetId);
 }
 
 async function readRemoteText(url) {

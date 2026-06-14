@@ -162,6 +162,12 @@ This measurement includes these verified geometry fixes:
   the lens hero SVG inline crop, and the album-art grid captured from
   `is1-ssl.mzstatic.com`, so the Kube reference stories no longer use fake
   gradient cover tiles for loaded-media states.
+- The Searchbox, Switch, and Slider default demo background has no raster URL on
+  the public page. It is captured from the live computed CSS background into
+  `stories/assets/kube/reference-captures/control-grid-background.png` and
+  locked by dimensions, sha256, target section IDs, and computed background
+  tokens. Storybook uses that fixture for the local Kube reference frames instead
+  of a hand-written approximation.
 - Kube same-origin SVG filter map PNGs are also locked under
   `stories/assets/kube/maps/` and recorded in the same manifest. The maps are
   reference-only fixtures, not runtime shortcuts. They give the exact gate a
