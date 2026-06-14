@@ -3,7 +3,8 @@ import { useState, type CSSProperties } from "react";
 import { LiquidProvider, LiquidSearchBox } from "../src";
 import {
   kubeReferenceControlGridBackground,
-  kubeReferenceImageAssets
+  kubeReferenceImageAssets,
+  kubeReferenceRemoteImageAssets
 } from "./kube-reference-assets";
 import { storyVisualState, StoryFrame } from "./story-fixtures";
 
@@ -64,12 +65,12 @@ function KubeSearchboxReferenceStory() {
             position: "relative",
             boxSizing: "border-box",
             width: 706,
-            height: 313,
+            height: 312,
             overflow: "hidden",
             border: "1px solid rgba(0, 0, 0, 0.1)",
             borderRadius: 9.75,
             background: useImageBackground
-              ? `url("${kubeReferenceImageAssets.searchboxDemoBackground}")`
+              ? `url("${kubeReferenceRemoteImageAssets.searchboxDemoBackground}")`
               : kubeReferenceControlGridBackground.image,
             backgroundPosition: useImageBackground
               ? "50% 50%"
@@ -85,7 +86,7 @@ function KubeSearchboxReferenceStory() {
             style={{
               position: "absolute",
               left: "50%",
-              top: "calc(50% + 1.5px)",
+              top: "calc(50% + 2px)",
               transform: "translate(-50%, -50%)"
             }}
           >

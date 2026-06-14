@@ -161,13 +161,16 @@ This measurement includes these verified geometry fixes:
 - the Kube searchbox stories use the locked InterVariable font stack for both
   reference and focus-photo captures. The image-background credit is aligned to
   the live `9.75px` inset, and the checked-state label padding is ratcheted to
-  `3.25px 7.25px`, which keeps the normal image-background gate under the
-  current `0.1200` budget.
+  `3.25px 7.25px`. The checked image-background parity path intentionally uses
+  the live Unsplash URL from the Kube page while the local fixture remains locked
+  for provenance and focus-photo stories; this removed a stale JPEG/CDN variant
+  from the normal gate.
 - the searchbox checked image-background contract now hard-gates vertical
   geometry. Surface, glass layer, content layer, input, and icon y deltas must
-  stay within `0.25px` of the live Kube sample. The current control contract has
-  `0px` y delta for surface, glass, content, and input, eliminating the previous
-  half-pixel upward drift without claiming exact pixel parity.
+  stay within `0.25px` of the live Kube sample. The current story uses a `312px`
+  candidate frame and `calc(50% + 2px)` anchor, keeping the normal searchbox diff
+  at `0.0072` and the checked image-background diff at `0.0296` without claiming
+  exact pixel parity.
 - Kube demo image assets are locked in `stories/kube-reference-assets.ts` after
   Chrome/CDP sampling of the public page. Storybook serves stable local fixture
   paths from `stories/assets/kube/` for copied Kube demo images, filter maps,
@@ -264,10 +267,10 @@ Recent sampled `pnpm test:kube-reference:exact` result on 2026-06-14:
 | Reference                  | Exact diff ratio | Best phase | Phase diff |
 | -------------------------- | ---------------: | ---------- | ---------: |
 | magnifying-glass           |           0.5255 | `1,0`      |     0.5106 |
-| magnifying-glass-pressed   |           0.7250 | `1,2`      |     0.6834 |
-| magnifying-glass-dragged   |           0.6603 | `0,0`      |     0.6589 |
-| searchbox                  |           0.1283 | `0,0`      |     0.1292 |
-| searchbox-image-background |           0.9285 | `0,1`      |     0.9288 |
+| magnifying-glass-pressed   |           0.7264 | `1,2`      |     0.6813 |
+| magnifying-glass-dragged   |           0.7293 | `-6,1`     |     0.6316 |
+| searchbox                  |           0.0832 | `0,0`      |     0.0811 |
+| searchbox-image-background |           0.7816 | `0,0`      |     0.7838 |
 | switch                     |           0.0904 | `0,0`      |     0.0934 |
 | slider                     |           0.0750 | `0,0`      |     0.0763 |
 

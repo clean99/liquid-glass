@@ -16,6 +16,7 @@ const kubeLensImageId = "lens-demo-image.jpg";
 const kubeSearchboxImageId = "searchbox-demo-background.jpg";
 const kubeLensDemoImage = readKubeReferenceAsset("lensDemoImage");
 const kubeSearchboxDemoBackground = readKubeReferenceAsset("searchboxDemoBackground");
+const kubeSearchboxRemoteDemoBackground = readKubeReferenceRemoteAsset("searchboxDemoBackground");
 
 await fs.mkdir(behaviorArtifactDir, { recursive: true });
 await fs.mkdir(focusScreenshotDir, { recursive: true });
@@ -1053,10 +1054,10 @@ async function verifySearchboxKubeImageBackground() {
   const checkedBackground = await readBackgroundImage(referenceFrame);
   assertIncludes(
     checkedBackground,
-    kubeSearchboxDemoBackground,
+    kubeSearchboxRemoteDemoBackground,
     "searchbox checked Kube image background URL"
   );
-  await waitForImageRequest(referencePage, kubeSearchboxImageId);
+  await waitForImageRequest(referencePage, kubeSearchboxRemoteDemoBackground);
   await referenceFrame.screenshot({
     path: path.join(behaviorArtifactDir, "searchbox-kube-photo-checked.png")
   });
@@ -1212,6 +1213,18 @@ function readKubeReferenceAsset(name) {
 
   if (!match?.[1]) {
     throw new Error(`Missing Kube reference asset ${name}`);
+  }
+
+  return match[1];
+}
+
+function readKubeReferenceRemoteAsset(name) {
+  const remoteAssetStart = kubeAssetSource.indexOf("export const kubeReferenceRemoteImageAssets");
+  const remoteAssetSource = remoteAssetStart >= 0 ? kubeAssetSource.slice(remoteAssetStart) : "";
+  const match = remoteAssetSource.match(new RegExp(`${name}:\\s*"([^"]+)"`));
+
+  if (!match?.[1]) {
+    throw new Error(`Missing remote Kube reference asset ${name}`);
   }
 
   return match[1];

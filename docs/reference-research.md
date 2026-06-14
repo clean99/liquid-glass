@@ -165,10 +165,13 @@ would otherwise be misclassified as a black focus block.
 The checked Searchbox image-background run also records a control contract, not
 just pixels. A 2026-06-14 sample showed the local surface, glass layer, content
 layer, input, and icon were `0.5px` above the live Kube geometry while the
-credit and checkbox label already aligned. The Storybook anchor is now
-`calc(50% + 1.5px)`, and `scripts/compare-kube-reference.mjs` hard-gates those
-vertical deltas at `0.25px`. This removes one measured geometry error while the
-remaining exact diff stays dominated by background/filter pixel differences.
+credit and checkbox label already aligned. The Storybook frame now uses the live
+Unsplash source URL for the checked image-background parity path, a `312px`
+candidate frame height, and a `calc(50% + 2px)` anchor.
+`scripts/compare-kube-reference.mjs` hard-gates those vertical deltas at
+`0.25px`. This reduced the normal checked image-background diff from `0.1183`
+to `0.0296` and the plain searchbox diff from `0.0130` to `0.0072`, while the
+remaining exact diff stays dominated by per-pixel background/filter differences.
 
 `bezelWidth`, capsule radius, and displacement falloff are separate inputs. The
 capsule radius is `75px`, but the observed bevel displacement returns to neutral

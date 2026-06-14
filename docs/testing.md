@@ -77,6 +77,12 @@ slider focus hard-fail if the focused thumb loses too much brightness, so the
 Kube-style focus contract remains frosted material plus growth rather than a
 black or hard-ring state.
 
+When debugging Storybook focus manually, verify the Storybook process cwd before
+trusting a visible regression. A 2026-06-14 Chrome check found `localhost:6006`
+serving `/Users/bytedance/Documents/Blog-dev/apps/docs`, which still had the old
+dark OTP focus rule. The package Storybook launched from this repository on
+`localhost:6016` resolved OTP focus to `rgba(255, 255, 255, 0.9)` with `scale(1.055)`.
+
 `pnpm test:a11y` builds static Storybook, opens representative component stories in
 Chromium, runs `@axe-core/playwright`, writes `test-results/a11y/storybook-a11y-summary.json`,
 and fails on any `critical` or `serious` accessibility violation. This is the CI

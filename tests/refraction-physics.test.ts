@@ -664,12 +664,22 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceAssetsSource).toContain(
       "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop"
     );
+    expect(searchboxStorySource).toContain(
+      "kubeReferenceRemoteImageAssets.searchboxDemoBackground"
+    );
     expect(searchboxStorySource).toContain("kubeReferenceImageAssets.searchboxDemoBackground");
     expect(searchboxStorySource).toContain('"--lg-text": "#fff"');
     expect(verifyLiquidBehaviorSource).toContain(
       'const kubeSearchboxImageId = "searchbox-demo-background.jpg"'
     );
+    expect(verifyLiquidBehaviorSource).toContain(
+      'const kubeSearchboxRemoteDemoBackground = readKubeReferenceRemoteAsset("searchboxDemoBackground")'
+    );
+    expect(verifyLiquidBehaviorSource).toContain("function readKubeReferenceRemoteAsset(name)");
     expect(verifyLiquidBehaviorSource).toContain('new RegExp(`${name}:\\\\s*"([^"]+)"`)');
+    expect(verifyLiquidBehaviorSource).toContain(
+      "await waitForImageRequest(referencePage, kubeSearchboxRemoteDemoBackground)"
+    );
     expect(searchboxStorySource).toContain("Photo by Teemu Paananen");
     expect(searchboxStorySource).not.toContain("radial-gradient(ellipse at 18% 24%");
   });
@@ -729,14 +739,17 @@ describe("Liquid Glass physics contract", () => {
   });
 
   it("keeps Kube control reference frames at the measured target size", () => {
-    const frameSources = [searchboxStorySource, switchStorySource, sliderStorySource];
-
-    for (const source of frameSources) {
+    for (const source of [switchStorySource, sliderStorySource]) {
       expect(source).toContain('boxSizing: "border-box"');
       expect(source).toContain("width: 706");
       expect(source).toContain("height: 313");
       expect(source).not.toContain("minHeight: 312");
     }
+
+    expect(searchboxStorySource).toContain('boxSizing: "border-box"');
+    expect(searchboxStorySource).toContain("width: 706");
+    expect(searchboxStorySource).toContain("height: 312");
+    expect(searchboxStorySource).not.toContain("minHeight: 312");
   });
 
   it("keeps Kube parity Storybook builds isolated per command run", () => {
@@ -1503,7 +1516,7 @@ describe("Liquid Glass physics contract", () => {
     expect(focusRule).toContain("transform: scale(1)");
     expect(reducedMotionRule).toContain("transform: none");
     expect(searchboxStorySource).toContain('className: "lg-searchbox--kube-reference"');
-    expect(searchboxStorySource).toContain('top: "calc(50% + 1.5px)"');
+    expect(searchboxStorySource).toContain('top: "calc(50% + 2px)"');
     expect(searchboxStorySource).toContain("radius: 28");
     expect(kubeSearchboxHostRule).toContain("width: 21rem");
     expect(kubeSearchboxHostRule).toContain("height: 2.8rem");
