@@ -1691,32 +1691,49 @@ async function readFilterContract(element, label) {
 }
 
 function summarizeFilterContract(target, candidate) {
+  const targetLayerContract = summarizeLayerContract(target.layerContract);
+  const candidateLayerContract = summarizeLayerContract(candidate.layerContract);
+
   return {
     candidateDisplacementMapCount: candidate.counts.feDisplacementMap ?? 0,
     candidateDisplacementScales: candidate.displacementScales,
     candidateFilterId: candidate.filterId,
     candidateImageCount: candidate.counts.feImage ?? 0,
-    candidateLayerContract: summarizeLayerContract(candidate.layerContract),
+    candidateLayerContract,
     candidateLooksOnePass: (candidate.counts.feDisplacementMap ?? 0) === 1,
     candidateLooksTwoPass: (candidate.counts.feDisplacementMap ?? 0) >= 2,
+    layerTransformMismatch: hasLayerTransformMismatch(targetLayerContract, candidateLayerContract),
     targetDisplacementMapCount: target.counts.feDisplacementMap ?? 0,
     targetDisplacementScales: target.displacementScales,
     targetFilterId: target.filterId,
     targetImageCount: target.counts.feImage ?? 0,
-    targetLayerContract: summarizeLayerContract(target.layerContract),
+    targetLayerContract,
     targetLooksTwoPass: (target.counts.feDisplacementMap ?? 0) >= 2
   };
 }
 
 function summarizeLayerContract(layerContract) {
+  const surfaceHasTransform = layerContract.surface.style.transform !== "none";
+  const parentHasTransform = layerContract.surfaceParent.style.transform !== "none";
+
   return {
+    filterSurfaceCarriesTransform: surfaceHasTransform,
     rootTransform: layerContract.root.style.transform,
     surfaceBackdropFilter: layerContract.surface.style.backdropFilter,
     surfaceBoxShadow: layerContract.surface.style.boxShadow,
     surfaceParentSameAsSurface: layerContract.surfaceParent.sameAsSurface,
     surfaceParentTransform: layerContract.surfaceParent.style.transform,
-    surfaceTransform: layerContract.surface.style.transform
+    surfaceTransform: layerContract.surface.style.transform,
+    transformOwner: surfaceHasTransform ? "surface" : parentHasTransform ? "parent" : "none"
   };
+}
+
+function hasLayerTransformMismatch(targetLayerContract, candidateLayerContract) {
+  return (
+    targetLayerContract.transformOwner !== candidateLayerContract.transformOwner ||
+    targetLayerContract.surfaceParentSameAsSurface !==
+      candidateLayerContract.surfaceParentSameAsSurface
+  );
 }
 
 function assertFilterContractParity(reference, summary) {

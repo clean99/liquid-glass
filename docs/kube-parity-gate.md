@@ -68,6 +68,15 @@ instead of subjective screenshot review.
 until every pixel matches, but the sweep distinguishes a nearly global low-delta
 material mismatch from a small region with large geometry or refraction error.
 
+The magnifying-glass filter contract also records `layerContract`,
+`transformOwner`, and `layerTransformMismatch`. Chrome/CDP sampling shows that
+the Kube target owns the resting `scaleY(0.8)` transform on the filter surface's
+parent layer while the local Storybook candidate currently owns that transform on
+the filter surface itself. A naive DOM split that moves the filter to an inner
+child regressed the normal lens gate from roughly `0.1356` to roughly `0.6999`,
+so the mismatch is a diagnostic for the next optical sampling model, not a
+license to chase DOM shape without pixel proof.
+
 ## Representative Strict Measurement
 
 Measured locally on 2026-06-14 against `https://kube.io/blog/liquid-glass-css-svg/`.
