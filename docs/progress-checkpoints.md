@@ -10,6 +10,14 @@ Use it for the recurring 30 minute review loop and for manual maintainer
 handoffs. Scores should move only when there is file, command, workflow,
 repository setting, or public URL evidence.
 
+The machine-readable source for the launch-progress score is:
+
+```sh
+pnpm audit:launch
+pnpm --silent audit:launch:json
+CHECK_REMOTE_LAUNCH=1 pnpm --silent audit:launch:json
+```
+
 ## Checkpoint Loop
 
 ```mermaid
@@ -64,6 +72,10 @@ It should stay conservative until npm, Pages, and exact Kube parity are proven.
 | Repository discoverability | 8/10  | Description, topics, keywords, llms.txt, docs routes.                         | Homepage and public docs URL are blocked by Pages.    |
 
 Current launch-progress score: 86/110, or 78%.
+
+The command output label is `launch-progress-score`. The recurring automation
+should report the command result first, then explain any score movement against
+the table below.
 
 ## Visual Documentation Gaps
 

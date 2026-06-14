@@ -80,6 +80,7 @@ for (const script of [
   "typecheck",
   "test:docs",
   "test:governance",
+  "test:launch-readiness",
   "test:inventory",
   "test:component-coverage",
   "test:visual-docs",
@@ -101,6 +102,8 @@ for (const script of [
   "test:package",
   "audit:governance",
   "audit:governance:json",
+  "audit:launch",
+  "audit:launch:json",
   "ci",
   "verify",
   "release"
@@ -110,6 +113,10 @@ for (const script of [
 
 mustScript(packageJson, "test:release-readiness", ["scripts/check-release-readiness.mjs"]);
 mustScript(packageJson, "test:governance", ["scripts/audit-open-source-governance.mjs"]);
+mustScript(packageJson, "test:launch-readiness", [
+  "scripts/audit-launch-readiness.mjs",
+  "--min-percent 75"
+]);
 mustScript(packageJson, "test:research", ["scripts/validate-reference-provenance.mjs"]);
 mustScript(packageJson, "test:component-coverage", [
   "scripts/validate-component-test-coverage.mjs"
@@ -131,6 +138,7 @@ mustScript(packageJson, "test:package", ["tests/package-exports.mjs"]);
 mustScript(packageJson, "ci", [
   "pnpm test:research",
   "pnpm test:governance",
+  "pnpm test:launch-readiness",
   "pnpm test:component-coverage",
   "pnpm test:visual-docs",
   "pnpm test:release-readiness"
@@ -209,6 +217,7 @@ const packageRequiredFiles = [
   "registry.json",
   "liquid-glass.json",
   "schema/visual-state-coverage.schema.json",
+  "scripts/audit-launch-readiness.mjs",
   "scripts/verify-kube-demo-assets.mjs",
   "scripts/validate-visual-state-coverage.mjs"
 ];
@@ -260,6 +269,7 @@ if (isStandaloneRepository) {
   );
   mustInclude(".github/workflows/ci.yml", "pnpm test:release-readiness");
   mustInclude(".github/workflows/ci.yml", "pnpm test:governance");
+  mustInclude(".github/workflows/ci.yml", "pnpm test:launch-readiness");
   mustInclude(".github/workflows/ci.yml", "pnpm test:research");
   mustInclude(".github/workflows/ci.yml", "pnpm test:component-coverage");
   mustInclude(".github/workflows/ci.yml", "pnpm test:visual-docs");
@@ -326,10 +336,13 @@ mustInclude(
   "docs/release-evidence.md",
   "CHECK_REMOTE_GOVERNANCE=1 pnpm --silent audit:governance:json"
 );
+mustInclude("docs/release-evidence.md", "CHECK_REMOTE_LAUNCH=1 pnpm --silent audit:launch:json");
 mustInclude("docs/components/map.md", "Implemented public components: 60");
 mustInclude("docs/components/map.md", "registry/components/liquid-accordion.json");
 mustInclude("docs/governance-scorecard.md", "CHECK_REMOTE_GOVERNANCE=1");
 mustInclude("docs/governance-scorecard.md", "pnpm --silent audit:governance:json");
+mustInclude("docs/governance-scorecard.md", "pnpm audit:launch");
+mustInclude("docs/governance-scorecard.md", "launch-progress-score");
 mustInclude("docs/governance-scorecard.md", "remoteStatus.checked");
 mustInclude("docs/visual-documentation.md", "Visual Documentation Contract");
 mustInclude("docs/visual-documentation.md", "Storybook Pages");

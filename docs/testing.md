@@ -6,6 +6,7 @@ Core checks:
 pnpm lint
 pnpm typecheck
 pnpm test:docs
+pnpm test:launch-readiness
 pnpm test:inventory
 pnpm test:component-coverage
 pnpm test:visual-docs
@@ -30,6 +31,10 @@ pnpm verify
 `pnpm verify` runs `pnpm run ci`, visual regression, Kube reference comparison,
 and `pnpm pack --dry-run`. Use it before versioning, tagging, or publishing the
 package.
+
+`pnpm test:launch-readiness` runs the launch-progress audit with the current
+pre-launch threshold. It does not claim npm, Pages, or exact Kube completion;
+it prevents the quantified readiness score from moving backwards unnoticed.
 
 Optical checks:
 

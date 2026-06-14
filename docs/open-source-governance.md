@@ -49,6 +49,7 @@ flowchart TD
 | `pnpm typecheck`               | Public TypeScript contracts still compile.                                           |
 | `pnpm test:docs`               | Required open-source docs, templates, references, and registry claims exist.         |
 | `pnpm test:governance`         | Governance scorecard stays above the local readiness threshold.                      |
+| `pnpm test:launch-readiness`   | Launch-progress score stays above the current pre-launch threshold.                  |
 | `pnpm test:research`           | Reference provenance stays explicit and third-party source is not copied.            |
 | `pnpm test:inventory`          | Component inventory stays synchronized with the public component surface.            |
 | `pnpm test:component-coverage` | Component-facing tests stay mapped to the documented inventory.                      |

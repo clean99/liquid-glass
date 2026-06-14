@@ -111,6 +111,7 @@ const packageRequiredFiles = [
   "registry.json",
   "liquid-glass.json",
   "registry/liquid-glass.json",
+  "scripts/audit-launch-readiness.mjs",
   "scripts/audit-open-source-governance.mjs",
   "scripts/build-component-registry.mjs",
   "scripts/verify-kube-demo-assets.mjs",
@@ -862,13 +863,17 @@ mustInclude("docs/open-source-governance.md", [
 
 mustInclude("docs/governance-scorecard.md", [
   "pnpm audit:governance",
+  "pnpm audit:launch",
   "pnpm test:governance",
   "pnpm --silent audit:governance:json",
+  "pnpm --silent audit:launch:json",
   "CHECK_REMOTE_GOVERNANCE=1",
+  "CHECK_REMOTE_LAUNCH=1",
   "docs/ui-library-benchmark.md",
   "docs/components/index.md",
   "docs/maintainer-runbook.md",
   "docs/progress-checkpoints.md",
+  "launch-progress-score",
   "remoteStatus.checked",
   "GitHub Pages",
   "not part of CI"
@@ -883,6 +888,8 @@ mustInclude("docs/progress-checkpoints.md", [
   "heroui-inc/heroui",
   "Quantitative Scorecard",
   "launch-progress score",
+  "pnpm audit:launch",
+  "pnpm --silent audit:launch:json",
   "86/110",
   "78%",
   "Visual Documentation Gaps",
@@ -927,6 +934,7 @@ mustInclude("docs/release-evidence.md", [
   "Do Not Claim Until Proven",
   ".github/rulesets/main-release-gate.json",
   "CHECK_REMOTE_GOVERNANCE=1 pnpm --silent audit:governance:json",
+  "CHECK_REMOTE_LAUNCH=1 pnpm --silent audit:launch:json",
   "Storybook Pages",
   "npm publish",
   "shadcn registry",
@@ -1084,6 +1092,7 @@ mustInclude("docs/open-source-release.md", [
   "pnpm verify",
   "pnpm test:release-readiness",
   "pnpm test:governance",
+  "pnpm test:launch-readiness",
   "pnpm pack --dry-run",
   "pnpm test:a11y",
   "pnpm test:e2e",
@@ -1128,6 +1137,7 @@ if (isStandaloneRepository) {
     "pnpm test:shadcn-parity",
     "pnpm test:component-coverage",
     "pnpm test:governance",
+    "pnpm test:launch-readiness",
     "pnpm test:research",
     "pnpm test:visual-docs",
     "pnpm test:release-readiness",
@@ -1187,11 +1197,20 @@ if (fs.existsSync(path.join(root, "package.json"))) {
   if (!packageJson.scripts?.["test:governance"]) {
     errors.push("package.json must include test:governance");
   }
+  if (!packageJson.scripts?.["test:launch-readiness"]) {
+    errors.push("package.json must include test:launch-readiness");
+  }
   if (!packageJson.scripts?.["audit:governance"]) {
     errors.push("package.json must include audit:governance");
   }
   if (!packageJson.scripts?.["audit:governance:json"]) {
     errors.push("package.json must include audit:governance:json");
+  }
+  if (!packageJson.scripts?.["audit:launch"]) {
+    errors.push("package.json must include audit:launch");
+  }
+  if (!packageJson.scripts?.["audit:launch:json"]) {
+    errors.push("package.json must include audit:launch:json");
   }
   if (!packageJson.scripts?.["test:research"]) {
     errors.push("package.json must include test:research");
@@ -1231,8 +1250,16 @@ if (fs.existsSync(path.join(root, "package.json"))) {
   ) {
     errors.push("package.json test:governance must run the governance audit");
   }
+  if (
+    !packageJson.scripts?.["test:launch-readiness"]?.includes("scripts/audit-launch-readiness.mjs")
+  ) {
+    errors.push("package.json test:launch-readiness must run the launch readiness audit");
+  }
   if (!packageJson.scripts?.ci?.includes("pnpm test:governance")) {
     errors.push("package.json scripts.ci must include pnpm test:governance");
+  }
+  if (!packageJson.scripts?.ci?.includes("pnpm test:launch-readiness")) {
+    errors.push("package.json scripts.ci must include pnpm test:launch-readiness");
   }
   if (!packageJson.scripts?.ci?.includes("pnpm test:visual-docs")) {
     errors.push("package.json scripts.ci must include pnpm test:visual-docs");

@@ -81,10 +81,13 @@ GitHub Actions run Node 24. The package `engines.node` lower bound is
    visual state coverage, package metadata, workflows, docs, registry files,
    Changesets, and strict release gates.
 2. Run `pnpm test:governance` to validate the local open-source readiness
-   scorecard. Run `CHECK_REMOTE_GOVERNANCE=1 pnpm audit:governance` during
-   maintainer release review to include GitHub Pages and repository metadata.
-   Use `docs/release-evidence.md` to separate proven public claims from prepared
-   but unpublished work.
+   scorecard. Run `pnpm test:launch-readiness` to keep the quantified public
+   launch score from regressing. During maintainer release review, run
+   `CHECK_REMOTE_GOVERNANCE=1 pnpm audit:governance` and
+   `CHECK_REMOTE_LAUNCH=1 pnpm --silent audit:launch:json` to include GitHub
+   Pages, repository metadata, workflow state, and npm status. Use
+   `docs/release-evidence.md` to separate proven public claims from prepared but
+   unpublished work.
 3. Run `pnpm test:research` to validate external reference provenance, licenses,
    inspected commits, and the no-copied-source policy.
 4. For manual release review, run

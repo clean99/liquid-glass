@@ -51,6 +51,10 @@ flowchart TD
 
 ## Quantified Status
 
+Run `pnpm audit:launch` for the current local launch-progress score. Use
+`CHECK_REMOTE_LAUNCH=1 pnpm --silent audit:launch:json` when repository settings,
+Pages, and npm status must be included in the report.
+
 | Score                 | Value | Meaning                                                                 |
 | --------------------- | ----- | ----------------------------------------------------------------------- |
 | Local governance gate | 10/10 | Repository files and scripts satisfy the local governance scorecard.    |

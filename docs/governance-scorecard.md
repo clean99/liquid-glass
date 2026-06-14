@@ -18,6 +18,12 @@ Local-only audit:
 pnpm audit:governance
 ```
 
+Launch progress audit:
+
+```sh
+pnpm audit:launch
+```
+
 CI gate:
 
 ```sh
@@ -34,6 +40,7 @@ Machine-readable output for automation:
 
 ```sh
 CHECK_REMOTE_GOVERNANCE=1 pnpm --silent audit:governance:json
+CHECK_REMOTE_LAUNCH=1 pnpm --silent audit:launch:json
 ```
 
 The remote-aware audit checks public GitHub state such as Pages, homepage,
@@ -42,6 +49,11 @@ repository settings can be unavailable to forks and local contributors.
 When GitHub's public API is unavailable or rate-limited, the JSON report keeps
 the local score and marks `remoteStatus.checked` as `false` instead of failing
 the automation.
+
+`pnpm audit:launch` is the stricter launch-progress score used by the recurring
+checkpoint loop. It prints `launch-progress-score` and the same area-level
+scores tracked in `docs/progress-checkpoints.md`; `pnpm test:launch-readiness`
+keeps that score from regressing below the current pre-launch threshold.
 
 ## Score Areas
 
