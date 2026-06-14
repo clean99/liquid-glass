@@ -1383,9 +1383,11 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain("minimumFocusedScreenshotLuma: 170");
     expect(verifyLiquidBehaviorSource).toContain("minimumFocusedMaterialAlpha: 0.8");
     expect(verifyLiquidBehaviorSource).toContain("focus material alpha floor");
-    expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotDarkPixelRatio: 0.38");
-    expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotBlackPixelRatio: 0.28");
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotDarkPixelRatio: 0.02");
+    expect(verifyLiquidBehaviorSource).toContain("assertNoFocusScreenshotDarkening");
+    expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotDarkPixelGain");
+    expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotBlackPixelGain");
+    expect(verifyLiquidBehaviorSource).toContain("fill is still a dark plastic slab");
     expect(verifyLiquidBehaviorSource).toContain('contextScreenshotSelector: ".lg-input-otp"');
     expect(verifyLiquidBehaviorSource).toContain('contextScreenshotSelector: ".lg-switch"');
     expect(verifyLiquidBehaviorSource).toContain('contextScreenshotSelector: ".lg-slider"');
@@ -1398,9 +1400,11 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain(
       "maximumFocusedContextScreenshotDarkPixelRatio: 0.03"
     );
+    expect(verifyLiquidBehaviorSource).toContain("idleScreenshotBlackPixelRatio");
+    expect(verifyLiquidBehaviorSource).toContain("idleScreenshotDarkPixelRatio");
     expect(verifyLiquidBehaviorSource).toContain("focusedContextScreenshotMeanLuma");
     expect(verifyLiquidBehaviorSource).toContain("focusedContextScreenshotDarkPixelRatio");
-    expect(verifyLiquidBehaviorSource).toContain(
+    expect(verifyLiquidBehaviorSource).not.toContain(
       "options.maximumFocusedScreenshotBlackPixelRatio ?? 0.72"
     );
     expect(verifyLiquidBehaviorSource).toContain("focusedScreenshotBlackPixelRatio");

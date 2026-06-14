@@ -68,14 +68,15 @@ radius, dimensions, and background material values.
 pointer actions for focus, hover, active press, and the draggable lens board. The
 test uses real pointer actions instead of synthetic DOM events, records
 `requestAnimationFrame` samples, and asserts pressed, dragging, and released
-animation states. Focus screenshots record mean luma and dark/black-pixel ratios
-for every audited surface, and the material state also has an alpha floor so a
-transparent dark focus capsule cannot pass by hiding behind dark text metrics.
-The OTP story starts with `123`, so the focused screenshot covers the real
-filled-character selection path rather than only an empty cell. Switch and
-slider focus hard-fail if the focused thumb loses too much brightness, so the
-Kube-style focus contract remains frosted material plus growth rather than a
-black or hard-ring state.
+animation states. Focus screenshots record idle and focused mean luma plus
+dark/black-pixel ratios for every audited surface, then fail if focus introduces
+relative darkening. The material state also rejects any opaque low-luma focus
+fill, so an `rgba(40, 42, 44, 0.44)` style black capsule cannot pass by hiding
+behind text metrics. The OTP story starts with `123`, so the focused screenshot
+covers the real filled-character selection path rather than only an empty cell.
+Switch and slider focus hard-fail if the focused thumb loses too much brightness,
+so the Kube-style focus contract remains frosted material plus growth rather
+than a black or hard-ring state.
 
 When debugging Storybook focus manually, verify the Storybook process cwd before
 trusting a visible regression. A 2026-06-14 Chrome check found `localhost:6006`

@@ -301,8 +301,6 @@ const focusAuditTargets = [
   {
     name: "toggle",
     options: {
-      maximumFocusedScreenshotBlackPixelRatio: 0.28,
-      maximumFocusedScreenshotDarkPixelRatio: 0.38,
       minimumFocusedMaterialAlpha: 0.8,
       minimumFocusedScreenshotLuma: 170,
       minimumFocusedScale: 1.02,
@@ -312,8 +310,6 @@ const focusAuditTargets = [
   {
     name: "segmentedControl",
     options: {
-      maximumFocusedScreenshotBlackPixelRatio: 0.28,
-      maximumFocusedScreenshotDarkPixelRatio: 0.38,
       minimumFocusedMaterialAlpha: 0.8,
       minimumFocusedScreenshotLuma: 170,
       minimumFocusedScale: 1.02,
@@ -324,8 +320,6 @@ const focusAuditTargets = [
   {
     name: "toolbar",
     options: {
-      maximumFocusedScreenshotBlackPixelRatio: 0.28,
-      maximumFocusedScreenshotDarkPixelRatio: 0.38,
       minimumFocusedMaterialAlpha: 0.8,
       minimumFocusedScreenshotLuma: 170,
       minimumFocusedScale: 1.04,
@@ -339,8 +333,6 @@ const focusAuditTargets = [
   {
     name: "nav",
     options: {
-      maximumFocusedScreenshotBlackPixelRatio: 0.28,
-      maximumFocusedScreenshotDarkPixelRatio: 0.38,
       minimumFocusedMaterialAlpha: 0.8,
       minimumFocusedScreenshotLuma: 170,
       minimumFocusedScale: 1.04,
@@ -419,8 +411,6 @@ const focusAuditTargets = [
   {
     name: "button",
     options: {
-      maximumFocusedScreenshotBlackPixelRatio: 0.28,
-      maximumFocusedScreenshotDarkPixelRatio: 0.38,
       minimumFocusedMaterialAlpha: 0.8,
       minimumFocusedScreenshotLuma: 170,
       minimumFocusedScale: 1.018,
@@ -591,6 +581,12 @@ async function verifyFocusMaterial(name, options) {
   assertEqual(focused.outlineStyle, "none", `${name} focus outline style`);
   assertNoPlasticFocusChrome(focused, `${name} focus`);
   assertNoPlasticFocusChrome(focusedMaterial, `${name} focus material`);
+  assertNoFocusScreenshotDarkening(
+    idleScreenshotEvidence,
+    focusedScreenshotEvidence,
+    options,
+    `${name} focused screenshot`
+  );
   if (options.requireMaterialDeepening) {
     assertGreaterThan(
       focusedMaterial.backgroundAlpha,
@@ -674,11 +670,13 @@ async function verifyFocusMaterial(name, options) {
       `${name} focused context screenshot black pixel ratio`
     );
   }
-  assertLessThanOrEqual(
-    focusedScreenshotEvidence.blackPixelRatio ?? 1,
-    options.maximumFocusedScreenshotBlackPixelRatio ?? 0.72,
-    `${name} focused screenshot black pixel ratio`
-  );
+  if (options.maximumFocusedScreenshotBlackPixelRatio !== undefined) {
+    assertLessThanOrEqual(
+      focusedScreenshotEvidence.blackPixelRatio ?? 1,
+      options.maximumFocusedScreenshotBlackPixelRatio,
+      `${name} focused screenshot black pixel ratio`
+    );
+  }
   if (options.requireShadowChange) {
     assertNotEqual(focused.boxShadow, idle.boxShadow, `${name} focus shadow`);
   }
@@ -732,8 +730,14 @@ async function verifyFocusMaterial(name, options) {
     focusedScreenshotMeanLuma: roundNullable(focusedScreenshotEvidence.meanLuma),
     focusedScale: round(focused.scale),
     focusedShadowLayerCount: focused.shadowLayerCount,
+    focusedMaterialBackgroundAlpha: round(focusedMaterial.backgroundAlpha),
+    focusedMaterialBackgroundLuma: round(focusedMaterial.backgroundLuma),
+    idleScreenshotBlackPixelRatio: roundNullable(idleScreenshotEvidence.blackPixelRatio),
+    idleScreenshotDarkPixelRatio: roundNullable(idleScreenshotEvidence.darkPixelRatio),
     idleScreenshotMeanLuma: roundNullable(idleScreenshotEvidence.meanLuma),
     idleScale: round(idle.scale),
+    idleMaterialBackgroundAlpha: round(idleMaterial.backgroundAlpha),
+    idleMaterialBackgroundLuma: round(idleMaterial.backgroundLuma),
     materialBackgroundAlphaDelta: round(
       focusedMaterial.backgroundAlpha - idleMaterial.backgroundAlpha
     ),
@@ -1637,6 +1641,12 @@ function assertNoPlasticInteractionChrome(state, label, stateName = "interaction
     throw new Error(`${label}: ${stateName} style still uses a hard white/black 1px ring`);
   }
 
+  if (state.backgroundAlpha >= 0.18 && state.backgroundLuma <= 118) {
+    throw new Error(
+      `${label}: ${stateName} fill is still a dark plastic slab (alpha=${state.backgroundAlpha}, luma=${state.backgroundLuma})`
+    );
+  }
+
   if (
     visibleBorder &&
     state.borderAlpha >= 0.34 &&
@@ -1644,6 +1654,38 @@ function assertNoPlasticInteractionChrome(state, label, stateName = "interaction
   ) {
     throw new Error(
       `${label}: ${stateName} border is still a high-contrast hard edge (${state.borderColor}, alpha=${state.borderAlpha}, luma=${state.borderLuma})`
+    );
+  }
+}
+
+function assertNoFocusScreenshotDarkening(idle, focused, options, label) {
+  if (typeof idle.meanLuma !== "number" || typeof focused.meanLuma !== "number") {
+    return;
+  }
+
+  const maxLumaLoss = options.maximumFocusedScreenshotLumaLoss ?? 8;
+  const maxDarkPixelGain = options.maximumFocusedScreenshotDarkPixelGain ?? 0.035;
+  const maxBlackPixelGain = options.maximumFocusedScreenshotBlackPixelGain ?? 0.08;
+
+  assertGreaterOrEqual(
+    focused.meanLuma,
+    idle.meanLuma - maxLumaLoss,
+    `${label} relative mean luma`
+  );
+
+  if (typeof idle.darkPixelRatio === "number" && typeof focused.darkPixelRatio === "number") {
+    assertLessThanOrEqual(
+      focused.darkPixelRatio,
+      idle.darkPixelRatio + maxDarkPixelGain,
+      `${label} dark pixel gain`
+    );
+  }
+
+  if (typeof idle.blackPixelRatio === "number" && typeof focused.blackPixelRatio === "number") {
+    assertLessThanOrEqual(
+      focused.blackPixelRatio,
+      idle.blackPixelRatio + maxBlackPixelGain,
+      `${label} black pixel gain`
     );
   }
 }

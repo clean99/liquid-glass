@@ -93,10 +93,10 @@ metrics.
 | Reference                  | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | -------------------------- | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass           |     0.1902 | `1,0`      |     0.1356 |    0.2400 | gate |
-| magnifying-glass-pressed   |     0.3887 | `-9,-3`    |     0.2965 |    0.4050 | gate |
-| magnifying-glass-dragged   |     0.3943 | `-12,-1`   |     0.2742 |    0.4550 | gate |
-| searchbox                  |     0.0130 | `0,0`      |     0.0121 |    0.0200 | gate |
-| searchbox-image-background |     0.1184 | `0,1`      |     0.1113 |    0.1200 | gate |
+| magnifying-glass-pressed   |     0.3952 | `-10,-3`   |     0.2908 |    0.4050 | gate |
+| magnifying-glass-dragged   |     0.3746 | `-11,-1`   |     0.2616 |    0.4550 | gate |
+| searchbox                  |     0.0072 | `0,0`      |     0.0058 |    0.0200 | gate |
+| searchbox-image-background |     0.0298 | `0,0`      |     0.0293 |    0.1200 | gate |
 | switch                     |     0.0137 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                     |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
 
@@ -219,10 +219,13 @@ This proves six things:
   materials add four shadow layers.
 - Generic surface focus no longer reuses the base glass/surface shadow, because
   that made dark enhanced buttons read as black slabs in Storybook. The e2e
-  focus audit now gates button, nav, and toggle focused screenshots directly:
-  current samples record button `meanLuma=173.732`, `dark=0.233`,
-  `black=0.098`; nav `meanLuma=170.723`, `dark=0.154`, `black=0.126`; and
-  toggle `meanLuma=164.242`, `dark=0.194`, `black=0.174`.
+  focus audit now compares idle and focused screenshots and rejects relative
+  darkening plus any opaque low-luma focus fill. Current samples move button
+  from `idleLuma=69.781`, `idleBlack=0.881` to `focusLuma=195.216`,
+  `focusBlack=0.124`; nav from `idleLuma=64.258`, `idleBlack=0.900` to
+  `focusLuma=187.416`, `focusBlack=0.190`; and toggle from
+  `idleLuma=63.857`, `idleBlack=0.911` to `focusLuma=185.536`,
+  `focusBlack=0.196`.
 - The checked-state searchbox image background is now measured through real
   checkbox input. Its current threshold is `0.1200`, which is a loaded-media
   release-candidate budget, not an exact-parity claim.
@@ -267,8 +270,8 @@ Recent sampled `pnpm test:kube-reference:exact` result on 2026-06-14:
 | Reference                  | Exact diff ratio | Best phase | Phase diff |
 | -------------------------- | ---------------: | ---------- | ---------: |
 | magnifying-glass           |           0.5255 | `1,0`      |     0.5106 |
-| magnifying-glass-pressed   |           0.7264 | `1,2`      |     0.6813 |
-| magnifying-glass-dragged   |           0.7293 | `-6,1`     |     0.6316 |
+| magnifying-glass-pressed   |           0.6966 | `3,1`      |     0.6898 |
+| magnifying-glass-dragged   |           0.6833 | `-6,0`     |     0.6500 |
 | searchbox                  |           0.0832 | `0,0`      |     0.0811 |
 | searchbox-image-background |           0.7816 | `0,0`      |     0.7838 |
 | switch                     |           0.0904 | `0,0`      |     0.0934 |

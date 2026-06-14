@@ -162,6 +162,14 @@ also requires a focused material alpha floor of `0.8`; screenshot black pixels
 alone are not enough because valid dark text inside a light frosted capsule
 would otherwise be misclassified as a black focus block.
 
+The 2026-06-14 behavior gate now stores both idle and focused dark/black pixel
+ratios and fails on relative darkening, rather than allowing a broad absolute
+black-pixel budget. The same pass records OTP focus at `material alpha=0.9`,
+`material luma=255`, and `scale=1.055`; searchbox focus moves from an image-crop
+idle `black=0.968` to focused `black=0.047`; and generic button/nav/toggle
+focus all move from low-luma idle captures to light frosted focused capsules.
+This is a focus-regression gate, not a claim that exact Kube parity is done.
+
 The checked Searchbox image-background run also records a control contract, not
 just pixels. A 2026-06-14 sample showed the local surface, glass layer, content
 layer, input, and icon were `0.5px` above the live Kube geometry while the
