@@ -255,9 +255,14 @@ const categoryChecks = [
       fileIncludes("docs/visual-documentation.md", "Kube reference"),
       fileIncludes("docs/visual-documentation.md", "parameters.visualState"),
       fileIncludes("docs/visual-documentation.md", "visual-state-coverage.json"),
+      fileIncludes("docs/visual-documentation.md", "pnpm audit:visual-docs"),
+      fileIncludes("docs/visual-documentation.md", "visual-docs-score"),
       fileIncludes("docs/visual-state-coverage.json", "storyEvidence"),
       fileIncludes("docs/open-source-governance.md", "Visual Documentation"),
       scriptIncludes("test:visual-docs", "validate-visual-state-coverage"),
+      scriptIncludes("test:visual-docs", "audit-visual-documentation"),
+      scriptIncludes("audit:visual-docs", "audit-visual-documentation"),
+      scriptIncludes("audit:visual-docs:json", "--json"),
       scriptIncludes("ci", "pnpm test:visual-docs"),
       workflowIncludes("ci.yml", "pnpm test:visual-docs")
     ]

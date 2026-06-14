@@ -24,6 +24,12 @@ Launch progress audit:
 pnpm audit:launch
 ```
 
+Visual documentation audit:
+
+```sh
+pnpm audit:visual-docs
+```
+
 CI gate:
 
 ```sh
@@ -54,6 +60,11 @@ the automation.
 checkpoint loop. It prints `launch-progress-score` and the same area-level
 scores tracked in `docs/progress-checkpoints.md`; `pnpm test:launch-readiness`
 keeps that score from regressing below the current pre-launch threshold.
+
+`pnpm audit:visual-docs` prints `visual-docs-score` from the component
+inventory, visual state profiles, Storybook evidence rows, and Kube/reference
+honesty checks. It is local visual documentation evidence, not proof that
+Storybook Pages is publicly reachable.
 
 ## Score Areas
 

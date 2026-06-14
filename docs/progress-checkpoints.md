@@ -16,6 +16,7 @@ The machine-readable source for the launch-progress score is:
 pnpm audit:launch
 pnpm --silent audit:launch:json
 CHECK_REMOTE_LAUNCH=1 pnpm --silent audit:launch:json
+pnpm audit:visual-docs
 ```
 
 ## Checkpoint Loop
@@ -83,7 +84,8 @@ the table below.
 flowchart LR
   Storybook["Storybook stories"] --> StateMetadata["parameters.visualState"]
   StateMetadata --> VisualGate["pnpm test:visual-docs"]
-  VisualGate --> PagesBuild["Storybook Pages build"]
+  VisualGate --> VisualScore["pnpm audit:visual-docs"]
+  VisualScore --> PagesBuild["Storybook Pages build"]
   PagesBuild --> PagesSetting["GitHub Pages setting"]
   PagesSetting --> PublicDocs["Public visual docs URL"]
 
@@ -94,6 +96,7 @@ flowchart LR
 | Gap                        | Status                                          | Next proof                                      |
 | -------------------------- | ----------------------------------------------- | ----------------------------------------------- |
 | Public visual docs URL     | Blocked by repository Pages setting.            | Pages deploy succeeds and URL returns HTTP 200. |
+| Visual docs score          | Local dashboard exists.                         | `visual-docs-score` stays above the gate.       |
 | Component page screenshots | Storybook evidence exists; public URL blocked.  | Link public Storybook once Pages is enabled.    |
 | Remaining component pages  | Map identifies every Storybook + inventory row. | Add pages without changing component behavior.  |
 | Exact Kube parity claim    | Not complete.                                   | `pnpm test:kube-reference:exact` passes.        |
@@ -123,5 +126,5 @@ pnpm test:unit
 ```
 
 Add `pnpm test:governance`, `pnpm test:registry`, `pnpm test:visual-docs`,
-`pnpm test:storybook`, `pnpm test:e2e`, or `pnpm test:kube-reference` when the
-change touches those surfaces.
+`pnpm audit:visual-docs`, `pnpm test:storybook`, `pnpm test:e2e`, or
+`pnpm test:kube-reference` when the change touches those surfaces.

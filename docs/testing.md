@@ -10,6 +10,7 @@ pnpm test:launch-readiness
 pnpm test:inventory
 pnpm test:component-coverage
 pnpm test:visual-docs
+pnpm audit:visual-docs
 pnpm test:research
 pnpm test:unit
 pnpm test:a11y
@@ -147,6 +148,9 @@ component inventory. Every implemented component must be assigned to one visual
 state profile, the profile must match its inventory category, the Storybook file
 must exist, and each profile must include material-mode, environment, light,
 dark, high contrast, reduced motion, and mobile review coverage.
+It also runs `pnpm audit:visual-docs` with the current threshold so the
+maintainer sees the component coverage, profile contract, story evidence,
+reference evidence, and `visual-docs-score` in one place.
 
 `pnpm test:package` builds the package and verifies the publish contract:
 CommonJS and ESM entries, type declarations, CSS exports, `sideEffects`, npm

@@ -49,6 +49,7 @@ flowchart TD
 | ----------------------------------- | --------------------------------------------------------------- | ----------------------------------------------------- |
 | Local readiness                     | `pnpm audit:governance`                                         | Repository files satisfy the local governance model.  |
 | Launch progress                     | `pnpm audit:launch`                                             | Public launch completion stays quantified.            |
+| Visual documentation                | `pnpm audit:visual-docs`                                        | Component state coverage stays quantified locally.    |
 | Remote readiness                    | `CHECK_REMOTE_GOVERNANCE=1 pnpm audit:governance`               | GitHub Pages, homepage, wiki, and topics are checked. |
 | Machine-readable automation payload | `CHECK_REMOTE_GOVERNANCE=1 pnpm --silent audit:governance:json` | Automation can report exact missing launch evidence.  |
 | Machine-readable launch payload     | `CHECK_REMOTE_LAUNCH=1 pnpm --silent audit:launch:json`         | Automation can report score, blockers, Pages, npm.    |

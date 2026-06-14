@@ -104,6 +104,8 @@ for (const script of [
   "audit:governance:json",
   "audit:launch",
   "audit:launch:json",
+  "audit:visual-docs",
+  "audit:visual-docs:json",
   "ci",
   "verify",
   "release"
@@ -122,6 +124,15 @@ mustScript(packageJson, "test:component-coverage", [
   "scripts/validate-component-test-coverage.mjs"
 ]);
 mustScript(packageJson, "test:visual-docs", ["scripts/validate-visual-state-coverage.mjs"]);
+mustScript(packageJson, "test:visual-docs", [
+  "scripts/audit-visual-documentation.mjs",
+  "--min-percent 95"
+]);
+mustScript(packageJson, "audit:visual-docs", ["scripts/audit-visual-documentation.mjs"]);
+mustScript(packageJson, "audit:visual-docs:json", [
+  "scripts/audit-visual-documentation.mjs",
+  "--json"
+]);
 mustScript(packageJson, "test:kube-assets", ["scripts/verify-kube-demo-assets.mjs"]);
 mustScript(packageJson, "test:kube-reference", ["pnpm test:kube-assets"]);
 mustScript(packageJson, "test:kube-reference:strict", ["KUBE_STRICT_INTERACTIVE=1"]);
@@ -217,6 +228,7 @@ const packageRequiredFiles = [
   "registry.json",
   "liquid-glass.json",
   "schema/visual-state-coverage.schema.json",
+  "scripts/audit-visual-documentation.mjs",
   "scripts/audit-launch-readiness.mjs",
   "scripts/verify-kube-demo-assets.mjs",
   "scripts/validate-visual-state-coverage.mjs"
@@ -349,9 +361,12 @@ mustInclude("docs/visual-documentation.md", "Storybook Pages");
 mustInclude("docs/visual-documentation.md", "Kube reference");
 mustInclude("docs/visual-documentation.md", "parameters.visualState");
 mustInclude("docs/visual-documentation.md", "visual-state-coverage.json");
+mustInclude("docs/visual-documentation.md", "pnpm audit:visual-docs");
+mustInclude("docs/visual-documentation.md", "visual-docs-score");
 mustInclude("docs/visual-state-coverage.json", "componentsByProfile");
 mustInclude("docs/visual-state-coverage.json", "storyEvidence");
 mustInclude("docs/testing.md", "pnpm test:visual-docs");
+mustInclude("docs/testing.md", "pnpm audit:visual-docs");
 mustInclude("docs/github-repository-settings.md", "build_type=workflow");
 mustInclude("docs/open-source-release.md", "pnpm test:kube-reference:strict");
 mustInclude("docs/testing.md", "pnpm test:kube-assets");

@@ -39,7 +39,7 @@ flowchart TD
 | Release engineering        | CI and release workflows run the same gates maintainers run locally.                  | `.github/workflows/ci.yml`, `.github/workflows/release.yml`, `.github/rulesets/main-release-gate.json`, Changesets, package dry run.          | Gate-backed; ruleset application remote | `pnpm verify`, `pnpm test:release-readiness`           |
 | Release evidence           | Public claims are separated from local preparedness with a visual proof map.          | `docs/release-evidence.md`, remote-aware governance audit, workflow results, npm and Pages status.                                            | Gate-backed; remote claims blocked      | `pnpm test:docs`, remote-aware `pnpm audit:governance` |
 | Accessibility              | Accessibility is treated as a release property, not just documentation.               | Storybook a11y addon, `scripts/verify-storybook-a11y.mjs`, `pnpm test:a11y`.                                                                  | Gate-backed                             | `pnpm test:a11y`                                       |
-| Visual documentation       | Component states are visible through examples, snapshots, and docs site.              | `docs/visual-documentation.md`, `docs/visual-state-coverage.json`, Storybook stories, Playwright snapshots.                                   | Local gate-backed; public URL blocked   | `pnpm test:visual-docs`, Pages workflow                |
+| Visual documentation       | Component states are visible through examples, snapshots, and docs site.              | `docs/visual-documentation.md`, `docs/visual-state-coverage.json`, `pnpm audit:visual-docs`, Storybook stories, Playwright snapshots.         | Local gate-backed; public URL blocked   | `pnpm test:visual-docs`, Pages workflow                |
 | Component page standard    | Component docs repeat install, usage, anatomy, API, states, accessibility, and gates. | `docs/component-documentation.md`, `docs/components/index.md`, `docs/components/map.md`, component inventory, visual-state coverage, stories. | Gate-backed                             | `pnpm test:docs`, `pnpm test:governance`               |
 | Visual regression signal   | Pull requests and default branch pushes expose visual and Kube strict gates.          | `.github/workflows/visual.yml`, Playwright visual snapshots, strict Kube reference comparison.                                                | Main push gate-backed                   | Visual Regression workflow                             |
 | Story-level state metadata | Public component stories expose machine-readable state profile metadata.              | `parameters.visualState` on every implemented component story plus `docs/visual-state-coverage.json#storyEvidence`.                           | Component stories gate-backed           | `pnpm test:visual-docs`                                |
@@ -54,6 +54,8 @@ flowchart TD
 Run `pnpm audit:launch` for the current local launch-progress score. Use
 `CHECK_REMOTE_LAUNCH=1 pnpm --silent audit:launch:json` when repository settings,
 Pages, and npm status must be included in the report.
+Run `pnpm audit:visual-docs` when the checkpoint needs the local
+`visual-docs-score` behind the visual documentation row.
 
 | Score                 | Value | Meaning                                                                 |
 | --------------------- | ----- | ----------------------------------------------------------------------- |

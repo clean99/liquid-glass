@@ -113,6 +113,7 @@ const packageRequiredFiles = [
   "registry/liquid-glass.json",
   "scripts/audit-launch-readiness.mjs",
   "scripts/audit-open-source-governance.mjs",
+  "scripts/audit-visual-documentation.mjs",
   "scripts/build-component-registry.mjs",
   "scripts/verify-kube-demo-assets.mjs",
   "scripts/validate-component-test-coverage.mjs",
@@ -964,6 +965,8 @@ mustInclude("docs/visual-documentation.md", [
   "Kube reference",
   "parameters.visualState",
   "visual-state-coverage.json",
+  "pnpm audit:visual-docs",
+  "visual-docs-score",
   "Current Gaps"
 ]);
 
@@ -1044,7 +1047,10 @@ mustInclude("docs/kube-parity-gate.md", [
   "KUBE_MAX_DIFF_RATIO=0",
   "KUBE_PIXEL_DELTA_THRESHOLD=0",
   "final acceptance target",
-  "not part of `ci` or `verify`"
+  "not part of `ci` or `verify`",
+  "layerContract",
+  "transformOwner",
+  "layerTransformMismatch"
 ]);
 
 mustInclude("docs/rdev-liquid-glass-react.md", [
@@ -1275,6 +1281,16 @@ if (fs.existsSync(path.join(root, "package.json"))) {
     )
   ) {
     errors.push("package.json test:visual-docs must run the visual state coverage gate");
+  }
+  if (
+    !packageJson.scripts?.["test:visual-docs"]?.includes("scripts/audit-visual-documentation.mjs")
+  ) {
+    errors.push("package.json test:visual-docs must run the visual documentation audit");
+  }
+  if (
+    !packageJson.scripts?.["audit:visual-docs"]?.includes("scripts/audit-visual-documentation.mjs")
+  ) {
+    errors.push("package.json audit:visual-docs must run the visual documentation audit");
   }
   if (!packageJson.scripts?.["test:e2e"]?.includes("verify-liquid-behavior.mjs")) {
     errors.push("package.json test:e2e must run the real Storybook interaction gate");

@@ -59,6 +59,31 @@ the repository without running a private demo:
 | Kube reference          | `pnpm test:kube-reference` and `docs/kube-parity-gate.md` separate strict and exact parity.                                                                                                        | Strict gate present; exact open |
 | Release visibility      | `docs/open-source-release.md` requires local gates before release or publish.                                                                                                                      | Present                         |
 
+## Quantitative Dashboard
+
+The visual documentation audit turns the state coverage map into a small
+maintainer dashboard:
+
+```sh
+pnpm audit:visual-docs
+pnpm --silent audit:visual-docs:json
+```
+
+`pnpm test:visual-docs` runs both the structural validator and this dashboard
+with the current minimum score. The human output includes:
+
+| Metric                           | Meaning                                                                    |
+| -------------------------------- | -------------------------------------------------------------------------- |
+| `visual-docs-component-coverage` | Implemented components assigned to exactly one visual state profile.       |
+| `visual-docs-profile-contract`   | Profiles carrying required material-mode and environment review coverage.  |
+| `visual-docs-story-evidence`     | Story evidence rows whose Storybook file, component, and tags are present. |
+| `visual-docs-reference-evidence` | Kube/reference rows that keep strict and exact parity claims separate.     |
+| `visual-docs-score`              | Aggregate score for automation and maintainer checkpoint reports.          |
+
+The dashboard is local evidence. It does not prove that users can browse public
+visual docs; that claim still requires GitHub Pages to be enabled and the Pages
+URL to return HTTP 200.
+
 ## Required State Matrix
 
 Every public component page or Storybook story should cover the states that make
