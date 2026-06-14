@@ -799,6 +799,12 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain("diffDiagnostics");
     expect(kubeReferenceCompareSource).toContain("diffDiagnosticThresholds");
     expect(kubeReferenceCompareSource).toContain("thresholdSweep");
+    expect(kubeReferenceCompareSource).toContain("formatThresholdSweepRatio(result, 24)");
+    expect(kubeReferenceCompareSource).toContain("formatThresholdSweepRatio(result, 64)");
+    expect(kubeReferenceCompareSource).toContain("formatWorstDiffRegion(result)");
+    expect(kubeReferenceCompareSource).toContain("deltaGt24");
+    expect(kubeReferenceCompareSource).toContain("deltaGt64");
+    expect(kubeReferenceCompareSource).toContain("Worst region");
     expect(kubeReferenceCompareSource).toContain("layerContract");
     expect(kubeReferenceCompareSource).toContain("summarizeLayerContract");
     expect(kubeReferenceCompareSource).toContain("hasLayerTransformMismatch");

@@ -352,6 +352,9 @@ console.table(
     phase: `${result.bestPhaseOffset.candidateDx},${result.bestPhaseOffset.candidateDy}`,
     phaseDiffRatio: result.bestPhaseOffset.diffRatio.toFixed(4),
     rmsDelta: result.rmsDelta.toFixed(2),
+    deltaGt24: formatThresholdSweepRatio(result, 24),
+    deltaGt64: formatThresholdSweepRatio(result, 64),
+    worstRegion: formatWorstDiffRegion(result),
     maxDiffRatio: result.maxDiffRatio,
     pixelDeltaThreshold: result.pixelDeltaThreshold,
     mode: result.reportOnly ? "report" : "gate"
@@ -397,9 +400,14 @@ async function writeGithubStepSummary(results, failures, error) {
           (result) =>
             `| ${result.name} | ${result.gateDiffRatio.toFixed(4)} | ${result.diffRatio.toFixed(
               4
-            )} | ${result.maxDiffRatio} | ${result.reportOnly ? "report" : "gate"} |`
+            )} | ${formatThresholdSweepRatio(result, 24)} | ${formatThresholdSweepRatio(
+              result,
+              64
+            )} | ${formatWorstDiffRegion(result)} | ${result.maxDiffRatio} | ${
+              result.reportOnly ? "report" : "gate"
+            } |`
         )
-      : ["| _none completed_ | n/a | n/a | n/a | n/a |"];
+      : ["| _none completed_ | n/a | n/a | n/a | n/a | n/a | n/a | n/a |"];
 
   await fs.appendFile(
     summaryPath,
@@ -408,12 +416,24 @@ async function writeGithubStepSummary(results, failures, error) {
       "",
       status,
       "",
-      "| Reference | Gate diff ratio | Raw diff ratio | Threshold | Mode |",
-      "| --- | ---: | ---: | ---: | --- |",
+      "| Reference | Gate diff ratio | Raw diff ratio | Delta >24 | Delta >64 | Worst region | Threshold | Mode |",
+      "| --- | ---: | ---: | ---: | ---: | --- | ---: | --- |",
       ...rows,
       ""
     ].join("\n")
   );
+}
+
+function formatThresholdSweepRatio(result, threshold) {
+  const bucket = result.thresholdSweep?.find((entry) => entry.threshold === threshold);
+
+  return bucket ? bucket.diffRatio.toFixed(4) : "n/a";
+}
+
+function formatWorstDiffRegion(result) {
+  const worstRegion = result.diffDiagnostics?.worstRegion;
+
+  return worstRegion ? `${worstRegion.name} ${worstRegion.diffRatio.toFixed(4)}` : "n/a";
 }
 
 async function gotoTargetReference(page) {

@@ -67,6 +67,9 @@ instead of subjective screenshot review.
 `16`, `24`, `32`, `48`, and `64`. Exact parity still fails at threshold `0`
 until every pixel matches, but the sweep distinguishes a nearly global low-delta
 material mismatch from a small region with large geometry or refraction error.
+The console table and GitHub summary surface the `>24` and `>64` buckets plus
+the worst spatial region so heartbeat runs can report whether a failure is
+mostly sub-pixel/background phase drift or a real high-amplitude optical error.
 
 The magnifying-glass filter contract also records `layerContract`,
 `transformOwner`, and `layerTransformMismatch`. Chrome/CDP sampling shows that
