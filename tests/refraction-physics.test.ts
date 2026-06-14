@@ -319,14 +319,20 @@ describe("Liquid Glass physics contract", () => {
     expect(lensStorySource).not.toContain("chromaticAberration");
   });
 
-  it("can increase the reference lens filter strength for experimental tuning", () => {
-    const pipeline = resolveLensReferencePipeline({
-      glassThickness: 110,
-      magnificationGlassThickness: 43
+  it("matches the Kube pressed lens filter strength from the active contract", () => {
+    const pressedPipeline = resolveLensReferencePipeline({
+      glassThickness: 114.25698,
+      magnificationGlassThickness: 47.15323
+    });
+    const draggedPipeline = resolveLensReferencePipeline({
+      glassThickness: 109.05052,
+      magnificationGlassThickness: 42.06586
     });
 
-    expect(pipeline.stages[0]?.scale).toBeCloseTo(48.0071220172629, 6);
-    expect(pipeline.stages[1]?.scale).toBeCloseTo(122.80891678834695, 6);
+    expect(pressedPipeline.stages[0]?.scale).toBeCloseTo(52.643975915442034, 3);
+    expect(pressedPipeline.stages[1]?.scale).toBeCloseTo(127.56159721973536, 3);
+    expect(draggedPipeline.stages[0]?.scale).toBeCloseTo(46.964203545358714, 3);
+    expect(draggedPipeline.stages[1]?.scale).toBeCloseTo(121.74887478328273, 3);
   });
 
   it("keeps the reference lens engine as a real two-pass SVG filter", () => {
@@ -820,6 +826,26 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain("worstRegion");
   });
 
+  it("captures lens filter contracts before action cleanup changes the measured state", () => {
+    const targetFilterReadIndex = kubeReferenceCompareSource.indexOf(
+      "const targetFilterContract ="
+    );
+    const targetCleanupIndex = kubeReferenceCompareSource.indexOf("await targetAction?.cleanup();");
+    const candidateFilterReadIndex = kubeReferenceCompareSource.indexOf(
+      "const candidateFilterContract ="
+    );
+    const candidateCleanupIndex = kubeReferenceCompareSource.indexOf(
+      "await candidateAction?.cleanup();"
+    );
+
+    expect(targetFilterReadIndex).toBeGreaterThan(-1);
+    expect(targetCleanupIndex).toBeGreaterThan(-1);
+    expect(candidateFilterReadIndex).toBeGreaterThan(-1);
+    expect(candidateCleanupIndex).toBeGreaterThan(-1);
+    expect(targetFilterReadIndex).toBeLessThan(targetCleanupIndex);
+    expect(candidateFilterReadIndex).toBeLessThan(candidateCleanupIndex);
+  });
+
   it("checks the Kube searchbox image background through real checkbox input", () => {
     expect(kubeReferenceCompareSource).toContain('name: "searchbox-image-background"');
     expect(kubeReferenceCompareSource).toContain('controlContract: "searchbox"');
@@ -855,13 +881,21 @@ describe("Liquid Glass physics contract", () => {
     expect(searchboxStorySource).toContain("borderRadius: useImageBackground ? 4.875");
   });
 
-  it("does not fake Kube pointer parity by boosting active filter scales", () => {
-    expect(lensStorySource).not.toContain("precisionLensActiveRefraction");
+  it("boosts the Kube lens filter scale only for active water-drop states", () => {
+    expect(lensStorySource).toContain("const precisionLensPressedRefraction = {");
+    expect(lensStorySource).toContain("const precisionLensDraggingRefraction = {");
+    expect(lensStorySource).toContain("glassThickness: 114.25698");
+    expect(lensStorySource).toContain("magnificationGlassThickness: 47.15323");
+    expect(lensStorySource).toContain("glassThickness: 109.05052");
+    expect(lensStorySource).toContain("magnificationGlassThickness: 42.06586");
+    expect(lensStorySource).toContain("precisionLensRefractionForDroplet(droplet)");
+    expect(lensStorySource).toContain('if (droplet.phase === "pressed")');
+    expect(lensStorySource).toContain('if (droplet.phase === "dragging")');
     expect(lensStorySource).not.toContain("glassThickness: 110");
     expect(lensStorySource).not.toContain("magnificationGlassThickness: 43");
     expect(lensStorySource).toContain('className="lg-precision-lens-demo__handle"');
     expect(lensStorySource).toContain('engine="reference"');
-    expect(lensStorySource).toContain("refraction={precisionLensIdleRefraction}");
+    expect(lensStorySource).toContain("refraction={precisionLensRefractionForDroplet(droplet)}");
     expect(lensStorySource).not.toContain(
       '<div\n          aria-label="Drag the liquid glass lens"'
     );

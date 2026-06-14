@@ -193,6 +193,10 @@ try {
         reference.capture,
         targetPath
       );
+      const targetFilterContract =
+        reference.targetId === "magnifying-glass"
+          ? await readFilterContract(targetElement, "kube")
+          : null;
       await targetAction?.cleanup();
 
       candidatePage = await browser.newPage({ viewport: { width: 900, height: 560 } });
@@ -229,6 +233,10 @@ try {
         reference.capture,
         candidatePath
       );
+      const candidateFilterContract =
+        reference.targetId === "magnifying-glass"
+          ? await readFilterContract(candidateElement, "local")
+          : null;
       if (targetControlContract && candidateControlContract) {
         assertControlContractIntegrity(reference, targetControlContract, candidateControlContract);
         await fs.writeFile(
@@ -246,19 +254,18 @@ try {
       }
       await candidateAction?.cleanup();
 
-      if (reference.targetId === "magnifying-glass") {
-        const [targetContract, candidateContract] = await Promise.all([
-          readFilterContract(targetElement, "kube"),
-          readFilterContract(candidateElement, "local")
-        ]);
-        const filterSummary = summarizeFilterContract(targetContract, candidateContract);
+      if (targetFilterContract && candidateFilterContract) {
+        const filterSummary = summarizeFilterContract(
+          targetFilterContract,
+          candidateFilterContract
+        );
         await fs.writeFile(
           path.join(artifactDir, `${reference.name}-filter-contract.json`),
           `${JSON.stringify(
             {
               summary: filterSummary,
-              target: targetContract,
-              candidate: candidateContract
+              target: targetFilterContract,
+              candidate: candidateFilterContract
             },
             null,
             2

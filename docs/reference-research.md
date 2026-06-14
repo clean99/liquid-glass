@@ -203,6 +203,22 @@ The local `LiquidLensDropletPhase` model intentionally separates `pressed` and
 the same wide shape after movement, which is not what the reference component
 does under real pointer input.
 
+The active filter contract must be sampled before pointer cleanup. A cleanup-time
+sample made Kube appear to keep the idle displacement scales during interaction,
+but the live pressed and dragged states actually increase both SVG displacement
+passes:
+
+- idle: `[24, 98.2471]`,
+- pressed: `[52.6440, 127.5616]`,
+- dragged: roughly `[46.96, 121.75]`.
+
+The local draggable reference now maps `pressed` and `dragging` to separate
+refraction thicknesses so the candidate filter scales match the live Kube active
+contract. This moved the loose pressed lens gate to `0.3061 <= 0.405` and the
+dragged lens gate to `0.2491 <= 0.455` in a local 2026-06-14 run. Exact parity
+still fails, so this is a real narrowing of the optical state model, not a 1:1
+completion claim.
+
 The filter-contract evidence recorded by `scripts/compare-kube-reference.mjs`
 shows a real transform-ownership mismatch: the Kube target reports
 `transformOwner: "parent"`, the surface's parent carries the `scaleY(0.8)`

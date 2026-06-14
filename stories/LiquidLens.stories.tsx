@@ -50,6 +50,16 @@ const precisionLensIdleRefraction = {
   specularAngle: 0.8,
   magnificationGlassThickness: referenceLensDisplacementRefraction.magnificationGlassThickness
 };
+const precisionLensPressedRefraction = {
+  ...precisionLensIdleRefraction,
+  glassThickness: 114.25698,
+  magnificationGlassThickness: 47.15323
+};
+const precisionLensDraggingRefraction = {
+  ...precisionLensIdleRefraction,
+  glassThickness: 109.05052,
+  magnificationGlassThickness: 42.06586
+};
 const precisionLensReferenceFilterMaps = {
   displacement: kubeReferenceFilterMapAssets.displacementMapW2qrsb,
   magnification: kubeReferenceFilterMapAssets.magnifyingMapQ51ggw,
@@ -339,7 +349,7 @@ function DraggablePrecisionLensDemo() {
           onPointerUp={handlePointerUp}
           role="button"
           engine="reference"
-          refraction={precisionLensIdleRefraction}
+          refraction={precisionLensRefractionForDroplet(droplet)}
           referenceFilterMaps={precisionLensReferenceFilterMaps}
           style={draggableLensStyle(position, droplet)}
           tabIndex={0}
@@ -525,6 +535,18 @@ function readDroplet(
     pressed: true,
     rect
   });
+}
+
+function precisionLensRefractionForDroplet(droplet: LiquidLensDropletResponse) {
+  if (droplet.phase === "pressed") {
+    return precisionLensPressedRefraction;
+  }
+
+  if (droplet.phase === "dragging") {
+    return precisionLensDraggingRefraction;
+  }
+
+  return precisionLensIdleRefraction;
 }
 
 function draggableLensStyle(
