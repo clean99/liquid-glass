@@ -166,12 +166,14 @@ This measurement includes these verified geometry fixes:
   the public page. It is captured from the live computed CSS background into
   `stories/assets/kube/reference-captures/control-grid-background.png` and
   locked by dimensions, sha256, target section IDs, and computed background
-  tokens. `pnpm test:kube-assets` now hides the live demo children, re-captures
-  the Searchbox, Switch, and Slider section backgrounds, and fails if any fresh
-  screenshot hash or dimension drifts from the fixture. Storybook uses the
-  captured computed CSS tokens for the local Kube reference frames; using the
-  bitmap directly regressed the normal background gate, so the PNG stays a
-  reference fixture rather than the render path.
+  tokens. `pnpm test:kube-assets` now hides the live demo children and
+  re-captures the Searchbox, Switch, and Slider section backgrounds as evidence.
+  The fresh capture records whether its hash matches the fixture, while the
+  cross-platform hard gate stays on dimensions, computed CSS tokens, and a
+  browser pixel-diff ratio instead of byte-identical PNG output.
+  Storybook uses the captured computed CSS tokens for the local Kube reference
+  frames; using the bitmap directly regressed the normal background gate, so the
+  PNG stays a reference fixture rather than the render path.
 - Kube same-origin SVG filter map PNGs are also locked under
   `stories/assets/kube/maps/` and recorded in the same manifest. The maps are
   reference-only fixtures, not runtime shortcuts. They give the exact gate a

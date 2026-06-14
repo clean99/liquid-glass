@@ -10,6 +10,8 @@
       "backgroundSize": "24px 24px, 24px 24px, 100% 100%",
       "file": "reference-captures/control-grid-background.png",
       "height": 313,
+      "maxScreenshotDiffRatio": 0.01,
+      "pixelDeltaThreshold": 4,
       "role": "Kube CSS-only control demo grid background capture shared by Searchbox, Switch, and Slider",
       "sha256": "43aa5bcdbb2eba8cf84bd2dd133e942caf08b223c67d644cfdc3e0cd365b914e",
       "sourceSections": ["#searchbox", "#switch", "#slider"],

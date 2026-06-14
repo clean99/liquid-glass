@@ -52,11 +52,14 @@ manifest or an explicit generated fallback entry. The Searchbox, Switch, and
 Slider default control background has no raster URL, so
 `stories/assets/kube/reference-captures/control-grid-background.png` is a live
 background screenshot fixture. The asset gate re-captures those three public
-demo backgrounds with children hidden and compares the fresh screenshot hash and
-dimensions against the fixture. `generatedFallbackAssets` is intentionally
-empty. If Kube has no rendered source image for a future component state, the
-fallback must be a captured/generated reference fixture with provenance instead
-of a synthetic placeholder.
+demo backgrounds with children hidden, records whether the fresh screenshot hash
+matches the fixture, and hard-checks dimensions, computed CSS tokens, and a
+browser pixel-diff ratio. It does not hard-fail the live capture hash because
+Linux and macOS browser raster paths can produce byte-level PNG drift for the
+same CSS. `generatedFallbackAssets` is intentionally empty. If Kube has no
+rendered source image for a future component state, the fallback must be a
+captured/generated reference fixture with provenance instead of a synthetic
+placeholder.
 
 - Searchbox image background:
   `photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop`,

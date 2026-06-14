@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import path from "node:path";
 import { chromium } from "playwright";
 
-/* global document, getComputedStyle, location */
+/* global createImageBitmap, document, getComputedStyle, location */
 
 const root = process.cwd();
 const targetUrl = "https://kube.io/blog/liquid-glass-css-svg/";
@@ -461,16 +461,22 @@ async function validateRenderedCssOnlyBackgroundAssets(page, assets) {
         errors.push(`${targetId} height ${sample.rect.height} differs from ${asset.height}`);
       }
 
-      const capture = await captureTargetCssOnlyDemoBackground(page, targetId, name);
-      sample.capture = capture;
-
-      if (capture.sha256 !== asset.sha256) {
-        errors.push(`${targetId} capture sha256 ${capture.sha256} !== ${asset.sha256}`);
-      }
+      const capture = await captureTargetCssOnlyDemoBackground(page, targetId, name, asset);
+      sample.capture = {
+        ...capture,
+        shaMatchesFixture: capture.sha256 === asset.sha256
+      };
 
       if (capture.width !== asset.width || capture.height !== asset.height) {
         errors.push(
           `${targetId} capture dimensions ${capture.width}x${capture.height} !== ${asset.width}x${asset.height}`
+        );
+      }
+
+      const maxScreenshotDiffRatio = asset.maxScreenshotDiffRatio ?? 0.01;
+      if (capture.comparison.diffRatio > maxScreenshotDiffRatio) {
+        errors.push(
+          `${targetId} capture diffRatio ${capture.comparison.diffRatio.toFixed(4)} > ${maxScreenshotDiffRatio}`
         );
       }
     }
@@ -487,10 +493,11 @@ async function validateRenderedCssOnlyBackgroundAssets(page, assets) {
   return checks;
 }
 
-async function captureTargetCssOnlyDemoBackground(page, targetId, assetName) {
+async function captureTargetCssOnlyDemoBackground(page, targetId, assetName, asset) {
   const captureId = `lg-kube-css-bg-${assetName}-${targetId}`;
   const captureDir = path.join(artifactDir, "css-only-backgrounds");
   const capturePath = path.join(captureDir, `${assetName}-${targetId}.png`);
+  const fixturePath = path.join(root, "stories/assets/kube", asset.file);
 
   fs.mkdirSync(captureDir, { recursive: true });
 
@@ -542,13 +549,84 @@ async function captureTargetCssOnlyDemoBackground(page, targetId, assetName) {
 
   const bytes = fs.readFileSync(capturePath);
   const dimensions = readRasterSize(bytes);
+  const comparison = await compareRasterFilesInBrowser(
+    page,
+    fixturePath,
+    capturePath,
+    asset.pixelDeltaThreshold ?? 4
+  );
 
   return {
     artifact: path.relative(root, capturePath),
+    comparison,
     height: dimensions.height,
     sha256: crypto.createHash("sha256").update(bytes).digest("hex"),
     width: dimensions.width
   };
+}
+
+async function compareRasterFilesInBrowser(page, expectedPath, actualPath, pixelDeltaThreshold) {
+  const [expectedBytes, actualBytes] = [fs.readFileSync(expectedPath), fs.readFileSync(actualPath)];
+
+  return page.evaluate(
+    async ({ actualDataUrl, expectedDataUrl, pixelDeltaThreshold }) => {
+      const loadBitmap = async (dataUrl) => {
+        const response = await fetch(dataUrl);
+        return createImageBitmap(await response.blob());
+      };
+      const [expected, actual] = await Promise.all([
+        loadBitmap(expectedDataUrl),
+        loadBitmap(actualDataUrl)
+      ]);
+
+      if (expected.width !== actual.width || expected.height !== actual.height) {
+        return {
+          differingPixels: expected.width * expected.height,
+          diffRatio: 1,
+          height: actual.height,
+          pixelDeltaThreshold,
+          width: actual.width
+        };
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = expected.width;
+      canvas.height = expected.height;
+      const context = canvas.getContext("2d", { willReadFrequently: true });
+      context.drawImage(expected, 0, 0);
+      const expectedPixels = context.getImageData(0, 0, expected.width, expected.height).data;
+      context.clearRect(0, 0, expected.width, expected.height);
+      context.drawImage(actual, 0, 0);
+      const actualPixels = context.getImageData(0, 0, actual.width, actual.height).data;
+      let differingPixels = 0;
+
+      for (let index = 0; index < expectedPixels.length; index += 4) {
+        const delta = Math.max(
+          Math.abs(expectedPixels[index] - actualPixels[index]),
+          Math.abs(expectedPixels[index + 1] - actualPixels[index + 1]),
+          Math.abs(expectedPixels[index + 2] - actualPixels[index + 2]),
+          Math.abs(expectedPixels[index + 3] - actualPixels[index + 3])
+        );
+
+        if (delta > pixelDeltaThreshold) {
+          differingPixels += 1;
+        }
+      }
+
+      return {
+        differingPixels,
+        diffRatio: differingPixels / (expected.width * expected.height),
+        height: actual.height,
+        pixelDeltaThreshold,
+        width: actual.width
+      };
+    },
+    {
+      actualDataUrl: `data:image/png;base64,${actualBytes.toString("base64")}`,
+      expectedDataUrl: `data:image/png;base64,${expectedBytes.toString("base64")}`,
+      pixelDeltaThreshold
+    }
+  );
 }
 
 async function readTargetCssOnlyDemoBackground(page, targetId) {
