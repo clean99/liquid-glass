@@ -149,6 +149,19 @@ inner shadow. Focus now uses a dedicated blue-white lift shadow instead of the
 base glass shadow, and the behavior gate records screenshot luma and dark/black
 pixel ratios for button, nav, and toggle focus states.
 
+A later 2026-06-14 Chrome/CDP pass showed the remaining Storybook focus
+regression was not OTP empty focus: empty OTP and filled OTP both resolved to
+white frosted material with no outline. The worse failures were generic dark
+theme focus surfaces: button, toggle, nav, toolbar, and segmented control were
+visibly gray because the focused capsule stayed too transparent and kept white
+foreground text. Generic focus surfaces now use `--lg-control-focus-surface-strong`
+plus `--lg-control-focus-text`, so focus reads as a light frosted capsule with
+dark content. The `SelectAndOtp` story now starts with `123`, making the real
+filled-character focus/select path part of the browser audit. The behavior gate
+also requires a focused material alpha floor of `0.8`; screenshot black pixels
+alone are not enough because valid dark text inside a light frosted capsule
+would otherwise be misclassified as a black focus block.
+
 The checked Searchbox image-background run also records a control contract, not
 just pixels. A 2026-06-14 sample showed the local surface, glass layer, content
 layer, input, and icon were `0.5px` above the live Kube geometry while the

@@ -300,9 +300,10 @@ const focusAuditTargets = [
   {
     name: "toggle",
     options: {
-      maximumFocusedScreenshotBlackPixelRatio: 0.22,
-      maximumFocusedScreenshotDarkPixelRatio: 0.28,
-      minimumFocusedScreenshotLuma: 155,
+      maximumFocusedScreenshotBlackPixelRatio: 0.28,
+      maximumFocusedScreenshotDarkPixelRatio: 0.38,
+      minimumFocusedMaterialAlpha: 0.8,
+      minimumFocusedScreenshotLuma: 170,
       minimumFocusedScale: 1.02,
       requireMaterialDeepening: true
     }
@@ -310,6 +311,10 @@ const focusAuditTargets = [
   {
     name: "segmentedControl",
     options: {
+      maximumFocusedScreenshotBlackPixelRatio: 0.28,
+      maximumFocusedScreenshotDarkPixelRatio: 0.38,
+      minimumFocusedMaterialAlpha: 0.8,
+      minimumFocusedScreenshotLuma: 170,
       minimumFocusedScale: 1.02,
       requireMaterialDeepening: false,
       requireMaterialResponse: true
@@ -317,7 +322,14 @@ const focusAuditTargets = [
   },
   {
     name: "toolbar",
-    options: { minimumFocusedScale: 1.04, requireMaterialDeepening: true }
+    options: {
+      maximumFocusedScreenshotBlackPixelRatio: 0.28,
+      maximumFocusedScreenshotDarkPixelRatio: 0.38,
+      minimumFocusedMaterialAlpha: 0.8,
+      minimumFocusedScreenshotLuma: 170,
+      minimumFocusedScale: 1.04,
+      requireMaterialDeepening: true
+    }
   },
   {
     name: "tabs",
@@ -326,9 +338,10 @@ const focusAuditTargets = [
   {
     name: "nav",
     options: {
-      maximumFocusedScreenshotBlackPixelRatio: 0.18,
-      maximumFocusedScreenshotDarkPixelRatio: 0.24,
-      minimumFocusedScreenshotLuma: 165,
+      maximumFocusedScreenshotBlackPixelRatio: 0.28,
+      maximumFocusedScreenshotDarkPixelRatio: 0.38,
+      minimumFocusedMaterialAlpha: 0.8,
+      minimumFocusedScreenshotLuma: 170,
       minimumFocusedScale: 1.04,
       requireMaterialDeepening: true
     }
@@ -405,9 +418,10 @@ const focusAuditTargets = [
   {
     name: "button",
     options: {
-      maximumFocusedScreenshotBlackPixelRatio: 0.14,
-      maximumFocusedScreenshotDarkPixelRatio: 0.3,
-      minimumFocusedScreenshotLuma: 168,
+      maximumFocusedScreenshotBlackPixelRatio: 0.28,
+      maximumFocusedScreenshotDarkPixelRatio: 0.38,
+      minimumFocusedMaterialAlpha: 0.8,
+      minimumFocusedScreenshotLuma: 170,
       minimumFocusedScale: 1.018,
       requireMaterialDeepening: true
     }
@@ -588,6 +602,13 @@ async function verifyFocusMaterial(name, options) {
       focusedMaterial.backgroundLuma,
       options.minimumFocusedMaterialLuma,
       `${name} focus material luma`
+    );
+  }
+  if (options.minimumFocusedMaterialAlpha !== undefined) {
+    assertGreaterOrEqual(
+      focusedMaterial.backgroundAlpha,
+      options.minimumFocusedMaterialAlpha,
+      `${name} focus material alpha floor`
     );
   }
   if (options.maximumFocusedMaterialLumaLoss !== undefined) {

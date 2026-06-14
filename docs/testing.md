@@ -68,12 +68,14 @@ radius, dimensions, and background material values.
 pointer actions for focus, hover, active press, and the draggable lens board. The
 test uses real pointer actions instead of synthetic DOM events, records
 `requestAnimationFrame` samples, and asserts pressed, dragging, and released
-animation states. Focus screenshots record mean luma and black-pixel ratio for
-every audited surface, while the OTP focus crop keeps an additional stricter
-dark-pixel ratio so a black focused cell cannot hide behind an acceptable
-average. Switch and slider focus hard-fail if the focused thumb loses too much
-brightness, so the Kube-style focus contract remains frosted material plus
-growth rather than a black or hard-ring state.
+animation states. Focus screenshots record mean luma and dark/black-pixel ratios
+for every audited surface, and the material state also has an alpha floor so a
+transparent dark focus capsule cannot pass by hiding behind dark text metrics.
+The OTP story starts with `123`, so the focused screenshot covers the real
+filled-character selection path rather than only an empty cell. Switch and
+slider focus hard-fail if the focused thumb loses too much brightness, so the
+Kube-style focus contract remains frosted material plus growth rather than a
+black or hard-ring state.
 
 `pnpm test:a11y` builds static Storybook, opens representative component stories in
 Chromium, runs `@axe-core/playwright`, writes `test-results/a11y/storybook-a11y-summary.json`,

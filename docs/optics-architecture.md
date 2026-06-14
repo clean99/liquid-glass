@@ -36,8 +36,9 @@ not import `@hashintel/refractive` directly.
 - Invalid input must clamp to finite optical values instead of leaking `NaN`.
 - Fake crosshatch or stripe textures are forbidden; visible lines must come from
   the background being refracted.
-- Focus state changes material depth and scale. Hard white or black outline rings
-  are treated as a regression.
+- Focus state changes material depth, material alpha, foreground contrast, and
+  scale. Hard white or black outline rings and dark focus slabs are treated as a
+  regression.
 - Edge masks are monotonic: edge refraction fades inward while clean-center
   opacity rises. The center is restored; it is not a second distorted layer.
 - Chromatic aberration is edge-only and normal-aligned. Red and blue may split

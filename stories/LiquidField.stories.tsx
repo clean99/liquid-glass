@@ -135,7 +135,7 @@ export const SelectAndOtp: Story = {
         </LiquidField>
         <LiquidField>
           <LiquidLabel id="otp-label">Verification code</LiquidLabel>
-          <LiquidInputOtp aria-labelledby="otp-label" name="verification-code" />
+          <LiquidInputOtp aria-labelledby="otp-label" defaultValue="123" name="verification-code" />
           <LiquidFieldDescription>
             Paste support fills the cells while keeping native input focus.
           </LiquidFieldDescription>
