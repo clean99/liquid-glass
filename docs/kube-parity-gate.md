@@ -166,8 +166,9 @@ This measurement includes these verified geometry fixes:
   the public page. It is captured from the live computed CSS background into
   `stories/assets/kube/reference-captures/control-grid-background.png` and
   locked by dimensions, sha256, target section IDs, and computed background
-  tokens. Storybook uses that fixture for the local Kube reference frames instead
-  of a hand-written approximation.
+  tokens. Storybook uses the captured computed CSS tokens for the local Kube
+  reference frames; using the bitmap directly regressed the normal background
+  gate, so the PNG stays a reference fixture rather than the render path.
 - Kube same-origin SVG filter map PNGs are also locked under
   `stories/assets/kube/maps/` and recorded in the same manifest. The maps are
   reference-only fixtures, not runtime shortcuts. They give the exact gate a
