@@ -256,7 +256,7 @@ but the live effective transform keeps both pressed and dragged close to
 `scaleY=0.97`. Dragged relaxes much narrower after movement; it should not keep
 the old wide press shape, and it should not rebound into a much taller capsule.
 The local model now targets the Kube press probe near `scaleX=1.108`,
-`scaleY=0.969`, while dragging stays near `scaleX=1.03`, `scaleY=0.967`.
+`scaleY=0.969`, while dragging stays near `scaleX=1.04`, `scaleY=0.967`.
 
 The active filter contract must be sampled before pointer cleanup. A cleanup-time
 sample made Kube appear to keep the idle displacement scales during interaction,
@@ -276,11 +276,12 @@ completion claim.
 
 A follow-up 2026-06-14 action sample tightened the droplet geometry instead of
 the displacement contract. The normal gate still passed with pressed
-`0.3652 <= 0.405` and dragged `0.3924 <= 0.455`; their phase-adjusted rows were
-`0.2837` and `0.2557`. The same run recorded target/candidate effective scale
-within roughly `0.01` for pressed and dragged. Exact parity still failed
-(`pressed=0.7046`, `dragged=0.7138` raw), so the remaining work is material,
-sampling, and pixel alignment rather than declaring the shape solved.
+`0.3656 <= 0.405` and dragged `0.3674 <= 0.455`; their phase-adjusted rows were
+`0.2762` and `0.2703`. Increasing the dragged base `scaleX` to the sampled Kube
+value moved the dragged crop from `217px` wide to `219px` while the target was
+`222px`, and reduced the transform delta to `s0.0000` in that run. Exact parity
+still failed (`pressed=0.7690`, `dragged=0.6729` raw), so the remaining work is
+material, sampling, and pixel alignment rather than declaring the shape solved.
 
 The filter-contract evidence recorded by `scripts/compare-kube-reference.mjs`
 shows a real transform-ownership mismatch: the Kube target reports

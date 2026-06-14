@@ -831,6 +831,12 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain("diffDiagnostics");
     expect(kubeReferenceCompareSource).toContain("diffDiagnosticThresholds");
     expect(kubeReferenceCompareSource).toContain("thresholdSweep");
+    expect(kubeReferenceCompareSource).toContain("KUBE_REFERENCE_NAMES");
+    expect(kubeReferenceCompareSource).toContain("parseReferenceNameFilter");
+    expect(kubeReferenceCompareSource).toContain("Unknown Kube reference name(s)");
+    expect(packageJson.scripts["test:kube-reference:lens"]).toContain("KUBE_REFERENCE_NAMES=");
+    expect(packageJson.scripts["test:kube-reference:lens"]).toContain("magnifying-glass-pressed");
+    expect(packageJson.scripts["test:kube-reference:lens"]).toContain("magnifying-glass-dragged");
     expect(kubeReferenceCompareSource).toContain("formatThresholdSweepRatio(result, 24)");
     expect(kubeReferenceCompareSource).toContain("formatThresholdSweepRatio(result, 64)");
     expect(kubeReferenceCompareSource).toContain("formatWorstDiffRegion(result)");

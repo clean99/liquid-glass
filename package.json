@@ -102,6 +102,7 @@
     "test:kube-assets": "node scripts/verify-kube-demo-assets.mjs",
     "test:kube-reference": "pnpm test:kube-assets && KUBE_STORYBOOK_STATIC_DIR=\"${KUBE_STORYBOOK_STATIC_DIR:-storybook-static-kube-reference-$$}\" && pnpm build && rm -rf \"$KUBE_STORYBOOK_STATIC_DIR\" && storybook build --quiet --output-dir \"$KUBE_STORYBOOK_STATIC_DIR\" && STORYBOOK_STATIC_DIR=\"$KUBE_STORYBOOK_STATIC_DIR\" node scripts/compare-kube-reference.mjs; status=$?; rm -rf \"$KUBE_STORYBOOK_STATIC_DIR\"; exit $status",
     "test:kube-reference:exact": "KUBE_EXACT_PARITY=1 KUBE_MAX_DIFF_RATIO=0 KUBE_PIXEL_DELTA_THRESHOLD=0 KUBE_STRICT_INTERACTIVE=1 pnpm test:kube-reference",
+    "test:kube-reference:lens": "KUBE_REFERENCE_NAMES=magnifying-glass,magnifying-glass-pressed,magnifying-glass-dragged pnpm test:kube-reference",
     "test:kube-reference:strict": "KUBE_STRICT_INTERACTIVE=1 pnpm test:kube-reference || (echo \"Retrying strict Kube reference capture once after a live-reference failure\" && KUBE_STRICT_INTERACTIVE=1 pnpm test:kube-reference)",
     "test:inventory": "node scripts/validate-component-inventory.mjs",
     "test:package": "pnpm build && node tests/package-exports.mjs",

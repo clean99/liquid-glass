@@ -71,8 +71,8 @@ describe("draggable lens response", () => {
 
     expect(dragging.phase).toBe("dragging");
     expect(dragging.scaleX).toBeLessThan(pressed.scaleX);
-    expect(dragging.scaleX).toBeGreaterThan(1.031);
-    expect(dragging.scaleX).toBeLessThan(1.034);
+    expect(dragging.scaleX).toBeGreaterThan(1.041);
+    expect(dragging.scaleX).toBeLessThan(1.044);
     expect(dragging.scaleY).toBeLessThan(pressed.scaleY);
     expect(dragging.scaleY).toBeGreaterThan(0.968);
     expect(dragging.scaleY).toBeLessThan(0.97);

@@ -20,6 +20,9 @@ const globalMaxDiffRatio = process.env.KUBE_MAX_DIFF_RATIO
   ? Number(process.env.KUBE_MAX_DIFF_RATIO)
   : undefined;
 const exactPixelParity = process.env.KUBE_EXACT_PARITY === "1" || globalMaxDiffRatio === 0;
+const referenceNameFilter = parseReferenceNameFilter(
+  process.env.KUBE_REFERENCE_NAMES ?? process.env.KUBE_REFERENCE_NAME
+);
 const pixelDeltaThreshold = process.env.KUBE_PIXEL_DELTA_THRESHOLD
   ? Number(process.env.KUBE_PIXEL_DELTA_THRESHOLD)
   : exactPixelParity
@@ -43,7 +46,7 @@ if (!Number.isInteger(phaseSampleStride) || phaseSampleStride < 1) {
   throw new Error(`Invalid KUBE_PHASE_SAMPLE_STRIDE: ${process.env.KUBE_PHASE_SAMPLE_STRIDE}`);
 }
 
-const references = [
+const allReferences = [
   {
     name: "magnifying-glass",
     storyId: "liquid-glass-liquidlens--kube-reference",
@@ -129,6 +132,23 @@ const references = [
     maxDiffRatio: 0.02
   }
 ];
+const references = referenceNameFilter
+  ? allReferences.filter((reference) => referenceNameFilter.has(reference.name))
+  : allReferences;
+
+if (referenceNameFilter) {
+  const missingNames = [...referenceNameFilter].filter(
+    (name) => !allReferences.some((reference) => reference.name === name)
+  );
+
+  if (missingNames.length > 0) {
+    throw new Error(`Unknown Kube reference name(s): ${missingNames.join(", ")}`);
+  }
+
+  if (references.length === 0) {
+    throw new Error("KUBE_REFERENCE_NAMES did not match any references");
+  }
+}
 
 await fs.mkdir(artifactDir, { recursive: true });
 
@@ -388,6 +408,19 @@ function emitGithubError(title, message) {
 
 function formatError(error) {
   return error instanceof Error ? error.message : String(error);
+}
+
+function parseReferenceNameFilter(value) {
+  if (!value) {
+    return null;
+  }
+
+  const names = value
+    .split(",")
+    .map((name) => name.trim())
+    .filter(Boolean);
+
+  return names.length > 0 ? new Set(names) : null;
 }
 
 async function writeGithubStepSummary(results, failures, error) {

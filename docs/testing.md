@@ -110,6 +110,11 @@ component screenshots plus
 For every compared row, the script writes `*-target.png`, `*-candidate.png`, and
 `*-diff.png` under `test-results/kube-reference/`; the diff image is a red
 heatmap of the compared crop, not a hand-reviewed artifact.
+During optical tuning, set `KUBE_REFERENCE_NAMES` to a comma-separated row list
+or run `pnpm test:kube-reference:lens` to keep the observe/adjust loop on the
+real Kube page while limiting the comparison rows. This is only a development
+shortcut; the full gate remains `pnpm test:kube-reference`, and final acceptance
+remains `pnpm test:kube-reference:exact`.
 Pressed and dragged lens rows are captured from the post-action visual bounding
 box clip, not from `element.screenshot()`, so DOM transform differences between
 Kube and Storybook do not decide the crop. `kube-reference-results.json` records

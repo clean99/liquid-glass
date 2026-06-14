@@ -93,10 +93,10 @@ metrics.
 | Reference                  | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | -------------------------- | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass           |     0.1902 | `1,0`      |     0.1356 |    0.2400 | gate |
-| magnifying-glass-pressed   |     0.3652 | `-9,1`     |     0.2837 |    0.4050 | gate |
-| magnifying-glass-dragged   |     0.3924 | `-12,-1`   |     0.2557 |    0.4550 | gate |
+| magnifying-glass-pressed   |     0.3656 | `-9,0`     |     0.2762 |    0.4050 | gate |
+| magnifying-glass-dragged   |     0.3674 | `-11,-1`   |     0.2703 |    0.4550 | gate |
 | searchbox                  |     0.0072 | `0,0`      |     0.0058 |    0.0200 | gate |
-| searchbox-image-background |     0.0296 | `0,0`      |     0.0291 |    0.1200 | gate |
+| searchbox-image-background |     0.0298 | `0,0`      |     0.0293 |    0.1200 | gate |
 | switch                     |     0.0137 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                     |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
 
@@ -141,7 +141,7 @@ This measurement includes these verified geometry fixes:
   both pressed and dragged effective `scaleY` near `0.97`; the dragged state
   mainly relaxes narrower instead of becoming much taller. The local droplet
   model therefore keeps pressed around `scaleX=1.108`, `scaleY=0.969` at the
-  Kube press probe and dragged around `scaleX=1.03`, `scaleY=0.967`.
+  Kube press probe and dragged around `scaleX=1.04`, `scaleY=0.967`.
 - the pressed action metric guard allows `7px` width-delta and `7px`
   height-delta variance because the live Kube page has recently sampled between
   roughly `15px` and `21px` of width growth and `15px` and `21px` of height
@@ -271,9 +271,9 @@ Recent sampled `pnpm test:kube-reference:exact` result on 2026-06-14:
 | Reference                  | Exact diff ratio | Best phase | Phase diff |
 | -------------------------- | ---------------: | ---------- | ---------: |
 | magnifying-glass           |           0.5255 | `1,0`      |     0.5106 |
-| magnifying-glass-pressed   |           0.7046 | `-3,1`     |     0.6816 |
-| magnifying-glass-dragged   |           0.7138 | `-5,1`     |     0.6672 |
-| searchbox                  |           0.0878 | `0,0`      |     0.0892 |
+| magnifying-glass-pressed   |           0.7690 | `-1,3`     |     0.6401 |
+| magnifying-glass-dragged   |           0.6729 | `-1,0`     |     0.6519 |
+| searchbox                  |           0.0832 | `0,0`      |     0.0811 |
 | searchbox-image-background |           0.7816 | `0,0`      |     0.7838 |
 | switch                     |           0.0904 | `0,0`      |     0.0934 |
 | slider                     |           0.0750 | `0,0`      |     0.0763 |
