@@ -76,6 +76,7 @@ const verifyEnhancedStorybookSource = fs.readFileSync(
   "utf8"
 );
 const surfaceSource = fs.readFileSync(path.resolve("src/components/LiquidSurface.tsx"), "utf8");
+const inputOtpSource = fs.readFileSync(path.resolve("src/components/LiquidInputOtp.tsx"), "utf8");
 
 const intensities: LiquidIntensity[] = ["subtle", "medium", "strong"];
 type DefaultRefractiveOptions = Omit<RefractiveOptions, "radius">;
@@ -1134,6 +1135,11 @@ describe("Liquid Glass physics contract", () => {
     expect(otpSelectionBody).toContain("rgba(255, 255, 255");
     expect(otpSelectionBody).not.toContain("rgba(0, 0, 0");
     expect(otpSelectionBody).not.toContain("black");
+    expect(inputOtpSource).not.toContain(".select()");
+    expect(inputOtpSource).toContain("nativeEvent.data");
+    expect(verifyLiquidBehaviorSource).toContain("requireCollapsedSelection: true");
+    expect(verifyLiquidBehaviorSource).toContain("readInputSelectionState");
+    expect(verifyLiquidBehaviorSource).toContain("focus native selection");
   });
 
   it("shares focus shadow material tokens across component-specific focus states", () => {

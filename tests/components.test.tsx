@@ -538,6 +538,36 @@ describe("Liquid components", () => {
     expect(onValueChange).toHaveBeenLastCalledWith("12345");
   });
 
+  it("replaces the focused otp digit without selecting the visual cell", () => {
+    const onValueChange = vi.fn();
+    render(
+      <LiquidInputOtp
+        aria-label="Verification code"
+        defaultValue="123"
+        onValueChange={onValueChange}
+      />
+    );
+
+    const otpFields = screen.getAllByRole("textbox") as HTMLInputElement[];
+    const [firstField, secondField, thirdField] = otpFields;
+
+    fireEvent.focus(firstField);
+
+    expect(firstField.selectionStart).toBe(1);
+    expect(firstField.selectionStart).toBe(firstField.selectionEnd);
+
+    fireEvent.input(firstField, {
+      data: "9",
+      inputType: "insertText",
+      target: { value: "19" }
+    });
+
+    expect(firstField).toHaveValue("9");
+    expect(secondField).toHaveValue("2");
+    expect(thirdField).toHaveValue("3");
+    expect(onValueChange).toHaveBeenLastCalledWith("923");
+  });
+
   it("renders table, pagination, radio group, and scroll area primitives", () => {
     const onValueChange = vi.fn();
     render(

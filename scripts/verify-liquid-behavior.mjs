@@ -418,6 +418,7 @@ const focusAuditTargets = [
       minimumFocusedMaterialLuma: 238,
       minimumFocusedScreenshotLuma: 214,
       minimumFocusedScale: 1.05,
+      requireCollapsedSelection: true,
       requireMaterialDeepening: true
     }
   },
@@ -558,8 +559,9 @@ async function verifyFocusMaterial(name, options) {
   );
 
   const focusSelector = options.focusSelector ?? story.selector;
+  const focusTargetLocator = page.locator(focusSelector).first();
   if (options.focusSelector) {
-    await page.locator(focusSelector).first().focus();
+    await focusTargetLocator.focus();
   } else {
     await keyboardFocusVisible(page, focusSelector);
   }
@@ -595,8 +597,14 @@ async function verifyFocusMaterial(name, options) {
       `${name} focused context`
     );
   }
+  const focusedSelection = options.requireCollapsedSelection
+    ? await readInputSelectionState(focusTargetLocator)
+    : null;
 
   assertEqual(focused.outlineStyle, "none", `${name} focus outline style`);
+  if (focusedSelection) {
+    assertEqual(focusedSelection.isCollapsed, true, `${name} focus native selection`);
+  }
   assertNoPlasticFocusChrome(focused, `${name} focus`);
   assertNoPlasticFocusChrome(focusedMaterial, `${name} focus material`);
   assertNoFocusScreenshotDarkening(
@@ -772,6 +780,7 @@ async function verifyFocusMaterial(name, options) {
     materialShadowLayerDelta: focusedMaterial.shadowLayerCount - idleMaterial.shadowLayerCount,
     name,
     selector: story.selector,
+    selection: focusedSelection,
     screenshots: {
       focusedContext: focusedContextScreenshotEvidence?.relativePath ?? null,
       focused: focusedScreenshotEvidence.relativePath,
@@ -1116,6 +1125,20 @@ async function verifyCommandRovingFocusMaterial() {
 
 async function readBackgroundImage(locator) {
   return locator.evaluate((element) => getComputedStyle(element).backgroundImage);
+}
+
+async function readInputSelectionState(locator) {
+  return locator.evaluate((element) => {
+    const start = typeof element.selectionStart === "number" ? element.selectionStart : null;
+    const end = typeof element.selectionEnd === "number" ? element.selectionEnd : null;
+
+    return {
+      isCollapsed: start === null || end === null || start === end,
+      selectionEnd: end,
+      selectionStart: start,
+      valueLength: "value" in element ? String(element.value ?? "").length : null
+    };
+  });
 }
 
 async function waitForImageRequest(page, imageId) {

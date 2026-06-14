@@ -6,6 +6,7 @@ import {
   useEffect,
   useRef,
   useState,
+  type ChangeEvent,
   type ClipboardEvent,
   type FocusEvent,
   type HTMLAttributes,
@@ -121,6 +122,21 @@ export const LiquidInputOtp = forwardRef<HTMLDivElement, LiquidInputOtpProps>(
       [setValueAt]
     );
 
+    const handleChange = useCallback(
+      (index: number, event: ChangeEvent<HTMLInputElement>) => {
+        const nativeEvent = event.nativeEvent as InputEvent;
+        const insertedText = nativeEvent.data ?? "";
+
+        setValueAt(index, insertedText.length > 0 ? insertedText : event.currentTarget.value);
+      },
+      [setValueAt]
+    );
+
+    const handleFocus = useCallback((event: FocusEvent<HTMLInputElement>) => {
+      const caretPosition = event.currentTarget.value.length;
+      event.currentTarget.setSelectionRange(caretPosition, caretPosition);
+    }, []);
+
     const handleKeyDown = useCallback(
       (index: number, event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "ArrowLeft") {
@@ -168,10 +184,6 @@ export const LiquidInputOtp = forwardRef<HTMLDivElement, LiquidInputOtpProps>(
       [currentValue, inputCount, isControlled, onValueChange]
     );
 
-    const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
-      event.currentTarget.select();
-    };
-
     const characters = splitOtpValue(currentValue, inputCount);
 
     return (
@@ -199,7 +211,7 @@ export const LiquidInputOtp = forwardRef<HTMLDivElement, LiquidInputOtpProps>(
             inputMode={inputMode}
             key={index}
             maxLength={inputCount}
-            onChange={(event) => setValueAt(index, event.currentTarget.value)}
+            onChange={(event) => handleChange(index, event)}
             onFocus={handleFocus}
             onKeyDown={(event) => handleKeyDown(index, event)}
             onPaste={(event) => handlePaste(index, event)}
@@ -239,5 +251,4 @@ function parseOtpCharacters(value: string) {
 function focusInput(inputs: Array<HTMLInputElement | null>, index: number) {
   const target = inputs[Math.max(0, Math.min(index, inputs.length - 1))];
   target?.focus();
-  target?.select();
 }

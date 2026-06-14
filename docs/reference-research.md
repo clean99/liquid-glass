@@ -268,7 +268,7 @@ but the live pressed and dragged states actually increase both SVG displacement
 passes:
 
 - idle: `[24, 98.2471]`,
-- pressed: `[53.0098, 127.9360]`,
+- pressed: roughly `[50.23, 125.09]` to `[53.01, 127.94]` while the live filter settles,
 - dragged: roughly `[46.96, 121.75]`.
 
 The local draggable reference now maps `pressed` and `dragging` to separate
