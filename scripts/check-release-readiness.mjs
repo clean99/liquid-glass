@@ -234,6 +234,16 @@ const packageRequiredFiles = [
   "scripts/validate-visual-state-coverage.mjs"
 ];
 
+const componentInventory = readJson("docs/component-inventory.json");
+for (const component of componentInventory.components ?? []) {
+  if (component.status === "implemented") {
+    const componentDoc = `docs/components/${component.name}.md`;
+    if (!packageRequiredFiles.includes(componentDoc)) {
+      packageRequiredFiles.push(componentDoc);
+    }
+  }
+}
+
 const standaloneRequiredFiles = [
   ".github/workflows/ci.yml",
   ".github/workflows/visual.yml",

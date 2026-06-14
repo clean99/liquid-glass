@@ -128,6 +128,19 @@ const packageRequiredFiles = [
   "schema/visual-state-coverage.schema.json"
 ];
 
+const componentInventoryPath = path.join(root, "docs/component-inventory.json");
+if (fs.existsSync(componentInventoryPath)) {
+  const inventory = JSON.parse(fs.readFileSync(componentInventoryPath, "utf8"));
+  for (const component of inventory.components ?? []) {
+    if (component.status === "implemented") {
+      const componentDoc = `docs/components/${component.name}.md`;
+      if (!packageRequiredFiles.includes(componentDoc)) {
+        packageRequiredFiles.push(componentDoc);
+      }
+    }
+  }
+}
+
 const standaloneRequiredFiles = [
   ".github/workflows/ci.yml",
   ".github/workflows/visual.yml",
@@ -891,8 +904,8 @@ mustInclude("docs/progress-checkpoints.md", [
   "launch-progress score",
   "pnpm audit:launch",
   "pnpm --silent audit:launch:json",
-  "86/110",
-  "78%",
+  "90/110",
+  "82%",
   "Visual Documentation Gaps",
   "GitHub Pages setting",
   "pnpm test:kube-reference:exact",

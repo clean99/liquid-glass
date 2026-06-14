@@ -13,6 +13,12 @@ const componentDocs = fs
 const implementedComponents = inventory.components.filter(
   (component) => component.status === "implemented"
 );
+const writtenImplementedComponentDocs = implementedComponents.filter((component) =>
+  fs.existsSync(path.join(root, "docs", "components", `${component.name}.md`))
+);
+const foundationComponentDocs = componentDocs.filter((file) =>
+  ["provider.md", "surface.md"].includes(file)
+);
 const remoteStatus = checkRemote ? await fetchRemoteStatus() : { checked: false, requested: false };
 
 const areas = [
@@ -32,12 +38,19 @@ const areas = [
   },
   {
     name: "component-documentation",
-    score: Math.min(10, Math.round((componentDocs.length / implementedComponents.length) * 10)),
+    score: Math.min(
+      10,
+      Math.round((writtenImplementedComponentDocs.length / implementedComponents.length) * 10)
+    ),
     evidence: [
-      `${componentDocs.length} component docs`,
+      `${writtenImplementedComponentDocs.length} package-backed component docs`,
+      `${foundationComponentDocs.length} foundation docs`,
       `${implementedComponents.length} implemented inventory entries`
     ],
-    blocker: "Finish remaining package-backed component pages."
+    blocker:
+      writtenImplementedComponentDocs.length === implementedComponents.length
+        ? null
+        : "Finish remaining package-backed component pages."
   },
   {
     name: "contribution-workflow",

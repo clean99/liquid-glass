@@ -62,7 +62,7 @@ It should stay conservative until npm, Pages, and exact Kube parity are proven.
 | -------------------------- | ----- | ----------------------------------------------------------------------------- | ----------------------------------------------------- |
 | Repository first screen    | 9/10  | README, project status, docs map, topics, package metadata.                   | Public homepage should point to live Storybook Pages. |
 | Documentation structure    | 9/10  | Docs index, adoption, accessibility, testing, governance, release evidence.   | Keep new checkpoint docs linked from entry points.    |
-| Component documentation    | 6/10  | 33 written package-backed pages plus full component map and inventory.        | Finish the remaining Storybook + inventory pages.     |
+| Component documentation    | 10/10 | 60 package-backed component pages plus Provider and Surface foundation pages. | Keep future inventory additions page-backed.          |
 | Contribution workflow      | 9/10  | Issue forms, PR template, CODEOWNERS, CONTRIBUTING, support, security.        | Apply branch protection remotely.                     |
 | Release and CI gates       | 8/10  | CI, visual, release, Pages workflows, Node 24, local verification scripts.    | Latest main workflow must stay green before release.  |
 | Registry distribution      | 8/10  | Root registry, package registry, generated component entries, parity gate.    | npm package must exist before live install claims.    |
@@ -72,7 +72,7 @@ It should stay conservative until npm, Pages, and exact Kube parity are proven.
 | npm publish preparation    | 7/10  | Changesets, release workflow, provenance docs, package files, dry-run path.   | Configure token and run first publish.                |
 | Repository discoverability | 8/10  | Description, topics, keywords, llms.txt, docs routes.                         | Homepage and public docs URL are blocked by Pages.    |
 
-Current launch-progress score: 86/110, or 78%.
+Current launch-progress score: 90/110, or 82%.
 
 The command output label is `launch-progress-score`. The recurring automation
 should report the command result first, then explain any score movement against
@@ -93,14 +93,14 @@ flowchart LR
   ExactGate["pnpm test:kube-reference:exact"] --> ExactClaim["exact 1:1 claim"]
 ```
 
-| Gap                        | Status                                          | Next proof                                      |
-| -------------------------- | ----------------------------------------------- | ----------------------------------------------- |
-| Public visual docs URL     | Blocked by repository Pages setting.            | Pages deploy succeeds and URL returns HTTP 200. |
-| Visual docs score          | Local dashboard exists.                         | `visual-docs-score` stays above the gate.       |
-| Component page screenshots | Storybook evidence exists; public URL blocked.  | Link public Storybook once Pages is enabled.    |
-| Remaining component pages  | Map identifies every Storybook + inventory row. | Add pages without changing component behavior.  |
-| Exact Kube parity claim    | Not complete.                                   | `pnpm test:kube-reference:exact` passes.        |
-| Registry consumer workflow | Registry metadata is tested.                    | npm publish exists before install docs go live. |
+| Gap                        | Status                                         | Next proof                                      |
+| -------------------------- | ---------------------------------------------- | ----------------------------------------------- |
+| Public visual docs URL     | Blocked by repository Pages setting.           | Pages deploy succeeds and URL returns HTTP 200. |
+| Visual docs score          | Local dashboard exists.                        | `visual-docs-score` stays above the gate.       |
+| Component page screenshots | Storybook evidence exists; public URL blocked. | Link public Storybook once Pages is enabled.    |
+| Remaining component pages  | No implemented component is page-only backlog. | Keep `pnpm test:docs` enforcing future pages.   |
+| Exact Kube parity claim    | Not complete.                                  | `pnpm test:kube-reference:exact` passes.        |
+| Registry consumer workflow | Registry metadata is tested.                   | npm publish exists before install docs go live. |
 
 ## Continuation Rule
 

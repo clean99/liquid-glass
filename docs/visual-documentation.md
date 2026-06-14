@@ -44,20 +44,20 @@ the repository without running a private demo:
 
 ## Current Evidence
 
-| Surface                 | Evidence                                                                                                                                                                                           | Status                          |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
-| README first screen     | Short product positioning, direct docs link, status honesty, install honesty, registry honesty, Kube parity honesty.                                                                               | Present                         |
-| Storybook examples      | `stories/*.stories.tsx` plus `.storybook` docs and a11y addon configuration.                                                                                                                       | Present locally                 |
-| Docs navigation model   | `docs/site-navigation.md` defines the future Storybook Pages sidebar and landing blocks.                                                                                                           | Present                         |
-| Component page shape    | `docs/component-documentation.md` defines required status, anatomy, API, states, and gates.                                                                                                        | Present                         |
-| Written component pages | `docs/components/index.md` links 33 full pages, including the new ButtonGroup, Input, InputGroup, InputOtp, Label, NativeSelect, RadioGroup, Textarea, Toggle, and ToggleGroup form/control pages. | Expanded                        |
-| Storybook Pages         | `.github/workflows/pages.yml` builds Storybook and runs a11y before deploy.                                                                                                                        | Blocked until Pages is enabled  |
-| Visual regression       | `tests/visual/liquid-components-visual.spec.ts` and checked-in Playwright snapshots.                                                                                                               | Present                         |
-| Visual state audit      | `docs/visual-state-coverage.json` assigns every implemented component to a state profile.                                                                                                          | Present                         |
-| Story state metadata    | Every implemented component story and Kube/reference story exposes `parameters.visualState`.                                                                                                       | Present and gate-backed         |
-| A11y evidence           | `docs/accessibility.md` and `pnpm test:a11y` define and test the accessibility contract.                                                                                                           | Present                         |
-| Kube reference          | `pnpm test:kube-reference` and `docs/kube-parity-gate.md` separate strict and exact parity.                                                                                                        | Strict gate present; exact open |
-| Release visibility      | `docs/open-source-release.md` requires local gates before release or publish.                                                                                                                      | Present                         |
+| Surface                 | Evidence                                                                                                             | Status                          |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| README first screen     | Short product positioning, direct docs link, status honesty, install honesty, registry honesty, Kube parity honesty. | Present                         |
+| Storybook examples      | `stories/*.stories.tsx` plus `.storybook` docs and a11y addon configuration.                                         | Present locally                 |
+| Docs navigation model   | `docs/site-navigation.md` defines the future Storybook Pages sidebar and landing blocks.                             | Present                         |
+| Component page shape    | `docs/component-documentation.md` defines required status, anatomy, API, states, and gates.                          | Present                         |
+| Written component pages | `docs/components/index.md` links all 60 implemented component pages plus Provider and Surface foundation pages.      | Complete locally                |
+| Storybook Pages         | `.github/workflows/pages.yml` builds Storybook and runs a11y before deploy.                                          | Blocked until Pages is enabled  |
+| Visual regression       | `tests/visual/liquid-components-visual.spec.ts` and checked-in Playwright snapshots.                                 | Present                         |
+| Visual state audit      | `docs/visual-state-coverage.json` assigns every implemented component to a state profile.                            | Present                         |
+| Story state metadata    | Every implemented component story and Kube/reference story exposes `parameters.visualState`.                         | Present and gate-backed         |
+| A11y evidence           | `docs/accessibility.md` and `pnpm test:a11y` define and test the accessibility contract.                             | Present                         |
+| Kube reference          | `pnpm test:kube-reference` and `docs/kube-parity-gate.md` separate strict and exact parity.                          | Strict gate present; exact open |
+| Release visibility      | `docs/open-source-release.md` requires local gates before release or publish.                                        | Present                         |
 
 ## Quantitative Dashboard
 

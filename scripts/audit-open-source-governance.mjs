@@ -6,6 +6,10 @@ const minScore = Number(readArgValue("--min-score") ?? 0);
 const checkRemote = process.env.CHECK_REMOTE_GOVERNANCE === "1";
 const jsonOutput = process.argv.includes("--json");
 const packageJson = readJson("package.json");
+const inventory = readJson("docs/component-inventory.json");
+const implementedComponents = inventory.components.filter(
+  (component) => component.status === "implemented"
+);
 
 const categoryChecks = [
   {
@@ -75,6 +79,7 @@ const categoryChecks = [
       exists("docs/components/textarea.md"),
       exists("docs/components/toggle.md"),
       exists("docs/components/toggle-group.md"),
+      ...implementedComponents.map((component) => exists(`docs/components/${component.name}.md`)),
       fileIncludes("docs/accessibility.md", "Accessibility"),
       fileIncludes("docs/accessibility.md", "pnpm test:a11y"),
       fileIncludes("docs/component-documentation.md", "Component Documentation Contract"),
