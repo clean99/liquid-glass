@@ -1139,6 +1139,10 @@ describe("Liquid Glass physics contract", () => {
       "segmentedControl",
       "toolbar",
       "contextMenuTrigger",
+      "popoverTrigger",
+      "dialogTrigger",
+      "comboboxTrigger",
+      "carouselNext",
       "hoverCardTrigger",
       "menubarTrigger",
       "tooltipTrigger",
@@ -1207,6 +1211,19 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain("await page.close().catch(() => {})");
     expect(verifyLiquidBehaviorSource).toContain('return "application/json; charset=utf-8"');
     expect(verifyLiquidBehaviorSource).toContain("throw lastError");
+  });
+
+  it("captures real idle and focused screenshots for every focus material audit target", () => {
+    expect(verifyLiquidBehaviorSource).toContain("const focusScreenshotDir");
+    expect(verifyLiquidBehaviorSource).toContain('path.join(behaviorArtifactDir, "focus")');
+    expect(verifyLiquidBehaviorSource).toContain("await fs.mkdir(focusScreenshotDir");
+    expect(verifyLiquidBehaviorSource).toContain("safeFileSegment(name)");
+    expect(verifyLiquidBehaviorSource).toContain("-idle.png");
+    expect(verifyLiquidBehaviorSource).toContain("-focused.png");
+    expect(verifyLiquidBehaviorSource).toContain("await locator.screenshot");
+    expect(verifyLiquidBehaviorSource).toContain("await focusedCaptureLocator.screenshot");
+    expect(verifyLiquidBehaviorSource).toContain("screenshots:");
+    expect(verifyLiquidBehaviorSource).toContain("path.relative(behaviorArtifactDir");
   });
 
   it("removes elastic focus transforms for every frosted focus target in reduced motion", () => {

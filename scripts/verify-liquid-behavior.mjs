@@ -11,12 +11,14 @@ const kubeAssetSource = await fs.readFile(
 );
 const staticDir = path.resolve(process.env.STORYBOOK_STATIC_DIR ?? "storybook-static-test");
 const behaviorArtifactDir = path.resolve("test-results/liquid-behavior");
+const focusScreenshotDir = path.join(behaviorArtifactDir, "focus");
 const kubeLensImageId = "lens-demo-image.jpg";
 const kubeSearchboxImageId = "searchbox-demo-background.jpg";
 const kubeLensDemoImage = readKubeReferenceAsset("lensDemoImage");
 const kubeSearchboxDemoBackground = readKubeReferenceAsset("searchboxDemoBackground");
 
 await fs.mkdir(behaviorArtifactDir, { recursive: true });
+await fs.mkdir(focusScreenshotDir, { recursive: true });
 
 const behaviorStories = {
   breadcrumb: {
@@ -119,6 +121,22 @@ const behaviorStories = {
   contextMenuTrigger: {
     id: "liquid-glass-overlay-primitives--light",
     selector: ".lg-context-menu__trigger"
+  },
+  popoverTrigger: {
+    id: "liquid-glass-overlay-primitives--light",
+    selector: '.lg-surface--button[aria-haspopup="dialog"]'
+  },
+  dialogTrigger: {
+    id: "liquid-glass-liquiddialog--light-mode",
+    selector: '.lg-surface--button[aria-haspopup="dialog"]'
+  },
+  comboboxTrigger: {
+    id: "liquid-glass-liquidcommand--combobox",
+    selector: ".lg-combobox__trigger"
+  },
+  carouselNext: {
+    id: "liquid-glass-liquidcarousel--horizontal-cards",
+    selector: ".lg-carousel__control--next:not(:disabled)"
   },
   hoverCardTrigger: {
     id: "liquid-glass-overlay-primitives--light",
@@ -323,6 +341,22 @@ const focusAuditTargets = [
     options: { minimumFocusedScale: 1.018, requireMaterialDeepening: true }
   },
   {
+    name: "popoverTrigger",
+    options: { minimumFocusedScale: 1.018, requireMaterialDeepening: true }
+  },
+  {
+    name: "dialogTrigger",
+    options: { minimumFocusedScale: 1.018, requireMaterialDeepening: true }
+  },
+  {
+    name: "comboboxTrigger",
+    options: { minimumFocusedScale: 1.018, requireMaterialDeepening: true }
+  },
+  {
+    name: "carouselNext",
+    options: { minimumFocusedScale: 1.018, requireMaterialDeepening: true }
+  },
+  {
     name: "hoverCardTrigger",
     options: { minimumFocusedScale: 1.018, requireMaterialDeepening: true }
   },
@@ -442,6 +476,8 @@ async function verifyFocusMaterial(name, options) {
     : locator;
   await materialLocator.waitFor({ state: "visible", timeout: 10_000 });
   const idleMaterial = await readState(materialLocator);
+  const idleScreenshot = path.join(focusScreenshotDir, `${safeFileSegment(name)}-idle.png`);
+  await locator.screenshot({ path: idleScreenshot });
 
   const focusSelector = options.focusSelector ?? story.selector;
   if (options.focusSelector) {
@@ -454,11 +490,14 @@ async function verifyFocusMaterial(name, options) {
   const focusedLocator = page
     .locator(options.focusedSelector ?? `${story.selector}:focus-visible`)
     .first();
-  const focused = await readState((await focusedLocator.count()) > 0 ? focusedLocator : locator);
+  const focusedCaptureLocator = (await focusedLocator.count()) > 0 ? focusedLocator : locator;
+  const focused = await readState(focusedCaptureLocator);
   const focusedMaterialLocator = options.focusedMaterialSelector
     ? page.locator(options.focusedMaterialSelector).first()
     : materialLocator;
   const focusedMaterial = await readState(focusedMaterialLocator);
+  const focusedScreenshot = path.join(focusScreenshotDir, `${safeFileSegment(name)}-focused.png`);
+  await focusedCaptureLocator.screenshot({ path: focusedScreenshot });
 
   assertEqual(focused.outlineStyle, "none", `${name} focus outline style`);
   assertNoPlasticFocusChrome(focused, `${name} focus`);
@@ -527,12 +566,23 @@ async function verifyFocusMaterial(name, options) {
     materialShadowLayerDelta: focusedMaterial.shadowLayerCount - idleMaterial.shadowLayerCount,
     name,
     selector: story.selector,
+    screenshots: {
+      focused: path.relative(behaviorArtifactDir, focusedScreenshot),
+      idle: path.relative(behaviorArtifactDir, idleScreenshot)
+    },
     storyId: story.id,
     transitionDurationMs: focused.maxTransitionDurationMs,
     widthDelta: round(focused.width - idle.width)
   });
 
   await page.close();
+}
+
+function safeFileSegment(value) {
+  return String(value)
+    .replace(/[^a-z0-9]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
 }
 
 async function writeFocusAuditResults() {
