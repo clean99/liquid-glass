@@ -149,6 +149,14 @@ inner shadow. Focus now uses a dedicated blue-white lift shadow instead of the
 base glass shadow, and the behavior gate records screenshot luma and dark/black
 pixel ratios for button, nav, and toggle focus states.
 
+The checked Searchbox image-background run also records a control contract, not
+just pixels. A 2026-06-14 sample showed the local surface, glass layer, content
+layer, input, and icon were `0.5px` above the live Kube geometry while the
+credit and checkbox label already aligned. The Storybook anchor is now
+`calc(50% + 1.5px)`, and `scripts/compare-kube-reference.mjs` hard-gates those
+vertical deltas at `0.25px`. This removes one measured geometry error while the
+remaining exact diff stays dominated by background/filter pixel differences.
+
 `bezelWidth`, capsule radius, and displacement falloff are separate inputs. The
 capsule radius is `75px`, but the observed bevel displacement returns to neutral
 within roughly `25px` from the edge. Treating the full radius as the falloff was

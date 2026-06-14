@@ -1489,6 +1489,7 @@ function summarizeControlContract(target, candidate) {
       contentLayer: summarizeRectDelta(target.contentLayer?.rect, candidate.contentLayer?.rect),
       credit: summarizeRectDelta(target.credit?.rect, candidate.credit?.rect),
       glassLayer: summarizeRectDelta(target.glassLayer?.rect, candidate.glassLayer?.rect),
+      icon: summarizeRectDelta(target.icon?.rect, candidate.icon?.rect),
       imageBackgroundLabel: summarizeRectDelta(
         target.imageBackgroundLabel?.rect,
         candidate.imageBackgroundLabel?.rect
@@ -1522,12 +1523,39 @@ function assertControlContractIntegrity(reference, target, candidate) {
 
   const failures = [
     assertSearchboxLayerContract("target", target),
-    assertSearchboxLayerContract("candidate", candidate)
+    assertSearchboxLayerContract("candidate", candidate),
+    assertSearchboxVerticalAlignment(target, candidate)
   ].filter(Boolean);
 
   if (failures.length > 0) {
     throw new Error(`Kube control contract diverged for ${reference.name}: ${failures.join("; ")}`);
   }
+}
+
+function assertSearchboxVerticalAlignment(target, candidate) {
+  const tolerance = 0.25;
+  const failures = [
+    ["surface", target.surface?.rect, candidate.surface?.rect],
+    ["glass layer", target.glassLayer?.rect, candidate.glassLayer?.rect],
+    ["content layer", target.contentLayer?.rect, candidate.contentLayer?.rect],
+    ["input", target.input?.rect, candidate.input?.rect],
+    ["icon", target.icon?.rect, candidate.icon?.rect]
+  ]
+    .map(([name, targetRect, candidateRect]) => {
+      if (!targetRect || !candidateRect) {
+        return `${name}: missing rect`;
+      }
+
+      const delta = round(candidateRect.y - targetRect.y);
+      return Math.abs(delta) > tolerance
+        ? `${name}: target=${targetRect.y}, candidate=${candidateRect.y}, delta=${delta}`
+        : null;
+    })
+    .filter(Boolean);
+
+  return failures.length > 0
+    ? `searchbox vertical alignment exceeds ${tolerance}px: ${failures.join("; ")}`
+    : null;
 }
 
 function assertSearchboxLayerContract(label, contract) {

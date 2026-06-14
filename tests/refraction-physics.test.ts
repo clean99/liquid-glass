@@ -880,10 +880,13 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain("readControlContract");
     expect(kubeReferenceCompareSource).toContain("summarizeControlContract");
     expect(kubeReferenceCompareSource).toContain("assertControlContractIntegrity");
+    expect(kubeReferenceCompareSource).toContain("assertSearchboxVerticalAlignment");
+    expect(kubeReferenceCompareSource).toContain("searchbox vertical alignment exceeds");
     expect(kubeReferenceCompareSource).toContain("findSearchGlassLayer");
     expect(kubeReferenceCompareSource).toContain("findSearchContentLayer");
     expect(kubeReferenceCompareSource).toContain("glassLayerMaterial");
     expect(kubeReferenceCompareSource).toContain("contentLayerMaterial");
+    expect(kubeReferenceCompareSource).toContain("icon: summarizeRectDelta");
     expect(kubeReferenceCompareSource).toContain("content layer is filtered");
     expect(kubeReferenceCompareSource).toContain("content layer does not cover glass surface");
     expect(kubeReferenceCompareSource).toContain("rectsMatch");
@@ -1496,7 +1499,7 @@ describe("Liquid Glass physics contract", () => {
     expect(focusRule).toContain("transform: scale(1)");
     expect(reducedMotionRule).toContain("transform: none");
     expect(searchboxStorySource).toContain('className: "lg-searchbox--kube-reference"');
-    expect(searchboxStorySource).toContain('top: "calc(50% + 1px)"');
+    expect(searchboxStorySource).toContain('top: "calc(50% + 1.5px)"');
     expect(searchboxStorySource).toContain("radius: 28");
     expect(kubeSearchboxHostRule).toContain("width: 21rem");
     expect(kubeSearchboxHostRule).toContain("height: 2.8rem");

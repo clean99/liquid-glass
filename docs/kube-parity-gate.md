@@ -93,10 +93,10 @@ metrics.
 | Reference                  | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | -------------------------- | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass           |     0.1902 | `1,0`      |     0.1356 |    0.2400 | gate |
-| magnifying-glass-pressed   |     0.3737 | `-8,-3`    |     0.2914 |    0.4050 | gate |
-| magnifying-glass-dragged   |     0.4088 | `-11,-1`   |     0.2837 |    0.4550 | gate |
-| searchbox                  |     0.0130 | `0,0`      |     0.0120 |    0.0200 | gate |
-| searchbox-image-background |     0.1183 | `0,1`      |     0.1111 |    0.1200 | gate |
+| magnifying-glass-pressed   |     0.3887 | `-9,-3`    |     0.2965 |    0.4050 | gate |
+| magnifying-glass-dragged   |     0.3943 | `-12,-1`   |     0.2742 |    0.4550 | gate |
+| searchbox                  |     0.0130 | `0,0`      |     0.0121 |    0.0200 | gate |
+| searchbox-image-background |     0.1184 | `0,1`      |     0.1113 |    0.1200 | gate |
 | switch                     |     0.0137 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                     |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
 
@@ -163,6 +163,11 @@ This measurement includes these verified geometry fixes:
   the live `9.75px` inset, and the checked-state label padding is ratcheted to
   `3.25px 7.25px`, which keeps the normal image-background gate under the
   current `0.1200` budget.
+- the searchbox checked image-background contract now hard-gates vertical
+  geometry. Surface, glass layer, content layer, input, and icon y deltas must
+  stay within `0.25px` of the live Kube sample. The current control contract has
+  `0px` y delta for surface, glass, content, and input, eliminating the previous
+  half-pixel upward drift without claiming exact pixel parity.
 - Kube demo image assets are locked in `stories/kube-reference-assets.ts` after
   Chrome/CDP sampling of the public page. Storybook serves stable local fixture
   paths from `stories/assets/kube/` for copied Kube demo images, filter maps,
@@ -259,8 +264,8 @@ Recent sampled `pnpm test:kube-reference:exact` result on 2026-06-14:
 | Reference                  | Exact diff ratio | Best phase | Phase diff |
 | -------------------------- | ---------------: | ---------- | ---------: |
 | magnifying-glass           |           0.5255 | `1,0`      |     0.5106 |
-| magnifying-glass-pressed   |           0.7020 | `1,1`      |     0.6847 |
-| magnifying-glass-dragged   |           0.6734 | `-6,0`     |     0.6322 |
+| magnifying-glass-pressed   |           0.7250 | `1,2`      |     0.6834 |
+| magnifying-glass-dragged   |           0.6603 | `0,0`      |     0.6589 |
 | searchbox                  |           0.1283 | `0,0`      |     0.1292 |
 | searchbox-image-background |           0.9285 | `0,1`      |     0.9288 |
 | switch                     |           0.0904 | `0,0`      |     0.0934 |

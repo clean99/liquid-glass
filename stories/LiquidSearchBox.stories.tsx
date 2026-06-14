@@ -85,7 +85,7 @@ function KubeSearchboxReferenceStory() {
             style={{
               position: "absolute",
               left: "50%",
-              top: "calc(50% + 1px)",
+              top: "calc(50% + 1.5px)",
               transform: "translate(-50%, -50%)"
             }}
           >
