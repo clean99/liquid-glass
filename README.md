@@ -1,76 +1,61 @@
 # @clean99/liquid-glass
 
-Beautiful, accessible Liquid Glass components for React that you can customize,
-extend, and build on. Open Source. Open Code. Real SVG/CSS refraction with
-production-ready fallbacks.
+Beautiful, accessible Liquid Glass components for React with real SVG/CSS
+refraction and production-ready fallbacks. Open Source. Open Code.
 
-`@clean99/liquid-glass` is a React UI library for Apple-inspired Liquid Glass
-interfaces on the web. The refraction engine is delegated to
-`@hashintel/refractive`; this project owns the component API, accessibility
-contract, design tokens, fallback strategy, shadcn-style Registry metadata,
-Storybook documentation, and release gates.
+`@clean99/liquid-glass` gives React apps a package-backed Liquid Glass material
+system: component APIs, design tokens, accessibility contracts, Storybook
+evidence, browser fallbacks, and shadcn-style Registry metadata. Enhanced
+refraction is powered by `@hashintel/refractive`; readable foreground content
+stays outside the displacement layer.
 
-This is not generic glassmorphism. The library treats Liquid Glass as a material
-system: readable foreground content, capped enhanced surfaces, reduced-motion
-and reduced-transparency support, browser-specific fallback behavior, and Kube
-reference parity checks.
+![Liquid Glass card visual evidence](tests/visual/liquid-components-visual.spec.ts-snapshots/component-liquid-card-light-chromium.png)
 
-## Project Status
+## Documentation
 
-- GitHub repository: `https://github.com/clean99/liquid-glass`
-- npm package: prepared for public release, but not published to npm yet; it is
-  not published yet.
-- Storybook Pages: workflow is present; the public site goes live after GitHub
-  Pages is enabled with GitHub Actions as the source.
-- Kube visual parity: `pnpm test:kube-reference` and
-  `pnpm test:kube-reference:strict` are release-candidate gates.
-  `pnpm test:kube-reference:exact` is tracked separately; exact 1:1 parity is
-  not claimed yet.
+Start with [the documentation index](docs/index.md).
 
-## Start Here
-
-- [Documentation index](docs/index.md)
-- [AI/agent documentation index](llms.txt)
-- [Adoption guide](docs/adoption-guide.md)
 - [Installation](docs/installation.md)
-- [API overview](docs/api-overview.md)
-- [Accessibility](docs/accessibility.md)
-- [Component inventory](docs/component-inventory.md)
+- [Components](docs/components/index.md)
 - [Component map](docs/components/map.md)
-- [Component documentation contract](docs/component-documentation.md)
-- [Component docs](docs/components/index.md)
-- [Design principles](docs/design-principles.md)
+- [Design principles and modes](docs/design-principles.md)
 - [Browser Support](docs/browser-support.md)
+- [Accessibility](docs/accessibility.md)
 - [Visual documentation](docs/visual-documentation.md)
-- [Testing strategy](docs/testing.md)
 - [shadcn-style Registry](docs/shadcn-registry.md)
-- [Open-source governance](docs/open-source-governance.md)
-- [Maintainer runbook](docs/maintainer-runbook.md)
+- [Testing](docs/testing.md)
+- [Release evidence dashboard](docs/release-evidence.md)
 - [Governance scorecard](docs/governance-scorecard.md)
 - [Progress checkpoints](docs/progress-checkpoints.md)
-- [UI library benchmark](docs/ui-library-benchmark.md)
-- [Release evidence dashboard](docs/release-evidence.md)
-- [Release checklist](docs/open-source-release.md)
-- [ROADMAP.md](ROADMAP.md)
-- [Support](SUPPORT.md)
-- [Security policy](SECURITY.md)
+- [Adoption guide](docs/adoption-guide.md)
+- [AI/agent index](llms.txt)
 
-## Installation
+## Status
 
-The package is not published to npm yet. After the first public npm release, the
-install command will be:
+- npm: prepared for public release, but not published to npm yet.
+- Storybook Pages: the workflow exists; the public site goes live only after
+  GitHub Pages is enabled with GitHub Actions as the source.
+- Registry: files are committed and validated, but consumer install commands
+  require the npm package to exist first.
+- Kube parity: `pnpm test:kube-reference` and
+  `pnpm test:kube-reference:strict` are release-candidate gates.
+  `pnpm test:kube-reference:exact` is separate; exact 1:1 parity is not claimed.
+
+## Install
+
+The package is not published yet. After the first npm release:
 
 ```sh
 pnpm add @clean99/liquid-glass
 ```
 
-`react` and `react-dom` are peer dependencies:
+Then import the CSS once:
 
-```sh
-pnpm add react react-dom
+```tsx
+import "@clean99/liquid-glass/styles.css";
 ```
 
-## Quick Start
+## Usage
 
 ```tsx
 "use client";
@@ -91,122 +76,9 @@ export function Example() {
 }
 ```
 
-## Documentation
+## Quality
 
-The documentation is organized like a public UI library docs site: start with
-the overview, install the package, choose a mode, inspect the component
-inventory, then use the registry and release checklist only when the package is
-ready for public distribution.
-
-```mermaid
-flowchart LR
-  A["docs/index.md"] --> B["Installation"]
-  A --> C["Components"]
-  A --> D["Theming and modes"]
-  A --> E["Visual documentation"]
-  A --> F["Registry"]
-  A --> G["Release"]
-  A --> H["AI/agent index"]
-```
-
-Primary docs:
-
-- `docs/index.md`: UI library documentation entry point.
-- `llms.txt`: concise machine-readable map for AI assistants, doc crawlers, and
-  maintainer automation.
-- `docs/adoption-guide.md`: who should adopt now, who should wait, and what
-  proof is required before production use.
-- `docs/api-overview.md`: public API shape, modes, provider behavior, and
-  component groups.
-- `docs/accessibility.md`: accessibility contract, gates, known limits, and
-  release rules.
-- `docs/component-inventory.md`: implemented and planned component inventory.
-- `docs/components/map.md`: shadcn-style directory for all implemented public
-  components, mapped to source, Storybook, visual profile, registry, and written
-  page status.
-- `docs/component-documentation.md`: per-component page standard for usage,
-  anatomy, API, visual states, accessibility, and verification evidence.
-- `docs/components/index.md`: package-backed component pages for Provider,
-  Surface, Button, ButtonGroup, Card, Field, Dialog, Accordion, Alert,
-  AlertDialog, Avatar, Badge, Breadcrumb, Calendar, Checkbox, Combobox,
-  DatePicker, DropdownMenu, Input, InputGroup, InputOtp, Label, NativeSelect,
-  RadioGroup, SearchBox, Select, Sidebar, Slider, Switch, Tabs, Textarea,
-  Toggle, and ToggleGroup.
-- `docs/visual-documentation.md`: Storybook Pages, light and dark states,
-  reduced motion, high contrast, mobile, and Kube reference evidence.
-- `docs/testing.md`: local and CI validation strategy.
-- `docs/maintainer-runbook.md`: maintainer triage, CI failure, Pages, release,
-  security, registry, and rollback procedures.
-- `docs/progress-checkpoints.md`: 30 minute launch-progress rubric, benchmark
-  comparison loop, visual documentation gaps, and continuation rule.
-- `docs/release-evidence.md`: proof map for what can be claimed publicly and
-  what still needs remote evidence.
-- `docs/open-source-release.md`: release, Pages, npm, and rollback checklist.
-
-## Components
-
-The implemented surface is tracked in `docs/component-inventory.json` and
-rendered in [Component inventory](docs/component-inventory.md). Coverage against
-the shadcn/ui-style baseline is tracked in `docs/shadcn-parity.json`.
-
-Core groups:
-
-- Foundations: `LiquidProvider`, `LiquidSurface`, `FallbackGlassSurface`,
-  `LiquidButton`, `LiquidCard`, `LiquidTypography`.
-- Forms: input, field, textarea, checkbox, switch, slider, select, combobox,
-  date picker, calendar, and OTP input.
-- Navigation: nav, link, breadcrumb, menubar, pagination, tabs, sidebar, and
-  command primitives.
-- Overlays: dialog, alert dialog, drawer, sheet, popover, hover card, tooltip,
-  dropdown menu, and context menu.
-- Data and feedback: table, data table, chart, progress, badge, alert, toast,
-  empty, skeleton, spinner, carousel, and resizable panels.
-- Kube-aligned primitives: lens, search box, switch, slider, and music player
-  reference states.
-
-## Browser Support
-
-Enhanced SVG/CSS refraction is conservative by default. Chrome and Chromium can
-use enhanced mode when capability checks pass. Safari, iOS Safari, Firefox,
-reduced transparency, and high contrast are first-class fallback or solid mode
-targets.
-
-## Accessibility
-
-Interactive components use native controls or well-known ARIA patterns. Dialogs,
-menus, tabs, accordions, form fields, toasts, data tables, charts, carousel,
-calendar, and sidebar behavior are tested with unit, component, Storybook, and
-`@axe-core/playwright` checks. Foreground text stays outside the displacement
-layer so refraction does not distort readable content.
-
-See [Accessibility](docs/accessibility.md) for the full contract and the release
-gates that prove it.
-
-## Performance
-
-Enhanced mode is guarded by runtime capability checks. `maxEnhancedSurfaces`
-limits expensive surfaces, mobile enhanced mode is disabled by default, dense
-content stays in fallback or solid material, and CSS is exported separately for
-tree-shakable package use.
-
-## shadcn-style Registry
-
-The repository includes a root `registry.json`, a flat `liquid-glass.json`, a
-package-local `registry/liquid-glass.json`, and generated entries under
-`registry/components/`.
-
-After the first npm release, registry examples can be installed with:
-
-```sh
-npx shadcn@latest add https://raw.githubusercontent.com/clean99/liquid-glass/main/liquid-glass.json
-```
-
-Registry items depend on `@clean99/liquid-glass`, so this is a post-npm-publish
-consumer path, not proof that the package has already been published.
-
-## Quality Gates
-
-Use the small loop while developing:
+The release gate is `pnpm verify`. Local development usually starts with:
 
 ```sh
 pnpm format
@@ -217,38 +89,16 @@ pnpm test:release-readiness
 pnpm test:unit
 ```
 
-Additional project gates:
+Release, visual, accessibility, registry, governance, and Kube evidence are
+documented in [Testing](docs/testing.md) and
+[Release evidence](docs/release-evidence.md).
 
-```sh
-pnpm test:inventory
-pnpm test:component-coverage
-pnpm test:registry
-pnpm test:governance
-pnpm test:research
-pnpm test:shadcn-parity
-pnpm test:visual-docs
-pnpm test:e2e
-pnpm test:a11y
-pnpm test:storybook
-pnpm test:kube-assets
-pnpm test:kube-reference
-pnpm test:kube-reference:strict
-pnpm test:kube-reference:exact
-pnpm build
-pnpm test:package
-pnpm verify
-```
+## Contributing
 
-`pnpm verify` is the release gate. It runs `pnpm run ci`, package validation,
-visual checks, Kube strict comparison, and `pnpm pack --dry-run`.
-
-## Release
-
-The package uses Changesets. npm publishing requires an `NPM_TOKEN` repository
-secret, `NPM_CONFIG_PROVENANCE=true`, `id-token: write`, and
-`publishConfig.access` pinned to `public`. Do not claim npm publish, GitHub Pages
-deployment, or exact Kube parity until the corresponding run has succeeded.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md),
+[SECURITY.md](SECURITY.md), [SUPPORT.md](SUPPORT.md), and
+[ROADMAP.md](ROADMAP.md).
 
 ## License and Attribution
 
-MIT. See `LICENSE` and `ATTRIBUTIONS.md`.
+MIT. See [LICENSE](LICENSE) and [ATTRIBUTIONS.md](ATTRIBUTIONS.md).

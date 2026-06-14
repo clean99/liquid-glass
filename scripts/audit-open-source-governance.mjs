@@ -11,11 +11,15 @@ const categoryChecks = [
   {
     name: "repository-first-screen",
     checks: [
-      fileIncludes("README.md", "Project Status"),
-      fileIncludes("README.md", "Start Here"),
+      fileIncludes("README.md", "Documentation"),
+      fileIncludes("README.md", "Status"),
+      fileIncludes("README.md", "Contributing"),
+      fileIncludes("README.md", "License and Attribution"),
       fileIncludes("README.md", "llms.txt"),
       fileIncludes("README.md", "not published to npm yet"),
       fileIncludes("README.md", "shadcn-style Registry"),
+      fileIncludes("README.md", "docs/index.md"),
+      fileIncludes("README.md", "docs/components/index.md"),
       valueIncludes(
         packageJson.description,
         "Liquid Glass",

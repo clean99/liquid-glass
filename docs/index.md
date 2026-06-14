@@ -5,8 +5,44 @@ refraction and production-ready fallbacks.
 
 This is the documentation entry point for `@clean99/liquid-glass`. It follows
 the public UI library shape used by shadcn/ui, Radix UI, Chakra UI, and HeroUI:
-short repository README, clear docs landing page, component inventory, registry
+short repository README, docs-style navigation, component inventory, registry
 distribution notes, visual evidence, and release gates.
+
+## Sections
+
+This repository does not yet have a live public docs site, so this Markdown
+index acts as the source-readable docs home. The structure mirrors a mainstream
+UI library docs sidebar without pretending that Storybook Pages or npm publish
+has already happened.
+
+| Section        | Start here                       | What it answers                                              |
+| -------------- | -------------------------------- | ------------------------------------------------------------ |
+| Introduction   | `docs/index.md`                  | What the library is, current status, and where to go next.   |
+| Installation   | `docs/installation.md`           | Package install path, CSS imports, peer dependencies.        |
+| Components     | `docs/components/index.md`       | Written component pages and the full component directory.    |
+| Theming        | `docs/design-principles.md`      | Liquid material rules, modes, tokens, and fallback behavior. |
+| API            | `docs/api-overview.md`           | Provider, exports, component groups, and stable contracts.   |
+| Registry       | `docs/shadcn-registry.md`        | shadcn-compatible package-backed registry distribution.      |
+| Accessibility  | `docs/accessibility.md`          | Semantics, keyboard paths, axe gates, and release limits.    |
+| Visual docs    | `docs/visual-documentation.md`   | Storybook, state coverage, screenshots, and Kube evidence.   |
+| Testing        | `docs/testing.md`                | Local, CI, visual, a11y, registry, and release gates.        |
+| Governance     | `docs/open-source-governance.md` | Benchmark against shadcn/ui, Radix UI, Chakra UI, HeroUI.    |
+| Release        | `docs/open-source-release.md`    | npm, provenance, Pages, rollback, and release checklist.     |
+| Changelog      | `CHANGELOG.md`                   | Version history after Changesets releases.                   |
+| AI/agent index | `llms.txt`                       | Machine-readable docs map and no-overclaim rules.            |
+| Support        | `SUPPORT.md`, `SECURITY.md`      | Support routing and private security reporting.              |
+
+## Start Here
+
+1. Read the [adoption guide](adoption-guide.md) to decide whether this package
+   is ready for your use case.
+2. Follow [installation](installation.md) after npm publication, or use the
+   repository-local validation path before publish.
+3. Browse [component docs](components/index.md) and the
+   [component map](components/map.md).
+4. Check [visual documentation](visual-documentation.md),
+   [accessibility](accessibility.md), and [release evidence](release-evidence.md)
+   before making public claims.
 
 ## Current Status
 
