@@ -541,6 +541,7 @@
   background: color-mix(in srgb, var(--lg-control-focus-fill), rgba(255, 255, 255, 0.42) 62%);
 }
 
+.lg-input-otp__field:focus,
 .lg-input-otp__field:focus-visible {
   color: color-mix(in srgb, var(--lg-text), transparent 10%);
   background:
@@ -4276,6 +4277,7 @@
   .lg-surface--interactive:not(.lg-surface--disabled):hover,
   .lg-surface--interactive:not(.lg-surface--disabled):active,
   .lg-surface--interactive:not(.lg-surface--disabled):focus-visible,
+  .lg-input-otp__field:focus,
   .lg-input-otp__field:focus-visible,
   .lg-radio-group__item:has(.lg-radio-group__input:focus-visible),
   .lg-tabs__tab:focus-visible,

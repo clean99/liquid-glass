@@ -369,7 +369,9 @@ const focusAuditTargets = [
   {
     name: "otp",
     options: {
+      maximumFocusedMaterialLumaLoss: 8,
       maximumFocusedScreenshotLumaLoss: 18,
+      minimumFocusedMaterialLuma: 238,
       minimumFocusedScreenshotLuma: 214,
       minimumFocusedScale: 1.05,
       requireMaterialDeepening: true
@@ -524,6 +526,20 @@ async function verifyFocusMaterial(name, options) {
       focusedMaterial.backgroundAlpha,
       idleMaterial.backgroundAlpha + 0.04,
       `${name} focus material alpha`
+    );
+  }
+  if (options.minimumFocusedMaterialLuma !== undefined) {
+    assertGreaterOrEqual(
+      focusedMaterial.backgroundLuma,
+      options.minimumFocusedMaterialLuma,
+      `${name} focus material luma`
+    );
+  }
+  if (options.maximumFocusedMaterialLumaLoss !== undefined) {
+    assertGreaterOrEqual(
+      focusedMaterial.backgroundLuma,
+      idleMaterial.backgroundLuma - options.maximumFocusedMaterialLumaLoss,
+      `${name} focus material luma loss`
     );
   }
   if (options.requireMaterialResponse) {
