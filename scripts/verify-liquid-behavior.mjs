@@ -477,7 +477,12 @@ async function verifyFocusMaterial(name, options) {
   await materialLocator.waitFor({ state: "visible", timeout: 10_000 });
   const idleMaterial = await readState(materialLocator);
   const idleScreenshot = path.join(focusScreenshotDir, `${safeFileSegment(name)}-idle.png`);
-  await locator.screenshot({ path: idleScreenshot });
+  const idleScreenshotEvidence = await captureFocusScreenshot(
+    page,
+    locator,
+    idleScreenshot,
+    `${name} idle`
+  );
 
   const focusSelector = options.focusSelector ?? story.selector;
   if (options.focusSelector) {
@@ -497,7 +502,12 @@ async function verifyFocusMaterial(name, options) {
     : materialLocator;
   const focusedMaterial = await readState(focusedMaterialLocator);
   const focusedScreenshot = path.join(focusScreenshotDir, `${safeFileSegment(name)}-focused.png`);
-  await focusedCaptureLocator.screenshot({ path: focusedScreenshot });
+  const focusedScreenshotEvidence = await captureFocusScreenshot(
+    page,
+    focusedCaptureLocator,
+    focusedScreenshot,
+    `${name} focused`
+  );
 
   assertEqual(focused.outlineStyle, "none", `${name} focus outline style`);
   assertNoPlasticFocusChrome(focused, `${name} focus`);
@@ -567,9 +577,16 @@ async function verifyFocusMaterial(name, options) {
     name,
     selector: story.selector,
     screenshots: {
-      focused: path.relative(behaviorArtifactDir, focusedScreenshot),
-      idle: path.relative(behaviorArtifactDir, idleScreenshot)
+      focused: focusedScreenshotEvidence.relativePath,
+      idle: idleScreenshotEvidence.relativePath
     },
+    screenshotCaptureModes: {
+      focused: focusedScreenshotEvidence.mode,
+      idle: idleScreenshotEvidence.mode
+    },
+    screenshotCaptureNotes: [idleScreenshotEvidence.note, focusedScreenshotEvidence.note].filter(
+      Boolean
+    ),
     storyId: story.id,
     transitionDurationMs: focused.maxTransitionDurationMs,
     widthDelta: round(focused.width - idle.width)
@@ -578,11 +595,36 @@ async function verifyFocusMaterial(name, options) {
   await page.close();
 }
 
+async function captureFocusScreenshot(page, locator, targetPath, label) {
+  await locator.waitFor({ state: "visible", timeout: 10_000 });
+  await locator.scrollIntoViewIfNeeded({ timeout: 5_000 });
+  await page.waitForTimeout(80);
+
+  try {
+    await locator.screenshot({ path: targetPath, timeout: 10_000 });
+    return {
+      mode: "element",
+      relativePath: path.relative(behaviorArtifactDir, targetPath)
+    };
+  } catch (error) {
+    await page.screenshot({ path: targetPath, fullPage: false });
+    return {
+      mode: "viewport-fallback",
+      note: `${label} element screenshot failed: ${formatErrorMessage(error)}`,
+      relativePath: path.relative(behaviorArtifactDir, targetPath)
+    };
+  }
+}
+
 function safeFileSegment(value) {
   return String(value)
     .replace(/[^a-z0-9]+/gi, "-")
     .replace(/^-+|-+$/g, "")
     .toLowerCase();
+}
+
+function formatErrorMessage(error) {
+  return error instanceof Error ? error.message : String(error);
 }
 
 async function writeFocusAuditResults() {

@@ -180,7 +180,7 @@ const expectedKubeCssOnlyBackgroundAssets = {
     backgroundSize: "24px 24px, 24px 24px, 100% 100%",
     file: "reference-captures/control-grid-background.png",
     height: 313,
-    sha256: "8a8bad22ddad97fb78f190fa7f04a231b4f3f7eb5f4f1a306dd9f76678adfe34",
+    sha256: "43aa5bcdbb2eba8cf84bd2dd133e942caf08b223c67d644cfdc3e0cd365b914e",
     sourceUrl: "https://kube.io/blog/liquid-glass-css-svg/",
     targetIds: ["searchbox", "switch", "slider"],
     width: 706
@@ -538,6 +538,14 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeDemoAssetVerifierSource).toContain("validateLocalFontAsset");
     expect(kubeDemoAssetVerifierSource).toContain("validateRenderedCssOnlyBackgroundAssets");
     expect(kubeDemoAssetVerifierSource).toContain("readTargetCssOnlyDemoBackground");
+    expect(kubeDemoAssetVerifierSource).toContain("newCDPSession(page)");
+    expect(kubeDemoAssetVerifierSource).toContain('cdpSession.send("Network.enable")');
+    expect(kubeDemoAssetVerifierSource).toContain("Network.responseReceived");
+    expect(kubeDemoAssetVerifierSource).toContain("cdpResponseUrls");
+    expect(kubeDemoAssetVerifierSource).toContain("captureTargetCssOnlyDemoBackground");
+    expect(kubeDemoAssetVerifierSource).toContain('"css-only-backgrounds"');
+    expect(kubeDemoAssetVerifierSource).toContain("sample.capture = capture");
+    expect(kubeDemoAssetVerifierSource).toContain("capture.sha256 !== asset.sha256");
     expect(kubeDemoAssetVerifierSource).toContain("crypto.createHash");
     expect(kubeDemoAssetVerifierSource).toContain("readRasterSize(bytes)");
     expect(kubeDemoAssetVerifierSource).toContain("localAssets: localAssetChecks");
@@ -1220,9 +1228,13 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain("safeFileSegment(name)");
     expect(verifyLiquidBehaviorSource).toContain("-idle.png");
     expect(verifyLiquidBehaviorSource).toContain("-focused.png");
+    expect(verifyLiquidBehaviorSource).toContain("captureFocusScreenshot(");
+    expect(verifyLiquidBehaviorSource).toContain("await locator.scrollIntoViewIfNeeded");
     expect(verifyLiquidBehaviorSource).toContain("await locator.screenshot");
-    expect(verifyLiquidBehaviorSource).toContain("await focusedCaptureLocator.screenshot");
+    expect(verifyLiquidBehaviorSource).toContain("await page.screenshot");
     expect(verifyLiquidBehaviorSource).toContain("screenshots:");
+    expect(verifyLiquidBehaviorSource).toContain("screenshotCaptureModes:");
+    expect(verifyLiquidBehaviorSource).toContain("viewport-fallback");
     expect(verifyLiquidBehaviorSource).toContain("path.relative(behaviorArtifactDir");
   });
 
