@@ -369,6 +369,7 @@ const focusAuditTargets = [
   {
     name: "otp",
     options: {
+      maximumFocusedScreenshotDarkPixelRatio: 0.02,
       maximumFocusedMaterialLumaLoss: 8,
       maximumFocusedScreenshotLumaLoss: 18,
       minimumFocusedMaterialLuma: 238,
@@ -566,6 +567,13 @@ async function verifyFocusMaterial(name, options) {
       `${name} focused screenshot luma loss`
     );
   }
+  if (options.maximumFocusedScreenshotDarkPixelRatio !== undefined) {
+    assertLessThanOrEqual(
+      focusedScreenshotEvidence.darkPixelRatio ?? 1,
+      options.maximumFocusedScreenshotDarkPixelRatio,
+      `${name} focused screenshot dark pixel ratio`
+    );
+  }
   if (options.requireShadowChange) {
     assertNotEqual(focused.boxShadow, idle.boxShadow, `${name} focus shadow`);
   }
@@ -605,6 +613,7 @@ async function verifyFocusMaterial(name, options) {
 
   focusAuditResults.push({
     backgroundAlphaDelta: round(focused.backgroundAlpha - idle.backgroundAlpha),
+    focusedScreenshotDarkPixelRatio: roundNullable(focusedScreenshotEvidence.darkPixelRatio),
     focusedScreenshotMeanLuma: roundNullable(focusedScreenshotEvidence.meanLuma),
     focusedScale: round(focused.scale),
     focusedShadowLayerCount: focused.shadowLayerCount,
@@ -698,6 +707,7 @@ async function measureScreenshotLuma(page, targetPath) {
     bitmap.close?.();
 
     const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+    let darkPixels = 0;
     let maxLuma = 0;
     let minLuma = 255;
     let sampledPixels = 0;
@@ -710,6 +720,9 @@ async function measureScreenshotLuma(page, targetPath) {
       }
 
       const luma = 0.2126 * pixels[index] + 0.7152 * pixels[index + 1] + 0.0722 * pixels[index + 2];
+      if (luma < 170) {
+        darkPixels += 1;
+      }
       maxLuma = Math.max(maxLuma, luma);
       minLuma = Math.min(minLuma, luma);
       sampledPixels += 1;
@@ -721,6 +734,7 @@ async function measureScreenshotLuma(page, targetPath) {
     }
 
     return {
+      darkPixelRatio: darkPixels / sampledPixels,
       maxLuma,
       meanLuma: totalLuma / sampledPixels,
       minLuma,

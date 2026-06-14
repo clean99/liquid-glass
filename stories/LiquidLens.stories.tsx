@@ -52,8 +52,8 @@ const precisionLensIdleRefraction = {
 };
 const precisionLensPressedRefraction = {
   ...precisionLensIdleRefraction,
-  glassThickness: 114.25698,
-  magnificationGlassThickness: 47.15323
+  glassThickness: 113.57481,
+  magnificationGlassThickness: 46.66599
 };
 const precisionLensDraggingRefraction = {
   ...precisionLensIdleRefraction,
@@ -556,6 +556,11 @@ function draggableLensStyle(
   position: LiquidLensPoint,
   droplet: LiquidLensDropletResponse
 ): CSSProperties {
+  const dragDelta = {
+    x: position.x - precisionLensInitialPosition.x,
+    y: position.y - precisionLensInitialPosition.y
+  };
+
   return {
     "--lg-demo-droplet-origin-x": `${droplet.originX * 100}%`,
     "--lg-demo-droplet-origin-y": `${droplet.originY * 100}%`,
@@ -563,8 +568,12 @@ function draggableLensStyle(
     "--lg-demo-droplet-scale-y": droplet.scaleY,
     "--lg-demo-droplet-translate-x": `${droplet.translateX}px`,
     "--lg-demo-droplet-translate-y": `${droplet.translateY}px`,
-    "--lg-demo-lens-x": `${position.x}px`,
-    "--lg-demo-lens-y": `${position.y}px`
+    "--lg-demo-lens-x": `${precisionLensInitialPosition.x}px`,
+    "--lg-demo-lens-y": `${precisionLensInitialPosition.y}px`,
+    "--lg-demo-drag-x": `${dragDelta.x}px`,
+    "--lg-demo-drag-y": `${dragDelta.y}px`,
+    left: `${precisionLensInitialPosition.x}px`,
+    top: `${precisionLensInitialPosition.y}px`
   } as CSSProperties;
 }
 

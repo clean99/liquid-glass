@@ -321,16 +321,16 @@ describe("Liquid Glass physics contract", () => {
 
   it("matches the Kube pressed lens filter strength from the active contract", () => {
     const pressedPipeline = resolveLensReferencePipeline({
-      glassThickness: 114.25698,
-      magnificationGlassThickness: 47.15323
+      glassThickness: 113.57481,
+      magnificationGlassThickness: 46.66599
     });
     const draggedPipeline = resolveLensReferencePipeline({
       glassThickness: 109.05052,
       magnificationGlassThickness: 42.06586
     });
 
-    expect(pressedPipeline.stages[0]?.scale).toBeCloseTo(52.643975915442034, 3);
-    expect(pressedPipeline.stages[1]?.scale).toBeCloseTo(127.56159721973536, 3);
+    expect(pressedPipeline.stages[0]?.scale).toBeCloseTo(52.09999711582867, 3);
+    expect(pressedPipeline.stages[1]?.scale).toBeCloseTo(126.79999446155861, 3);
     expect(draggedPipeline.stages[0]?.scale).toBeCloseTo(46.964203545358714, 3);
     expect(draggedPipeline.stages[1]?.scale).toBeCloseTo(121.74887478328273, 3);
   });
@@ -404,6 +404,12 @@ describe("Liquid Glass physics contract", () => {
     expect(handleRule).toContain("height: 9.375rem");
     expect(handleRule).toContain("box-sizing: border-box");
     expect(handleRule).toContain("padding: 0");
+    expect(handleRule).toContain("top: var(--lg-demo-lens-y, 0)");
+    expect(handleRule).toContain("left: var(--lg-demo-lens-x, 0)");
+    expect(handleRule).not.toContain("translate3d(var(--lg-demo-lens-x");
+    expect(handleRule).toContain(
+      "translate3d(var(--lg-demo-drag-x, 0), var(--lg-demo-drag-y, 0), 0)"
+    );
     expect(handleRule).toContain("scaleY(var(--lg-demo-droplet-scale-y, 0.8))");
     expect(handleRule).toContain("scaleX(var(--lg-demo-focus-scale-x, 1))");
     expect(handleRule).toContain("scaleY(var(--lg-demo-focus-scale-y, 1))");
@@ -414,6 +420,12 @@ describe("Liquid Glass physics contract", () => {
     expect(styles).not.toContain(".lg-precision-lens-demo__handle::before");
     expect(styles).not.toContain(".lg-precision-lens-demo__handle::after");
     expect(handleRule).not.toContain("padding: 0.9375rem 0");
+    expect(lensStorySource).toContain("position.x - precisionLensInitialPosition.x");
+    expect(lensStorySource).toContain("position.y - precisionLensInitialPosition.y");
+    expect(lensStorySource).toContain('"--lg-demo-drag-x": `${dragDelta.x}px`');
+    expect(lensStorySource).toContain('"--lg-demo-drag-y": `${dragDelta.y}px`');
+    expect(lensStorySource).toContain("left: `${precisionLensInitialPosition.x}px`");
+    expect(lensStorySource).toContain("top: `${precisionLensInitialPosition.y}px`");
     expect(pressedSurfaceRule).not.toContain("drop-shadow");
     expect(pressedSurfaceRule).toContain("4px 16px 24px rgba(0, 0, 0, 0.22)");
     expect(pressedSurfaceRule).toContain("inset 2px 8px 24px rgba(0, 0, 0, 0.27)");
@@ -893,8 +905,8 @@ describe("Liquid Glass physics contract", () => {
   it("boosts the Kube lens filter scale only for active water-drop states", () => {
     expect(lensStorySource).toContain("const precisionLensPressedRefraction = {");
     expect(lensStorySource).toContain("const precisionLensDraggingRefraction = {");
-    expect(lensStorySource).toContain("glassThickness: 114.25698");
-    expect(lensStorySource).toContain("magnificationGlassThickness: 47.15323");
+    expect(lensStorySource).toContain("glassThickness: 113.57481");
+    expect(lensStorySource).toContain("magnificationGlassThickness: 46.66599");
     expect(lensStorySource).toContain("glassThickness: 109.05052");
     expect(lensStorySource).toContain("magnificationGlassThickness: 42.06586");
     expect(lensStorySource).toContain("precisionLensRefractionForDroplet(droplet)");
@@ -1327,6 +1339,9 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotLumaLoss: 18");
     expect(verifyLiquidBehaviorSource).toContain("minimumFocusedScreenshotLuma: 226");
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotLumaLoss: 22");
+    expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotDarkPixelRatio: 0.02");
+    expect(verifyLiquidBehaviorSource).toContain("focusedScreenshotDarkPixelRatio");
+    expect(verifyLiquidBehaviorSource).toContain("darkPixelRatio");
     expect(verifyLiquidBehaviorSource).toContain("focusedScreenshotMeanLuma");
     expect(verifyLiquidBehaviorSource).toContain("idleScreenshotMeanLuma");
   });

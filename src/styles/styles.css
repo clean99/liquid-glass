@@ -3675,8 +3675,8 @@
 
 .lg-precision-lens-demo__handle {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: var(--lg-demo-lens-y, 0);
+  left: var(--lg-demo-lens-x, 0);
   z-index: 4;
   width: 13.125rem;
   height: 9.375rem;
@@ -3685,7 +3685,7 @@
   border-radius: 999px;
   cursor: grab;
   touch-action: none;
-  transform: translate3d(var(--lg-demo-lens-x, 0), var(--lg-demo-lens-y, 0), 0)
+  transform: translate3d(var(--lg-demo-drag-x, 0), var(--lg-demo-drag-y, 0), 0)
     scaleX(var(--lg-demo-droplet-scale-x, 1)) scaleY(var(--lg-demo-droplet-scale-y, 0.8))
     scaleX(var(--lg-demo-focus-scale-x, 1)) scaleY(var(--lg-demo-focus-scale-y, 1));
   transform-origin: center;
