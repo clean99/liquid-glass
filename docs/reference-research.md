@@ -188,12 +188,11 @@ two filter stages during active input:
 - displacement thickness equivalent: `glassThickness: 88`,
 - magnification thickness equivalent:
   `magnificationGlassThickness: 21.496810403025258`,
-- observed displacement scales: `[24, 98.247...]` for idle, pressed, and dragged
-  captures.
+- observed idle displacement scales: `[24, 98.247...]`.
 
-This matters because a local implementation can cheat by increasing SVG
-displacement on pointer down. The live page does not need that. Matching Kube
-requires the same filter contract plus the right water-drop geometry, material
+This matters because a local implementation can cheat by changing SVG
+displacement without matching the water-drop geometry. Matching Kube requires
+the measured filter contract plus the right water-drop geometry, material
 response, and background phase.
 
 This does not replace full visual parity. It prevents a weaker failure mode:
@@ -233,7 +232,7 @@ but the live pressed and dragged states actually increase both SVG displacement
 passes:
 
 - idle: `[24, 98.2471]`,
-- pressed: `[52.6440, 127.5616]`,
+- pressed: `[53.0098, 127.9360]`,
 - dragged: roughly `[46.96, 121.75]`.
 
 The local draggable reference now maps `pressed` and `dragging` to separate

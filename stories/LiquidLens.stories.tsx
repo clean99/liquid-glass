@@ -52,8 +52,8 @@ const precisionLensIdleRefraction = {
 };
 const precisionLensPressedRefraction = {
   ...precisionLensIdleRefraction,
-  glassThickness: 113.57481,
-  magnificationGlassThickness: 46.66599
+  glassThickness: 114.59234035637621,
+  magnificationGlassThickness: 47.48092398546781
 };
 const precisionLensDraggingRefraction = {
   ...precisionLensIdleRefraction,

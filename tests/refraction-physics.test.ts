@@ -321,16 +321,16 @@ describe("Liquid Glass physics contract", () => {
 
   it("matches the Kube pressed lens filter strength from the active contract", () => {
     const pressedPipeline = resolveLensReferencePipeline({
-      glassThickness: 113.57481,
-      magnificationGlassThickness: 46.66599
+      glassThickness: 114.59234035637621,
+      magnificationGlassThickness: 47.48092398546781
     });
     const draggedPipeline = resolveLensReferencePipeline({
       glassThickness: 109.05052,
       magnificationGlassThickness: 42.06586
     });
 
-    expect(pressedPipeline.stages[0]?.scale).toBeCloseTo(52.09999711582867, 3);
-    expect(pressedPipeline.stages[1]?.scale).toBeCloseTo(126.79999446155861, 3);
+    expect(pressedPipeline.stages[0]?.scale).toBeCloseTo(53.0098258433195, 3);
+    expect(pressedPipeline.stages[1]?.scale).toBeCloseTo(127.93601083098308, 3);
     expect(draggedPipeline.stages[0]?.scale).toBeCloseTo(46.964203545358714, 3);
     expect(draggedPipeline.stages[1]?.scale).toBeCloseTo(121.74887478328273, 3);
   });
@@ -907,8 +907,8 @@ describe("Liquid Glass physics contract", () => {
   it("boosts the Kube lens filter scale only for active water-drop states", () => {
     expect(lensStorySource).toContain("const precisionLensPressedRefraction = {");
     expect(lensStorySource).toContain("const precisionLensDraggingRefraction = {");
-    expect(lensStorySource).toContain("glassThickness: 113.57481");
-    expect(lensStorySource).toContain("magnificationGlassThickness: 46.66599");
+    expect(lensStorySource).toContain("glassThickness: 114.59234035637621");
+    expect(lensStorySource).toContain("magnificationGlassThickness: 47.48092398546781");
     expect(lensStorySource).toContain("glassThickness: 109.05052");
     expect(lensStorySource).toContain("magnificationGlassThickness: 42.06586");
     expect(lensStorySource).toContain("precisionLensRefractionForDroplet(droplet)");

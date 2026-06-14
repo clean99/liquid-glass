@@ -93,10 +93,10 @@ metrics.
 | Reference                  | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | -------------------------- | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass           |     0.1902 | `1,0`      |     0.1356 |    0.2400 | gate |
-| magnifying-glass-pressed   |     0.3892 | `-9,-3`    |     0.3001 |    0.4050 | gate |
-| magnifying-glass-dragged   |     0.3714 | `-11,-1`   |     0.2693 |    0.4550 | gate |
+| magnifying-glass-pressed   |     0.3737 | `-8,-3`    |     0.2914 |    0.4050 | gate |
+| magnifying-glass-dragged   |     0.4088 | `-11,-1`   |     0.2837 |    0.4550 | gate |
 | searchbox                  |     0.0130 | `0,0`      |     0.0120 |    0.0200 | gate |
-| searchbox-image-background |     0.1184 | `0,1`      |     0.1113 |    0.1200 | gate |
+| searchbox-image-background |     0.1183 | `0,1`      |     0.1111 |    0.1200 | gate |
 | switch                     |     0.0137 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                     |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
 
@@ -116,9 +116,10 @@ This measurement includes these verified geometry fixes:
   as an outer handle `drop-shadow()` makes the material read like plastic and
   regresses the pressed/dragged screenshot rows.
 - all magnifying-glass states now write a filter-contract artifact. The live
-  Kube target keeps the same two-pass displacement scales during idle, pressed,
-  and dragged captures, so pointer parity must be solved through geometry,
-  background phase, and material response instead of fake active filter boosts.
+  Kube target keeps the same two-pass structure during idle, pressed, and
+  dragged captures, while active input changes both displacement scales. Pointer
+  parity must match that measured filter contract plus geometry, background
+  phase, and material response.
 - the draggable precision story now separates transform ownership from the
   filter surface: an outer same-size handle owns pointer/focus transforms, while
   the inner `LiquidLens` surface stays untransformed. This matches the Kube
@@ -258,15 +259,17 @@ Recent sampled `pnpm test:kube-reference:exact` result on 2026-06-14:
 | Reference                  | Exact diff ratio | Best phase | Phase diff |
 | -------------------------- | ---------------: | ---------- | ---------: |
 | magnifying-glass           |           0.5255 | `1,0`      |     0.5106 |
-| magnifying-glass-pressed   |           0.7426 | `-2,1`     |     0.7001 |
-| magnifying-glass-dragged   |           0.6363 | `0,0`      |     0.6410 |
-| searchbox                  |           0.1324 | `0,0`      |     0.1322 |
-| searchbox-image-background |           0.9303 | `0,1`      |     0.9290 |
+| magnifying-glass-pressed   |           0.7020 | `1,1`      |     0.6847 |
+| magnifying-glass-dragged   |           0.6734 | `-6,0`     |     0.6322 |
+| searchbox                  |           0.1283 | `0,0`      |     0.1292 |
+| searchbox-image-background |           0.9285 | `0,1`      |     0.9288 |
 | switch                     |           0.0904 | `0,0`      |     0.0934 |
 | slider                     |           0.0750 | `0,0`      |     0.0763 |
 
-The exact command is still non-gating and can also fail earlier when the live
-Kube page does not produce a valid interaction deformation sample. That is still
+The exact command now gets past the pressed filter-contract scale assertion for
+the current local sample; it still fails the pixel table above. It can also fail
+earlier when the live Kube page does not produce a valid interaction deformation
+sample. That is still
 a failed exact-parity run, not release readiness.
 
 That exact table is the acceptance blocker. Passing the normal gate only means
