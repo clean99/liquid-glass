@@ -11,6 +11,8 @@ const manifestPath = path.join(root, "stories/assets/kube/manifest.json");
 const artifactDir = path.join(root, "test-results/kube-assets");
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 const remoteTextCache = new Map();
+const targetNavigationRetries = Number(process.env.KUBE_NAVIGATION_RETRIES ?? 3);
+const targetNavigationTimeoutMs = Number(process.env.KUBE_NAVIGATION_TIMEOUT_MS ?? 60_000);
 
 const requiredDemoAssets = [
   "searchboxDemoBackground",
@@ -72,7 +74,9 @@ const page = await browser.newPage({
 });
 
 try {
-  await page.goto(targetUrl, { waitUntil: "networkidle", timeout: 60_000 });
+  await gotoTargetReference(page);
+  await page.waitForLoadState("load", { timeout: 20_000 }).catch(() => undefined);
+  await page.waitForLoadState("networkidle", { timeout: 10_000 }).catch(() => undefined);
   await page
     .waitForFunction(() => !("fonts" in document) || document.fonts.status === "loaded", {
       timeout: 5_000
@@ -268,6 +272,33 @@ try {
   );
 } finally {
   await browser.close();
+}
+
+async function gotoTargetReference(page) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= targetNavigationRetries; attempt += 1) {
+    try {
+      await page.goto(targetUrl, {
+        timeout: targetNavigationTimeoutMs,
+        waitUntil: "domcontentloaded"
+      });
+      return;
+    } catch (error) {
+      lastError = error;
+
+      if (attempt >= targetNavigationRetries) {
+        break;
+      }
+
+      console.warn(
+        `Kube asset verifier navigation failed on attempt ${attempt}; retrying before asset sampling.`
+      );
+      await page.waitForTimeout(1_000 * attempt);
+    }
+  }
+
+  throw lastError;
 }
 
 function validateLocalAsset({ asset, name }) {

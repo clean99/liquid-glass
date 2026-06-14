@@ -450,6 +450,12 @@ describe("Liquid Glass physics contract", () => {
     );
     expect(packageJson.scripts["test:kube-reference"]).toContain("pnpm test:kube-assets");
     expect(kubeDemoAssetVerifierSource).toContain("https://kube.io/blog/liquid-glass-css-svg/");
+    expect(kubeDemoAssetVerifierSource).toContain("targetNavigationRetries");
+    expect(kubeDemoAssetVerifierSource).toContain("targetNavigationTimeoutMs");
+    expect(kubeDemoAssetVerifierSource).toContain("gotoTargetReference(page)");
+    expect(kubeDemoAssetVerifierSource).toContain('waitUntil: "domcontentloaded"');
+    expect(kubeDemoAssetVerifierSource).toContain('waitForLoadState("networkidle"');
+    expect(kubeDemoAssetVerifierSource).toContain("Kube asset verifier navigation failed");
     expect(kubeDemoAssetVerifierSource).toContain('"Use image background"');
     expect(kubeDemoAssetVerifierSource).toContain(
       'document.querySelectorAll("svg image, image, svg feImage, feImage")'
