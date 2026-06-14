@@ -92,11 +92,11 @@ metrics.
 
 | Reference                  | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | -------------------------- | ---------: | ---------- | ---------: | --------: | ---- |
-| magnifying-glass           |     0.1954 | `0,-1`     |     0.1807 |    0.2400 | gate |
-| magnifying-glass-pressed   |     0.3899 | `0,-2`     |     0.3766 |    0.4050 | gate |
-| magnifying-glass-dragged   |     0.3898 | `-3,-1`    |     0.3759 |    0.4550 | gate |
-| searchbox                  |     0.0180 | `0,0`      |     0.0169 |    0.0200 | gate |
-| searchbox-image-background |     0.1118 | `0,1`      |     0.1084 |    0.1200 | gate |
+| magnifying-glass           |     0.1902 | `1,0`      |     0.1356 |    0.2400 | gate |
+| magnifying-glass-pressed   |     0.4045 | `-9,-3`    |     0.2996 |    0.4050 | gate |
+| magnifying-glass-dragged   |     0.3301 | `-8,-1`    |     0.2603 |    0.4550 | gate |
+| searchbox                  |     0.0155 | `0,0`      |     0.0147 |    0.0200 | gate |
+| searchbox-image-background |     0.1240 | `0,1`      |     0.1076 |    0.1200 | gate |
 | switch                     |     0.0137 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                     |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
 
@@ -119,10 +119,11 @@ This measurement includes these verified geometry fixes:
   Kube target keeps the same two-pass displacement scales during idle, pressed,
   and dragged captures, so pointer parity must be solved through geometry,
   background phase, and material response instead of fake active filter boosts.
-- the draggable optical body is a single `LiquidLens` surface. Splitting pointer
-  handling onto an outer wrapper and backdrop-filter onto an inner lens made the
-  transformed geometry diverge from active filter sampling and regressed the
-  pressed/dragged screenshots.
+- the draggable precision story now separates transform ownership from the
+  filter surface: an outer same-size handle owns pointer/focus transforms, while
+  the inner `LiquidLens` surface stays untransformed. This matches the Kube
+  pressed/dragged filter contract more closely (`parent->parent`) without
+  relaxing the screenshot gates.
 - the interactive Storybook board applies an `-8px, -2px` content phase offset
   while keeping the Kube lens CSS coordinate unchanged. This moves the
   high-contrast text field under the active lens without faking the lens motion
@@ -236,14 +237,15 @@ captures; they are not visual completion.
 
 Recent sampled `pnpm test:kube-reference:exact` result on 2026-06-14:
 
-| Reference                | Exact diff ratio | Best phase | Phase diff |
-| ------------------------ | ---------------: | ---------- | ---------: |
-| magnifying-glass         |           0.5243 | `0,-1`     |     0.5133 |
-| magnifying-glass-pressed |           0.7156 | `1,0`      |     0.7054 |
-| magnifying-glass-dragged |           0.6417 | `-1,0`     |     0.6366 |
-| searchbox                |           0.1138 | `0,0`      |     0.1150 |
-| switch                   |           0.0904 | `0,0`      |     0.0934 |
-| slider                   |           0.0750 | `0,0`      |     0.0763 |
+| Reference                  | Exact diff ratio | Best phase | Phase diff |
+| -------------------------- | ---------------: | ---------- | ---------: |
+| magnifying-glass           |           0.5255 | `1,0`      |     0.5106 |
+| magnifying-glass-pressed   |           0.7426 | `-2,1`     |     0.7001 |
+| magnifying-glass-dragged   |           0.6363 | `0,0`      |     0.6410 |
+| searchbox                  |           0.1324 | `0,0`      |     0.1322 |
+| searchbox-image-background |           0.9303 | `0,1`      |     0.9290 |
+| switch                     |           0.0904 | `0,0`      |     0.0934 |
+| slider                     |           0.0750 | `0,0`      |     0.0763 |
 
 The exact command is still non-gating and can also fail earlier when the live
 Kube page does not produce a valid interaction deformation sample. That is still

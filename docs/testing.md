@@ -68,7 +68,10 @@ radius, dimensions, and background material values.
 pointer actions for focus, hover, active press, and the draggable lens board. The
 test uses real pointer actions instead of synthetic DOM events, records
 `requestAnimationFrame` samples, and asserts pressed, dragging, and released
-animation states.
+animation states. Focus screenshots also record mean luma for every audited
+surface; switch and slider focus now hard-fail if the focused thumb loses too
+much brightness, so the Kube-style focus contract remains frosted material plus
+growth rather than a black or hard-ring state.
 
 `pnpm test:a11y` builds static Storybook, opens representative component stories in
 Chromium, runs `@axe-core/playwright`, writes `test-results/a11y/storybook-a11y-summary.json`,

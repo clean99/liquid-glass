@@ -390,6 +390,8 @@ const focusAuditTargets = [
     options: {
       focusSelector: behaviorStories.switch.focusSelector,
       materialSelector: ".lg-switch__track",
+      maximumFocusedScreenshotLumaLoss: 18,
+      minimumFocusedScreenshotLuma: 232,
       minimumFocusedScale: 0.7,
       requireMaterialDeepening: false,
       requireMaterialResponse: true
@@ -400,6 +402,8 @@ const focusAuditTargets = [
     options: {
       focusSelector: behaviorStories.slider.focusSelector,
       materialSelector: ".lg-slider__track",
+      maximumFocusedScreenshotLumaLoss: 22,
+      minimumFocusedScreenshotLuma: 226,
       minimumFocusedScale: 0.67,
       requireMaterialDeepening: false,
       requireMaterialResponse: true

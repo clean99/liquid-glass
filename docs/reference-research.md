@@ -227,23 +227,24 @@ filter surface can make action metrics look close while changing the backdrop
 sampling coordinate space, so transform ownership is now a first-class
 diagnostic rather than a cosmetic DOM preference.
 
-Experiments that split the handle and surface have regressed the current
-Chromium pixel gate unless the rest of the sampling model also changes. The
-older generated/data-url experiment regressed:
+Earlier handle/surface split experiments regressed the current Chromium pixel
+gate when they also changed map loading or backdrop sampling. The older
+generated/data-url experiment regressed:
 
 - idle magnifying glass diff: `0.2000 -> 0.6977`,
 - pressed magnifying glass diff: `0.4163 -> 0.7928`,
 - dragged magnifying glass diff: `0.4224 -> 0.9294`.
 
-A 2026-06-14 retry with network-loaded Kube PNG maps still failed the normal
-gate: idle magnifying glass moved to `0.3140 > 0.24`, even though pressed
+A later 2026-06-14 retry with network-loaded Kube PNG maps still failed the
+normal gate: idle magnifying glass moved to `0.3140 > 0.24`, even though pressed
 (`0.3711 <= 0.405`) and dragged (`0.4304 <= 0.455`) stayed within the current
-loose gates. The current implementation therefore keeps the filter and transform
-on the same root lens host until a transformed-parent sampling model can improve
-normal and interactive gates together. Likely variables to isolate are
-transformed-parent backdrop-filter sampling, SVG `filterUnits`/region behavior,
-local `<defs>` placement, and network-loaded PNG maps versus generated/data-url
-maps.
+loose gates. The current implementation keeps generated local maps, but splits
+only the interactive story's same-size handle and filter surface: the outer
+handle owns pointer/focus transforms and the inner `LiquidLens` surface stays
+untransformed. That moved pressed and dragged transform ownership to
+`parent->parent` while the normal gate still passed (`pressed 0.2996 <= 0.405`,
+`dragged 0.2603 <= 0.455` phase-adjusted on 2026-06-14). Contract shape alone
+is still not completion; exact parity remains the judge.
 
 `scripts/compare-kube-reference.mjs` now treats these interaction metrics and
 the magnifying-glass filter contract as hard contracts. Candidate press and drag
@@ -297,8 +298,7 @@ rows. It parses root, parent, surface, and effective CSS transform matrices into
 scale and translation metrics, then reports the maximum scale and translation
 delta next to the diff rows. The 2026-06-14 exact run still fails with lens
 worst regions in `lowerMid` / `bottom`, so the next implementation change should
-target transform ownership and sampling-model alignment before tuning material
-colors.
+target remaining sampling-model alignment before tuning material colors.
 
 ## rdev/liquid-glass-react
 

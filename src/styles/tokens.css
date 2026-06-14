@@ -12,16 +12,16 @@
   --lg-glass-highlight: rgba(255, 255, 255, 0.86);
   --lg-glass-edge: rgba(255, 255, 255, 0.52);
   --lg-glass-shadow: 0 18px 48px rgba(20, 28, 36, 0.12);
-  --lg-control-focus-fill: rgba(255, 255, 255, 0.34);
-  --lg-control-focus-edge: rgba(255, 255, 255, 0.3);
-  --lg-control-focus-depth: rgba(20, 28, 36, 0.1);
-  --lg-control-focus-mist: rgba(255, 255, 255, 0.24);
+  --lg-control-focus-fill: rgba(255, 255, 255, 0.56);
+  --lg-control-focus-edge: rgba(255, 255, 255, 0.5);
+  --lg-control-focus-depth: rgba(58, 76, 96, 0.08);
+  --lg-control-focus-mist: rgba(255, 255, 255, 0.38);
   --lg-control-focus-shadow-soft:
-    0 4px 14px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    inset 0 0 18px var(--lg-control-focus-mist);
+    0 6px 18px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.48),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.16), inset 0 0 20px var(--lg-control-focus-mist);
   --lg-control-focus-shadow-deep:
-    0 4px 16px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.08), inset 0 0 28px var(--lg-control-focus-mist);
+    0 8px 22px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.54),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2), inset 0 0 32px var(--lg-control-focus-mist);
   --lg-accent: #0a84ff;
   --lg-accent-2: #30d158;
   --lg-radius-sm: 8px;
@@ -45,16 +45,16 @@
   --lg-glass-highlight: rgba(255, 255, 255, 0.2);
   --lg-glass-edge: rgba(255, 255, 255, 0.12);
   --lg-glass-shadow: 0 18px 52px rgba(0, 0, 0, 0.36);
-  --lg-control-focus-fill: rgba(255, 255, 255, 0.14);
-  --lg-control-focus-edge: rgba(255, 255, 255, 0.24);
-  --lg-control-focus-depth: rgba(0, 0, 0, 0.18);
-  --lg-control-focus-mist: rgba(255, 255, 255, 0.18);
+  --lg-control-focus-fill: rgba(255, 255, 255, 0.22);
+  --lg-control-focus-edge: rgba(255, 255, 255, 0.32);
+  --lg-control-focus-depth: rgba(12, 18, 26, 0.14);
+  --lg-control-focus-mist: rgba(255, 255, 255, 0.24);
   --lg-control-focus-shadow-soft:
-    0 4px 14px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    inset 0 0 18px var(--lg-control-focus-mist);
+    0 6px 18px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08), inset 0 0 20px var(--lg-control-focus-mist);
   --lg-control-focus-shadow-deep:
-    0 4px 16px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.08), inset 0 0 28px var(--lg-control-focus-mist);
+    0 8px 22px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1), inset 0 0 32px var(--lg-control-focus-mist);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -71,15 +71,15 @@
     --lg-glass-highlight: rgba(255, 255, 255, 0.2);
     --lg-glass-edge: rgba(255, 255, 255, 0.12);
     --lg-glass-shadow: 0 18px 52px rgba(0, 0, 0, 0.36);
-    --lg-control-focus-fill: rgba(255, 255, 255, 0.14);
-    --lg-control-focus-edge: rgba(255, 255, 255, 0.24);
-    --lg-control-focus-depth: rgba(0, 0, 0, 0.18);
-    --lg-control-focus-mist: rgba(255, 255, 255, 0.18);
+    --lg-control-focus-fill: rgba(255, 255, 255, 0.22);
+    --lg-control-focus-edge: rgba(255, 255, 255, 0.32);
+    --lg-control-focus-depth: rgba(12, 18, 26, 0.14);
+    --lg-control-focus-mist: rgba(255, 255, 255, 0.24);
     --lg-control-focus-shadow-soft:
-      0 4px 14px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.16),
-      inset 0 0 18px var(--lg-control-focus-mist);
+      0 6px 18px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.24),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.08), inset 0 0 20px var(--lg-control-focus-mist);
     --lg-control-focus-shadow-deep:
-      0 4px 16px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.18),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.08), inset 0 0 28px var(--lg-control-focus-mist);
+      0 8px 22px var(--lg-control-focus-depth), inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.1), inset 0 0 32px var(--lg-control-focus-mist);
   }
 }
