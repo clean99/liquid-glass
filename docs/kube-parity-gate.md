@@ -93,10 +93,10 @@ metrics.
 | Reference                  | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | -------------------------- | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass           |     0.1902 | `1,0`      |     0.1356 |    0.2400 | gate |
-| magnifying-glass-pressed   |     0.4111 | `-10,-3`   |     0.3283 |    0.4050 | gate |
-| magnifying-glass-dragged   |     0.3356 | `-8,-2`    |     0.2817 |    0.4550 | gate |
+| magnifying-glass-pressed   |     0.3773 | `-8,-2`    |     0.2939 |    0.4050 | gate |
+| magnifying-glass-dragged   |     0.3636 | `-9,-2`    |     0.2673 |    0.4550 | gate |
 | searchbox                  |     0.0130 | `0,0`      |     0.0120 |    0.0200 | gate |
-| searchbox-image-background |     0.1183 | `0,1`      |     0.1111 |    0.1200 | gate |
+| searchbox-image-background |     0.1184 | `0,1`      |     0.1113 |    0.1200 | gate |
 | switch                     |     0.0137 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                     |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
 
@@ -135,10 +135,11 @@ This measurement includes these verified geometry fixes:
   browser cannot scroll farther, the sampler injects a temporary inert bottom
   spacer, reruns the scroll, captures the action, then removes the spacer. This
   keeps CI from failing before the visual gate runs.
-- the pressed lens uses a flatter local droplet scale than the dragged state and
-  keeps its height growth near the middle of recent local and CI Kube samples,
-  matching Kube's water-drop interaction shape without changing the idle lens
-  contract.
+- the pressed lens now widens toward the live Kube water-drop shape without
+  over-growing height. Recent action metrics put pressed height growth near
+  `20px`, while dragged relaxes narrower and vertically rebounds after movement.
+  Making pressed nearly unflattened matched one transient filter-contract sample
+  but failed the real pointer action metric.
 - the pressed action metric guard allows `7px` width-delta and `7px`
   height-delta variance because the live Kube page has recently sampled between
   roughly `15px` and `21px` of width growth and `15px` and `21px` of height

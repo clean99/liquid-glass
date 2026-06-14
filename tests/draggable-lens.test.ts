@@ -36,10 +36,10 @@ describe("draggable lens response", () => {
     expect(response.phase).toBe("pressed");
     expect(response.originX).toBeGreaterThan(0.5);
     expect(response.originY).toBeLessThan(0.5);
-    expect(response.scaleX).toBeGreaterThan(1.105);
-    expect(response.scaleX).toBeLessThan(1.112);
-    expect(response.scaleY).toBeGreaterThan(0.921);
-    expect(response.scaleY).toBeLessThan(0.923);
+    expect(response.scaleX).toBeGreaterThan(1.119);
+    expect(response.scaleX).toBeLessThan(1.122);
+    expect(response.scaleY).toBeGreaterThan(0.934);
+    expect(response.scaleY).toBeLessThan(0.936);
     expect(response.transform).toContain("scaleX");
   });
 
@@ -50,13 +50,13 @@ describe("draggable lens response", () => {
       rect: { left: 100, top: 100, width: 210, height: 150 }
     });
 
-    expect(response.scaleX).toBeGreaterThan(1.102);
-    expect(response.scaleX).toBeLessThan(1.104);
-    expect(response.scaleY).toBeGreaterThan(0.92);
-    expect(response.scaleY).toBeLessThan(0.922);
+    expect(response.scaleX).toBeGreaterThan(1.116);
+    expect(response.scaleX).toBeLessThan(1.118);
+    expect(response.scaleY).toBeGreaterThan(0.933);
+    expect(response.scaleY).toBeLessThan(0.935);
   });
 
-  it("models dragging as the lower-width Kube water-drop response", () => {
+  it("models dragging as the narrower relaxed Kube water-drop response", () => {
     const pressed = resolveLensDropletResponse({
       pressed: true,
       point: { x: 260, y: 155 },
@@ -71,10 +71,11 @@ describe("draggable lens response", () => {
 
     expect(dragging.phase).toBe("dragging");
     expect(dragging.scaleX).toBeLessThan(pressed.scaleX);
-    expect(dragging.scaleX).toBeGreaterThan(1.057);
-    expect(dragging.scaleX).toBeLessThan(1.06);
+    expect(dragging.scaleX).toBeGreaterThan(1.031);
+    expect(dragging.scaleX).toBeLessThan(1.034);
     expect(dragging.scaleY).toBeGreaterThan(pressed.scaleY);
-    expect(dragging.scaleY).toBeGreaterThan(0.965);
+    expect(dragging.scaleY).toBeGreaterThan(0.975);
+    expect(dragging.scaleY).toBeLessThan(0.978);
   });
 
   it("keeps pressed feedback visible but removes motion when requested", () => {

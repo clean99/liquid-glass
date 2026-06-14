@@ -203,6 +203,14 @@ The local `LiquidLensDropletPhase` model intentionally separates `pressed` and
 the same wide shape after movement, which is not what the reference component
 does under real pointer input.
 
+The latest filter-contract and action-metric samples show why the shape model
+cannot be a single boolean. Pressed widens toward the Kube water-drop response,
+but real pointer action metrics still keep its height growth near `20px`.
+Dragged relaxes much narrower and rebounds vertically after movement. A transient
+pressed filter-contract sample near `scaleY(0.987)` looked plausible in
+isolation, but it over-grew the candidate height and failed the ordinary Kube
+action metric.
+
 The active filter contract must be sampled before pointer cleanup. A cleanup-time
 sample made Kube appear to keep the idle displacement scales during interaction,
 but the live pressed and dragged states actually increase both SVG displacement
