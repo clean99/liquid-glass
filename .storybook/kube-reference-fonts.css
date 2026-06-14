@@ -1,0 +1,8 @@
+/* Kube reference fixture from https://rsms.me/inter/font-files/InterVariable.woff2?v=4.1. */
+@font-face {
+  font-family: InterVariable;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/kube/fonts/InterVariable.woff2") format("woff2");
+}

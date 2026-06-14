@@ -158,6 +158,11 @@ This measurement includes these verified geometry fixes:
   reference-only fixtures, not runtime shortcuts. They give the exact gate a
   concrete map contract for deciding whether the remaining diff is optical-map
   shape, material/specular response, background phase, or interaction geometry.
+- The public Kube page uses Inter from `https://rsms.me/inter/`. Storybook loads
+  the matching locked `InterVariable.woff2` only from `.storybook` as a parity
+  fixture, not from the published CSS. The Kube comparison script explicitly
+  waits for `document.fonts.status === "loaded"` before target and candidate
+  screenshots, so text-edge diff no longer depends on browser font timing.
 
 This proves six things:
 

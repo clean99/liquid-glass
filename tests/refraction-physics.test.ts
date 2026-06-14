@@ -35,6 +35,11 @@ const musicPlayerStorySource = fs.readFileSync(
   "utf8"
 );
 const storybookMainSource = fs.readFileSync(path.resolve(".storybook/main.ts"), "utf8");
+const storybookPreviewSource = fs.readFileSync(path.resolve(".storybook/preview.ts"), "utf8");
+const storybookKubeFontSource = fs.readFileSync(
+  path.resolve(".storybook/kube-reference-fonts.css"),
+  "utf8"
+);
 const switchStorySource = fs.readFileSync(path.resolve("stories/LiquidSwitch.stories.tsx"), "utf8");
 const sliderStorySource = fs.readFileSync(path.resolve("stories/LiquidSlider.stories.tsx"), "utf8");
 const packageJson = JSON.parse(fs.readFileSync(path.resolve("package.json"), "utf8")) as {
@@ -95,6 +100,16 @@ type KubeReferenceAssetManifest = {
       sha256: string;
       sourceUrl: string;
       width: number;
+    }
+  >;
+  fontAssets: Record<
+    string,
+    {
+      bytes: number;
+      file: string;
+      role: string;
+      sha256: string;
+      sourceUrl: string;
     }
   >;
   generatedFallbackAssets: Array<{ sourceUrl?: string }>;
@@ -433,23 +448,50 @@ describe("Liquid Glass physics contract", () => {
     );
     expect(kubeDemoAssetVerifierSource).toContain("manifest.musicAlbumArtAssets");
     expect(kubeDemoAssetVerifierSource).toContain("manifest.filterMapAssets");
+    expect(kubeDemoAssetVerifierSource).toContain("manifest.fontAssets");
     expect(kubeDemoAssetVerifierSource).toContain("filterMapAssets.${name}");
+    expect(kubeDemoAssetVerifierSource).toContain("fontAssets.${name}");
     expect(kubeDemoAssetVerifierSource).toContain("searchboxDemoBackground");
     expect(kubeDemoAssetVerifierSource).toContain("lensDemoBackground");
     expect(kubeDemoAssetVerifierSource).toContain("lensDemoInlineImage");
     expect(kubeDemoAssetVerifierSource).toContain("lensDemoImage");
     expect(kubeDemoAssetVerifierSource).toContain("observed-kube-demo-assets.json");
     expect(kubeDemoAssetVerifierSource).toContain("validateLocalAsset");
+    expect(kubeDemoAssetVerifierSource).toContain("validateLocalFontAsset");
     expect(kubeDemoAssetVerifierSource).toContain("crypto.createHash");
     expect(kubeDemoAssetVerifierSource).toContain("readRasterSize(bytes)");
     expect(kubeDemoAssetVerifierSource).toContain("localAssets: localAssetChecks");
+    expect(kubeDemoAssetVerifierSource).toContain("localFontAssets: localFontAssetChecks");
     expect(kubeDemoAssetVerifierSource).toContain("filterMapAssets");
+    expect(kubeDemoAssetVerifierSource).toContain("resourceUrls");
+    expect(kubeDemoAssetVerifierSource).toContain("document.fonts.status");
     expect(kubeDemoAssetVerifierSource).toContain("observedCssBackgrounds");
     expect(kubeDemoAssetVerifierSource).toContain("uncoveredCssBackgrounds");
     expect(kubeDemoAssetVerifierSource).toContain("generatedFallbackAssets");
     expect(kubeDemoAssetVerifierSource).toContain(
       "Add these rendered CSS backgrounds to stories/assets/kube/manifest.json or record a generated fallback"
     );
+  });
+
+  it("locks the Kube page Inter font fixture for reference screenshots", () => {
+    const interVariable = kubeReferenceAssetManifest.fontAssets.interVariable;
+    const localPath = path.resolve("stories/assets/kube", interVariable.file);
+    const bytes = fs.readFileSync(localPath);
+    const hash = crypto.createHash("sha256").update(bytes).digest("hex");
+
+    expect(interVariable).toMatchObject({
+      bytes: 352240,
+      file: "fonts/InterVariable.woff2",
+      sourceUrl: "https://rsms.me/inter/font-files/InterVariable.woff2?v=4.1"
+    });
+    expect(hash).toBe(interVariable.sha256);
+    expect(storybookPreviewSource).toContain('import "./kube-reference-fonts.css";');
+    expect(storybookKubeFontSource).toContain("@font-face");
+    expect(storybookKubeFontSource).toContain("font-family: InterVariable");
+    expect(storybookKubeFontSource).toContain('url("/kube/fonts/InterVariable.woff2")');
+    expect(kubeReferenceCompareSource).toContain("waitForPageFonts(referencePage)");
+    expect(kubeReferenceCompareSource).toContain("waitForPageFonts(candidatePage)");
+    expect(kubeReferenceCompareSource).toContain("document.fonts.status");
   });
 
   it("locks Kube same-origin filter maps for exact parity diagnostics", () => {

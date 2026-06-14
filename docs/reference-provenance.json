@@ -104,6 +104,26 @@
       ]
     },
     {
+      "name": "Inter variable font",
+      "kind": "visual-reference",
+      "url": "https://rsms.me/inter/font-files/InterVariable.woff2?v=4.1",
+      "license": "SIL Open Font License 1.1",
+      "commit": null,
+      "copiedSource": false,
+      "usedFor": [
+        "Kube page text rendering fixture",
+        "Storybook Kube reference font lock",
+        "font timing parity gate",
+        "pixel parity text metric stabilization"
+      ],
+      "requiredDocs": [
+        "ATTRIBUTIONS.md",
+        "docs/reference-research.md",
+        "stories/assets/kube/manifest.json",
+        ".storybook/kube-reference-fonts.css"
+      ]
+    },
+    {
       "name": "Kube Music Player album art fixtures",
       "kind": "visual-reference",
       "url": "https://is1-ssl.mzstatic.com/image/thumb/",

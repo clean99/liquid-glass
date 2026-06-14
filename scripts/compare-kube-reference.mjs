@@ -166,6 +166,7 @@ try {
   const referencePage = await browser.newPage({ viewport: { width: 1100, height: 760 } });
   await gotoTargetReference(referencePage);
   await referencePage.waitForLoadState("load", { timeout: 20_000 }).catch(() => undefined);
+  await waitForPageFonts(referencePage);
 
   for (const reference of references) {
     let candidatePage = null;
@@ -199,6 +200,7 @@ try {
         `http://127.0.0.1:${port}/iframe.html?id=${reference.storyId}&viewMode=story`,
         { waitUntil: "networkidle", timeout: 20_000 }
       );
+      await waitForPageFonts(candidatePage);
       await candidatePage.mouse.move(0, 0).catch(() => undefined);
 
       const candidateElement = candidatePage.locator(
@@ -579,6 +581,15 @@ async function resetTargetReferencePage(page) {
   await page.mouse.move(0, 0).catch(() => undefined);
   await gotoTargetReference(page);
   await page.waitForLoadState("load", { timeout: 20_000 }).catch(() => undefined);
+  await waitForPageFonts(page);
+}
+
+async function waitForPageFonts(page) {
+  await page
+    .waitForFunction(() => !("fonts" in document) || document.fonts.status === "loaded", {
+      timeout: 5_000
+    })
+    .catch(() => undefined);
 }
 
 async function applyCandidateAction(page, candidateElement, action) {

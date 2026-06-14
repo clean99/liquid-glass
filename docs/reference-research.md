@@ -34,11 +34,19 @@ hashes live in `stories/assets/kube/manifest.json`. The local files live under
 `stories/assets/kube/` and are excluded from the npm package by `package.json`
 `files`.
 
+The Kube article loads Inter from `https://rsms.me/inter/`. Storybook now serves
+a locked local `InterVariable.woff2` fixture from `stories/assets/kube/fonts/`
+for reference screenshots only, and the comparison script waits for
+`document.fonts.status === "loaded"` before taking Kube and candidate
+screenshots. This keeps text-edge diffs attributable to real layout and material
+differences instead of font fallback timing.
+
 `pnpm test:kube-assets` opens the rendered public page, clicks the Searchbox
 `Use image background` control, reads CSS backgrounds, `<img>` sources, and SVG
 `<image>`/`<feImage>` hrefs, then compares those live demo URLs against the
 manifest before `pnpm test:kube-reference` captures pixels. The URL gate covers
-the loaded demo photos, album-art fixtures, and Kube same-origin SVG filter maps.
+the loaded demo photos, album-art fixtures, Kube same-origin SVG filter maps,
+and the Inter variable font requested by the public page.
 It also fails if a rendered CSS demo background is not covered by the manifest
 or an explicit generated fallback entry. The current Chrome sample found real
 source images for the rendered CSS demo backgrounds, so

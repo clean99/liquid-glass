@@ -1,4 +1,5 @@
 import "../src/styles/styles.css";
+import "./kube-reference-fonts.css";
 
 const preview = {
   parameters: {

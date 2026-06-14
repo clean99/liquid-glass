@@ -10,6 +10,7 @@ const targetUrl = "https://kube.io/blog/liquid-glass-css-svg/";
 const manifestPath = path.join(root, "stories/assets/kube/manifest.json");
 const artifactDir = path.join(root, "test-results/kube-assets");
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+const remoteTextCache = new Map();
 
 const requiredDemoAssets = [
   "searchboxDemoBackground",
@@ -19,6 +20,7 @@ const requiredDemoAssets = [
 ];
 
 const expectedUrls = new Map();
+const expectedFontUrls = new Map();
 for (const name of requiredDemoAssets) {
   expectedUrls.set(name, manifest.assets[name]?.sourceUrl);
 }
@@ -31,7 +33,11 @@ for (const [name, asset] of Object.entries(manifest.filterMapAssets ?? {})) {
   expectedUrls.set(`filterMapAssets.${name}`, asset.sourceUrl);
 }
 
-const missingManifestEntries = [...expectedUrls]
+for (const [name, asset] of Object.entries(manifest.fontAssets ?? {})) {
+  expectedFontUrls.set(`fontAssets.${name}`, asset.sourceUrl);
+}
+
+const missingManifestEntries = [...expectedUrls, ...expectedFontUrls]
   .filter(([, url]) => typeof url !== "string" || url.length === 0)
   .map(([name]) => name);
 
@@ -56,6 +62,10 @@ const localAssetChecks = [
   }))
 ].map(validateLocalAsset);
 
+const localFontAssetChecks = Object.entries(manifest.fontAssets ?? {}).map(([name, asset]) =>
+  validateLocalFontAsset({ asset, name: `fontAssets.${name}` })
+);
+
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({
   viewport: { width: 1280, height: 760 }
@@ -63,8 +73,18 @@ const page = await browser.newPage({
 
 try {
   await page.goto(targetUrl, { waitUntil: "networkidle", timeout: 60_000 });
+  await page
+    .waitForFunction(() => !("fonts" in document) || document.fonts.status === "loaded", {
+      timeout: 5_000
+    })
+    .catch(() => undefined);
   await page.getByText("Use image background", { exact: true }).click({ timeout: 15_000 });
   await page.waitForTimeout(250);
+  await page
+    .waitForFunction(() => !("fonts" in document) || document.fonts.status === "loaded", {
+      timeout: 5_000
+    })
+    .catch(() => undefined);
 
   const observed = await page.evaluate(() => {
     const parseCssUrls = (value) =>
@@ -79,8 +99,34 @@ try {
       }
     };
     const cssBackgrounds = [];
+    const fontFaces = [];
     const imageUrls = [];
+    const resourceUrls = [];
+    const stylesheetUrls = [];
     const svgImageUrls = [];
+
+    for (const entry of performance.getEntriesByType("resource")) {
+      resourceUrls.push(absolute(entry.name));
+    }
+
+    for (const link of Array.from(document.querySelectorAll('link[rel~="stylesheet"]'))) {
+      const href = link.getAttribute("href");
+      if (href) {
+        stylesheetUrls.push(absolute(href));
+      }
+    }
+
+    if ("fonts" in document) {
+      for (const font of Array.from(document.fonts)) {
+        fontFaces.push({
+          display: font.display,
+          family: font.family,
+          status: font.status,
+          style: font.style,
+          weight: font.weight
+        });
+      }
+    }
 
     for (const element of Array.from(document.querySelectorAll("body *"))) {
       const style = getComputedStyle(element);
@@ -133,8 +179,11 @@ try {
 
     return {
       cssBackgrounds,
+      fontFaces,
       imageUrls,
       pageUrl: location.href,
+      resourceUrls,
+      stylesheetUrls,
       svgImageUrls
     };
   });
@@ -142,8 +191,15 @@ try {
   const observedUrls = new Set([
     ...observed.cssBackgrounds.flatMap((background) => background.urls),
     ...observed.imageUrls.map((image) => image.src),
+    ...observed.resourceUrls,
+    ...observed.stylesheetUrls,
     ...observed.svgImageUrls.map((image) => image.href)
   ]);
+  const renderedFontAssetChecks = await Promise.all(
+    Object.entries(manifest.fontAssets ?? {}).map(([name, asset]) =>
+      validateRenderedFontAsset({ asset, name: `fontAssets.${name}`, observed })
+    )
+  );
   const expectedUrlValues = new Set(expectedUrls.values());
   const observedCssBackgroundUrls = [
     ...new Set(observed.cssBackgrounds.flatMap((background) => background.urls))
@@ -159,6 +215,7 @@ try {
   );
 
   const missing = [...expectedUrls].filter(([, url]) => !observedUrls.has(url));
+  const fontFailures = renderedFontAssetChecks.filter((check) => check.errors.length > 0);
 
   fs.mkdirSync(artifactDir, { recursive: true });
   fs.writeFileSync(
@@ -168,10 +225,12 @@ try {
         expected: Object.fromEntries(expectedUrls),
         generatedFallbackAssets,
         missing: missing.map(([name, url]) => ({ name, url })),
+        localFontAssets: localFontAssetChecks,
         localAssets: localAssetChecks,
         observed,
         observedCssBackgrounds: observedCssBackgroundUrls,
         observedAt: new Date().toISOString(),
+        renderedFontAssets: renderedFontAssetChecks,
         uncoveredCssBackgrounds,
         sourcePage: targetUrl
       },
@@ -188,6 +247,14 @@ try {
     );
   }
 
+  if (fontFailures.length > 0) {
+    throw new Error(
+      `Kube demo font asset verification failed:\n${fontFailures
+        .map((failure) => `- ${failure.name}: ${failure.errors.join(", ")}`)
+        .join("\n")}`
+    );
+  }
+
   if (uncoveredCssBackgrounds.length > 0) {
     throw new Error(
       `Kube demo background asset verification failed. Add these rendered CSS backgrounds to stories/assets/kube/manifest.json or record a generated fallback:\n${uncoveredCssBackgrounds
@@ -197,7 +264,7 @@ try {
   }
 
   console.log(
-    `Verified ${expectedUrls.size} Kube demo asset URLs from the rendered public page and ${localAssetChecks.length} local fixture locks.`
+    `Verified ${expectedUrls.size} Kube demo asset URLs from the rendered public page, ${localAssetChecks.length} local raster fixture locks, and ${localFontAssetChecks.length} local font fixture locks.`
   );
 } finally {
   await browser.close();
@@ -233,6 +300,87 @@ function validateLocalAsset({ asset, name }) {
     sha256,
     sourceUrl: asset.sourceUrl,
     width: dimensions.width
+  };
+}
+
+async function validateRenderedFontAsset({ asset, name, observed }) {
+  const stylesheetUrl = "https://rsms.me/inter/inter.css";
+  const errors = [];
+  const cssSourceTail = new URL(asset.sourceUrl).href.replace("https://rsms.me/inter/", "");
+  const fontCss = await readRemoteText(stylesheetUrl).catch((error) => {
+    errors.push(error instanceof Error ? error.message : String(error));
+    return "";
+  });
+
+  if (!observed.stylesheetUrls.includes(stylesheetUrl)) {
+    errors.push(`${stylesheetUrl} was not loaded by the rendered Kube page`);
+  }
+
+  if (!fontCss.includes(cssSourceTail)) {
+    errors.push(`${stylesheetUrl} does not reference ${cssSourceTail}`);
+  }
+
+  if (
+    !observed.fontFaces.some(
+      (font) =>
+        font.family === "InterVariable" &&
+        font.style === "normal" &&
+        font.weight === "100 900" &&
+        font.status === "loaded"
+    )
+  ) {
+    errors.push("InterVariable normal 100 900 font face was not loaded");
+  }
+
+  return {
+    errors,
+    name,
+    sourceUrl: asset.sourceUrl,
+    stylesheetUrl
+  };
+}
+
+async function readRemoteText(url) {
+  if (remoteTextCache.has(url)) {
+    return remoteTextCache.get(url);
+  }
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`${url} returned HTTP ${response.status}`);
+  }
+
+  const text = await response.text();
+  remoteTextCache.set(url, text);
+  return text;
+}
+
+function validateLocalFontAsset({ asset, name }) {
+  const localPath = path.join(root, "stories/assets/kube", asset.file);
+  const bytes = fs.readFileSync(localPath);
+  const sha256 = crypto.createHash("sha256").update(bytes).digest("hex");
+  const errors = [];
+
+  if (sha256 !== asset.sha256) {
+    errors.push(`sha256 ${sha256} !== ${asset.sha256}`);
+  }
+
+  if (bytes.length !== asset.bytes) {
+    errors.push(`bytes ${bytes.length} !== ${asset.bytes}`);
+  }
+
+  if (errors.length > 0) {
+    throw new Error(
+      `Kube local font asset verification failed for ${name} (${asset.file}): ${errors.join(", ")}`
+    );
+  }
+
+  return {
+    bytes: bytes.length,
+    file: asset.file,
+    name,
+    sha256,
+    sourceUrl: asset.sourceUrl
   };
 }
 

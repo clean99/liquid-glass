@@ -61,6 +61,13 @@ The visual direction is informed by Chris Feijoo's public Liquid Glass research 
   - Used only as Storybook/parity fixtures and exact-gate diagnostics for map dimensions, hashes, and optical gap classification.
   - Stored under `stories/assets/kube/maps/` and excluded from the published package. Runtime components still generate their own maps.
 
+- Inter variable font
+  - Project: https://rsms.me/inter/
+  - Fixture source: https://rsms.me/inter/font-files/InterVariable.woff2?v=4.1
+  - License/source terms: SIL Open Font License 1.1.
+  - Used as a Kube page text-rendering fixture for Storybook/parity screenshots.
+  - Stored under `stories/assets/kube/fonts/` as a Storybook/parity fixture and excluded from the published package.
+
 - Kube Music Player album art fixtures
   - Source: https://is1-ssl.mzstatic.com/image/thumb/
   - Observed from the public Kube Music Player demo via Chrome pageAssets sampling.
