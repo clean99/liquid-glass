@@ -296,14 +296,20 @@ const focusAuditTargets = [
   },
   {
     name: "resizableHandle",
-    options: { minimumFocusedScale: 1.03, requireMaterialDeepening: true }
+    options: {
+      maximumFocusedMaterialAlpha: 0.98,
+      minimumFocusedMaterialAlpha: 0.86,
+      minimumFocusedScreenshotLuma: 198,
+      minimumFocusedScale: 1.03,
+      requireMaterialDeepening: true
+    }
   },
   {
     name: "toggle",
     options: {
-      maximumFocusedMaterialAlpha: 0.76,
-      minimumFocusedMaterialAlpha: 0.52,
-      minimumFocusedScreenshotLuma: 164,
+      maximumFocusedMaterialAlpha: 0.98,
+      minimumFocusedMaterialAlpha: 0.86,
+      minimumFocusedScreenshotLuma: 198,
       minimumFocusedScale: 1.02,
       requireMaterialDeepening: true
     }
@@ -311,9 +317,9 @@ const focusAuditTargets = [
   {
     name: "segmentedControl",
     options: {
-      maximumFocusedMaterialAlpha: 0.76,
-      minimumFocusedMaterialAlpha: 0.52,
-      minimumFocusedScreenshotLuma: 170,
+      maximumFocusedMaterialAlpha: 0.98,
+      minimumFocusedMaterialAlpha: 0.86,
+      minimumFocusedScreenshotLuma: 198,
       minimumFocusedScale: 1.02,
       requireMaterialDeepening: false,
       requireMaterialResponse: true
@@ -322,9 +328,9 @@ const focusAuditTargets = [
   {
     name: "toolbar",
     options: {
-      maximumFocusedMaterialAlpha: 0.76,
-      minimumFocusedMaterialAlpha: 0.52,
-      minimumFocusedScreenshotLuma: 170,
+      maximumFocusedMaterialAlpha: 0.98,
+      minimumFocusedMaterialAlpha: 0.86,
+      minimumFocusedScreenshotLuma: 198,
       minimumFocusedScale: 1.04,
       requireMaterialDeepening: true
     }
@@ -336,9 +342,9 @@ const focusAuditTargets = [
   {
     name: "nav",
     options: {
-      maximumFocusedMaterialAlpha: 0.76,
-      minimumFocusedMaterialAlpha: 0.52,
-      minimumFocusedScreenshotLuma: 170,
+      maximumFocusedMaterialAlpha: 0.98,
+      minimumFocusedMaterialAlpha: 0.86,
+      minimumFocusedScreenshotLuma: 198,
       minimumFocusedScale: 1.04,
       requireMaterialDeepening: true
     }
@@ -362,7 +368,13 @@ const focusAuditTargets = [
   },
   {
     name: "accordion",
-    options: { minimumFocusedScale: 1.01, requireMaterialDeepening: true }
+    options: {
+      maximumFocusedMaterialAlpha: 0.98,
+      minimumFocusedMaterialAlpha: 0.86,
+      minimumFocusedScreenshotLuma: 198,
+      minimumFocusedScale: 1.01,
+      requireMaterialDeepening: true
+    }
   },
   {
     name: "contextMenuTrigger",
@@ -416,9 +428,9 @@ const focusAuditTargets = [
   {
     name: "button",
     options: {
-      maximumFocusedMaterialAlpha: 0.76,
-      minimumFocusedMaterialAlpha: 0.52,
-      minimumFocusedScreenshotLuma: 170,
+      maximumFocusedMaterialAlpha: 0.98,
+      minimumFocusedMaterialAlpha: 0.86,
+      minimumFocusedScreenshotLuma: 198,
       minimumFocusedScale: 1.018,
       requireMaterialDeepening: true
     }

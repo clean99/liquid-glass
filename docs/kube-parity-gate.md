@@ -221,12 +221,11 @@ This proves six things:
 - Generic surface focus no longer reuses the base glass/surface shadow, because
   that made dark enhanced buttons read as black slabs in Storybook. The e2e
   focus audit now compares idle and focused screenshots and rejects relative
-  darkening plus any opaque low-luma focus fill. Current samples move button
-  from `idleLuma=69.781`, `idleBlack=0.881` to `focusLuma=195.216`,
-  `focusBlack=0.124`; nav from `idleLuma=64.258`, `idleBlack=0.900` to
-  `focusLuma=187.416`, `focusBlack=0.190`; and toggle from
-  `idleLuma=63.857`, `idleBlack=0.911` to `focusLuma=185.536`,
-  `focusBlack=0.196`.
+  darkening plus any opaque low-luma focus fill. Current samples require
+  generic dark focus to reach `minimumFocusedScreenshotLuma=198` and
+  `minimumFocusedMaterialAlpha=0.86`; button now records `focusLuma=209.381`,
+  nav `focusLuma=208.160`, toolbar `focusLuma=204.071`, segmented control
+  `focusLuma=204.458`, and toggle `focusLuma=198.705`.
 - The checked-state searchbox image background is now measured through real
   checkbox input. Its current threshold is `0.1200`, which is a loaded-media
   release-candidate budget, not an exact-parity claim.

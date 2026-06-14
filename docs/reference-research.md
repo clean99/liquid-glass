@@ -164,12 +164,15 @@ light frosted capsule would otherwise be misclassified as a black focus block.
 
 The 2026-06-14 behavior gate now stores both idle and focused dark/black pixel
 ratios and fails on relative darkening, rather than allowing a broad absolute
-black-pixel budget. A later pass records OTP focus at `material alpha=0.595`,
+black-pixel budget. A later pass records OTP focus at `material alpha=0.632`,
 `material luma=255`, `scale=1.055`, and focused context dark-pixel ratio
-`0.006`; searchbox focus moves from an image-crop idle `black=0.968` to focused
-`black=0.047`; and generic button/nav/toggle focus all move from low-luma idle
-captures to light frosted focused capsules. This is a focus-regression gate, not
-a claim that exact Kube parity is done.
+`0.017`; searchbox focus moves from an image-crop idle `black=0.968` to focused
+`black=0.047`; and generic dark Storybook focus is now hard-gated at
+`minimumFocusedScreenshotLuma=198` with `minimumFocusedMaterialAlpha=0.86`.
+Current focused samples record button `luma=209.381`, nav `luma=208.160`,
+toolbar `luma=204.071`, segmented control `luma=204.458`, and toggle
+`luma=198.705`, so the old gray/black focus slab cannot pass the browser gate.
+This is a focus-regression gate, not a claim that exact Kube parity is done.
 
 The checked Searchbox image-background run also records a control contract, not
 just pixels. A 2026-06-14 sample showed the local surface, glass layer, content
