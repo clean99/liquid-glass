@@ -1570,6 +1570,9 @@ async function readFilterContract(element, label) {
     const rootRect = toRect(root.getBoundingClientRect());
     const surface = findFilterSurface(root);
     const surfaceStyle = getComputedStyle(surface);
+    const surfaceParent = surface.parentElement ?? surface;
+    const surfaceParentStyle = getComputedStyle(surfaceParent);
+    const rootStyle = getComputedStyle(root);
     const backdropFilter = surfaceStyle.backdropFilter || surfaceStyle.webkitBackdropFilter;
     const filterId = extractFilterId(backdropFilter);
     const filter = filterId ? document.getElementById(filterId) : null;
@@ -1593,7 +1596,23 @@ async function readFilterContract(element, label) {
         backgroundColor: surfaceStyle.backgroundColor,
         borderRadius: surfaceStyle.borderRadius,
         boxShadow: surfaceStyle.boxShadow,
+        transform: surfaceStyle.transform,
         webkitBackdropFilter: surfaceStyle.webkitBackdropFilter
+      },
+      layerContract: {
+        root: {
+          rect: rootRect,
+          style: pickLayerStyle(rootStyle)
+        },
+        surface: {
+          rect: toRect(surface.getBoundingClientRect()),
+          style: pickLayerStyle(surfaceStyle)
+        },
+        surfaceParent: {
+          rect: toRect(surfaceParent.getBoundingClientRect()),
+          sameAsSurface: surfaceParent === surface,
+          style: pickLayerStyle(surfaceParentStyle)
+        }
       },
       counts: countPrimitives(primitives),
       displacementScales: primitives
@@ -1627,6 +1646,16 @@ async function readFilterContract(element, label) {
         counts[primitive.tag] = (counts[primitive.tag] ?? 0) + 1;
         return counts;
       }, {});
+    }
+
+    function pickLayerStyle(style) {
+      return {
+        backdropFilter: style.backdropFilter || style.webkitBackdropFilter,
+        backgroundColor: style.backgroundColor,
+        borderRadius: style.borderRadius,
+        boxShadow: truncateAttribute(style.boxShadow),
+        transform: style.transform
+      };
     }
 
     function extractFilterId(value) {
@@ -1667,13 +1696,26 @@ function summarizeFilterContract(target, candidate) {
     candidateDisplacementScales: candidate.displacementScales,
     candidateFilterId: candidate.filterId,
     candidateImageCount: candidate.counts.feImage ?? 0,
+    candidateLayerContract: summarizeLayerContract(candidate.layerContract),
     candidateLooksOnePass: (candidate.counts.feDisplacementMap ?? 0) === 1,
     candidateLooksTwoPass: (candidate.counts.feDisplacementMap ?? 0) >= 2,
     targetDisplacementMapCount: target.counts.feDisplacementMap ?? 0,
     targetDisplacementScales: target.displacementScales,
     targetFilterId: target.filterId,
     targetImageCount: target.counts.feImage ?? 0,
+    targetLayerContract: summarizeLayerContract(target.layerContract),
     targetLooksTwoPass: (target.counts.feDisplacementMap ?? 0) >= 2
+  };
+}
+
+function summarizeLayerContract(layerContract) {
+  return {
+    rootTransform: layerContract.root.style.transform,
+    surfaceBackdropFilter: layerContract.surface.style.backdropFilter,
+    surfaceBoxShadow: layerContract.surface.style.boxShadow,
+    surfaceParentSameAsSurface: layerContract.surfaceParent.sameAsSurface,
+    surfaceParentTransform: layerContract.surfaceParent.style.transform,
+    surfaceTransform: layerContract.surface.style.transform
   };
 }
 
