@@ -203,34 +203,31 @@ The local `LiquidLensDropletPhase` model intentionally separates `pressed` and
 the same wide shape after movement, which is not what the reference component
 does under real pointer input.
 
-The draggable story originally used an outer pointer handle and an inner
-`LiquidLens` surface. That was the wrong data structure. The action metrics could
-look close while the active backdrop-filter sampling still differed, because
-transform ownership and filter ownership lived on different DOM nodes. The
-current story makes the draggable optical body itself the `LiquidLens` surface:
-pointer events, transform, box shadow, and SVG backdrop-filter now belong to the
-same element. This moved the pressed diff from `0.4580` to `0.4163` and the
-dragged diff from `0.4939` to `0.4224`, enough for the current hard interaction
-gate.
+The filter-contract evidence recorded by `scripts/compare-kube-reference.mjs`
+shows a real transform-ownership mismatch: the Kube target reports
+`transformOwner: "parent"`, the surface's parent carries the `scaleY(0.8)`
+matrix, and the filter surface itself is untransformed. A single transformed
+filter surface can make action metrics look close while changing the backdrop
+sampling coordinate space, so transform ownership is now a first-class
+diagnostic rather than a cosmetic DOM preference.
 
-One tempting follow-up was to mirror the live page DOM more literally: an outer
-draggable shell owns transform geometry, while an inner absolutely positioned
-surface owns the SVG `backdrop-filter` and shadow. The live Kube target does use
-that shape. In this package, with generated data-url displacement maps inside
-Storybook, that change regressed the strict pixel gate badly:
+Experiments that split the handle and surface have regressed the current
+Chromium pixel gate unless the rest of the sampling model also changes. The
+older generated/data-url experiment regressed:
 
 - idle magnifying glass diff: `0.2000 -> 0.6977`,
 - pressed magnifying glass diff: `0.4163 -> 0.7928`,
 - dragged magnifying glass diff: `0.4224 -> 0.9294`.
 
-So the current implementation intentionally keeps the filter on the root lens
-host. That is not claimed as final DOM parity with the reference page. It is the
-current working sampling path in Chromium for this package. Any future attempt
-to split transform ownership and filter ownership must first explain the browser
-sampling delta and prove improvement through `pnpm test:kube-reference:strict`.
-Likely variables to isolate are transformed-parent backdrop-filter sampling,
-SVG `filterUnits`/region behavior, local `<defs>` placement, and data-url maps
-versus network-loaded PNG maps.
+A 2026-06-14 retry with network-loaded Kube PNG maps still failed the normal
+gate: idle magnifying glass moved to `0.3140 > 0.24`, even though pressed
+(`0.3711 <= 0.405`) and dragged (`0.4304 <= 0.455`) stayed within the current
+loose gates. The current implementation therefore keeps the filter and transform
+on the same root lens host until a transformed-parent sampling model can improve
+normal and interactive gates together. Likely variables to isolate are
+transformed-parent backdrop-filter sampling, SVG `filterUnits`/region behavior,
+local `<defs>` placement, and network-loaded PNG maps versus generated/data-url
+maps.
 
 `scripts/compare-kube-reference.mjs` now treats these interaction metrics and
 the magnifying-glass filter contract as hard contracts. Candidate press and drag
