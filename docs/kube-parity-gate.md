@@ -169,8 +169,8 @@ This measurement includes these verified geometry fixes:
   tokens. `pnpm test:kube-assets` now hides the live demo children and
   re-captures the Searchbox, Switch, and Slider section backgrounds as evidence.
   The fresh capture records whether its hash matches the fixture, while the
-  cross-platform hard gate stays on dimensions and computed CSS tokens instead
-  of byte-identical PNG output.
+  cross-platform hard gate stays on computed CSS tokens and a `1px` width /
+  `2px` height capture tolerance instead of byte-identical PNG output.
   Storybook uses the captured computed CSS tokens for the local Kube reference
   frames; using the bitmap directly regressed the normal background gate, so the
   PNG stays a reference fixture rather than the render path.

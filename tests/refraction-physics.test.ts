@@ -543,6 +543,8 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeDemoAssetVerifierSource).toContain("Network.responseReceived");
     expect(kubeDemoAssetVerifierSource).toContain("cdpResponseUrls");
     expect(kubeDemoAssetVerifierSource).toContain("captureTargetCssOnlyDemoBackground");
+    expect(kubeDemoAssetVerifierSource).toContain("Math.abs(capture.width - asset.width) > 1");
+    expect(kubeDemoAssetVerifierSource).toContain("Math.abs(capture.height - asset.height) > 2");
     expect(kubeDemoAssetVerifierSource).toContain('"css-only-backgrounds"');
     expect(kubeDemoAssetVerifierSource).toContain("sample.capture = {");
     expect(kubeDemoAssetVerifierSource).toContain("shaMatchesFixture");

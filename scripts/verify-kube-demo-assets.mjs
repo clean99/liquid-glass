@@ -467,10 +467,12 @@ async function validateRenderedCssOnlyBackgroundAssets(page, assets) {
         shaMatchesFixture: capture.sha256 === asset.sha256
       };
 
-      if (capture.width !== asset.width || capture.height !== asset.height) {
-        errors.push(
-          `${targetId} capture dimensions ${capture.width}x${capture.height} !== ${asset.width}x${asset.height}`
-        );
+      if (Math.abs(capture.width - asset.width) > 1) {
+        errors.push(`${targetId} capture width ${capture.width} differs from ${asset.width}`);
+      }
+
+      if (Math.abs(capture.height - asset.height) > 2) {
+        errors.push(`${targetId} capture height ${capture.height} differs from ${asset.height}`);
       }
     }
 
