@@ -17,6 +17,7 @@ Start with [the documentation index](docs/index.md).
 
 - [Installation](docs/installation.md)
 - [Components](docs/components/index.md)
+- [Docs navigation](docs/site-navigation.md)
 - [Component map](docs/components/map.md)
 - [Design principles and modes](docs/design-principles.md)
 - [Browser Support](docs/browser-support.md)

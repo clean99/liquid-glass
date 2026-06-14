@@ -79,8 +79,7 @@ export const LensReferenceEngine = forwardRef<HTMLElement, LiquidEngineProps>(
             WebkitBackdropFilter: `url(#${filterId})`,
             backdropFilter: `url(#${filterId})`
           }
-        : undefined),
-      borderRadius: refraction.radius
+        : undefined)
     } as CSSProperties;
 
     return (

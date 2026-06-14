@@ -34,9 +34,10 @@ export const KubeReference: Story = {
 
 function KubeSearchboxReferenceStory() {
   const [useImageBackground, setUseImageBackground] = useState(false);
-  const imageBackgroundTextStyle = useImageBackground
-    ? ({ "--lg-text": "#fff" } as CSSProperties)
-    : undefined;
+  const kubeSearchboxSurfaceStyle = {
+    "--lg-surface-radius": "28px",
+    ...(useImageBackground ? { "--lg-text": "#fff" } : {})
+  } as CSSProperties;
 
   return (
     <LiquidProvider defaultMode="enhanced" disableOnMobile={false} maxEnhancedSurfaces={4}>
@@ -82,8 +83,8 @@ function KubeSearchboxReferenceStory() {
               aria-label="Search docs"
               surfaceProps={{
                 className: "lg-searchbox--kube-reference",
-                radius: 22,
-                style: imageBackgroundTextStyle
+                radius: 28,
+                style: kubeSearchboxSurfaceStyle
               }}
             />
           </div>

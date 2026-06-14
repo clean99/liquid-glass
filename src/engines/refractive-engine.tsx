@@ -3,6 +3,7 @@
 import {
   createElement,
   forwardRef,
+  type CSSProperties,
   type ElementType,
   type HTMLAttributes,
   type ReactNode,
@@ -20,8 +21,8 @@ type RefractiveHostProps = HTMLAttributes<HTMLElement> & {
   type?: string;
 };
 
-function Host({ as: Component = "div", children, ref, ...props }: RefractiveHostProps) {
-  return createElement(Component, { ...props, ref }, children);
+function Host({ as: Component = "div", children, ref, style, ...props }: RefractiveHostProps) {
+  return createElement(Component, { ...props, ref, style: resolveVisualStyle(style) }, children);
 }
 
 const RefractiveHost = refractive(Host);
@@ -35,3 +36,16 @@ export const RefractiveEngine = forwardRef<HTMLElement, LiquidEngineProps>(
     return createElement(RefractiveHost, { ...props, ref, refraction }, props.children);
   }
 );
+
+function resolveVisualStyle(style: CSSProperties | undefined) {
+  const visualRadius = style?.["--lg-surface-radius" as keyof CSSProperties];
+
+  if (!visualRadius) {
+    return style;
+  }
+
+  return {
+    ...style,
+    borderRadius: visualRadius
+  };
+}

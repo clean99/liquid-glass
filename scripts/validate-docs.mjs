@@ -99,6 +99,7 @@ const packageRequiredFiles = [
   "docs/reference-provenance.json",
   "docs/reference-research.md",
   "docs/rdev-liquid-glass-react.md",
+  "docs/site-navigation.md",
   "docs/shadcn-registry.md",
   "docs/shadcn-parity.json",
   "docs/testing.md",
@@ -161,6 +162,7 @@ mustInclude("README.md", [
   "test:kube-reference:exact",
   "shadcn-style Registry",
   "docs/installation.md",
+  "docs/site-navigation.md",
   "docs/design-principles.md",
   "docs/adoption-guide.md",
   "docs/accessibility.md",
@@ -180,6 +182,7 @@ mustInclude("README.md", [
   "not published to npm yet",
   "docs/index.md",
   "docs/accessibility.md",
+  "docs/site-navigation.md",
   "docs/components/map.md",
   "docs/components/index.md",
   "llms.txt",
@@ -215,6 +218,7 @@ mustInclude("docs/index.md", [
   "Liquid Glass UI",
   "Adoption guide",
   "Accessibility",
+  "docs/site-navigation.md",
   "shadcn/ui",
   "Radix UI",
   "Chakra UI",
@@ -237,6 +241,24 @@ mustInclude("docs/index.md", [
   "test:kube-reference:exact",
   "pnpm test:visual-docs",
   "pnpm verify"
+]);
+
+mustInclude("docs/site-navigation.md", [
+  "Documentation Site Navigation",
+  "Sidebar Model",
+  "Storybook Landing Blocks",
+  "Maintenance Rules",
+  "shadcn/ui",
+  "Radix UI",
+  "Chakra UI",
+  "HeroUI",
+  "docs/components/index.md",
+  "docs/components/map.md",
+  "docs/visual-documentation.md",
+  "docs/release-evidence.md",
+  "Storybook Pages",
+  "not claim",
+  "pnpm test:kube-reference:exact"
 ]);
 
 mustInclude("MAINTAINERS.md", [

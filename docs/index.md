@@ -15,22 +15,23 @@ index acts as the source-readable docs home. The structure mirrors a mainstream
 UI library docs sidebar without pretending that Storybook Pages or npm publish
 has already happened.
 
-| Section        | Start here                       | What it answers                                              |
-| -------------- | -------------------------------- | ------------------------------------------------------------ |
-| Introduction   | `docs/index.md`                  | What the library is, current status, and where to go next.   |
-| Installation   | `docs/installation.md`           | Package install path, CSS imports, peer dependencies.        |
-| Components     | `docs/components/index.md`       | Written component pages and the full component directory.    |
-| Theming        | `docs/design-principles.md`      | Liquid material rules, modes, tokens, and fallback behavior. |
-| API            | `docs/api-overview.md`           | Provider, exports, component groups, and stable contracts.   |
-| Registry       | `docs/shadcn-registry.md`        | shadcn-compatible package-backed registry distribution.      |
-| Accessibility  | `docs/accessibility.md`          | Semantics, keyboard paths, axe gates, and release limits.    |
-| Visual docs    | `docs/visual-documentation.md`   | Storybook, state coverage, screenshots, and Kube evidence.   |
-| Testing        | `docs/testing.md`                | Local, CI, visual, a11y, registry, and release gates.        |
-| Governance     | `docs/open-source-governance.md` | Benchmark against shadcn/ui, Radix UI, Chakra UI, HeroUI.    |
-| Release        | `docs/open-source-release.md`    | npm, provenance, Pages, rollback, and release checklist.     |
-| Changelog      | `CHANGELOG.md`                   | Version history after Changesets releases.                   |
-| AI/agent index | `llms.txt`                       | Machine-readable docs map and no-overclaim rules.            |
-| Support        | `SUPPORT.md`, `SECURITY.md`      | Support routing and private security reporting.              |
+| Section         | Start here                       | What it answers                                              |
+| --------------- | -------------------------------- | ------------------------------------------------------------ |
+| Introduction    | `docs/index.md`                  | What the library is, current status, and where to go next.   |
+| Installation    | `docs/installation.md`           | Package install path, CSS imports, peer dependencies.        |
+| Components      | `docs/components/index.md`       | Written component pages and the full component directory.    |
+| Docs navigation | `docs/site-navigation.md`        | Sidebar model for the future public Storybook Pages site.    |
+| Theming         | `docs/design-principles.md`      | Liquid material rules, modes, tokens, and fallback behavior. |
+| API             | `docs/api-overview.md`           | Provider, exports, component groups, and stable contracts.   |
+| Registry        | `docs/shadcn-registry.md`        | shadcn-compatible package-backed registry distribution.      |
+| Accessibility   | `docs/accessibility.md`          | Semantics, keyboard paths, axe gates, and release limits.    |
+| Visual docs     | `docs/visual-documentation.md`   | Storybook, state coverage, screenshots, and Kube evidence.   |
+| Testing         | `docs/testing.md`                | Local, CI, visual, a11y, registry, and release gates.        |
+| Governance      | `docs/open-source-governance.md` | Benchmark against shadcn/ui, Radix UI, Chakra UI, HeroUI.    |
+| Release         | `docs/open-source-release.md`    | npm, provenance, Pages, rollback, and release checklist.     |
+| Changelog       | `CHANGELOG.md`                   | Version history after Changesets releases.                   |
+| AI/agent index  | `llms.txt`                       | Machine-readable docs map and no-overclaim rules.            |
+| Support         | `SUPPORT.md`, `SECURITY.md`      | Support routing and private security reporting.              |
 
 ## Start Here
 
@@ -40,7 +41,9 @@ has already happened.
    repository-local validation path before publish.
 3. Browse [component docs](components/index.md) and the
    [component map](components/map.md).
-4. Check [visual documentation](visual-documentation.md),
+4. Use [docs navigation](site-navigation.md) to understand how the future
+   Storybook Pages site should be organized.
+5. Check [visual documentation](visual-documentation.md),
    [accessibility](accessibility.md), and [release evidence](release-evidence.md)
    before making public claims.
 
@@ -84,6 +87,7 @@ flowchart TD
 | Installation         | `docs/installation.md`            | Package install, peer dependencies, CSS imports, and Next.js usage.                                             |
 | Components           | `docs/component-inventory.md`     | Implemented and planned component inventory.                                                                    |
 | Component map        | `docs/components/map.md`          | shadcn-style directory for all implemented public components.                                                   |
+| Docs navigation      | `docs/site-navigation.md`         | Source-readable sidebar model for Storybook Pages and repo docs.                                                |
 | Component docs       | `docs/component-documentation.md` | Per-component page standard for usage, anatomy, API, visual states, and evidence.                               |
 | Component pages      | `docs/components/index.md`        | Package-backed pages for core surfaces, actions, controls, disclosure, navigation, and Kube reference controls. |
 | API                  | `docs/api-overview.md`            | Provider, modes, component API groups, and export shape.                                                        |

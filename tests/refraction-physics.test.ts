@@ -50,6 +50,10 @@ const lensReferenceEngineSource = fs.readFileSync(
   path.resolve("src/engines/lens-reference-engine.tsx"),
   "utf8"
 );
+const refractiveEngineSource = fs.readFileSync(
+  path.resolve("src/engines/refractive-engine.tsx"),
+  "utf8"
+);
 const displacementMapSource = fs.readFileSync(
   path.resolve("src/utils/displacement-map.ts"),
   "utf8"
@@ -65,6 +69,10 @@ const kubeDemoAssetVerifierSource = fs.readFileSync(
 );
 const verifyLiquidBehaviorSource = fs.readFileSync(
   path.resolve("scripts/verify-liquid-behavior.mjs"),
+  "utf8"
+);
+const verifyEnhancedStorybookSource = fs.readFileSync(
+  path.resolve("scripts/verify-enhanced-storybook.mjs"),
   "utf8"
 );
 const surfaceSource = fs.readFileSync(path.resolve("src/components/LiquidSurface.tsx"), "utf8");
@@ -552,6 +560,36 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain('new RegExp(`${name}:\\\\s*"([^"]+)"`)');
     expect(searchboxStorySource).toContain("Photo by Teemu Paananen");
     expect(searchboxStorySource).not.toContain("radial-gradient(ellipse at 18% 24%");
+  });
+
+  it("keeps the Kube searchbox visual radius separate from the physical optical radius", () => {
+    const kubeSearchboxRule = collectCssRuleBodies(
+      styles,
+      ".lg-searchbox.lg-searchbox--kube-reference"
+    ).join("\n");
+    const kubeSearchboxContentRule = collectCssRuleBodies(
+      styles,
+      ".lg-searchbox--kube-reference > .lg-surface__content"
+    ).join("\n");
+
+    expect(searchboxStorySource).toContain("radius: 28");
+    expect(kubeSearchboxRule).toContain("border-radius: 28px");
+    expect(kubeSearchboxContentRule).toContain("border-radius: 28px");
+    expect(resolvePhysicalRefractionRadius({ height: 45, radius: 28, width: 336 })).toBe(22);
+    expect(searchboxStorySource).toContain('"--lg-surface-radius": "28px"');
+    expect(surfaceSource).toContain("const visualRadiusPx =");
+    expect(surfaceSource).toContain('resolvedMode === "enhanced" ? refractiveOptions.radius');
+    expect(surfaceSource).toContain("...style");
+    expect(surfaceSource).toContain('"--lg-surface-radius": `${visualRadiusPx}px`');
+    expect(refractiveEngineSource).toContain("resolveVisualStyle");
+    expect(refractiveEngineSource).toContain('"--lg-surface-radius"');
+    expect(refractiveEngineSource).toContain("borderRadius: visualRadius");
+    expect(lensReferenceEngineSource).not.toContain("borderRadius: refraction.radius");
+    expect(verifyEnhancedStorybookSource).toContain(
+      "assertEqual(result.borderRadius, story.radius"
+    );
+    expect(verifyEnhancedStorybookSource).toContain('radius: "28px"');
+    expect(kubeReferenceCompareSource).toContain("glassLayerMaterial");
   });
 
   it("uses the Kube Music Player album art grid instead of synthetic covers", () => {
@@ -1191,16 +1229,16 @@ describe("Liquid Glass physics contract", () => {
     expect(reducedMotionRule).toContain("transform: none");
     expect(searchboxStorySource).toContain('className: "lg-searchbox--kube-reference"');
     expect(searchboxStorySource).toContain('top: "calc(50% + 1px)"');
-    expect(searchboxStorySource).toContain("radius: 22");
+    expect(searchboxStorySource).toContain("radius: 28");
     expect(kubeSearchboxHostRule).toContain("width: 21rem");
     expect(kubeSearchboxHostRule).toContain("height: 2.8rem");
     expect(kubeSearchboxHostRule).toContain("border: 0");
-    expect(kubeSearchboxHostRule).toContain("border-radius: 22px");
+    expect(kubeSearchboxHostRule).toContain("border-radius: 28px");
     expect(kubeSearchboxHostRule).toContain("font-size: 1rem");
     expect(kubeSearchboxHostRule).toContain("line-height: 1.375rem");
     expect(kubeSearchboxHostRule).toContain("transform: none");
     expect(kubeSearchboxContentRule).toContain("padding: 0 0.8125rem");
-    expect(kubeSearchboxContentRule).toContain("border-radius: 22px");
+    expect(kubeSearchboxContentRule).toContain("border-radius: 28px");
     expect(kubeSearchboxContentRule).toContain("gap: 0.4875rem");
     expect(kubeSearchboxContentRule).toContain("font-size: 1rem");
     expect(kubeSearchboxIconRule).toContain(

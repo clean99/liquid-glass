@@ -216,7 +216,7 @@
   width: 21rem;
   height: 2.8rem;
   border: 0;
-  border-radius: 22px;
+  border-radius: 28px;
   font-size: 1rem;
   line-height: 1.375rem;
   transform: none;
@@ -224,7 +224,7 @@
 
 .lg-searchbox--kube-reference > .lg-surface__content {
   padding: 0 0.8125rem;
-  border-radius: 22px;
+  border-radius: 28px;
   gap: 0.4875rem;
   font-size: 1rem;
   line-height: 1.375rem;

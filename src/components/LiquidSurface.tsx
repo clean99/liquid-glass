@@ -228,9 +228,10 @@ export const LiquidSurface = forwardRef<HTMLElement, LiquidSurfaceProps>(functio
   );
   const componentName = typeof Component === "string" ? Component : "";
   const supportsDisabled = ["button", "input", "select", "textarea"].includes(componentName);
+  const visualRadiusPx = resolvedMode === "enhanced" ? refractiveOptions.radius : radiusPx;
   const surfaceStyle = {
-    ...style,
-    "--lg-surface-radius": `${radiusPx}px`
+    "--lg-surface-radius": `${visualRadiusPx}px`,
+    ...style
   } as CSSProperties;
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {

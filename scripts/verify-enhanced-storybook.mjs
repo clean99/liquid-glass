@@ -23,7 +23,7 @@ const stories = [
     selector: ".lg-searchbox",
     width: 336,
     height: 45,
-    radius: "22px",
+    radius: "28px",
     backgroundColor: "rgba(255, 255, 255, 0.05)",
     opticalRadius: "22"
   },
@@ -127,7 +127,17 @@ try {
     await page.evaluate(() => globalThis.document?.fonts?.ready).catch(() => undefined);
     const locator = page.locator(story.selector).first();
     await locator.waitFor({ state: "visible", timeout: 10_000 });
-    await page.waitForTimeout(50);
+    if (story.opticalRadius) {
+      await page.waitForFunction(
+        ({ expectedOpticalRadius, selector }) =>
+          document.querySelector(selector)?.getAttribute("data-liquid-optical-radius") ===
+          expectedOpticalRadius,
+        { expectedOpticalRadius: story.opticalRadius, selector: story.selector },
+        { timeout: 2_000 }
+      );
+    } else {
+      await page.waitForTimeout(50);
+    }
 
     const result = await locator.evaluate((element) => {
       const view = element.ownerDocument.defaultView;

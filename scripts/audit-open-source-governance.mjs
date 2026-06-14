@@ -38,6 +38,7 @@ const categoryChecks = [
     checks: [
       exists("docs/index.md"),
       exists("docs/accessibility.md"),
+      exists("docs/site-navigation.md"),
       exists("docs/component-documentation.md"),
       exists("docs/components/index.md"),
       exists("docs/components/map.md"),
@@ -80,6 +81,9 @@ const categoryChecks = [
       fileIncludes("docs/component-documentation.md", "Required Page Sections"),
       fileIncludes("docs/component-documentation.md", "Component Page Template"),
       fileIncludes("docs/component-documentation.md", "docs/components/"),
+      fileIncludes("docs/site-navigation.md", "Sidebar Model"),
+      fileIncludes("docs/site-navigation.md", "Storybook Landing Blocks"),
+      fileIncludes("docs/site-navigation.md", "pnpm test:kube-reference:exact"),
       fileIncludes("docs/components/index.md", "Component Docs"),
       fileIncludes("docs/components/index.md", "docs/components/map.md"),
       fileIncludes("docs/components/map.md", "Implemented public components: 60"),
