@@ -292,6 +292,14 @@ threshold remains the final acceptance target, but the sweep shows whether a
 failed row is dominated by low-amplitude material/color drift or by large
 localized geometry, phase, or refraction errors.
 
+The Kube filter contract now also writes `layerTransformDelta` for the lens
+rows. It parses root, parent, surface, and effective CSS transform matrices into
+scale and translation metrics, then reports the maximum scale and translation
+delta next to the diff rows. The 2026-06-14 exact run still fails with lens
+worst regions in `lowerMid` / `bottom`, so the next implementation change should
+target transform ownership and sampling-model alignment before tuning material
+colors.
+
 ## rdev/liquid-glass-react
 
 The repository `rdev/liquid-glass-react` was inspected at commit

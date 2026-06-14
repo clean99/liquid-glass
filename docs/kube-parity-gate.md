@@ -72,13 +72,16 @@ the worst spatial region so heartbeat runs can report whether a failure is
 mostly sub-pixel/background phase drift or a real high-amplitude optical error.
 
 The magnifying-glass filter contract also records `layerContract`,
-`transformOwner`, and `layerTransformMismatch`. Chrome/CDP sampling shows that
-the Kube target owns the resting `scaleY(0.8)` transform on the filter surface's
-parent layer while the local Storybook candidate currently owns that transform on
-the filter surface itself. A 2026-06-14 split-layer experiment mirrored the live
-DOM ownership but regressed the normal magnifying gate to `0.3140 > 0.24`, so the
-mismatch remains a diagnostic for the next sampling-model change rather than a
-DOM change to ship without pixel proof.
+`transformOwner`, `layerTransformMismatch`, and `layerTransformDelta`. The
+script parses CSS `matrix()` / `matrix3d()` values into root, parent, surface,
+and effective scale/translate metrics, then surfaces the maximum scale and
+translation deltas in the console table and GitHub summary. Chrome/CDP sampling
+shows that the Kube target owns the resting `scaleY(0.8)` transform on the filter
+surface's parent layer while the local Storybook candidate currently owns that
+transform on the filter surface itself. A 2026-06-14 split-layer experiment
+mirrored the live DOM ownership but regressed the normal magnifying gate to
+`0.3140 > 0.24`, so the mismatch remains a diagnostic for the next
+sampling-model change rather than a DOM change to ship without pixel proof.
 
 ## Representative Strict Measurement
 

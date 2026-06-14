@@ -254,11 +254,9 @@ try {
       }
       await candidateAction?.cleanup();
 
+      let filterSummary = null;
       if (targetFilterContract && candidateFilterContract) {
-        const filterSummary = summarizeFilterContract(
-          targetFilterContract,
-          candidateFilterContract
-        );
+        filterSummary = summarizeFilterContract(targetFilterContract, candidateFilterContract);
         await fs.writeFile(
           path.join(artifactDir, `${reference.name}-filter-contract.json`),
           `${JSON.stringify(
@@ -295,6 +293,7 @@ try {
         candidateActionClip: candidateAction?.clip,
         candidateActionMetrics: candidateAction?.metrics,
         diffArtifact: path.relative(process.cwd(), diffPath),
+        filterContractSummary: filterSummary,
         gateDiffRatio: exactPixelParity
           ? diff.diffRatio
           : Math.min(diff.diffRatio, diff.bestPhaseOffset.diffRatio),
@@ -361,6 +360,8 @@ console.table(
     rmsDelta: result.rmsDelta.toFixed(2),
     deltaGt24: formatThresholdSweepRatio(result, 24),
     deltaGt64: formatThresholdSweepRatio(result, 64),
+    transformDelta: formatLayerTransformDelta(result),
+    transformOwner: formatLayerTransformOwner(result),
     worstRegion: formatWorstDiffRegion(result),
     maxDiffRatio: result.maxDiffRatio,
     pixelDeltaThreshold: result.pixelDeltaThreshold,
@@ -410,11 +411,13 @@ async function writeGithubStepSummary(results, failures, error) {
             )} | ${formatThresholdSweepRatio(result, 24)} | ${formatThresholdSweepRatio(
               result,
               64
-            )} | ${formatWorstDiffRegion(result)} | ${result.maxDiffRatio} | ${
+            )} | ${formatWorstDiffRegion(result)} | ${formatLayerTransformOwner(
+              result
+            )} | ${formatLayerTransformDelta(result)} | ${result.maxDiffRatio} | ${
               result.reportOnly ? "report" : "gate"
             } |`
         )
-      : ["| _none completed_ | n/a | n/a | n/a | n/a | n/a | n/a | n/a |"];
+      : ["| _none completed_ | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |"];
 
   await fs.appendFile(
     summaryPath,
@@ -423,8 +426,8 @@ async function writeGithubStepSummary(results, failures, error) {
       "",
       status,
       "",
-      "| Reference | Gate diff ratio | Raw diff ratio | Delta >24 | Delta >64 | Worst region | Threshold | Mode |",
-      "| --- | ---: | ---: | ---: | ---: | --- | ---: | --- |",
+      "| Reference | Gate diff ratio | Raw diff ratio | Delta >24 | Delta >64 | Worst region | Transform owner | Transform delta | Threshold | Mode |",
+      "| --- | ---: | ---: | ---: | ---: | --- | --- | ---: | ---: | --- |",
       ...rows,
       ""
     ].join("\n")
@@ -441,6 +444,24 @@ function formatWorstDiffRegion(result) {
   const worstRegion = result.diffDiagnostics?.worstRegion;
 
   return worstRegion ? `${worstRegion.name} ${worstRegion.diffRatio.toFixed(4)}` : "n/a";
+}
+
+function formatLayerTransformOwner(result) {
+  const summary = result.filterContractSummary;
+  if (!summary) {
+    return "n/a";
+  }
+
+  return `${summary.targetLayerContract.transformOwner}->${summary.candidateLayerContract.transformOwner}`;
+}
+
+function formatLayerTransformDelta(result) {
+  const delta = result.filterContractSummary?.layerTransformDelta;
+  if (!delta) {
+    return "n/a";
+  }
+
+  return `s${delta.maxScaleDelta.toFixed(4)} t${delta.maxTranslateDelta.toFixed(2)}`;
 }
 
 async function gotoTargetReference(page) {
@@ -1729,6 +1750,7 @@ function summarizeFilterContract(target, candidate) {
     candidateLayerContract,
     candidateLooksOnePass: (candidate.counts.feDisplacementMap ?? 0) === 1,
     candidateLooksTwoPass: (candidate.counts.feDisplacementMap ?? 0) >= 2,
+    layerTransformDelta: summarizeLayerTransformDelta(targetLayerContract, candidateLayerContract),
     layerTransformMismatch: hasLayerTransformMismatch(targetLayerContract, candidateLayerContract),
     targetDisplacementMapCount: target.counts.feDisplacementMap ?? 0,
     targetDisplacementScales: target.displacementScales,
@@ -1742,17 +1764,134 @@ function summarizeFilterContract(target, candidate) {
 function summarizeLayerContract(layerContract) {
   const surfaceHasTransform = layerContract.surface.style.transform !== "none";
   const parentHasTransform = layerContract.surfaceParent.style.transform !== "none";
+  const rootTransformMetrics = parseCssTransformMatrix(layerContract.root.style.transform);
+  const surfaceParentTransformMetrics = parseCssTransformMatrix(
+    layerContract.surfaceParent.style.transform
+  );
+  const surfaceTransformMetrics = parseCssTransformMatrix(layerContract.surface.style.transform);
+  const effectiveTransformMetrics = summarizeTransformMatrix(
+    multiplyTransformMatrices(
+      multiplyTransformMatrices(rootTransformMetrics.matrix, surfaceParentTransformMetrics.matrix),
+      surfaceTransformMetrics.matrix
+    )
+  );
 
   return {
+    effectiveTransformMetrics,
     filterSurfaceCarriesTransform: surfaceHasTransform,
     rootTransform: layerContract.root.style.transform,
+    rootTransformMetrics,
     surfaceBackdropFilter: layerContract.surface.style.backdropFilter,
     surfaceBoxShadow: layerContract.surface.style.boxShadow,
     surfaceParentSameAsSurface: layerContract.surfaceParent.sameAsSurface,
     surfaceParentTransform: layerContract.surfaceParent.style.transform,
+    surfaceParentTransformMetrics,
     surfaceTransform: layerContract.surface.style.transform,
+    surfaceTransformMetrics,
     transformOwner: surfaceHasTransform ? "surface" : parentHasTransform ? "parent" : "none"
   };
+}
+
+function parseCssTransformMatrix(transform) {
+  if (!transform || transform === "none") {
+    return summarizeTransformMatrix(identityTransformMatrix());
+  }
+
+  const matrix3dValues = transform
+    .match(/matrix3d\(([^)]+)\)/)?.[1]
+    ?.split(/,\s*/)
+    .map(Number);
+  if (matrix3dValues?.length === 16 && matrix3dValues.every(Number.isFinite)) {
+    return summarizeTransformMatrix([
+      matrix3dValues[0],
+      matrix3dValues[1],
+      matrix3dValues[4],
+      matrix3dValues[5],
+      matrix3dValues[12],
+      matrix3dValues[13]
+    ]);
+  }
+
+  const matrixValues = transform
+    .match(/matrix\(([^)]+)\)/)?.[1]
+    ?.split(/,\s*/)
+    .map(Number);
+  if (matrixValues?.length === 6 && matrixValues.every(Number.isFinite)) {
+    return summarizeTransformMatrix(matrixValues);
+  }
+
+  return summarizeTransformMatrix(identityTransformMatrix());
+}
+
+function summarizeTransformMatrix(matrix) {
+  const [a, b, c, d, e, f] = matrix;
+
+  return {
+    determinant: round(a * d - b * c),
+    matrix: matrix.map(round),
+    scaleX: round(Math.hypot(a, b)),
+    scaleY: round(Math.hypot(c, d)),
+    translateX: round(e),
+    translateY: round(f)
+  };
+}
+
+function summarizeLayerTransformDelta(targetLayerContract, candidateLayerContract) {
+  const layers = {
+    effective: diffTransformMetrics(
+      targetLayerContract.effectiveTransformMetrics,
+      candidateLayerContract.effectiveTransformMetrics
+    ),
+    root: diffTransformMetrics(
+      targetLayerContract.rootTransformMetrics,
+      candidateLayerContract.rootTransformMetrics
+    ),
+    surface: diffTransformMetrics(
+      targetLayerContract.surfaceTransformMetrics,
+      candidateLayerContract.surfaceTransformMetrics
+    ),
+    surfaceParent: diffTransformMetrics(
+      targetLayerContract.surfaceParentTransformMetrics,
+      candidateLayerContract.surfaceParentTransformMetrics
+    )
+  };
+
+  return {
+    layers,
+    maxScaleDelta: Math.max(...Object.values(layers).map((layer) => layer.maxScaleDelta)),
+    maxTranslateDelta: Math.max(...Object.values(layers).map((layer) => layer.maxTranslateDelta))
+  };
+}
+
+function diffTransformMetrics(targetMetrics, candidateMetrics) {
+  const scaleXDelta = round(Math.abs(candidateMetrics.scaleX - targetMetrics.scaleX));
+  const scaleYDelta = round(Math.abs(candidateMetrics.scaleY - targetMetrics.scaleY));
+  const translateXDelta = round(Math.abs(candidateMetrics.translateX - targetMetrics.translateX));
+  const translateYDelta = round(Math.abs(candidateMetrics.translateY - targetMetrics.translateY));
+
+  return {
+    scaleXDelta,
+    scaleYDelta,
+    translateXDelta,
+    translateYDelta,
+    maxScaleDelta: Math.max(scaleXDelta, scaleYDelta),
+    maxTranslateDelta: Math.max(translateXDelta, translateYDelta)
+  };
+}
+
+function identityTransformMatrix() {
+  return [1, 0, 0, 1, 0, 0];
+}
+
+function multiplyTransformMatrices(left, right) {
+  return [
+    left[0] * right[0] + left[2] * right[1],
+    left[1] * right[0] + left[3] * right[1],
+    left[0] * right[2] + left[2] * right[3],
+    left[1] * right[2] + left[3] * right[3],
+    left[0] * right[4] + left[2] * right[5] + left[4],
+    left[1] * right[4] + left[3] * right[5] + left[5]
+  ];
 }
 
 function hasLayerTransformMismatch(targetLayerContract, candidateLayerContract) {

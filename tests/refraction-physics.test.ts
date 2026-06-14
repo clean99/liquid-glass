@@ -815,8 +815,16 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain("summarizeLayerContract");
     expect(kubeReferenceCompareSource).toContain("hasLayerTransformMismatch");
     expect(kubeReferenceCompareSource).toContain("layerTransformMismatch");
+    expect(kubeReferenceCompareSource).toContain("layerTransformDelta");
+    expect(kubeReferenceCompareSource).toContain("parseCssTransformMatrix");
+    expect(kubeReferenceCompareSource).toContain("matrix3d");
+    expect(kubeReferenceCompareSource).toContain("effectiveTransformMetrics");
     expect(kubeReferenceCompareSource).toContain("filterSurfaceCarriesTransform");
     expect(kubeReferenceCompareSource).toContain("transformOwner");
+    expect(kubeReferenceCompareSource).toContain("formatLayerTransformOwner");
+    expect(kubeReferenceCompareSource).toContain("formatLayerTransformDelta");
+    expect(kubeReferenceCompareSource).toContain("maxScaleDelta");
+    expect(kubeReferenceCompareSource).toContain("maxTranslateDelta");
     expect(kubeReferenceCompareSource).toContain("surfaceParentTransform");
     expect(kubeReferenceCompareSource).toContain("surfaceParentSameAsSurface");
     expect(kubeReferenceCompareSource).toContain("[0, 1, 2, 4, 8, 16, 24, 32, 48, 64]");
