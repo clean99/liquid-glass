@@ -6,6 +6,14 @@ export const kubeReferenceImageAssets = {
   searchboxDemoBackground: "/kube/searchbox-demo-background.jpg"
 } as const;
 
+export const kubeReferenceControlGridBackground = {
+  image:
+    "linear-gradient(to right, oklab(0 0 0 / 0.05) 1px, rgba(0, 0, 0, 0) 1px), linear-gradient(oklab(0 0 0 / 0.05) 1px, rgba(0, 0, 0, 0) 1px), radial-gradient(120% 100% at 10% 0%, rgb(248, 250, 252), rgb(231, 238, 239))",
+  position: "12px 12px, 12px 12px, 0px 0px",
+  repeat: "repeat, repeat, repeat",
+  size: "24px 24px, 24px 24px, 100% 100%"
+} as const;
+
 export const kubeReferenceRemoteImageAssets = {
   lensDemoBackground:
     "https://images.unsplash.com/photo-1688494930098-e88c53c26e3a?auto=format&q=80&fit=crop&w=1400&h=1600&crop=focalpoint&fp-x=0.3&fp-y=0.5&fp-z=1",

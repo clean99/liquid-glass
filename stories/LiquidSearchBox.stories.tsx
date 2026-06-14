@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { useState, type CSSProperties } from "react";
 import { LiquidProvider, LiquidSearchBox } from "../src";
-import { kubeReferenceImageAssets } from "./kube-reference-assets";
+import {
+  kubeReferenceControlGridBackground,
+  kubeReferenceImageAssets
+} from "./kube-reference-assets";
 import { storyVisualState, StoryFrame } from "./story-fixtures";
 
 const meta = {
@@ -65,10 +68,14 @@ function KubeSearchboxReferenceStory() {
             borderRadius: 9.75,
             background: useImageBackground
               ? `url("${kubeReferenceImageAssets.searchboxDemoBackground}")`
-              : `url("${kubeReferenceImageAssets.controlGridBackground}")`,
-            backgroundPosition: useImageBackground ? "50% 50%" : "0 0",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: useImageBackground ? "cover" : "100% 100%"
+              : kubeReferenceControlGridBackground.image,
+            backgroundPosition: useImageBackground
+              ? "50% 50%"
+              : kubeReferenceControlGridBackground.position,
+            backgroundRepeat: useImageBackground
+              ? "no-repeat"
+              : kubeReferenceControlGridBackground.repeat,
+            backgroundSize: useImageBackground ? "cover" : kubeReferenceControlGridBackground.size
           }}
         >
           {useImageBackground ? <KubeSearchboxPhotoCredit /> : null}

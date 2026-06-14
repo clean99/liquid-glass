@@ -64,7 +64,7 @@ The visual direction is informed by Chris Feijoo's public Liquid Glass research 
 - Kube CSS-only control demo background capture
   - Source: https://kube.io/blog/liquid-glass-css-svg/
   - Captured from the rendered Searchbox, Switch, and Slider demo backgrounds when no raster URL is present.
-  - Stored under `stories/assets/kube/reference-captures/` as a Storybook/parity fixture and excluded from the published package.
+  - Stored under `stories/assets/kube/reference-captures/` as a reference capture fixture and excluded from the published package. Storybook centralizes the captured computed CSS tokens instead of using the bitmap as the render path.
 
 - Inter variable font
   - Project: https://rsms.me/inter/

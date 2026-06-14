@@ -481,14 +481,14 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceAssetsSource).toContain(
       'controlGridBackground: "/kube/reference-captures/control-grid-background.png"'
     );
-    expect(searchboxStorySource).toContain("kubeReferenceImageAssets.controlGridBackground");
-    expect(switchStorySource).toContain("kubeReferenceImageAssets.controlGridBackground");
-    expect(sliderStorySource).toContain("kubeReferenceImageAssets.controlGridBackground");
-    expect(searchboxStorySource).toContain(
-      'backgroundSize: useImageBackground ? "cover" : "100% 100%"'
-    );
-    expect(switchStorySource).toContain('backgroundSize: "100% 100%"');
-    expect(sliderStorySource).toContain('backgroundSize: "100% 100%"');
+    expect(kubeReferenceAssetsSource).toContain("kubeReferenceControlGridBackground");
+    expect(kubeReferenceAssetsSource).toContain("oklab(0 0 0 / 0.05)");
+    expect(searchboxStorySource).toContain("kubeReferenceControlGridBackground.image");
+    expect(switchStorySource).toContain("kubeReferenceControlGridBackground.image");
+    expect(sliderStorySource).toContain("kubeReferenceControlGridBackground.image");
+    expect(searchboxStorySource).toContain("kubeReferenceControlGridBackground.position");
+    expect(switchStorySource).toContain("kubeReferenceControlGridBackground.position");
+    expect(sliderStorySource).toContain("kubeReferenceControlGridBackground.position");
 
     for (const [name, asset] of Object.entries(
       kubeReferenceAssetManifest.cssOnlyBackgroundAssets
