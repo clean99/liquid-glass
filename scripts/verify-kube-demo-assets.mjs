@@ -85,6 +85,16 @@ const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({
   viewport: { width: 1280, height: 760 }
 });
+const cdpResponseUrls = [];
+const cdpSession = await page.context().newCDPSession(page);
+await cdpSession.send("Network.enable");
+cdpSession.on("Network.responseReceived", (event) => {
+  const url = event.response?.url;
+
+  if (typeof url === "string" && url.length > 0) {
+    cdpResponseUrls.push(url);
+  }
+});
 
 try {
   await gotoTargetReference(page);
@@ -209,8 +219,11 @@ try {
     };
   });
 
+  observed.cdpResponseUrls = [...new Set(cdpResponseUrls)];
+
   const observedUrls = new Set([
     ...observed.cssBackgrounds.flatMap((background) => background.urls),
+    ...observed.cdpResponseUrls,
     ...observed.imageUrls.map((image) => image.src),
     ...observed.resourceUrls,
     ...observed.stylesheetUrls,
@@ -301,6 +314,7 @@ try {
     `Verified ${expectedUrls.size} Kube demo asset URLs from the rendered public page, ${localAssetChecks.length} local raster fixture locks, ${cssOnlyBackgroundAssetChecks.length} CSS-only background captures, and ${localFontAssetChecks.length} local font fixture locks.`
   );
 } finally {
+  await cdpSession.detach().catch(() => undefined);
   await browser.close();
 }
 
@@ -446,6 +460,19 @@ async function validateRenderedCssOnlyBackgroundAssets(page, assets) {
       if (Math.abs(sample.rect.height - asset.height) > 2) {
         errors.push(`${targetId} height ${sample.rect.height} differs from ${asset.height}`);
       }
+
+      const capture = await captureTargetCssOnlyDemoBackground(page, targetId, name);
+      sample.capture = capture;
+
+      if (capture.sha256 !== asset.sha256) {
+        errors.push(`${targetId} capture sha256 ${capture.sha256} !== ${asset.sha256}`);
+      }
+
+      if (capture.width !== asset.width || capture.height !== asset.height) {
+        errors.push(
+          `${targetId} capture dimensions ${capture.width}x${capture.height} !== ${asset.width}x${asset.height}`
+        );
+      }
     }
 
     checks.push({
@@ -458,6 +485,70 @@ async function validateRenderedCssOnlyBackgroundAssets(page, assets) {
   }
 
   return checks;
+}
+
+async function captureTargetCssOnlyDemoBackground(page, targetId, assetName) {
+  const captureId = `lg-kube-css-bg-${assetName}-${targetId}`;
+  const captureDir = path.join(artifactDir, "css-only-backgrounds");
+  const capturePath = path.join(captureDir, `${assetName}-${targetId}.png`);
+
+  fs.mkdirSync(captureDir, { recursive: true });
+
+  const selector = await page.evaluate(
+    ({ captureId, targetId }) => {
+      const heading = document.getElementById(targetId);
+      if (!heading) {
+        throw new Error(`Missing target heading: ${targetId}`);
+      }
+
+      let current = heading.nextElementSibling;
+      while (current) {
+        const rect = current.getBoundingClientRect();
+        const style = getComputedStyle(current);
+        const isDemo =
+          rect.width >= 650 &&
+          rect.width <= 730 &&
+          rect.height >= 300 &&
+          rect.height <= 500 &&
+          style.position === "relative";
+
+        if (isDemo) {
+          const styleElement = document.createElement("style");
+          styleElement.id = `${captureId}-style`;
+          styleElement.textContent = `[data-lg-kube-css-background-capture="${captureId}"] > * { visibility: hidden !important; }`;
+          document.head.append(styleElement);
+          current.setAttribute("data-lg-kube-css-background-capture", captureId);
+          return `[data-lg-kube-css-background-capture="${captureId}"]`;
+        }
+
+        current = current.nextElementSibling;
+      }
+
+      throw new Error(`Missing target demo after heading: ${targetId}`);
+    },
+    { captureId, targetId }
+  );
+
+  try {
+    await page.locator(selector).screenshot({ animations: "disabled", path: capturePath });
+  } finally {
+    await page.evaluate((captureId) => {
+      document.getElementById(`${captureId}-style`)?.remove();
+      document
+        .querySelector(`[data-lg-kube-css-background-capture="${captureId}"]`)
+        ?.removeAttribute("data-lg-kube-css-background-capture");
+    }, captureId);
+  }
+
+  const bytes = fs.readFileSync(capturePath);
+  const dimensions = readRasterSize(bytes);
+
+  return {
+    artifact: path.relative(root, capturePath),
+    height: dimensions.height,
+    sha256: crypto.createHash("sha256").update(bytes).digest("hex"),
+    width: dimensions.width
+  };
 }
 
 async function readTargetCssOnlyDemoBackground(page, targetId) {

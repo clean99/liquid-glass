@@ -43,16 +43,20 @@ differences instead of font fallback timing.
 
 `pnpm test:kube-assets` opens the rendered public page, clicks the Searchbox
 `Use image background` control, reads CSS backgrounds, `<img>` sources, and SVG
-`<image>`/`<feImage>` hrefs, then compares those live demo URLs against the
-manifest before `pnpm test:kube-reference` captures pixels. The URL gate covers
-the loaded demo photos, album-art fixtures, Kube same-origin SVG filter maps,
-and the Inter variable font requested by the public page.
-It also fails if a rendered CSS demo background is not covered by the manifest
-or an explicit generated fallback entry. The current Chrome sample found real
-source images for the rendered CSS demo backgrounds, so
-`generatedFallbackAssets` is intentionally empty. If Kube has no rendered source
-image for a future component state, the fallback must be a captured/generated
-reference fixture with provenance instead of a synthetic placeholder.
+`<image>`/`<feImage>` hrefs, and CDP network response URLs, then compares those
+live demo URLs against the manifest before `pnpm test:kube-reference` captures
+pixels. The URL gate covers the loaded demo photos, album-art fixtures, Kube
+same-origin SVG filter maps, and the Inter variable font requested by the public
+page. It also fails if a rendered CSS demo background is not covered by the
+manifest or an explicit generated fallback entry. The Searchbox, Switch, and
+Slider default control background has no raster URL, so
+`stories/assets/kube/reference-captures/control-grid-background.png` is a live
+background screenshot fixture. The asset gate re-captures those three public
+demo backgrounds with children hidden and compares the fresh screenshot hash and
+dimensions against the fixture. `generatedFallbackAssets` is intentionally
+empty. If Kube has no rendered source image for a future component state, the
+fallback must be a captured/generated reference fixture with provenance instead
+of a synthetic placeholder.
 
 - Searchbox image background:
   `photo-1497250681960-ef046c08a56e?q=80&w=1600&auto=format&fit=crop`,

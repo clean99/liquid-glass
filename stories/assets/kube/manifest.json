@@ -11,7 +11,7 @@
       "file": "reference-captures/control-grid-background.png",
       "height": 313,
       "role": "Kube CSS-only control demo grid background capture shared by Searchbox, Switch, and Slider",
-      "sha256": "8a8bad22ddad97fb78f190fa7f04a231b4f3f7eb5f4f1a306dd9f76678adfe34",
+      "sha256": "43aa5bcdbb2eba8cf84bd2dd133e942caf08b223c67d644cfdc3e0cd365b914e",
       "sourceSections": ["#searchbox", "#switch", "#slider"],
       "sourceUrl": "https://kube.io/blog/liquid-glass-css-svg/",
       "targetIds": ["searchbox", "switch", "slider"],
