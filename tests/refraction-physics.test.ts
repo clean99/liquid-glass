@@ -969,13 +969,18 @@ describe("Liquid Glass physics contract", () => {
     expect(tokens).toContain("--lg-control-focus-edge: rgba(255, 255, 255, 0.56)");
     expect(tokens).toContain("--lg-control-focus-depth: rgba(58, 76, 96, 0.08)");
     expect(tokens).toContain("--lg-control-focus-mist: rgba(255, 255, 255, 0.46)");
+    expect(tokens).toContain("--lg-control-focus-lift-shadow:");
     expect(tokens).toContain("--lg-control-focus-shadow-soft:");
     expect(tokens).toContain("--lg-control-focus-shadow-deep:");
-    expect(tokens).toContain("--lg-control-focus-fill: rgba(235, 244, 255, 0.42)");
-    expect(tokens).toContain("--lg-control-focus-surface: rgba(235, 244, 255, 0.46)");
+    expect(tokens).toContain("--lg-control-focus-fill: rgba(244, 249, 255, 0.58)");
+    expect(tokens).toContain("--lg-control-focus-surface: rgba(244, 249, 255, 0.54)");
+    expect(tokens).toContain("--lg-control-focus-depth: rgba(190, 216, 245, 0.13)");
     expect(tokens).not.toContain("--lg-control-focus-depth: rgba(0, 0, 0, 0.16)");
     expect(tokens).not.toContain("--lg-control-focus-depth: rgba(0, 0, 0");
     expect(tokens).not.toContain("inset 0 -1px 0 rgba(0, 0, 0");
+    expect(focusRules).not.toContain("var(--lg-surface-shadow)");
+    expect(focusRules).not.toContain("var(--lg-glass-shadow)");
+    expect(focusRules).toContain("var(--lg-control-focus-lift-shadow)");
     expect(surfaceRule).not.toContain("--lg-control-focus-fill:");
     expect(surfaceRule).not.toContain("--lg-control-focus-depth:");
     expect(focusRules).toContain("--lg-control-focus-fill");
@@ -1151,7 +1156,8 @@ describe("Liquid Glass physics contract", () => {
 
     expect(todayBody).toContain("inset 0 0 0 1px");
     expect(todayFocusBody).toContain("var(--lg-control-focus-shadow-soft)");
-    expect(todayFocusBody).toContain("var(--lg-glass-shadow)");
+    expect(todayFocusBody).toContain("var(--lg-control-focus-lift-shadow)");
+    expect(todayFocusBody).not.toContain("var(--lg-glass-shadow)");
     expect(todayFocusBody).not.toContain("inset 0 0 0 1px");
   });
 
@@ -1356,6 +1362,9 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotLumaLoss: 18");
     expect(verifyLiquidBehaviorSource).toContain("minimumFocusedScreenshotLuma: 226");
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotLumaLoss: 22");
+    expect(verifyLiquidBehaviorSource).toContain("minimumFocusedScreenshotLuma: 168");
+    expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotDarkPixelRatio: 0.3");
+    expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotBlackPixelRatio: 0.14");
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotDarkPixelRatio: 0.02");
     expect(verifyLiquidBehaviorSource).toContain('contextScreenshotSelector: ".lg-input-otp"');
     expect(verifyLiquidBehaviorSource).toContain('contextScreenshotSelector: ".lg-switch"');

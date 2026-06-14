@@ -141,6 +141,14 @@ control path, captures `.lg-switch` and `.lg-slider` as the visual focus objects
 and separately requires the `.lg-switch__track` and `.lg-slider__track` material
 layers to add frosted shadow response without black context pixels.
 
+The same focus model applies to generic surfaces. A 2026-06-14 Storybook dev
+audit reproduced the user-visible black focus regression on enhanced buttons:
+the focused surface was using the bright focus fill, but it also carried the
+base `--lg-surface-shadow`, whose dark-theme variant adds heavy black outer and
+inner shadow. Focus now uses a dedicated blue-white lift shadow instead of the
+base glass shadow, and the behavior gate records screenshot luma and dark/black
+pixel ratios for button, nav, and toggle focus states.
+
 `bezelWidth`, capsule radius, and displacement falloff are separate inputs. The
 capsule radius is `75px`, but the observed bevel displacement returns to neutral
 within roughly `25px` from the edge. Treating the full radius as the falloff was

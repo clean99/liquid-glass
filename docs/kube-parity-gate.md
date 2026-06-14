@@ -93,10 +93,10 @@ metrics.
 | Reference                  | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | -------------------------- | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass           |     0.1902 | `1,0`      |     0.1356 |    0.2400 | gate |
-| magnifying-glass-pressed   |     0.3671 | `-8,-3`    |     0.2999 |    0.4050 | gate |
-| magnifying-glass-dragged   |     0.3386 | `-9,-1`    |     0.2870 |    0.4550 | gate |
-| searchbox                  |     0.0130 | `0,0`      |     0.0121 |    0.0200 | gate |
-| searchbox-image-background |     0.1183 | `0,1`      |     0.1111 |    0.1200 | gate |
+| magnifying-glass-pressed   |     0.3892 | `-9,-3`    |     0.3001 |    0.4050 | gate |
+| magnifying-glass-dragged   |     0.3714 | `-11,-1`   |     0.2693 |    0.4550 | gate |
+| searchbox                  |     0.0130 | `0,0`      |     0.0120 |    0.0200 | gate |
+| searchbox-image-background |     0.1184 | `0,1`      |     0.1113 |    0.1200 | gate |
 | switch                     |     0.0137 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                     |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
 
@@ -208,6 +208,12 @@ This proves six things:
   slider focus at `scale(1.018)` with a `5.94px` width delta; both focused
   context screenshots keep black-pixel ratio at `0` or near `0`, and both track
   materials add four shadow layers.
+- Generic surface focus no longer reuses the base glass/surface shadow, because
+  that made dark enhanced buttons read as black slabs in Storybook. The e2e
+  focus audit now gates button, nav, and toggle focused screenshots directly:
+  current samples record button `meanLuma=173.732`, `dark=0.233`,
+  `black=0.098`; nav `meanLuma=170.723`, `dark=0.154`, `black=0.126`; and
+  toggle `meanLuma=164.242`, `dark=0.194`, `black=0.174`.
 - The checked-state searchbox image background is now measured through real
   checkbox input. Its current threshold is `0.1200`, which is a loaded-media
   release-candidate budget, not an exact-parity claim.

@@ -299,7 +299,13 @@ const focusAuditTargets = [
   },
   {
     name: "toggle",
-    options: { minimumFocusedScale: 1.02, requireMaterialDeepening: true }
+    options: {
+      maximumFocusedScreenshotBlackPixelRatio: 0.22,
+      maximumFocusedScreenshotDarkPixelRatio: 0.28,
+      minimumFocusedScreenshotLuma: 155,
+      minimumFocusedScale: 1.02,
+      requireMaterialDeepening: true
+    }
   },
   {
     name: "segmentedControl",
@@ -319,7 +325,13 @@ const focusAuditTargets = [
   },
   {
     name: "nav",
-    options: { minimumFocusedScale: 1.04, requireMaterialDeepening: true }
+    options: {
+      maximumFocusedScreenshotBlackPixelRatio: 0.18,
+      maximumFocusedScreenshotDarkPixelRatio: 0.24,
+      minimumFocusedScreenshotLuma: 165,
+      minimumFocusedScale: 1.04,
+      requireMaterialDeepening: true
+    }
   },
   {
     name: "searchbox",
@@ -392,7 +404,13 @@ const focusAuditTargets = [
   },
   {
     name: "button",
-    options: { minimumFocusedScale: 1.018, requireMaterialDeepening: true }
+    options: {
+      maximumFocusedScreenshotBlackPixelRatio: 0.14,
+      maximumFocusedScreenshotDarkPixelRatio: 0.3,
+      minimumFocusedScreenshotLuma: 168,
+      minimumFocusedScale: 1.018,
+      requireMaterialDeepening: true
+    }
   },
   {
     name: "switch",

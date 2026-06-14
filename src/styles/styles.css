@@ -376,7 +376,7 @@
 .lg-field-control:focus-within {
   border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
   background: var(--lg-control-focus-surface);
-  box-shadow: var(--lg-control-focus-shadow-deep), var(--lg-surface-shadow);
+  box-shadow: var(--lg-control-focus-shadow-deep), var(--lg-control-focus-lift-shadow);
   filter: saturate(1.08) brightness(1.025);
   transform: translateY(-1px) scale(1.018);
 }
@@ -681,13 +681,13 @@
 
 .lg-radio-group__input:focus-visible + .lg-radio-group__control {
   background: var(--lg-control-focus-surface);
-  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-glass-shadow);
+  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-control-focus-lift-shadow);
 }
 
 .lg-radio-group__item:has(.lg-radio-group__input:focus-visible) {
   border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
   background: var(--lg-control-focus-surface);
-  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-glass-shadow);
+  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-control-focus-lift-shadow);
   transform: translateY(-1px) scale(1.012);
 }
 
@@ -2137,7 +2137,7 @@
   outline: 0;
   border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
   background: var(--lg-control-focus-surface);
-  box-shadow: var(--lg-control-focus-shadow-deep), var(--lg-surface-shadow);
+  box-shadow: var(--lg-control-focus-shadow-deep), var(--lg-control-focus-lift-shadow);
   filter: saturate(1.08) brightness(1.025);
 }
 
@@ -2168,7 +2168,7 @@
   box-shadow:
     var(--lg-control-focus-shadow-deep),
     inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    0 2px 10px rgba(0, 0, 0, 0.1);
+    var(--lg-control-focus-lift-shadow);
 }
 
 .lg-surface--disabled,
@@ -2783,7 +2783,7 @@
   background: var(--lg-control-focus-surface);
   transform: scale(1.018);
   filter: none;
-  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-glass-shadow);
+  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-control-focus-lift-shadow);
 }
 
 .lg-checkbox__body {
@@ -3239,7 +3239,7 @@
 .lg-sidebar-rail:focus-visible {
   outline: 0;
   background: var(--lg-control-focus-surface);
-  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-glass-shadow);
+  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-control-focus-lift-shadow);
   transform: scale(1.015);
 }
 
@@ -3445,7 +3445,7 @@
   outline: 0;
   background: var(--lg-control-focus-surface);
   border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
-  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-glass-shadow);
+  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-control-focus-lift-shadow);
   transform: translateY(-1px) scale(1.025);
 }
 
@@ -3572,7 +3572,7 @@
 .lg-resizable__handle:focus-visible,
 .lg-resizable__handle[data-resize-handle-state="drag"] {
   background: var(--lg-control-focus-surface);
-  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-glass-shadow);
+  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-control-focus-lift-shadow);
   transform: scale(1.035);
 }
 
@@ -4030,7 +4030,7 @@
   background: var(--lg-control-focus-surface);
   outline: none;
   transform: scale(1.08);
-  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-glass-shadow);
+  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-control-focus-lift-shadow);
 }
 
 .lg-calendar__nav-button:disabled {
@@ -4123,7 +4123,7 @@
   background: var(--lg-control-focus-surface);
   outline: none;
   transform: scale(1.08);
-  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-glass-shadow);
+  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-control-focus-lift-shadow);
 }
 
 .lg-calendar__day--today .lg-calendar__day-button {
@@ -4132,7 +4132,7 @@
 
 .lg-calendar__day--today .lg-calendar__day-button:focus-visible {
   transform: scale(1.08);
-  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-glass-shadow);
+  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-control-focus-lift-shadow);
 }
 
 .lg-calendar__day--selected .lg-calendar__day-button,
@@ -4158,7 +4158,7 @@
 .lg-calendar__day--range-end .lg-calendar__day-button:focus-visible {
   color: var(--lg-text);
   background: var(--lg-surface-strong);
-  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-glass-shadow);
+  box-shadow: var(--lg-control-focus-shadow-soft), var(--lg-control-focus-lift-shadow);
 }
 
 .lg-calendar__day--range-middle {
