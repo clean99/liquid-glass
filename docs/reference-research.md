@@ -252,11 +252,11 @@ does under real pointer input.
 
 The latest filter-contract and action-metric samples show why the shape model
 cannot be a single boolean. Pressed widens toward the Kube water-drop response,
-but real pointer action metrics still keep its height growth near `20px`.
-Dragged relaxes much narrower and rebounds vertically after movement. A transient
-pressed filter-contract sample near `scaleY(0.987)` looked plausible in
-isolation, but it over-grew the candidate height and failed the ordinary Kube
-action metric.
+but the live effective transform keeps both pressed and dragged close to
+`scaleY=0.97`. Dragged relaxes much narrower after movement; it should not keep
+the old wide press shape, and it should not rebound into a much taller capsule.
+The local model now targets the Kube press probe near `scaleX=1.108`,
+`scaleY=0.969`, while dragging stays near `scaleX=1.03`, `scaleY=0.967`.
 
 The active filter contract must be sampled before pointer cleanup. A cleanup-time
 sample made Kube appear to keep the idle displacement scales during interaction,
@@ -273,6 +273,14 @@ contract. This moved the loose pressed lens gate to `0.3061 <= 0.405` and the
 dragged lens gate to `0.2491 <= 0.455` in a local 2026-06-14 run. Exact parity
 still fails, so this is a real narrowing of the optical state model, not a 1:1
 completion claim.
+
+A follow-up 2026-06-14 action sample tightened the droplet geometry instead of
+the displacement contract. The normal gate still passed with pressed
+`0.3652 <= 0.405` and dragged `0.3924 <= 0.455`; their phase-adjusted rows were
+`0.2837` and `0.2557`. The same run recorded target/candidate effective scale
+within roughly `0.01` for pressed and dragged. Exact parity still failed
+(`pressed=0.7046`, `dragged=0.7138` raw), so the remaining work is material,
+sampling, and pixel alignment rather than declaring the shape solved.
 
 The filter-contract evidence recorded by `scripts/compare-kube-reference.mjs`
 shows a real transform-ownership mismatch: the Kube target reports
@@ -354,6 +362,15 @@ scale and translation metrics, then reports the maximum scale and translation
 delta next to the diff rows. The 2026-06-14 exact run still fails with lens
 worst regions in `lowerMid` / `bottom`, so the next implementation change should
 target remaining sampling-model alignment before tuning material colors.
+
+Manual Storybook focus debugging must also account for stale dev servers. A
+2026-06-14 Playwright/CDP sample reproduced the user's black OTP focus on
+`localhost:6006` with `background=rgba(40, 42, 44, 0.44)`, but that process
+belonged to `/Users/bytedance/Documents/Blog-dev/apps/docs`. The current
+`liquid-glass` Storybook on `localhost:6016` resolved the same OTP focus to
+`background=rgba(255, 255, 255, 0.9)`, `scale(1.055)`, no outline, and dark
+text. Treat visible focus regressions from an unknown port as invalid until the
+process cwd is verified.
 
 ## rdev/liquid-glass-react
 

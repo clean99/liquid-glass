@@ -1148,7 +1148,7 @@ async function verifyDraggableLensPlayground() {
 
     assertEqual(pressed.dropletState, "pressed", "draggable lens pressed state");
     assertGreaterThan(pressed.scaleX, 1.04, "draggable lens water-drop scaleX");
-    assertGreaterThan(pressed.scaleY, idle.scaleY + 0.12, "draggable lens water-drop scaleY");
+    assertGreaterThan(pressed.scaleY, idle.scaleY + 0.16, "draggable lens water-drop scaleY");
     assertLessThan(pressed.scaleY, 1, "draggable lens pressed scaleY stays optically flattened");
     assertIncludes(pressed.dropletOriginX, "%", "draggable lens droplet origin x");
     assertIncludes(pressed.dropletOriginY, "%", "draggable lens droplet origin y");
@@ -1171,8 +1171,12 @@ async function verifyDraggableLensPlayground() {
     assertGreaterThan(dragged.left, idle.left + 80, "draggable lens visual x movement");
     assertGreaterThan(dragged.top, idle.top + 40, "draggable lens visual y movement");
     assertLessThanOrEqual(dragged.scaleX, pressed.scaleX - 0.06, "dragged lens narrows vs press");
-    assertGreaterThan(dragged.scaleY, pressed.scaleY + 0.03, "dragged lens grows taller vs press");
-    assertGreaterThan(dragged.scaleY, idle.scaleY + 0.16, "dragged lens remains water-drop tall");
+    assertLessThanOrEqual(
+      dragged.scaleY,
+      pressed.scaleY + 0.004,
+      "dragged lens stays near press height"
+    );
+    assertGreaterThan(dragged.scaleY, idle.scaleY + 0.15, "dragged lens remains water-drop tall");
 
     await page.mouse.up();
     await page.waitForTimeout(320);

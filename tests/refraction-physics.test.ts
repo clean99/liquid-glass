@@ -1337,7 +1337,7 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain("pointer-interaction-audit.json");
     expect(verifyLiquidBehaviorSource).toContain("interactionAuditResults.push");
     expect(verifyLiquidBehaviorSource).toContain("dragged lens narrows vs press");
-    expect(verifyLiquidBehaviorSource).toContain("dragged lens grows taller vs press");
+    expect(verifyLiquidBehaviorSource).toContain("dragged lens stays near press height");
     expect(verifyLiquidBehaviorSource).toContain("dragged lens remains water-drop tall");
 
     expect(styles).toContain(".lg-searchbox:hover:not(:focus-within)");
