@@ -93,10 +93,10 @@ metrics.
 | Reference                  | Diff ratio | Best phase | Phase diff | Threshold | Mode |
 | -------------------------- | ---------: | ---------- | ---------: | --------: | ---- |
 | magnifying-glass           |     0.1902 | `1,0`      |     0.1356 |    0.2400 | gate |
-| magnifying-glass-pressed   |     0.3773 | `-8,-2`    |     0.2939 |    0.4050 | gate |
-| magnifying-glass-dragged   |     0.3636 | `-9,-2`    |     0.2673 |    0.4550 | gate |
-| searchbox                  |     0.0130 | `0,0`      |     0.0120 |    0.0200 | gate |
-| searchbox-image-background |     0.1184 | `0,1`      |     0.1113 |    0.1200 | gate |
+| magnifying-glass-pressed   |     0.3671 | `-8,-3`    |     0.2999 |    0.4050 | gate |
+| magnifying-glass-dragged   |     0.3386 | `-9,-1`    |     0.2870 |    0.4550 | gate |
+| searchbox                  |     0.0130 | `0,0`      |     0.0121 |    0.0200 | gate |
+| searchbox-image-background |     0.1183 | `0,1`      |     0.1111 |    0.1200 | gate |
 | switch                     |     0.0137 | `0,0`      |     0.0132 |    0.0200 | gate |
 | slider                     |     0.0163 | `0,0`      |     0.0135 |    0.0200 | gate |
 
@@ -202,6 +202,12 @@ This proves six things:
 
 - The static searchbox, switch, and slider stories are already within the current
   screenshot budget, so their thresholds are ratcheted down to `0.0200`.
+- The focus behavior audit now measures switch and slider geometry on the whole
+  control, while material response remains on the track. The current Storybook
+  e2e sample records switch focus at `scale(1.025)` with a `4px` width delta and
+  slider focus at `scale(1.018)` with a `5.94px` width delta; both focused
+  context screenshots keep black-pixel ratio at `0` or near `0`, and both track
+  materials add four shadow layers.
 - The checked-state searchbox image background is now measured through real
   checkbox input. Its current threshold is `0.1200`, which is a loaded-media
   release-candidate budget, not an exact-parity claim.

@@ -161,12 +161,12 @@ const behaviorStories = {
   switch: {
     focusSelector: ".lg-switch",
     id: "liquid-glass-liquidswitch--kube-reference",
-    selector: ".lg-switch__thumb"
+    selector: ".lg-switch"
   },
   slider: {
     focusSelector: ".lg-slider__input",
     id: "liquid-glass-liquidslider--kube-reference",
-    selector: ".lg-slider__thumb"
+    selector: ".lg-slider"
   },
   searchbox: {
     id: "liquid-glass-liquidsearchbox--focus-photo-reference",
@@ -397,25 +397,35 @@ const focusAuditTargets = [
   {
     name: "switch",
     options: {
+      contextScreenshotSelector: ".lg-switch",
       focusSelector: behaviorStories.switch.focusSelector,
       materialSelector: ".lg-switch__track",
+      maximumFocusedContextScreenshotBlackPixelRatio: 0.01,
+      maximumFocusedContextScreenshotDarkPixelRatio: 0.02,
       maximumFocusedScreenshotLumaLoss: 18,
       minimumFocusedScreenshotLuma: 232,
-      minimumFocusedScale: 0.7,
+      minimumFocusedScale: 1.02,
+      requireFocusedElementShadow: false,
       requireMaterialDeepening: false,
-      requireMaterialResponse: true
+      requireMaterialResponse: true,
+      requireMaterialShadowLayerGrowth: true
     }
   },
   {
     name: "slider",
     options: {
+      contextScreenshotSelector: ".lg-slider",
       focusSelector: behaviorStories.slider.focusSelector,
       materialSelector: ".lg-slider__track",
+      maximumFocusedContextScreenshotBlackPixelRatio: 0.01,
+      maximumFocusedContextScreenshotDarkPixelRatio: 0.03,
       maximumFocusedScreenshotLumaLoss: 22,
       minimumFocusedScreenshotLuma: 226,
-      minimumFocusedScale: 0.67,
+      minimumFocusedScale: 1.015,
+      requireFocusedElementShadow: false,
       requireMaterialDeepening: false,
-      requireMaterialResponse: true
+      requireMaterialResponse: true,
+      requireMaterialShadowLayerGrowth: true
     }
   },
   {
@@ -572,6 +582,13 @@ async function verifyFocusMaterial(name, options) {
   if (options.requireMaterialResponse) {
     assertMaterialResponse(idleMaterial, focusedMaterial, `${name} focus material`);
   }
+  if (options.requireMaterialShadowLayerGrowth) {
+    assertGreaterThan(
+      focusedMaterial.shadowLayerCount,
+      idleMaterial.shadowLayerCount,
+      `${name} focus material shadow layers`
+    );
+  }
   if (options.minimumFocusedScale !== undefined) {
     assertGreaterOrEqual(focused.scale, options.minimumFocusedScale, `${name} focus scale`);
   }
@@ -625,14 +642,16 @@ async function verifyFocusMaterial(name, options) {
   if (options.requireShadowChange) {
     assertNotEqual(focused.boxShadow, idle.boxShadow, `${name} focus shadow`);
   }
-  if (options.requireShadowLayerGrowth ?? true) {
-    assertGreaterThan(
-      focused.shadowLayerCount,
-      idle.shadowLayerCount,
-      `${name} focus shadow layers`
-    );
-  } else {
-    assertGreaterThan(focused.shadowLayerCount, 0, `${name} focus shadow layers`);
+  if (options.requireFocusedElementShadow !== false) {
+    if (options.requireShadowLayerGrowth ?? true) {
+      assertGreaterThan(
+        focused.shadowLayerCount,
+        idle.shadowLayerCount,
+        `${name} focus shadow layers`
+      );
+    } else {
+      assertGreaterThan(focused.shadowLayerCount, 0, `${name} focus shadow layers`);
+    }
   }
   if (
     !focused.transitionProperty.split(",").some((property) => {

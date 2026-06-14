@@ -1358,6 +1358,13 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotLumaLoss: 22");
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotDarkPixelRatio: 0.02");
     expect(verifyLiquidBehaviorSource).toContain('contextScreenshotSelector: ".lg-input-otp"');
+    expect(verifyLiquidBehaviorSource).toContain('contextScreenshotSelector: ".lg-switch"');
+    expect(verifyLiquidBehaviorSource).toContain('contextScreenshotSelector: ".lg-slider"');
+    expect(verifyLiquidBehaviorSource).toContain('selector: ".lg-switch"');
+    expect(verifyLiquidBehaviorSource).toContain('selector: ".lg-slider"');
+    expect(verifyLiquidBehaviorSource).toContain("requireFocusedElementShadow: false");
+    expect(verifyLiquidBehaviorSource).toContain("requireMaterialShadowLayerGrowth: true");
+    expect(verifyLiquidBehaviorSource).toContain("focus material shadow layers");
     expect(verifyLiquidBehaviorSource).toContain("minimumFocusedContextScreenshotLuma: 232");
     expect(verifyLiquidBehaviorSource).toContain(
       "maximumFocusedContextScreenshotDarkPixelRatio: 0.03"

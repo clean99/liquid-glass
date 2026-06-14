@@ -133,6 +133,14 @@ growth that preserves `outline-style: none`. Local focus states should therefore
 grow and deepen frosted material while keeping readable content outside the
 displacement layer; black slabs, white rings, and text shadows are regressions.
 
+Switch and slider focus audits must measure the whole control for geometry and
+the track for material. Measuring only the thumb reports a small scale such as
+`0.72` or `0.68`, which proves the thumb changed but does not prove the focused
+glass control grew. The current behavior gate therefore focuses the native
+control path, captures `.lg-switch` and `.lg-slider` as the visual focus objects,
+and separately requires the `.lg-switch__track` and `.lg-slider__track` material
+layers to add frosted shadow response without black context pixels.
+
 `bezelWidth`, capsule radius, and displacement falloff are separate inputs. The
 capsule radius is `75px`, but the observed bevel displacement returns to neutral
 within roughly `25px` from the edge. Treating the full radius as the falloff was
