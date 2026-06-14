@@ -498,7 +498,7 @@ async function verifyFocusMaterial(name, options) {
     await keyboardFocusVisible(page, focusSelector);
   }
   await options.afterFocus?.(page);
-  await page.waitForTimeout(240);
+  await page.waitForTimeout(420);
   const focusedLocator = page
     .locator(options.focusedSelector ?? `${story.selector}:focus-visible`)
     .first();

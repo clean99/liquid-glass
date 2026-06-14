@@ -1194,6 +1194,7 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain("for (let attempt = 1; attempt <= 3");
     expect(verifyLiquidBehaviorSource).toContain("await page.close().catch(() => {})");
     expect(verifyLiquidBehaviorSource).toContain("await waitForStoryReady(page, id)");
+    expect(verifyLiquidBehaviorSource).toContain("await page.waitForTimeout(420)");
     expect(verifyLiquidBehaviorSource).toContain("Storybook story did not become ready");
     expect(verifyLiquidBehaviorSource).toContain("focusAuditResults.push");
     expect(verifyLiquidBehaviorSource).toContain('materialSelector: ".lg-switch__track"');
