@@ -774,6 +774,7 @@ describe("Liquid Glass physics contract", () => {
     expect(surfaceRule).not.toContain("--lg-control-focus-fill:");
     expect(surfaceRule).not.toContain("--lg-control-focus-depth:");
     expect(focusRules).toContain("--lg-control-focus-fill");
+    expect(focusRules).toContain("--lg-glass-fill-strong");
     expect(focusRules).toContain("--lg-control-focus-shadow");
     expect(focusRules).not.toContain("0 4px 16px var(--lg-control-focus-depth)");
     expect(focusRules).not.toContain("0 4px 14px var(--lg-control-focus-depth)");
@@ -795,6 +796,10 @@ describe("Liquid Glass physics contract", () => {
       { growth: ".lg-tooltip__trigger:focus-visible" },
       { growth: ".lg-hover-card__trigger:focus-visible" },
       { growth: ".lg-nav .lg-surface--button:focus-visible" },
+      {
+        growth: ".lg-field-control:focus-within",
+        material: ".lg-field-control:focus-within"
+      },
       {
         growth: ".lg-surface--interactive:not(.lg-surface--disabled):focus-visible",
         material: ".lg-surface:focus-visible"
@@ -994,6 +999,8 @@ describe("Liquid Glass physics contract", () => {
       "breadcrumb",
       "checkbox",
       "radioGroup",
+      "nativeSelect",
+      "select",
       "pagination",
       "scrollArea",
       "dataTableSort",
@@ -1002,6 +1009,7 @@ describe("Liquid Glass physics contract", () => {
       "sidebarRail",
       "calendarNav",
       "calendarDay",
+      "datePickerTrigger",
       "resizableHandle",
       "toggle",
       "segmentedControl",

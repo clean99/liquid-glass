@@ -375,7 +375,7 @@
 
 .lg-field-control:focus-within {
   border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
-  background: var(--lg-control-focus-fill);
+  background: color-mix(in srgb, var(--lg-control-focus-fill), var(--lg-glass-fill-strong) 62%);
   box-shadow: var(--lg-control-focus-shadow-deep), var(--lg-surface-shadow);
   filter: saturate(1.08) brightness(1.025);
   transform: translateY(-1px) scale(1.018);
@@ -2122,7 +2122,7 @@
 .lg-surface:focus-visible {
   outline: 0;
   border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
-  background: var(--lg-control-focus-fill);
+  background: color-mix(in srgb, var(--lg-control-focus-fill), var(--lg-glass-fill-strong) 62%);
   box-shadow: var(--lg-control-focus-shadow-deep), var(--lg-surface-shadow);
   filter: saturate(1.08) brightness(1.025);
 }
@@ -3874,6 +3874,10 @@
 
 .lg-date-picker__trigger[data-placeholder] {
   color: color-mix(in srgb, var(--lg-text), transparent 38%);
+}
+
+.lg-date-picker__trigger:focus-visible {
+  background: color-mix(in srgb, var(--lg-control-focus-fill), var(--lg-glass-fill-strong) 95%);
 }
 
 .lg-date-picker__icon {

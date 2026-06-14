@@ -32,6 +32,16 @@ const behaviorStories = {
     id: "liquid-glass-foundation-primitives--component-set",
     selector: ".lg-radio-group__item:not([data-disabled])"
   },
+  nativeSelect: {
+    focusSelector: ".lg-native-select",
+    id: "liquid-glass-foundation-primitives--component-set",
+    selector: ".lg-native-select-surface"
+  },
+  select: {
+    focusSelector: ".lg-select",
+    id: "liquid-glass-liquidfield--select-and-otp",
+    selector: ".lg-select-surface"
+  },
   pagination: {
     id: "liquid-glass-foundation-primitives--component-set",
     selector: ".lg-pagination__link:not([data-disabled]):not([data-active])"
@@ -63,6 +73,10 @@ const behaviorStories = {
   calendarDay: {
     id: "liquid-glass-liquidcalendar--single-selection",
     selector: '.lg-calendar__day-button[tabindex="0"]'
+  },
+  datePickerTrigger: {
+    id: "liquid-glass-liquiddatepicker--single",
+    selector: ".lg-date-picker__trigger"
   },
   resizableHandle: {
     id: "liquid-glass-liquidresizable--horizontal",
@@ -201,6 +215,22 @@ const focusAuditTargets = [
     }
   },
   {
+    name: "nativeSelect",
+    options: {
+      focusSelector: behaviorStories.nativeSelect.focusSelector,
+      minimumFocusedScale: 1.012,
+      requireMaterialDeepening: true
+    }
+  },
+  {
+    name: "select",
+    options: {
+      focusSelector: behaviorStories.select.focusSelector,
+      minimumFocusedScale: 1.012,
+      requireMaterialDeepening: true
+    }
+  },
+  {
     name: "pagination",
     options: { minimumFocusedScale: 1.02, requireMaterialDeepening: true }
   },
@@ -238,6 +268,10 @@ const focusAuditTargets = [
       minimumFocusedScale: 1.05,
       requireMaterialDeepening: true
     }
+  },
+  {
+    name: "datePickerTrigger",
+    options: { minimumFocusedScale: 1.018, requireMaterialDeepening: true }
   },
   {
     name: "resizableHandle",
