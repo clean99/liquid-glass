@@ -1001,6 +1001,24 @@ describe("Liquid Glass physics contract", () => {
     expect(tooltipTriggerBody).toContain("font: inherit");
   });
 
+  it("keeps OTP focus out of native dark input selection chrome", () => {
+    const otpBaseBody = collectCssRuleBodyForSelector(styles, ".lg-input-otp__field");
+    const otpSelectionBody = collectCssRuleBodyForSelector(
+      styles,
+      ".lg-input-otp__field::selection"
+    );
+
+    expect(otpBaseBody).toContain("-webkit-appearance: none");
+    expect(otpBaseBody).toContain("appearance: none");
+    expect(otpBaseBody).toContain("color-scheme: light");
+    expect(otpBaseBody).toContain("caret-color:");
+    expect(otpBaseBody).toContain("background-clip: padding-box");
+    expect(otpSelectionBody).toContain("--lg-control-focus-fill");
+    expect(otpSelectionBody).toContain("rgba(255, 255, 255");
+    expect(otpSelectionBody).not.toContain("rgba(0, 0, 0");
+    expect(otpSelectionBody).not.toContain("black");
+  });
+
   it("shares focus shadow material tokens across component-specific focus states", () => {
     const shadowContracts = [
       [".lg-searchbox:focus-within", "--lg-control-focus-shadow-deep"],
@@ -1240,7 +1258,14 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain("screenshots:");
     expect(verifyLiquidBehaviorSource).toContain("screenshotCaptureModes:");
     expect(verifyLiquidBehaviorSource).toContain("viewport-fallback");
+    expect(verifyLiquidBehaviorSource).toContain("unavailable");
     expect(verifyLiquidBehaviorSource).toContain("path.relative(behaviorArtifactDir");
+    expect(verifyLiquidBehaviorSource).toContain("measureScreenshotLuma");
+    expect(verifyLiquidBehaviorSource).toContain("createImageBitmap");
+    expect(verifyLiquidBehaviorSource).toContain("minimumFocusedScreenshotLuma");
+    expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotLumaLoss");
+    expect(verifyLiquidBehaviorSource).toContain("focusedScreenshotMeanLuma");
+    expect(verifyLiquidBehaviorSource).toContain("idleScreenshotMeanLuma");
   });
 
   it("removes elastic focus transforms for every frosted focus target in reduced motion", () => {

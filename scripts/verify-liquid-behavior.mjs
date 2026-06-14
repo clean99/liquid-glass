@@ -1,4 +1,4 @@
-/* global document, getComputedStyle, requestAnimationFrame */
+/* global createImageBitmap, document, getComputedStyle, requestAnimationFrame */
 
 import fs from "node:fs/promises";
 import http from "node:http";
@@ -244,6 +244,8 @@ const focusAuditTargets = [
     name: "select",
     options: {
       focusSelector: behaviorStories.select.focusSelector,
+      maximumFocusedScreenshotLumaLoss: 24,
+      minimumFocusedScreenshotLuma: 190,
       minimumFocusedScale: 1.012,
       requireMaterialDeepening: true
     }
@@ -366,7 +368,12 @@ const focusAuditTargets = [
   },
   {
     name: "otp",
-    options: { minimumFocusedScale: 1.05, requireMaterialDeepening: true }
+    options: {
+      maximumFocusedScreenshotLumaLoss: 18,
+      minimumFocusedScreenshotLuma: 214,
+      minimumFocusedScale: 1.05,
+      requireMaterialDeepening: true
+    }
   },
   {
     name: "tooltipTrigger",
@@ -525,6 +532,20 @@ async function verifyFocusMaterial(name, options) {
   if (options.minimumFocusedScale !== undefined) {
     assertGreaterOrEqual(focused.scale, options.minimumFocusedScale, `${name} focus scale`);
   }
+  if (options.minimumFocusedScreenshotLuma !== undefined) {
+    assertGreaterOrEqual(
+      focusedScreenshotEvidence.meanLuma ?? 0,
+      options.minimumFocusedScreenshotLuma,
+      `${name} focused screenshot mean luma`
+    );
+  }
+  if (options.maximumFocusedScreenshotLumaLoss !== undefined) {
+    assertGreaterOrEqual(
+      focusedScreenshotEvidence.meanLuma ?? 0,
+      (idleScreenshotEvidence.meanLuma ?? 0) - options.maximumFocusedScreenshotLumaLoss,
+      `${name} focused screenshot luma loss`
+    );
+  }
   if (options.requireShadowChange) {
     assertNotEqual(focused.boxShadow, idle.boxShadow, `${name} focus shadow`);
   }
@@ -564,8 +585,10 @@ async function verifyFocusMaterial(name, options) {
 
   focusAuditResults.push({
     backgroundAlphaDelta: round(focused.backgroundAlpha - idle.backgroundAlpha),
+    focusedScreenshotMeanLuma: roundNullable(focusedScreenshotEvidence.meanLuma),
     focusedScale: round(focused.scale),
     focusedShadowLayerCount: focused.shadowLayerCount,
+    idleScreenshotMeanLuma: roundNullable(idleScreenshotEvidence.meanLuma),
     idleScale: round(idle.scale),
     materialBackgroundAlphaDelta: round(
       focusedMaterial.backgroundAlpha - idleMaterial.backgroundAlpha
@@ -596,24 +619,94 @@ async function verifyFocusMaterial(name, options) {
 }
 
 async function captureFocusScreenshot(page, locator, targetPath, label) {
-  await locator.waitFor({ state: "visible", timeout: 10_000 });
-  await locator.scrollIntoViewIfNeeded({ timeout: 5_000 });
-  await page.waitForTimeout(80);
+  let mode = "element";
+  let note;
 
   try {
+    await locator.waitFor({ state: "visible", timeout: 10_000 });
+    await locator.scrollIntoViewIfNeeded({ timeout: 5_000 });
+    await page.waitForTimeout(80);
     await locator.screenshot({ path: targetPath, timeout: 10_000 });
-    return {
-      mode: "element",
-      relativePath: path.relative(behaviorArtifactDir, targetPath)
-    };
-  } catch (error) {
-    await page.screenshot({ path: targetPath, fullPage: false });
-    return {
-      mode: "viewport-fallback",
-      note: `${label} element screenshot failed: ${formatErrorMessage(error)}`,
-      relativePath: path.relative(behaviorArtifactDir, targetPath)
-    };
+  } catch (elementError) {
+    try {
+      await page.screenshot({ path: targetPath, fullPage: false, timeout: 10_000 });
+      mode = "viewport-fallback";
+      note = `${label} element screenshot failed: ${formatErrorMessage(elementError)}`;
+    } catch (pageError) {
+      return {
+        maxLuma: null,
+        meanLuma: null,
+        minLuma: null,
+        mode: "unavailable",
+        note: `${label} element screenshot failed: ${formatErrorMessage(
+          elementError
+        )}; viewport screenshot failed: ${formatErrorMessage(pageError)}`,
+        relativePath: null,
+        sampledPixels: 0
+      };
+    }
   }
+
+  const luma = await measureScreenshotLuma(page, targetPath);
+
+  return {
+    ...luma,
+    mode,
+    note,
+    relativePath: path.relative(behaviorArtifactDir, targetPath)
+  };
+}
+
+async function measureScreenshotLuma(page, targetPath) {
+  const bytes = await fs.readFile(targetPath);
+  const dataUrl = `data:image/png;base64,${bytes.toString("base64")}`;
+
+  return page.evaluate(async (url) => {
+    const response = await fetch(url);
+    const bitmap = await createImageBitmap(await response.blob());
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+    if (!context) {
+      bitmap.close?.();
+      return { maxLuma: 0, meanLuma: 0, minLuma: 0, sampledPixels: 0 };
+    }
+
+    context.drawImage(bitmap, 0, 0);
+    bitmap.close?.();
+
+    const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+    let maxLuma = 0;
+    let minLuma = 255;
+    let sampledPixels = 0;
+    let totalLuma = 0;
+
+    for (let index = 0; index < pixels.length; index += 4) {
+      const alpha = pixels[index + 3] / 255;
+      if (alpha < 0.2) {
+        continue;
+      }
+
+      const luma = 0.2126 * pixels[index] + 0.7152 * pixels[index + 1] + 0.0722 * pixels[index + 2];
+      maxLuma = Math.max(maxLuma, luma);
+      minLuma = Math.min(minLuma, luma);
+      sampledPixels += 1;
+      totalLuma += luma;
+    }
+
+    if (sampledPixels === 0) {
+      return { maxLuma: 0, meanLuma: 0, minLuma: 0, sampledPixels: 0 };
+    }
+
+    return {
+      maxLuma,
+      meanLuma: totalLuma / sampledPixels,
+      minLuma,
+      sampledPixels
+    };
+  }, dataUrl);
 }
 
 function safeFileSegment(value) {
@@ -1450,6 +1543,10 @@ function assertApproxEqual(actual, expected, tolerance, label) {
 
 function round(value) {
   return Math.round(value * 1000) / 1000;
+}
+
+function roundNullable(value) {
+  return typeof value === "number" ? round(value) : null;
 }
 
 function contentType(filePath) {
