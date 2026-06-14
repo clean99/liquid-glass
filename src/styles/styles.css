@@ -3876,10 +3876,6 @@
   color: color-mix(in srgb, var(--lg-text), transparent 38%);
 }
 
-.lg-date-picker__trigger:focus-visible {
-  background: color-mix(in srgb, var(--lg-control-focus-fill), var(--lg-glass-fill-strong) 95%);
-}
-
 .lg-date-picker__icon {
   position: relative;
   width: 1rem;
