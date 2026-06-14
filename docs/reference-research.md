@@ -158,17 +158,18 @@ foreground text. Generic focus surfaces now use `--lg-control-focus-surface-stro
 plus `--lg-control-focus-text`, so focus reads as a light frosted capsule with
 dark content. The `SelectAndOtp` story now starts with `123`, making the real
 filled-character focus/select path part of the browser audit. The behavior gate
-also requires a focused material alpha floor of `0.8`; screenshot black pixels
-alone are not enough because valid dark text inside a light frosted capsule
-would otherwise be misclassified as a black focus block.
+requires a focused material alpha floor and ceiling for core focus targets;
+screenshot black pixels alone are not enough because valid dark text inside a
+light frosted capsule would otherwise be misclassified as a black focus block.
 
 The 2026-06-14 behavior gate now stores both idle and focused dark/black pixel
 ratios and fails on relative darkening, rather than allowing a broad absolute
-black-pixel budget. The same pass records OTP focus at `material alpha=0.9`,
-`material luma=255`, and `scale=1.055`; searchbox focus moves from an image-crop
-idle `black=0.968` to focused `black=0.047`; and generic button/nav/toggle
-focus all move from low-luma idle captures to light frosted focused capsules.
-This is a focus-regression gate, not a claim that exact Kube parity is done.
+black-pixel budget. A later pass records OTP focus at `material alpha=0.595`,
+`material luma=255`, `scale=1.055`, and focused context dark-pixel ratio
+`0.006`; searchbox focus moves from an image-crop idle `black=0.968` to focused
+`black=0.047`; and generic button/nav/toggle focus all move from low-luma idle
+captures to light frosted focused capsules. This is a focus-regression gate, not
+a claim that exact Kube parity is done.
 
 The checked Searchbox image-background run also records a control contract, not
 just pixels. A 2026-06-14 sample showed the local surface, glass layer, content
@@ -369,9 +370,9 @@ Manual Storybook focus debugging must also account for stale dev servers. A
 `localhost:6006` with `background=rgba(40, 42, 44, 0.44)`, but that process
 belonged to `/Users/bytedance/Documents/Blog-dev/apps/docs`. The current
 `liquid-glass` Storybook on `localhost:6016` resolved the same OTP focus to
-`background=rgba(255, 255, 255, 0.9)`, `scale(1.055)`, no outline, and dark
-text. Treat visible focus regressions from an unknown port as invalid until the
-process cwd is verified.
+`background=color(srgb 1 1 1 / 0.594824)`, `scale(1.055)`, no outline, a
+`blur(30px) saturate(1.38)` backdrop filter, and dark text. Treat visible focus
+regressions from an unknown port as invalid until the process cwd is verified.
 
 ## rdev/liquid-glass-react
 

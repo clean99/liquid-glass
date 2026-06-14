@@ -82,7 +82,9 @@ When debugging Storybook focus manually, verify the Storybook process cwd before
 trusting a visible regression. A 2026-06-14 Chrome check found `localhost:6006`
 serving `/Users/bytedance/Documents/Blog-dev/apps/docs`, which still had the old
 dark OTP focus rule. The package Storybook launched from this repository on
-`localhost:6016` resolved OTP focus to `rgba(255, 255, 255, 0.9)` with `scale(1.055)`.
+`localhost:6016` resolved OTP focus to `color(srgb 1 1 1 / 0.594824)` with
+`scale(1.055)`, `outline: none`, and a `blur(30px) saturate(1.38)` backdrop
+filter.
 
 `pnpm test:a11y` builds static Storybook, opens representative component stories in
 Chromium, runs `@axe-core/playwright`, writes `test-results/a11y/storybook-a11y-summary.json`,

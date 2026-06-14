@@ -311,10 +311,14 @@
 
 .lg-searchbox:focus-within {
   border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
-  background: var(--lg-control-focus-fill);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 78%),
+    color-mix(in srgb, var(--lg-control-focus-fill), transparent 8%);
   box-shadow: var(--lg-control-focus-shadow-deep);
   filter: saturate(1.08) brightness(1.025);
   transform: scale(1);
+  -webkit-backdrop-filter: blur(28px) saturate(1.35);
+  backdrop-filter: blur(28px) saturate(1.35);
 }
 
 .lg-searchbox:focus-within .lg-searchbox__icon,
@@ -375,10 +379,14 @@
 
 .lg-field-control:focus-within {
   border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
-  background: var(--lg-control-focus-surface-strong);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 74%),
+    color-mix(in srgb, var(--lg-control-focus-surface-strong), transparent 6%);
   box-shadow: var(--lg-control-focus-shadow-deep), var(--lg-control-focus-lift-shadow);
   filter: saturate(1.08) brightness(1.025);
   transform: translateY(-1px) scale(1.018);
+  -webkit-backdrop-filter: blur(28px) saturate(1.35);
+  backdrop-filter: blur(28px) saturate(1.35);
 }
 
 .lg-field-control:focus-within .lg-input,
@@ -545,16 +553,19 @@
 .lg-input-otp__field:focus-visible {
   color: color-mix(in srgb, var(--lg-text), transparent 10%);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0.16)),
-    color-mix(in srgb, var(--lg-control-focus-surface), rgba(255, 255, 255, 0.96) 74%);
-  background-color: rgba(255, 255, 255, 0.9);
+    radial-gradient(85% 72% at 50% 22%, rgba(255, 255, 255, 0.42), transparent 68%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.08)),
+    color-mix(in srgb, var(--lg-control-focus-surface), transparent 4%);
+  background-color: color-mix(in srgb, var(--lg-control-focus-surface), transparent 4%);
   border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 48%);
   caret-color: color-mix(in srgb, var(--lg-text), transparent 8%);
-  box-shadow: var(--lg-control-focus-shadow-deep);
-  filter: saturate(1.08) brightness(1.025);
+  box-shadow: var(--lg-control-focus-shadow-deep), var(--lg-control-focus-lift-shadow);
+  filter: saturate(1.12) brightness(1.035);
   outline: none;
   text-shadow: none;
   transform: translateY(-1px) scale(1.055);
+  -webkit-backdrop-filter: blur(30px) saturate(1.38);
+  backdrop-filter: blur(30px) saturate(1.38);
 }
 
 .lg-input-otp__field::placeholder {
@@ -2136,12 +2147,24 @@
 .lg-surface:focus-visible {
   outline: 0;
   border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 58%);
-  background: var(--lg-control-focus-surface-strong);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--lg-glass-highlight), transparent 44%),
+      rgba(255, 255, 255, 0) 42%
+    ),
+    color-mix(in srgb, var(--lg-control-focus-surface-strong), transparent 6%);
   box-shadow: var(--lg-control-focus-shadow-deep), var(--lg-control-focus-lift-shadow);
   filter: saturate(1.08) brightness(1.025);
+  -webkit-backdrop-filter: blur(calc(var(--lg-surface-blur) + 6px)) saturate(1.75);
+  backdrop-filter: blur(calc(var(--lg-surface-blur) + 6px)) saturate(1.75);
 }
 
 .lg-surface:focus-visible::after {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+    inset 0 2px 22px rgba(255, 255, 255, 0.14),
+    inset 0 -2px 24px rgba(255, 255, 255, 0.18);
   opacity: 0.62;
 }
 

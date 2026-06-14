@@ -986,18 +986,18 @@ describe("Liquid Glass physics contract", () => {
     expect(focusRules).not.toContain("#0a84ff");
     expect(focusRules).not.toContain("0 0 0 1px");
     expect(focusRules).not.toContain("--lg-control-focus-rim");
-    expect(tokens).toContain("--lg-control-focus-fill: rgba(255, 255, 255, 0.64)");
-    expect(tokens).toContain("--lg-control-focus-surface: rgba(255, 255, 255, 0.72)");
-    expect(tokens).toContain("--lg-control-focus-surface-strong: rgba(255, 255, 255, 0.86)");
+    expect(tokens).toContain("--lg-control-focus-fill: rgba(255, 255, 255, 0.5)");
+    expect(tokens).toContain("--lg-control-focus-surface: rgba(255, 255, 255, 0.62)");
+    expect(tokens).toContain("--lg-control-focus-surface-strong: rgba(255, 255, 255, 0.68)");
     expect(tokens).toContain("--lg-control-focus-edge: rgba(255, 255, 255, 0.56)");
     expect(tokens).toContain("--lg-control-focus-depth: rgba(58, 76, 96, 0.08)");
-    expect(tokens).toContain("--lg-control-focus-mist: rgba(255, 255, 255, 0.46)");
+    expect(tokens).toContain("--lg-control-focus-mist: rgba(255, 255, 255, 0.38)");
     expect(tokens).toContain("--lg-control-focus-lift-shadow:");
     expect(tokens).toContain("--lg-control-focus-shadow-soft:");
     expect(tokens).toContain("--lg-control-focus-shadow-deep:");
-    expect(tokens).toContain("--lg-control-focus-fill: rgba(244, 249, 255, 0.58)");
-    expect(tokens).toContain("--lg-control-focus-surface: rgba(244, 249, 255, 0.54)");
-    expect(tokens).toContain("--lg-control-focus-surface-strong: rgba(248, 251, 255, 0.82)");
+    expect(tokens).toContain("--lg-control-focus-fill: rgba(244, 249, 255, 0.48)");
+    expect(tokens).toContain("--lg-control-focus-surface: rgba(244, 249, 255, 0.58)");
+    expect(tokens).toContain("--lg-control-focus-surface-strong: rgba(248, 251, 255, 0.68)");
     expect(tokens).toContain("--lg-control-focus-depth: rgba(190, 216, 245, 0.13)");
     expect(tokens).not.toContain("--lg-control-focus-depth: rgba(0, 0, 0, 0.16)");
     expect(tokens).not.toContain("--lg-control-focus-depth: rgba(0, 0, 0");
@@ -1121,7 +1121,10 @@ describe("Liquid Glass physics contract", () => {
     expect(otpBaseBody).toContain("color-scheme: only light");
     expect(otpBaseBody).toContain("caret-color:");
     expect(otpBaseBody).toContain("background-clip: padding-box");
-    expect(otpFocusBody).toContain("background-color: rgba(255, 255, 255, 0.9)");
+    expect(otpFocusBody).toContain(
+      "background-color: color-mix(in srgb, var(--lg-control-focus-surface), transparent 4%)"
+    );
+    expect(otpFocusBody).not.toContain("rgba(255, 255, 255, 0.9)");
     expect(otpFocusBody).toContain("--lg-control-focus-surface");
     expect(otpFocusBody).toContain("caret-color:");
     expect(otpFocusBody).toContain("outline: none");
@@ -1382,12 +1385,15 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain("createImageBitmap");
     expect(verifyLiquidBehaviorSource).toContain("minimumFocusedScreenshotLuma");
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotLumaLoss");
-    expect(verifyLiquidBehaviorSource).toContain("minimumFocusedScreenshotLuma: 232");
+    expect(verifyLiquidBehaviorSource).toContain("minimumFocusedScreenshotLuma: 230");
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotLumaLoss: 18");
     expect(verifyLiquidBehaviorSource).toContain("minimumFocusedScreenshotLuma: 226");
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotLumaLoss: 22");
     expect(verifyLiquidBehaviorSource).toContain("minimumFocusedScreenshotLuma: 170");
-    expect(verifyLiquidBehaviorSource).toContain("minimumFocusedMaterialAlpha: 0.8");
+    expect(verifyLiquidBehaviorSource).toContain("minimumFocusedMaterialAlpha: 0.52");
+    expect(verifyLiquidBehaviorSource).toContain("maximumFocusedMaterialAlpha: 0.76");
+    expect(verifyLiquidBehaviorSource).toContain("maximumFocusedMaterialAlpha: 0.72");
+    expect(verifyLiquidBehaviorSource).toContain("focus material alpha ceiling");
     expect(verifyLiquidBehaviorSource).toContain("focus material alpha floor");
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotDarkPixelRatio: 0.02");
     expect(verifyLiquidBehaviorSource).toContain("assertNoFocusScreenshotDarkening");
@@ -1521,7 +1527,8 @@ describe("Liquid Glass physics contract", () => {
     expect(searchboxContentRule).toContain("align-items: center");
     expect(searchboxPillRule).toContain("padding: 0");
     expect(enhancedSearchboxContentRule).toContain("text-shadow: none");
-    expect(focusRule).toContain("background: var(--lg-control-focus-fill)");
+    expect(focusRule).toContain("var(--lg-control-focus-fill)");
+    expect(focusRule).toContain("transparent 8%");
     expect(focusRule).toContain("box-shadow: var(--lg-control-focus-shadow-deep)");
     expect(focusRule).toContain("transform: scale(1)");
     expect(reducedMotionRule).toContain("transform: none");

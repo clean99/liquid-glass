@@ -301,8 +301,9 @@ const focusAuditTargets = [
   {
     name: "toggle",
     options: {
-      minimumFocusedMaterialAlpha: 0.8,
-      minimumFocusedScreenshotLuma: 170,
+      maximumFocusedMaterialAlpha: 0.76,
+      minimumFocusedMaterialAlpha: 0.52,
+      minimumFocusedScreenshotLuma: 164,
       minimumFocusedScale: 1.02,
       requireMaterialDeepening: true
     }
@@ -310,7 +311,8 @@ const focusAuditTargets = [
   {
     name: "segmentedControl",
     options: {
-      minimumFocusedMaterialAlpha: 0.8,
+      maximumFocusedMaterialAlpha: 0.76,
+      minimumFocusedMaterialAlpha: 0.52,
       minimumFocusedScreenshotLuma: 170,
       minimumFocusedScale: 1.02,
       requireMaterialDeepening: false,
@@ -320,7 +322,8 @@ const focusAuditTargets = [
   {
     name: "toolbar",
     options: {
-      minimumFocusedMaterialAlpha: 0.8,
+      maximumFocusedMaterialAlpha: 0.76,
+      minimumFocusedMaterialAlpha: 0.52,
       minimumFocusedScreenshotLuma: 170,
       minimumFocusedScale: 1.04,
       requireMaterialDeepening: true
@@ -333,7 +336,8 @@ const focusAuditTargets = [
   {
     name: "nav",
     options: {
-      minimumFocusedMaterialAlpha: 0.8,
+      maximumFocusedMaterialAlpha: 0.76,
+      minimumFocusedMaterialAlpha: 0.52,
       minimumFocusedScreenshotLuma: 170,
       minimumFocusedScale: 1.04,
       requireMaterialDeepening: true
@@ -396,6 +400,7 @@ const focusAuditTargets = [
       maximumFocusedContextScreenshotBlackPixelRatio: 0.01,
       maximumFocusedContextScreenshotDarkPixelRatio: 0.03,
       maximumFocusedMaterialLumaLoss: 8,
+      maximumFocusedMaterialAlpha: 0.72,
       minimumFocusedContextScreenshotLuma: 232,
       maximumFocusedScreenshotLumaLoss: 18,
       minimumFocusedMaterialLuma: 238,
@@ -411,7 +416,8 @@ const focusAuditTargets = [
   {
     name: "button",
     options: {
-      minimumFocusedMaterialAlpha: 0.8,
+      maximumFocusedMaterialAlpha: 0.76,
+      minimumFocusedMaterialAlpha: 0.52,
       minimumFocusedScreenshotLuma: 170,
       minimumFocusedScale: 1.018,
       requireMaterialDeepening: true
@@ -426,7 +432,7 @@ const focusAuditTargets = [
       maximumFocusedContextScreenshotBlackPixelRatio: 0.01,
       maximumFocusedContextScreenshotDarkPixelRatio: 0.02,
       maximumFocusedScreenshotLumaLoss: 18,
-      minimumFocusedScreenshotLuma: 232,
+      minimumFocusedScreenshotLuma: 230,
       minimumFocusedScale: 1.02,
       requireFocusedElementShadow: false,
       requireMaterialDeepening: false,
@@ -606,6 +612,13 @@ async function verifyFocusMaterial(name, options) {
       focusedMaterial.backgroundAlpha,
       options.minimumFocusedMaterialAlpha,
       `${name} focus material alpha floor`
+    );
+  }
+  if (options.maximumFocusedMaterialAlpha !== undefined) {
+    assertLessThanOrEqual(
+      focusedMaterial.backgroundAlpha,
+      options.maximumFocusedMaterialAlpha,
+      `${name} focus material alpha ceiling`
     );
   }
   if (options.maximumFocusedMaterialLumaLoss !== undefined) {

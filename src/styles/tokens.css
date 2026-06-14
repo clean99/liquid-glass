@@ -12,13 +12,13 @@
   --lg-glass-highlight: rgba(255, 255, 255, 0.86);
   --lg-glass-edge: rgba(255, 255, 255, 0.52);
   --lg-glass-shadow: 0 18px 48px rgba(20, 28, 36, 0.12);
-  --lg-control-focus-fill: rgba(255, 255, 255, 0.64);
-  --lg-control-focus-surface: rgba(255, 255, 255, 0.72);
-  --lg-control-focus-surface-strong: rgba(255, 255, 255, 0.86);
+  --lg-control-focus-fill: rgba(255, 255, 255, 0.5);
+  --lg-control-focus-surface: rgba(255, 255, 255, 0.62);
+  --lg-control-focus-surface-strong: rgba(255, 255, 255, 0.68);
   --lg-control-focus-text: rgba(21, 23, 26, 0.92);
   --lg-control-focus-edge: rgba(255, 255, 255, 0.56);
   --lg-control-focus-depth: rgba(58, 76, 96, 0.08);
-  --lg-control-focus-mist: rgba(255, 255, 255, 0.46);
+  --lg-control-focus-mist: rgba(255, 255, 255, 0.38);
   --lg-control-focus-lift-shadow:
     0 12px 30px rgba(116, 143, 176, 0.1), 0 0 34px rgba(255, 255, 255, 0.18),
     inset 0 0 42px rgba(255, 255, 255, 0.1);
@@ -51,13 +51,13 @@
   --lg-glass-highlight: rgba(255, 255, 255, 0.2);
   --lg-glass-edge: rgba(255, 255, 255, 0.12);
   --lg-glass-shadow: 0 18px 52px rgba(0, 0, 0, 0.36);
-  --lg-control-focus-fill: rgba(244, 249, 255, 0.58);
-  --lg-control-focus-surface: rgba(244, 249, 255, 0.54);
-  --lg-control-focus-surface-strong: rgba(248, 251, 255, 0.82);
+  --lg-control-focus-fill: rgba(244, 249, 255, 0.48);
+  --lg-control-focus-surface: rgba(244, 249, 255, 0.58);
+  --lg-control-focus-surface-strong: rgba(248, 251, 255, 0.68);
   --lg-control-focus-text: rgba(21, 23, 26, 0.9);
   --lg-control-focus-edge: rgba(255, 255, 255, 0.52);
   --lg-control-focus-depth: rgba(190, 216, 245, 0.13);
-  --lg-control-focus-mist: rgba(255, 255, 255, 0.44);
+  --lg-control-focus-mist: rgba(255, 255, 255, 0.36);
   --lg-control-focus-lift-shadow:
     0 12px 32px rgba(218, 236, 255, 0.12), 0 0 38px rgba(218, 236, 255, 0.18),
     inset 0 0 44px rgba(255, 255, 255, 0.12);
@@ -83,13 +83,13 @@
     --lg-glass-highlight: rgba(255, 255, 255, 0.2);
     --lg-glass-edge: rgba(255, 255, 255, 0.12);
     --lg-glass-shadow: 0 18px 52px rgba(0, 0, 0, 0.36);
-    --lg-control-focus-fill: rgba(244, 249, 255, 0.58);
-    --lg-control-focus-surface: rgba(244, 249, 255, 0.54);
-    --lg-control-focus-surface-strong: rgba(248, 251, 255, 0.82);
+    --lg-control-focus-fill: rgba(244, 249, 255, 0.48);
+    --lg-control-focus-surface: rgba(244, 249, 255, 0.58);
+    --lg-control-focus-surface-strong: rgba(248, 251, 255, 0.68);
     --lg-control-focus-text: rgba(21, 23, 26, 0.9);
     --lg-control-focus-edge: rgba(255, 255, 255, 0.52);
     --lg-control-focus-depth: rgba(190, 216, 245, 0.13);
-    --lg-control-focus-mist: rgba(255, 255, 255, 0.44);
+    --lg-control-focus-mist: rgba(255, 255, 255, 0.36);
     --lg-control-focus-lift-shadow:
       0 12px 32px rgba(218, 236, 255, 0.12), 0 0 38px rgba(218, 236, 255, 0.18),
       inset 0 0 44px rgba(255, 255, 255, 0.12);
