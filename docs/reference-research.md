@@ -53,10 +53,10 @@ Slider default control background has no raster URL, so
 `stories/assets/kube/reference-captures/control-grid-background.png` is a live
 background screenshot fixture. The asset gate re-captures those three public
 demo backgrounds with children hidden, records whether the fresh screenshot hash
-matches the fixture, and hard-checks dimensions, computed CSS tokens, and a
-browser pixel-diff ratio. It does not hard-fail the live capture hash because
-Linux and macOS browser raster paths can produce byte-level PNG drift for the
-same CSS. `generatedFallbackAssets` is intentionally empty. If Kube has no
+matches the fixture, records a browser pixel-diff ratio, and hard-checks
+dimensions plus computed CSS tokens. It does not hard-fail live capture pixels
+because Linux and macOS browser raster paths can produce byte-level PNG drift for
+the same CSS. `generatedFallbackAssets` is intentionally empty. If Kube has no
 rendered source image for a future component state, the fallback must be a
 captured/generated reference fixture with provenance instead of a synthetic
 placeholder.

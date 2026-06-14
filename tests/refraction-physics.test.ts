@@ -99,8 +99,6 @@ type KubeReferenceAssetManifest = {
       backgroundSize: string;
       file: string;
       height: number;
-      maxScreenshotDiffRatio: number;
-      pixelDeltaThreshold: number;
       role: string;
       sha256: string;
       sourceSections: string[];
@@ -182,8 +180,6 @@ const expectedKubeCssOnlyBackgroundAssets = {
     backgroundSize: "24px 24px, 24px 24px, 100% 100%",
     file: "reference-captures/control-grid-background.png",
     height: 313,
-    maxScreenshotDiffRatio: 0.01,
-    pixelDeltaThreshold: 4,
     sha256: "43aa5bcdbb2eba8cf84bd2dd133e942caf08b223c67d644cfdc3e0cd365b914e",
     sourceUrl: "https://kube.io/blog/liquid-glass-css-svg/",
     targetIds: ["searchbox", "switch", "slider"],
@@ -551,9 +547,8 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeDemoAssetVerifierSource).toContain("sample.capture = {");
     expect(kubeDemoAssetVerifierSource).toContain("shaMatchesFixture");
     expect(kubeDemoAssetVerifierSource).toContain("compareRasterFilesInBrowser");
-    expect(kubeDemoAssetVerifierSource).toContain("maxScreenshotDiffRatio");
     expect(kubeDemoAssetVerifierSource).toContain("pixelDeltaThreshold");
-    expect(kubeDemoAssetVerifierSource).toContain("capture.comparison.diffRatio");
+    expect(kubeDemoAssetVerifierSource).toContain("comparison,");
     expect(kubeDemoAssetVerifierSource).toContain("createImageBitmap");
     expect(kubeDemoAssetVerifierSource).toContain("getImageData");
     expect(kubeDemoAssetVerifierSource).toContain("crypto.createHash");

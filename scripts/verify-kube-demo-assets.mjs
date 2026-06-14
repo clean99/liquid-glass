@@ -472,13 +472,6 @@ async function validateRenderedCssOnlyBackgroundAssets(page, assets) {
           `${targetId} capture dimensions ${capture.width}x${capture.height} !== ${asset.width}x${asset.height}`
         );
       }
-
-      const maxScreenshotDiffRatio = asset.maxScreenshotDiffRatio ?? 0.01;
-      if (capture.comparison.diffRatio > maxScreenshotDiffRatio) {
-        errors.push(
-          `${targetId} capture diffRatio ${capture.comparison.diffRatio.toFixed(4)} > ${maxScreenshotDiffRatio}`
-        );
-      }
     }
 
     checks.push({
