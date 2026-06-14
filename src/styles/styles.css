@@ -508,7 +508,7 @@
   height: 3.1rem;
   padding: 0;
   color: color-mix(in srgb, var(--lg-text), transparent 8%);
-  color-scheme: light;
+  color-scheme: only light;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.06)),
     color-mix(in srgb, var(--lg-surface), transparent 28%);
@@ -545,12 +545,14 @@
 .lg-input-otp__field:focus-visible {
   color: color-mix(in srgb, var(--lg-text), transparent 10%);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.12)),
-    color-mix(in srgb, var(--lg-control-focus-fill), rgba(255, 255, 255, 0.9) 68%);
-  background-color: rgba(255, 255, 255, 0.82);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0.16)),
+    color-mix(in srgb, var(--lg-control-focus-surface), rgba(255, 255, 255, 0.96) 74%);
+  background-color: rgba(255, 255, 255, 0.9);
   border-color: color-mix(in srgb, var(--lg-control-focus-edge), var(--lg-glass-border) 48%);
+  caret-color: color-mix(in srgb, var(--lg-text), transparent 8%);
   box-shadow: var(--lg-control-focus-shadow-deep);
   filter: saturate(1.08) brightness(1.025);
+  outline: none;
   text-shadow: none;
   transform: translateY(-1px) scale(1.055);
 }

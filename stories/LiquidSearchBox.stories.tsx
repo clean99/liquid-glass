@@ -24,6 +24,9 @@ const meta = {
 export default meta;
 type Story = StoryObj;
 
+const kubeFontStack =
+  'InterVariable, Inter, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif';
+
 export const KubeReference: Story = {
   parameters: {
     visualState: {
@@ -52,8 +55,7 @@ function KubeSearchboxReferenceStory() {
           background:
             "linear-gradient(90deg, rgba(15,23,42,0.055) 0 1px, transparent 1px 48px), linear-gradient(180deg, rgba(15,23,42,0.045) 0 1px, transparent 1px 48px), linear-gradient(135deg, #fff, #f5f6f4)",
           backgroundSize: "48px 48px, 48px 48px, auto",
-          fontFamily:
-            '-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
+          fontFamily: kubeFontStack
         }}
       >
         <div
@@ -104,7 +106,7 @@ function KubeSearchboxReferenceStory() {
               display: "inline-flex",
               alignItems: "center",
               gap: 6,
-              padding: useImageBackground ? "3.25px 5px" : undefined,
+              padding: useImageBackground ? "3.25px 7.25px" : undefined,
               color: useImageBackground ? "#fff" : "#111",
               fontSize: useImageBackground ? 9.75 : 10,
               lineHeight: useImageBackground ? "13px" : undefined,
@@ -146,8 +148,7 @@ export const FocusPhotoReference: Story = {
           minHeight: 360,
           padding: 40,
           background: "linear-gradient(135deg, rgba(255,255,255,0.96), rgba(244,245,243,0.94))",
-          fontFamily:
-            '-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
+          fontFamily: kubeFontStack
         }}
       >
         <div
@@ -190,8 +191,8 @@ function KubeSearchboxPhotoCredit() {
       aria-hidden="true"
       style={{
         position: "absolute",
-        top: 10,
-        left: 10,
+        top: 9.75,
+        left: 9.75,
         color: "rgba(255, 255, 255, 0.4)",
         fontSize: 9,
         fontWeight: 400,

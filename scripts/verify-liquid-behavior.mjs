@@ -373,8 +373,12 @@ const focusAuditTargets = [
   {
     name: "otp",
     options: {
+      contextScreenshotSelector: ".lg-input-otp",
       maximumFocusedScreenshotDarkPixelRatio: 0.02,
+      maximumFocusedContextScreenshotBlackPixelRatio: 0.01,
+      maximumFocusedContextScreenshotDarkPixelRatio: 0.03,
       maximumFocusedMaterialLumaLoss: 8,
+      minimumFocusedContextScreenshotLuma: 232,
       maximumFocusedScreenshotLumaLoss: 18,
       minimumFocusedMaterialLuma: 238,
       minimumFocusedScreenshotLuma: 214,
@@ -526,6 +530,20 @@ async function verifyFocusMaterial(name, options) {
     focusedScreenshot,
     `${name} focused`
   );
+  let focusedContextScreenshotEvidence = null;
+  if (options.contextScreenshotSelector) {
+    const contextLocator = page.locator(options.contextScreenshotSelector).first();
+    const focusedContextScreenshot = path.join(
+      focusScreenshotDir,
+      `${safeFileSegment(name)}-focused-context.png`
+    );
+    focusedContextScreenshotEvidence = await captureFocusScreenshot(
+      page,
+      contextLocator,
+      focusedContextScreenshot,
+      `${name} focused context`
+    );
+  }
 
   assertEqual(focused.outlineStyle, "none", `${name} focus outline style`);
   assertNoPlasticFocusChrome(focused, `${name} focus`);
@@ -578,6 +596,27 @@ async function verifyFocusMaterial(name, options) {
       `${name} focused screenshot dark pixel ratio`
     );
   }
+  if (options.minimumFocusedContextScreenshotLuma !== undefined) {
+    assertGreaterOrEqual(
+      focusedContextScreenshotEvidence?.meanLuma ?? 0,
+      options.minimumFocusedContextScreenshotLuma,
+      `${name} focused context screenshot mean luma`
+    );
+  }
+  if (options.maximumFocusedContextScreenshotDarkPixelRatio !== undefined) {
+    assertLessThanOrEqual(
+      focusedContextScreenshotEvidence?.darkPixelRatio ?? 1,
+      options.maximumFocusedContextScreenshotDarkPixelRatio,
+      `${name} focused context screenshot dark pixel ratio`
+    );
+  }
+  if (options.maximumFocusedContextScreenshotBlackPixelRatio !== undefined) {
+    assertLessThanOrEqual(
+      focusedContextScreenshotEvidence?.blackPixelRatio ?? 1,
+      options.maximumFocusedContextScreenshotBlackPixelRatio,
+      `${name} focused context screenshot black pixel ratio`
+    );
+  }
   assertLessThanOrEqual(
     focusedScreenshotEvidence.blackPixelRatio ?? 1,
     options.maximumFocusedScreenshotBlackPixelRatio ?? 0.72,
@@ -622,6 +661,13 @@ async function verifyFocusMaterial(name, options) {
 
   focusAuditResults.push({
     backgroundAlphaDelta: round(focused.backgroundAlpha - idle.backgroundAlpha),
+    focusedContextScreenshotBlackPixelRatio: roundNullable(
+      focusedContextScreenshotEvidence?.blackPixelRatio
+    ),
+    focusedContextScreenshotDarkPixelRatio: roundNullable(
+      focusedContextScreenshotEvidence?.darkPixelRatio
+    ),
+    focusedContextScreenshotMeanLuma: roundNullable(focusedContextScreenshotEvidence?.meanLuma),
     focusedScreenshotBlackPixelRatio: roundNullable(focusedScreenshotEvidence.blackPixelRatio),
     focusedScreenshotDarkPixelRatio: roundNullable(focusedScreenshotEvidence.darkPixelRatio),
     focusedScreenshotMeanLuma: roundNullable(focusedScreenshotEvidence.meanLuma),
@@ -639,16 +685,20 @@ async function verifyFocusMaterial(name, options) {
     name,
     selector: story.selector,
     screenshots: {
+      focusedContext: focusedContextScreenshotEvidence?.relativePath ?? null,
       focused: focusedScreenshotEvidence.relativePath,
       idle: idleScreenshotEvidence.relativePath
     },
     screenshotCaptureModes: {
+      focusedContext: focusedContextScreenshotEvidence?.mode ?? null,
       focused: focusedScreenshotEvidence.mode,
       idle: idleScreenshotEvidence.mode
     },
-    screenshotCaptureNotes: [idleScreenshotEvidence.note, focusedScreenshotEvidence.note].filter(
-      Boolean
-    ),
+    screenshotCaptureNotes: [
+      idleScreenshotEvidence.note,
+      focusedScreenshotEvidence.note,
+      focusedContextScreenshotEvidence?.note
+    ].filter(Boolean),
     storyId: story.id,
     transitionDurationMs: focused.maxTransitionDurationMs,
     widthDelta: round(focused.width - idle.width)

@@ -891,12 +891,14 @@ describe("Liquid Glass physics contract", () => {
     expect(kubeReferenceCompareSource).toContain("-control-contract.json");
     expect(kubeReferenceCompareSource).toContain("photo-1497250681960-ef046c08a56e");
     expect(kubeReferenceCompareSource).toContain("searchbox-demo-background.jpg");
-    expect(searchboxStorySource).toContain("top: 10");
-    expect(searchboxStorySource).toContain("left: 10");
+    expect(searchboxStorySource).toContain("const kubeFontStack");
+    expect(searchboxStorySource).toContain("InterVariable, Inter");
+    expect(searchboxStorySource).toContain("top: 9.75");
+    expect(searchboxStorySource).toContain("left: 9.75");
     expect(searchboxStorySource).toContain("fontSize: 9");
     expect(searchboxStorySource).toContain('backdropFilter: useImageBackground ? "blur(8px)"');
     expect(searchboxStorySource).toContain("bottom: useImageBackground ? 7.5 : 12");
-    expect(searchboxStorySource).toContain('padding: useImageBackground ? "3.25px 5px"');
+    expect(searchboxStorySource).toContain('padding: useImageBackground ? "3.25px 7.25px"');
     expect(searchboxStorySource).toContain("fontSize: useImageBackground ? 9.75 : 10");
     expect(searchboxStorySource).toContain('lineHeight: useImageBackground ? "13px"');
     expect(searchboxStorySource).toContain("borderRadius: useImageBackground ? 4.875");
@@ -1076,6 +1078,10 @@ describe("Liquid Glass physics contract", () => {
 
   it("keeps OTP focus out of native dark input selection chrome", () => {
     const otpBaseBody = collectCssRuleBodyForSelector(styles, ".lg-input-otp__field");
+    const otpFocusBody = collectCssRuleBodyForSelector(
+      styles,
+      ".lg-input-otp__field:focus-visible"
+    );
     const otpSelectionBody = collectCssRuleBodyForSelector(
       styles,
       ".lg-input-otp__field::selection"
@@ -1083,9 +1089,14 @@ describe("Liquid Glass physics contract", () => {
 
     expect(otpBaseBody).toContain("-webkit-appearance: none");
     expect(otpBaseBody).toContain("appearance: none");
-    expect(otpBaseBody).toContain("color-scheme: light");
+    expect(otpBaseBody).toContain("color-scheme: only light");
     expect(otpBaseBody).toContain("caret-color:");
     expect(otpBaseBody).toContain("background-clip: padding-box");
+    expect(otpFocusBody).toContain("background-color: rgba(255, 255, 255, 0.9)");
+    expect(otpFocusBody).toContain("--lg-control-focus-surface");
+    expect(otpFocusBody).toContain("caret-color:");
+    expect(otpFocusBody).toContain("outline: none");
+    expect(otpFocusBody).not.toContain("background: var(--lg-control-focus-fill)");
     expect(otpSelectionBody).toContain("--lg-control-focus-fill");
     expect(otpSelectionBody).toContain("rgba(255, 255, 255");
     expect(otpSelectionBody).not.toContain("rgba(0, 0, 0");
@@ -1194,7 +1205,7 @@ describe("Liquid Glass physics contract", () => {
           violations.push("darkened focus material");
         }
 
-        if (/color:\s*(?:#fff|white|rgba\(255,\s*255,\s*255,\s*0\.9)/.test(body)) {
+        if (/(?:^|[;\n]\s*)color:\s*(?:#fff|white|rgba\(255,\s*255,\s*255,\s*0\.9)/.test(body)) {
           violations.push("forced white focus text");
         }
 
@@ -1343,6 +1354,13 @@ describe("Liquid Glass physics contract", () => {
     expect(verifyLiquidBehaviorSource).toContain("minimumFocusedScreenshotLuma: 226");
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotLumaLoss: 22");
     expect(verifyLiquidBehaviorSource).toContain("maximumFocusedScreenshotDarkPixelRatio: 0.02");
+    expect(verifyLiquidBehaviorSource).toContain('contextScreenshotSelector: ".lg-input-otp"');
+    expect(verifyLiquidBehaviorSource).toContain("minimumFocusedContextScreenshotLuma: 232");
+    expect(verifyLiquidBehaviorSource).toContain(
+      "maximumFocusedContextScreenshotDarkPixelRatio: 0.03"
+    );
+    expect(verifyLiquidBehaviorSource).toContain("focusedContextScreenshotMeanLuma");
+    expect(verifyLiquidBehaviorSource).toContain("focusedContextScreenshotDarkPixelRatio");
     expect(verifyLiquidBehaviorSource).toContain(
       "options.maximumFocusedScreenshotBlackPixelRatio ?? 0.72"
     );
