@@ -25,7 +25,7 @@ jobs:
     outputs:
       pages-enabled: ${{ steps.pages-settings.outputs.enabled }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: pnpm/action-setup@v6
         with:
@@ -59,7 +59,7 @@ jobs:
             echo "::notice::GitHub Pages is not enabled for this repository; Storybook deploy is skipped."
           fi
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
         if: steps.pages-settings.outputs.enabled == 'true'
 
       - uses: actions/upload-pages-artifact@v5
